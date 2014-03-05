@@ -36,8 +36,8 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has submitted their language", function() {
-            it("should set the user's language",function() {
+        describe("when the user has submitted their language as english", function() {
+            it("should set the user's language to english",function() {
                 return tester
                     .setup.user.state('states:start')
                     .input('1')
@@ -45,7 +45,7 @@ describe("app", function() {
                     .run();
             });
 
-            it("should show them the address menu in their language",function() {
+            it("should show them the address menu in english",function() {
                 return tester
                     .setup.user.state('states:start')
                     .input('1')
@@ -56,7 +56,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has submitted their language", function() {
+        describe("when the user has submitted their language as afrikaans", function() {
             it("should set the user's language",function() {
                return tester
                    .setup.user.state('states:start')
@@ -66,7 +66,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has submitted their language", function() {
+        describe("when the user has submitted their language as zulu", function() {
             it("should set the user's language",function() {
                 return tester
                     .setup.user.state('states:start')
@@ -76,7 +76,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has submitted their language", function() {
+        describe("when the user has submitted their language as Xhosa", function() {
             it("should set the user's language",function() {
                 return tester
                     .setup.user.state('states:start')
@@ -86,7 +86,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has submitted their language", function() {
+        describe("when the user has submitted their language as Sotho", function() {
             it("should set the user's language",function() {
                 return tester
                     .setup.user.state('states:start')
