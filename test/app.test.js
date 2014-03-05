@@ -1,7 +1,5 @@
 var vumigo = require('vumigo_v02');
 var app = require('../lib/app');
-var Choice = vumigo.states.Choice;
-var ChoiceState = vumigo.states.ChoiceState;
 var GoDiApp = app.GoDiApp;
 var AppTester = vumigo.AppTester;
 
@@ -40,14 +38,14 @@ describe("app", function() {
 
         describe("when the user has submitted their language", function() {
             it("should set the user's language",function() {
-               return tester
-                   .setup.user.state('states:start')
-                   .input('1')
-                   .check.user.properties({lang: 'en'})
-                   .run();
+                return tester
+                    .setup.user.state('states:start')
+                    .input('1')
+                    .check.user.properties({lang: 'en'})
+                    .run();
             });
 
-            it("should show them the address menu",function() {
+            it("should show them the address menu in their language",function() {
                 return tester
                     .setup.user.state('states:start')
                     .input('1')
@@ -55,6 +53,57 @@ describe("app", function() {
                         state:'states:address',
                         reply:'To be completed'
                     });
+            });
+        });
+
+        describe("when the user has submitted their language", function() {
+            it("should set the user's language",function() {
+               return tester
+                   .setup.user.state('states:start')
+                   .input('2')
+                   .check.user.properties({lang: 'af'})
+                   .run();
+            });
+
+            it("should show them the address menu in their language",function() {
+                return tester
+                    .setup.user.state('states:start')
+                    .input('2')
+                    .check.interaction({
+                        state:'states:address',
+                        reply:'Voltooi moet word'
+                    });
+            });
+        });
+
+        describe("when the user has submitted their language", function() {
+            it("should set the user's language",function() {
+                return tester
+                    .setup.user.state('states:start')
+                    .input('3')
+                    .check.user.properties({lang: 'zu'})
+                    .run();
+            });
+
+        });
+
+        describe("when the user has submitted their language", function() {
+            it("should set the user's language",function() {
+                return tester
+                    .setup.user.state('states:start')
+                    .input('4')
+                    .check.user.properties({lang: 'xh'})
+                    .run();
+            });
+        });
+
+        describe("when the user has submitted their language", function() {
+            it("should set the user's language",function() {
+                return tester
+                    .setup.user.state('states:start')
+                    .input('5')
+                    .check.user.properties({lang: 'so'})
+                    .run();
             });
         });
 
