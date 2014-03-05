@@ -52,7 +52,7 @@ describe("app", function() {
                     .check.interaction({
                         state:'states:address',
                         reply:'To be completed'
-                    });
+                    }).run();
             });
         });
 
@@ -64,16 +64,6 @@ describe("app", function() {
                    .check.user.properties({lang: 'af'})
                    .run();
             });
-
-            it("should show them the address menu in their language",function() {
-                return tester
-                    .setup.user.state('states:start')
-                    .input('2')
-                    .check.interaction({
-                        state:'states:address',
-                        reply:'Voltooi moet word'
-                    });
-            });
         });
 
         describe("when the user has submitted their language", function() {
@@ -84,7 +74,6 @@ describe("app", function() {
                     .check.user.properties({lang: 'zu'})
                     .run();
             });
-
         });
 
         describe("when the user has submitted their language", function() {
