@@ -99,7 +99,7 @@ describe("app", function() {
                     .input('1')
                     .check.interaction({
                         state:'states:registration:engagement',
-                        reply:['Engagement question','1. Dummy Answer'].join('\n')
+                        reply:['Engagement question','1. Dummy Answer','2. Dummy Answer 2'].join('\n')
                     }).run();
             });
         });
@@ -117,6 +117,42 @@ describe("app", function() {
                             '3. Quit'].join('\n')
                    }).run();
            });
+
+            it("should save their answer as '1'",function() {
+                return tester
+                    .setup.user.state('states:registration:engagement')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question1,"1");
+                    }).run();
+            });
+        });
+
+        describe("when the user selects the 2nd answer",function() {
+
+            it("should take them to the terms and conditions menu",function() {
+                return tester
+                    .setup.user.state('states:registration:engagement')
+                    .input('2')
+                    .check.interaction({
+                        state:'states:registration:tandc',
+                        reply: ['Please accept the terms and conditions to get started.',
+                            '1. Accept & Join',
+                            '2. Read t&c',
+                            '3. Quit'].join('\n')
+                    }).run();
+            });
+
+           it("should save their answer as '2'",function() {
+               return tester
+                   .setup.user.state('states:registration:engagement')
+                   .input('2')
+                   .check(function(api){
+                       var contact = api.contacts.store[0];
+                       assert.equal(contact.extra.question1,"2");
+                   }).run();
+           }) ;
         });
 
         describe("when the user selects accept and join",function() {
