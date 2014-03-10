@@ -99,12 +99,12 @@ describe("app", function() {
                     .input('1')
                     .check.interaction({
                         state:'states:registration:engagement',
-                        reply:['Engagement question','1. Dummy Answer','2. Dummy Answer 2'].join('\n')
+                        reply:['Are you excited about the election?','1. Yes','2. No'].join('\n')
                     }).run();
             });
         });
 
-        describe("when the user selects the first answer",function() {
+        describe("when the user selects 'Yes' for the engagement question",function() {
            it("should take them to the terms and conditions menu",function() {
                 return tester
                     .setup.user.state('states:registration:engagement')
@@ -118,18 +118,18 @@ describe("app", function() {
                    }).run();
            });
 
-            it("should save their answer as '1'",function() {
+            it("should save their answer as 'yes'",function() {
                 return tester
                     .setup.user.state('states:registration:engagement')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"1");
+                        assert.equal(contact.extra.question1,"yes");
                     }).run();
             });
         });
 
-        describe("when the user selects the 2nd answer",function() {
+        describe("when the user selects 'no' for the engagement question",function() {
 
             it("should take them to the terms and conditions menu",function() {
                 return tester
@@ -144,13 +144,13 @@ describe("app", function() {
                     }).run();
             });
 
-           it("should save their answer as '2'",function() {
+           it("should save their answer as 'no'",function() {
                return tester
                    .setup.user.state('states:registration:engagement')
                    .input('2')
                    .check(function(api){
                        var contact = api.contacts.store[0];
-                       assert.equal(contact.extra.question1,"2");
+                       assert.equal(contact.extra.question1,"no");
                    }).run();
            }) ;
         });
