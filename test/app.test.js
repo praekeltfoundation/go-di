@@ -127,6 +127,27 @@ describe("app", function() {
                         assert.equal(contact.extra.question1,"yes");
                     }).run();
             });
+
+            it("should save their interaction time",function() {
+                //Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)
+                return tester
+                    .setup.user.state('states:registration:engagement')
+                    .setup(function(api) {
+                        api.contacts.add({
+                            msisdn: '+273321',
+                            extra: {
+                                registered: 'true',
+                                question1: 'yes',
+                                it_question1: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
+                            }
+                        });
+                    })
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.it_question1,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
+                    }).run();
+            });
         });
 
         describe("when the user selects 'no' for the engagement question",function() {
