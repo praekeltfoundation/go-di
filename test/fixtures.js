@@ -7,7 +7,7 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "http://wards.code4sa.org/",
-                "params": [{"name":"address", "value": '21+conduit+street'}]
+                "params": [{"name":"address", "value": '21 conduit street'}]
             },
             "response": {
                 "code": "200",
