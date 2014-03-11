@@ -3,6 +3,7 @@ var app = require('../lib/app');
 var GoDiApp = app.GoDiApp;
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
+var fixtures = require('./fixtures');
 
 describe("app", function() {
 
@@ -12,7 +13,9 @@ describe("app", function() {
 
         beforeEach(function() {
             app = new GoDiApp();
-            tester = new AppTester(app);
+            tester = new AppTester(app,{
+                api: {http: {default_encoding: 'json'}}
+            });
 
             app.get_date = function() {
                 var d = new Date();
@@ -20,14 +23,19 @@ describe("app", function() {
                 return d.toISOString();
             };
 
-            tester.setup.config.app({
-                name: 'test_app'
-            });
+            tester
+                .setup.config.app({
+                    name: 'test_app'
+                })
+                .setup(function(api) {
+                    // Add all of the fixtures.
+                    fixtures().forEach(api.http.fixtures.add);
+                });
         });
 
         describe("when the user starts a session",function() {
             describe('if they are registered',function() {
-                it("should tell take them to a quiz",function() {
+                it("should tell take them to fill in address",function() {
                     return tester.setup.user.addr('+273123')
                         .setup(function(api) {
                             api.contacts.add( {
@@ -37,7 +45,8 @@ describe("app", function() {
                                 }
                             });
                         }).start().check.interaction({
-                            states:'states:address'
+                            states:'states:address',
+                            reply: 'Please enter your home address. i.e. 9 Dover Street'
                         })
                         .run();
                 });
@@ -240,7 +249,7 @@ describe("app", function() {
         describe("when a user has inputted their address",function() {
             it("should take them to the menu page",function() {
                 return tester.setup.user.state('states:address')
-                    .input('21 Conduit Street')
+                    .input('21 conduit street')
                     .check.interaction({
                         state: 'states:menu',
                         reply: [
@@ -250,6 +259,28 @@ describe("app", function() {
                             '3. View the results...',
                             '4. About'
                         ].join('\n')
+                    }).run();
+            });
+
+            it("should get the appropriate electoral ward",function() {
+                return tester
+                    .setup.user.state('states:address')
+                    .input('21 conduit street')
+                    .check(function(api){
+                        var req = api.http.requests[0];
+                        var url = req.url;
+                        var param = req.params.param_list[0];
+                        assert.equal(url,'http://wards.code4sa.org/');
+                        assert.equal(param.value,'21+conduit+street');
+                    }).run();
+            });
+
+            it("should save the electoral ward",function() {
+                return tester.setup.user.state('states:address')
+                    .input('21 conduit street')
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.deepEqual(contact.extra.ward,"79400094");
                     }).run();
             });
         });
