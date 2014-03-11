@@ -129,7 +129,6 @@ describe("app", function() {
             });
 
             it("should save their interaction time",function() {
-                //Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)
                 return tester
                     .setup.user.state('states:registration:engagement')
                     .setup(function(api) {
