@@ -269,10 +269,19 @@ describe("app", function() {
                        ].join('\n')
                    }).run();
            });
-
         });
 
-        describe("when the user has answered the first question", function() {
+        describe("when the user has answered the first question as 'Yes'", function() {
+            it("should should save their response the first question as well as interaction time",function() {
+                return tester.setup.user.state('states:quiz:tier2:question1')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question1,"yes");
+                        assert.equal(contact.extra.it_question1,app.get_date());
+                    }).run();
+            });
+
             it("should take them to second question",function() {
                 return tester.setup.user.state('states:quiz:tier2:question1')
                     .input('1')
@@ -293,44 +302,41 @@ describe("app", function() {
                         ].join('\n')
                     }).run();
             });
+        });
 
+        describe("when the user has answered the first question as 'No'", function() {
             it("should should save their response the first question as well as interaction time",function() {
-                    return tester
-                        .setup.user.state('states:quiz:tier2:question1')
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+273321',
-                                extra: {
-                                    it_question1: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
-                                }
-                            });
-                        })
-                        .input('1')
-                        .check(function(api){
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.question1,"yes");
-                            assert.equal(contact.extra.it_question1,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
-                        }).run();
+                return tester.setup.user.state('states:quiz:tier2:question1')
+                    .input('2')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question1,"no");
+                        assert.equal(contact.extra.it_question1,app.get_date());
+                    }).run();
             });
         });
 
-        describe("when the user has answered the second question", function() {
+        describe("when the user has answered the first question as 'under 18'", function() {
+            it("should should save their response the first question as well as interaction time",function() {
+                return tester.setup.user.state('states:quiz:tier2:question1')
+                    .input('3')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question1,"u18");
+                        assert.equal(contact.extra.it_question1,app.get_date());
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the second question as under 18", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+273321',
-                            extra: {
-                                it_question2: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
-                            }
-                        });
-                    })
                     .setup.user.state('states:quiz:tier2:question2')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question2,"u18");
-                        assert.equal(contact.extra.it_question2,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
+                        assert.equal(contact.extra.it_question2,app.get_date());
                     }).run();
             });
 
@@ -351,23 +357,41 @@ describe("app", function() {
 
         });
 
-        describe("when the user has answered the 3rd question", function() {
-            it("should should save their response the 3rd question as well as interaction time",function() {
+        describe("when the user has answered the second question as 19-20", function() {
+            it("should should save their response the 2nd question as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:tier2:question2')
+                    .input('2')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question2,"19-20");
+                        assert.equal(contact.extra.it_question2,app.get_date());
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the second question as 21-30", function() {
+            it("should should save their response the 2nd question as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:tier2:question2')
+                    .input('3')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question2,"21-30");
+                        assert.equal(contact.extra.it_question2,app.get_date());
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 3rd question as 'Highly Likely", function() {
+            it("should should save their response 'highly_likely'  as well as interaction time",function() {
                 return tester
                     .setup.user.state('states:quiz:tier2:question3')
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+273321',
-                            extra: {
-                                it_question3: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
-                            }
-                        });
-                    })
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question3,"highly_likely");
-                        assert.equal(contact.extra.it_question3,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
+                        assert.equal(contact.extra.it_question3,app.get_date());
                     }).run();
             });
 
@@ -388,7 +412,31 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has answered the 4th question", function() {
+        describe("when the user has answered the 3rd question", function() {
+            it("should should save their response 'likely' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:tier2:question3')
+                    .input('2')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question3,"likely");
+                        assert.equal(contact.extra.it_question3,app.get_date());
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 4th question as 'Less than a matric'", function() {
+            it("should should save their response 'less_than_matric' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:tier2:question4')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question4,"less_than_matric");
+                        assert.equal(contact.extra.it_question4,app.get_date());
+                    }).run();
+            });
+
             it("should take them back to the menu",function() {
                 return tester.setup.user.state('states:quiz:tier2:question4')
                     .input('1')
