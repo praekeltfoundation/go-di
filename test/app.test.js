@@ -257,7 +257,8 @@ describe("app", function() {
                             '1. Take the quiz & win!',
                             '2. Report an Election Activity',
                             '3. View the results...',
-                            '4. About'
+                            '4. About',
+                            '5. End'
                         ].join('\n')
                     }).run();
             });
@@ -286,7 +287,18 @@ describe("app", function() {
         });
 
 
-        describe("when the user has selected to do the quiz", function() {
+        describe("when the user has selected 'quit' from the menu",function() {
+            it ("should take them to the end state",function() {
+                return tester.setup.user.state("states:menu")
+                    .input('5')
+                    .check.interaction({
+                        state: 'states:end',
+                        reply: 'Bye.'
+                    }).run();
+            });
+        });
+
+        describe("when the user has selected to do the quiz from the menu", function() {
            it("should take them to the first question",function() {
                return tester.setup.user.state('states:menu')
                    .input('1')
