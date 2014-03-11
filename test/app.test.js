@@ -37,7 +37,7 @@ describe("app", function() {
                                 }
                             });
                         }).start().check.interaction({
-                            states:'states:location'
+                            states:'states:address'
                         })
                         .run();
                 });
@@ -233,6 +233,167 @@ describe("app", function() {
                     .check.interaction({
                         state:'states:registration:end',
                         reply: 'Thank you for your time. Remember, you can always reconsider becoming a citizen reporter.'
+                    }).run();
+            });
+        });
+
+        describe("when a user has inputted their address",function() {
+            it("should take them to the menu page",function() {
+                return tester.setup.user.state('states:address')
+                    .input('21 Conduit Street')
+                    .check.interaction({
+                        state: 'states:menu',
+                        reply: [
+                            'Welcome to the Campaign',
+                            '1. Take the quiz & win!',
+                            '2. Report an Election Activity',
+                            '3. View the results...',
+                            '4. About'
+                        ].join('\n')
+                    }).run();
+            });
+        });
+
+
+        describe("when the user has selected to do the quiz", function() {
+           it("should take them to the first question",function() {
+               return tester.setup.user.state('states:menu')
+                   .input('1')
+                   .check.interaction({
+                       state: 'states:quiz:tier2:question1',
+                       reply: [
+                            'Are you registered to vote?',
+                           '1. Yes',
+                           '2. No',
+                           '3. I am u18 and not able to register yet'
+                       ].join('\n')
+                   }).run();
+           });
+
+        });
+
+        describe("when the user has answered the first question", function() {
+            it("should take them to second question",function() {
+                return tester.setup.user.state('states:quiz:tier2:question1')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:tier2:question2',
+                        reply: [
+                            'How old are you?',
+                            '1. under 18',
+                            '2. 19-20',
+                            '3. 21-30',
+                            '4. 31-40',
+                            '5. 41-50',
+                            '6. 51-60',
+                            '7. 61-70',
+                            '8. 71-80',
+                            '9. 81-90',
+                            '10. 90+'
+                        ].join('\n')
+                    }).run();
+            });
+
+            it("should should save their response the first question as well as interaction time",function() {
+                    return tester
+                        .setup.user.state('states:quiz:tier2:question1')
+                        .setup(function(api) {
+                            api.contacts.add({
+                                msisdn: '+273321',
+                                extra: {
+                                    it_question1: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
+                                }
+                            });
+                        })
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.question1,"yes");
+                            assert.equal(contact.extra.it_question1,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
+                        }).run();
+            });
+        });
+
+        describe("when the user has answered the second question", function() {
+            it("should should save their response the 2nd question as well as interaction time",function() {
+                return tester
+                    .setup(function(api) {
+                        api.contacts.add({
+                            msisdn: '+273321',
+                            extra: {
+                                it_question2: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
+                            }
+                        });
+                    })
+                    .setup.user.state('states:quiz:tier2:question2')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question2,"u18");
+                        assert.equal(contact.extra.it_question2,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
+                    }).run();
+            });
+
+            it("should take them to 3rd question",function() {
+                return tester.setup.user.state('states:quiz:tier2:question2')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:tier2:question3',
+                        reply: [
+                            'How likely is it that you will vote in the upcoming election?',
+                            '1. highly likely',
+                            '2. likely',
+                            '3. not likely',
+                            '4. highly unlikely'
+                        ].join('\n')
+                    }).run();
+            });
+
+        });
+
+        describe("when the user has answered the 3rd question", function() {
+            it("should should save their response the 3rd question as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:tier2:question3')
+                    .setup(function(api) {
+                        api.contacts.add({
+                            msisdn: '+273321',
+                            extra: {
+                                it_question3: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
+                            }
+                        });
+                    })
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question3,"highly_likely");
+                        assert.equal(contact.extra.it_question3,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
+                    }).run();
+            });
+
+            it("should take them to 4th question",function() {
+                return tester.setup.user.state('states:quiz:tier2:question3')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:tier2:question4',
+                        reply: [
+                            'What education level do you have?',
+                            '1. Less than a matric',
+                            '2. matric',
+                            '3. diploma',
+                            '4. degree',
+                            '5. post-grad degree/diploma'
+                        ].join('\n')
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 4th question", function() {
+            it("should take them back to the menu",function() {
+                return tester.setup.user.state('states:quiz:tier2:question4')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:menu'
                     }).run();
             });
         });
