@@ -9,12 +9,17 @@ describe("app", function() {
     describe("GoDiApp", function() {
         var app;
         var tester;
-        
+
         beforeEach(function() {
             app = new GoDiApp();
-
             tester = new AppTester(app);
 
+            app.get_date = function() {
+                var d = new Date();
+                d.setHours(0,0,0,0);
+                return d.toISOString();
+            };
+            
             tester.setup.config.app({
                 name: 'test_app'
             });
@@ -124,27 +129,17 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"yes");
+                        assert.equal(contact.extra.engagement_question,"yes");
                     }).run();
             });
 
             it("should save their interaction time",function() {
                 return tester
                     .setup.user.state('states:registration:engagement')
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+273321',
-                            extra: {
-                                registered: 'true',
-                                question1: 'yes',
-                                it_question1: 'Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)'
-                            }
-                        });
-                    })
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.it_question1,"Mon Mar 10 2014 18:41:44 GMT+0200 (South Africa Standard Time)");
+                        assert.equal(contact.extra.it_engagement_question,app.get_date());
                     }).run();
             });
         });
@@ -170,7 +165,7 @@ describe("app", function() {
                    .input('2')
                    .check(function(api){
                        var contact = api.contacts.store[0];
-                       assert.equal(contact.extra.question1,"no");
+                       assert.equal(contact.extra.engagement_question,"no");
                    }).run();
            }) ;
         });
