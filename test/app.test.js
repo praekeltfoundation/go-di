@@ -19,7 +19,7 @@ describe("app", function() {
                 d.setHours(0,0,0,0);
                 return d.toISOString();
             };
-            
+
             tester.setup.config.app({
                 name: 'test_app'
             });
@@ -41,7 +41,6 @@ describe("app", function() {
                         })
                         .run();
                 });
-
             });
 
             describe("if they are not registered",function() {
