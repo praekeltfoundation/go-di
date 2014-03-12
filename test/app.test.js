@@ -13,9 +13,11 @@ describe("app", function() {
 
         beforeEach(function() {
             app = new GoDiApp();
+
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
-            });
+            })
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -33,22 +35,162 @@ describe("app", function() {
                 });
         });
 
+        describe("when a session is terminated", function() {
+            describe("when they are registered",function() {
+                describe("when they have not inputted their location",function() {
+                    describe("when they have already been sent a registration sms",function() {
+                        it("should not sent them an sms",function() {
+                            tester
+                                .setup.user.addr('+273123')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        msisdn: '+273123',
+                                        extra : {
+                                            is_registered: 'true',
+                                            register_sms_sent: 'true'
+                                        }
+                                    });
+                                })
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
+                                    assert.equal(smses.length,0);
+                                }).run();
+                        });
+                     });
+
+                    describe("when they have not been sent a registration sms",function() {
+                        it ("should send them an sms asking them to input their location next time",function() {
+                            tester
+                                .setup.user.addr('+273123')
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
+
+                                    var sms = smses[0];
+                                    assert.equal(smses.length,1);
+                                    assert.equal(sms.content, [
+                                        "Hello VIP!2 begin we need ur voting ward.",
+                                        "Dial *55555# & give us ur home address & we'll work it out.",
+                                        "This will be kept private, only ur voting ward will be stored &u will be anonymous."
+                                    ].join(' '));
+                                    assert.equal(sms.to_addr,'+273123');
+                                }).run();
+                        });
+                    });
+
+                });
+
+                describe("when they have inputted their location",function() {
+                    describe("when they have already been sent a registration sms",function() {
+                        it ("should not sent them an sms",function() {
+                            tester
+                                .setup.user.addr('+273123')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        msisdn: '+273123',
+                                        extra : {
+                                            is_registered: 'true',
+                                            register_sms_sent: 'true'
+                                        }
+                                    });
+                                })
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
+                                    assert.equal(smses.length,0);
+                                }).run();
+                        });
+                    });
+                   describe("when they have already been sent a registration sms",function() {
+                       it("should send them an sms thanking them for their registration",function() {
+                           tester
+                               .setup.user.addr('+273000')
+                               .setup.user.state('states:register')
+                               .input('1')
+                               .input.session_event('close')
+                               .check(function(api) {
+                                   var smses = _.where(api.outbound.store, {
+                                       endpoint: 'sms'
+                                   });
+
+                                   var sms = smses[0];
+                                   assert.equal(smses.length,1);
+                                   assert.equal(sms.content,[
+                                       'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
+                                       'Get started by answering questions or reporting election activity!',
+                                       'Dial back in to *5555# to begin!'
+                                   ].join(' '));
+                                   assert.equal(sms.to_addr,'+273000');
+                               }).run();
+                       });
+                   });
+                });
+            });
+        });
+
         describe("when the user starts a session",function() {
             describe('if they are registered',function() {
-                it("should tell take them to fill in address",function() {
-                    return tester.setup.user.addr('+273123')
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+273123',
-                                extra : {
-                                    is_registered: 'true'
-                                }
-                            });
-                        }).start().check.interaction({
-                            states:'states:address',
-                            reply: 'Please enter your home address. i.e. 9 Dover Street'
-                        })
-                        .run();
+                describe('if they have not filled in their address before',function() {
+                    it("should tell take them to fill in address",function() {
+                        return tester
+                            .setup.user.addr('+273123')
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273123',
+                                    extra : {
+                                        is_registered: 'true'
+                                    }
+                                });
+                            }).start()
+                            .check.interaction({
+                                states:'states:address',
+                                reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
+                                        "Reply with ur home address & we'll work it out. " +
+                                        "This will be kept private, only ur voting ward will be stored " +
+                                        "&u will be anonymous."
+                            })
+                            .run();
+                    });
+                });
+
+                describe('if they have filled in their address before',function() {
+                    it("should take them to the main menu",function() {
+                        return tester
+                            .setup.user.addr('+273123')
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273123',
+                                    extra : {
+                                        is_registered: 'true',
+                                        ward: '1234'
+                                    }
+                                });
+                            }).start()
+                            .check.interaction({
+                                state: 'states:menu',
+                                reply: [
+                                    'Welcome to the Campaign',
+                                    '1. Take the quiz & win!',
+                                    '2. Report an Election Activity',
+                                    '3. View the results...',
+                                    '4. About',
+                                    '5. End'
+                                ].join('\n')
+                            }).run();
+                    });
                 });
             });
 
@@ -112,7 +254,13 @@ describe("app", function() {
                     .input('1')
                     .check.interaction({
                         state:'states:registration:engagement',
-                        reply:['Are you excited about the election?','1. Yes','2. No'].join('\n')
+                        reply:[
+                            "It's election time! Do u think ur vote matters?",
+                            "1. YES every vote matters",
+                            "2. NO but I'll vote anyway",
+                            "3. NO so I'm NOT voting",
+                            "4. I'm NOT REGISTERED to vote",
+                            "5. I'm TOO YOUNG to vote"].join("\n")
                     }).run();
             });
         });
@@ -152,7 +300,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user selects 'no' for the engagement question",function() {
+        describe("when the user selects 'NO but I’ll vote anyway' for the engagement question",function() {
 
             it("should take them to the terms and conditions menu",function() {
                 return tester
@@ -167,13 +315,13 @@ describe("app", function() {
                     }).run();
             });
 
-           it("should save their answer as 'no'",function() {
+           it("should save their answer as 'no_vote_anyway'",function() {
                return tester
                    .setup.user.state('states:registration:engagement')
                    .input('2')
                    .check(function(api){
                        var contact = api.contacts.store[0];
-                       assert.equal(contact.extra.engagement_question,"no");
+                       assert.equal(contact.extra.engagement_question,"no_vote_anyway");
                    }).run();
            }) ;
         });
