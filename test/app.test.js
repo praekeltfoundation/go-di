@@ -13,9 +13,11 @@ describe("app", function() {
 
         beforeEach(function() {
             app = new GoDiApp();
+
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
-            });
+            })
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -112,7 +114,13 @@ describe("app", function() {
                     .input('1')
                     .check.interaction({
                         state:'states:registration:engagement',
-                        reply:['Are you excited about the election?','1. Yes','2. No'].join('\n')
+                        reply:[
+                            "It's election time! Do u think ur vote matters?",
+                            '1. YES every vote matters',
+                            '2. NO but I’ll vote anyway',
+                            '3. NO so I’m NOT voting',
+                            '4. I’m NOT REGISTERED to vote',
+                            '5. I’m TOO YOUNG to vote'].join('\n')
                     }).run();
             });
         });
@@ -152,7 +160,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user selects 'no' for the engagement question",function() {
+        describe("when the user selects 'NO but I’ll vote anyway' for the engagement question",function() {
 
             it("should take them to the terms and conditions menu",function() {
                 return tester
@@ -167,13 +175,13 @@ describe("app", function() {
                     }).run();
             });
 
-           it("should save their answer as 'no'",function() {
+           it("should save their answer as 'no_vote_anyway'",function() {
                return tester
                    .setup.user.state('states:registration:engagement')
                    .input('2')
                    .check(function(api){
                        var contact = api.contacts.store[0];
-                       assert.equal(contact.extra.engagement_question,"no");
+                       assert.equal(contact.extra.engagement_question,"no_vote_anyway");
                    }).run();
            }) ;
         });
