@@ -246,7 +246,7 @@ describe("app", function() {
             });
         });
 
-        describe("when a user has inputted their address",function() {
+        describe("when a user has inputed their address",function() {
             it("should take them to the menu page",function() {
                 return tester.setup.user.state('states:address')
                     .input('21 conduit street')
@@ -286,6 +286,19 @@ describe("app", function() {
             });
         });
 
+        describe("when the user inputs an address that cant be found",function() {
+            it("should redirect them to the same address page, but show an error message",function() {
+               return tester
+                   .setup.user.addr('user_bad_input')
+                   .setup.user.state('states:address')
+                   .input('bad input')
+                   .check.reply(
+                       'Oops! Something went wrong! Please try again.'
+                   )
+                   .check.user.state('states:address')
+                   .run();
+            });
+        });
 
         describe("when the user has selected 'quit' from the menu",function() {
             it ("should take them to the end state",function() {

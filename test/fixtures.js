@@ -12,7 +12,7 @@ module.exports = function() {
             "response": {
                 "code": "200",
                 "data": {
-                "province": "GT",
+                    "province": "GT",
                     "coords": [
                         "27.97532",
                         "-26.02674"
@@ -24,6 +24,19 @@ module.exports = function() {
                     "ward_no": "94",
                     "municipality": "City of Johannesburg",
                     "now21": "0:00:00.703326"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "http://wards.code4sa.org/",
+                "params": [{"name":"address", "value": 'bad input'}]
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "error": "address not found"
                 }
             }
         }
