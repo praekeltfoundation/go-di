@@ -78,10 +78,10 @@ describe("app", function() {
                                     var sms = smses[0];
                                     assert.equal(smses.length,1);
                                     assert.equal(sms.content, [
-                                        "Hello VIP!2 begin we need ur voting ward. ",
+                                        "Hello VIP!2 begin we need ur voting ward.",
                                         "Dial *55555# & give us ur home address & we'll work it out.",
                                         "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                                    ].join());
+                                    ].join(' '));
                                     assert.equal(sms.to_addr,'+273123');
                                 }).run();
                         });
@@ -129,10 +129,10 @@ describe("app", function() {
                                    var sms = smses[0];
                                    assert.equal(smses.length,1);
                                    assert.equal(sms.content,[
-                                       'Thanks for volunteering to be a citizen reporter for the 2014 elections! ',
-                                       'Get started by answering questions or reporting election activity! ',
+                                       'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
+                                       'Get started by answering questions or reporting election activity!',
                                        'Dial back in to *5555# to begin!'
-                                   ].join());
+                                   ].join(' '));
                                    assert.equal(sms.to_addr,'+273000');
                                }).run();
                        });
@@ -167,7 +167,7 @@ describe("app", function() {
                 });
 
                 describe('if they have filled in their address before',function() {
-                    it("shoul take them to the main menu",function() {
+                    it("should take them to the main menu",function() {
                         return tester
                             .setup.user.addr('+273123')
                             .setup(function(api) {
@@ -256,11 +256,11 @@ describe("app", function() {
                         state:'states:registration:engagement',
                         reply:[
                             "It's election time! Do u think ur vote matters?",
-                            '1. YES every vote matters',
-                            '2. NO but I’ll vote anyway',
-                            '3. NO so I’m NOT voting',
-                            '4. I’m NOT REGISTERED to vote',
-                            '5. I’m TOO YOUNG to vote'].join('\n')
+                            "1. YES every vote matters",
+                            "2. NO but I'll vote anyway",
+                            "3. NO so I'm NOT voting",
+                            "4. I'm NOT REGISTERED to vote",
+                            "5. I'm TOO YOUNG to vote"].join("\n")
                     }).run();
             });
         });
