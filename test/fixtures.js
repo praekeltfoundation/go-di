@@ -7,7 +7,7 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "http://wards.code4sa.org/",
-                "params": [{"name":"address", "value": '21%20conduit%20street'}]
+                "params": [{"name":"address", "value": '21 conduit street'}]
             },
             "response": {
                 "code": "200",
@@ -31,7 +31,7 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "http://wards.code4sa.org/",
-                "params": [{"name":"address", "value": 'bad%20input'}]
+                "params": [{"name":"address", "value": 'bad input'}]
             },
             "response": {
                 "code": 200,
