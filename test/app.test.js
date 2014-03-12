@@ -281,7 +281,8 @@ describe("app", function() {
                     .input('21 conduit street')
                     .check(function(api) {
                         var contact = api.contacts.store[0];
-                        assert.deepEqual(contact.extra.ward,"79400094");
+                        assert.equal(contact.extra.ward,"79400094");
+                        assert.equal(contact.extra.it_ward,app.get_date());
                     }).run();
             });
         });
