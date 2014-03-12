@@ -143,23 +143,54 @@ describe("app", function() {
 
         describe("when the user starts a session",function() {
             describe('if they are registered',function() {
-                it("should tell take them to fill in address",function() {
-                    return tester.setup.user.addr('+273123')
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+273123',
-                                extra : {
-                                    is_registered: 'true'
-                                }
-                            });
-                        }).start().check.interaction({
-                            states:'states:address',
-                            reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
-                                    "Reply with ur home address & we'll work it out. " +
-                                    "This will be kept private, only ur voting ward will be stored " +
-                                    "&u will be anonymous."
-                        })
-                        .run();
+                describe('if they have not filled in their address before',function() {
+                    it("should tell take them to fill in address",function() {
+                        return tester
+                            .setup.user.addr('+273123')
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273123',
+                                    extra : {
+                                        is_registered: 'true'
+                                    }
+                                });
+                            }).start()
+                            .check.interaction({
+                                states:'states:address',
+                                reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
+                                        "Reply with ur home address & we'll work it out. " +
+                                        "This will be kept private, only ur voting ward will be stored " +
+                                        "&u will be anonymous."
+                            })
+                            .run();
+                    });
+                });
+
+                describe('if they have filled in their address before',function() {
+                    it("shoul take them to the main menu",function() {
+                        return tester
+                            .setup.user.addr('+273123')
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273123',
+                                    extra : {
+                                        is_registered: 'true',
+                                        ward: '1234'
+                                    }
+                                });
+                            }).start()
+                            .check.interaction({
+                                state: 'states:menu',
+                                reply: [
+                                    'Welcome to the Campaign',
+                                    '1. Take the quiz & win!',
+                                    '2. Report an Election Activity',
+                                    '3. View the results...',
+                                    '4. About',
+                                    '5. End'
+                                ].join('\n')
+                            }).run();
+                    });
                 });
             });
 
