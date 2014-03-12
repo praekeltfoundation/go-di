@@ -272,7 +272,7 @@ describe("app", function() {
                         var url = req.url;
                         var param = req.params.param_list[0];
                         assert.equal(url,'http://wards.code4sa.org/');
-                        assert.equal(param.value,'21 conduit street');
+                        assert.equal(param.value,'21%20conduit%20street');
                     }).run();
             });
 
