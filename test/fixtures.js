@@ -43,7 +43,7 @@ module.exports = function() {
         {
             "request": {
                 "method": "GET",
-                "url": "http://wards.code4sa.org/",
+                "url": "https://maps.googleapis.com/maps/api/geocode/json",
                 "params": [
                     {"name":"address", "value": '21 conduit street south africa'},
                     {"name":"sensor","value":"false"}

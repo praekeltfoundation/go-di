@@ -647,11 +647,63 @@ describe("app", function() {
             });
         });
 
-        describe("when the user selects the report election activity option", function() {
+        describe("when the user selects the report election activity option from main menu", function() {
             it("should take them to the report election activity page",function() {
-
+                return tester.setup.user.state('states:menu')
+                    .input('2')
+                    .check.interaction({
+                        state: 'states:report',
+                        reply: [
+                            'What type of report would you like to submit?',
+                            '1. Election Campaign/Rally Report',
+                            '2. Violence/Intimidation Report',
+                            '3. Fraud/Corruption Report',
+                            '4. Voting Station Report',
+                            '5. Post Election Report'
+                        ].join('\n')
+                    }).run();
             });
-        })
+        });
+
+        describe("when the user enters their current location to the selection menu",function(){
+            it("should send a request to the mapping api",function() {
+                return tester
+                    .setup.user.state('states:report:location')
+                    .input("21 conduit street south africa")
+                    .check(function(api) {
+                        var req = api.http.requests[0];
+                        var url = req.url;
+                        var address = req.params.param_list[0];
+                        var sensor = req.params.param_list[1];
+                        assert.equal(url,"https://maps.googleapis.com/maps/api/geocode/json");
+                        assert.equal(address.value,'21 conduit street south africa');
+                        assert.equal(sensor.value,'false');
+                    }).run();
+            });
+
+            it("should receive a list of locations tht match to the user's input",function() {
+                return tester
+                    .setup.user.state('states:report:location')
+                    .input("21 conduit street south africa")
+                    .check(function(api) {
+                        //to run.
+                    }).run();
+            });
+
+            it.only("should provide them with a list of locations matching their input",function() {
+                return tester
+                    .setup.user.state('states:report:location')
+                    .input("21 conduit street south africa")
+                    .check.interaction({
+                        state: "states:report:verify_location",
+                        reply: [
+                            "Please select your location from the options below:",
+                            "1. 21 Conduit Street, Randburg 2188",
+                            "2. 21 Conduit Street, Sandton 2191"
+                        ].join("\n")
+                    }).run();
+            });
+        });
 
 
     });
