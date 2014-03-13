@@ -349,7 +349,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user selects choose to read the terms and conditions",function() {
+        describe("when the user chooses to read the terms and conditions",function() {
             it("should set user registration to false.",function() {
                 return tester
                     .setup.user.state('states:registration:tandc')
@@ -367,10 +367,33 @@ describe("app", function() {
                     .input('2')
                     .check.interaction({
                         state:'states:registration:read',
-                        reply: 'Terms and Conditions'
+                        reply: 'Lorem ipsum dolor sit amet, ' +
+                            'consectetur adipiscing elit. ' +
+                            'Duis euismod nisi in auctor venenatis. ' +
+                            'Donec rhoncus euismod tellus at ullamcorper. ' +
+                            'Inte'+
+                            "\n1 for prev, 2 for next, 0 to end."
                     }).run();
             });
+
         });
+
+        describe("when the user chooses to see next page of terms and conditions",function() {
+            it.only("should show the next page of the terms and conditions",function() {
+               return tester
+                   .setup.user.state('states:registration:read')
+                   .input('2')
+                   .check.interaction({
+                        state:"states:registration:read",
+                        reply:"eger ac egestas tellus orci aliquam. " +
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                            "Quisque faucibus lectus id elementum placerat. Viva" +
+                            "\n1 for prev, 2 for next, 0 to end."
+                   }).run();
+            });
+        });
+
+
 
         describe("when the user selects choose to quit",function() {
             it("should set user registration to false.",function() {
