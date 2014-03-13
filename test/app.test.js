@@ -339,12 +339,15 @@ describe("app", function() {
 
             });
 
-            it("should take the user to a thank you message", function() {
+            it("should take the user to the ward address state", function() {
                 return tester.setup.user.state('states:registration:tandc')
                     .input('1')
                     .check.interaction({
-                        state:'states:registration:accept',
-                        reply: 'Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions to earn airtime!'
+                        state:'states:address',
+                        reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
+                            "Reply with ur home address & we'll work it out. " +
+                            "This will be kept private, only ur voting ward will be " +
+                            "stored &u will be anonymous."
                     }).run();
             });
         });
@@ -360,40 +363,7 @@ describe("app", function() {
                     }).run();
 
             });
-
-
-            it("should take the user to the t & c summary page", function() {
-                return tester.setup.user.state('states:registration:tandc')
-                    .input('2')
-                    .check.interaction({
-                        state:'states:registration:read',
-                        reply: 'Lorem ipsum dolor sit amet, ' +
-                            'consectetur adipiscing elit. ' +
-                            'Duis euismod nisi in auctor venenatis. ' +
-                            'Donec rhoncus euismod tellus at ullamcorper. ' +
-                            'Inte'+
-                            "\n1 for prev, 2 for next, 0 to end."
-                    }).run();
-            });
-
         });
-
-        describe("when the user chooses to see next page of terms and conditions",function() {
-            it.only("should show the next page of the terms and conditions",function() {
-               return tester
-                   .setup.user.state('states:registration:read')
-                   .input('2')
-                   .check.interaction({
-                        state:"states:registration:read",
-                        reply:"eger ac egestas tellus orci aliquam. " +
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                            "Quisque faucibus lectus id elementum placerat. Viva" +
-                            "\n1 for prev, 2 for next, 0 to end."
-                   }).run();
-            });
-        });
-
-
 
         describe("when the user selects choose to quit",function() {
             it("should set user registration to false.",function() {
