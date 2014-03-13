@@ -339,17 +339,20 @@ describe("app", function() {
 
             });
 
-            it("should take the user to a thank you message", function() {
+            it("should take the user to the ward address state", function() {
                 return tester.setup.user.state('states:registration:tandc')
                     .input('1')
                     .check.interaction({
-                        state:'states:registration:accept',
-                        reply: 'Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions to earn airtime!'
+                        state:'states:address',
+                        reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
+                            "Reply with ur home address & we'll work it out. " +
+                            "This will be kept private, only ur voting ward will be " +
+                            "stored &u will be anonymous."
                     }).run();
             });
         });
 
-        describe("when the user selects choose to read the terms and conditions",function() {
+        describe("when the user chooses to read the terms and conditions",function() {
             it("should set user registration to false.",function() {
                 return tester
                     .setup.user.state('states:registration:tandc')
@@ -359,16 +362,6 @@ describe("app", function() {
                         assert.equal(contact.extra.is_registered,"false");
                     }).run();
 
-            });
-
-
-            it("should take the user to the t & c summary page", function() {
-                return tester.setup.user.state('states:registration:tandc')
-                    .input('2')
-                    .check.interaction({
-                        state:'states:registration:read',
-                        reply: 'Terms and Conditions'
-                    }).run();
             });
         });
 
