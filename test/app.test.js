@@ -647,6 +647,12 @@ describe("app", function() {
             });
         });
 
+        describe("when the user selects the report election activity option", function() {
+            it("should take them to the report election activity page",function() {
+
+            });
+        })
+
 
     });
 });
