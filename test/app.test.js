@@ -655,11 +655,11 @@ describe("app", function() {
                         state: 'states:report',
                         reply: [
                             'What type of report would you like to submit?',
-                            '1. Election Campaign/Rally Report',
-                            '2. Violence/Intimidation Report',
-                            '3. Fraud/Corruption Report',
-                            '4. Voting Station Report',
-                            '5. Post Election Report'
+                            '1. Election Campaign/Rally',
+                            '2. Violence/Intimidation',
+                            '3. Fraud/Corruption',
+                            '4. Voting Station',
+                            '5. Post Election'
                         ].join('\n')
                     }).run();
             });
@@ -690,7 +690,7 @@ describe("app", function() {
                     }).run();
             });
 
-            it.only("should provide them with a list of locations matching their input",function() {
+            it("should provide them with a list of locations matching their input",function() {
                 return tester
                     .setup.user.state('states:report:location')
                     .input("21 conduit street south africa")
@@ -702,6 +702,12 @@ describe("app", function() {
                             "2. 21 Conduit Street, Sandton 2191"
                         ].join("\n")
                     }).run();
+            });
+
+            describe("when user selects which a location from the list",function() {
+               it("should save the index of the location",function() {
+
+               });
             });
         });
 
