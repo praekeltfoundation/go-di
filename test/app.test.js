@@ -27,7 +27,10 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'test_app'
+                    name: 'test_app',
+                    endpoints: {
+                        "sms": {"delivery_class": "sms"}
+                    }
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
