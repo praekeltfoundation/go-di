@@ -22,7 +22,7 @@ describe("app", function() {
             app.get_date = function() {
                 var d = new Date();
                 d.setHours(0,0,0,0);
-                return d.toISOString();
+                return d;
             };
 
             tester
@@ -30,7 +30,8 @@ describe("app", function() {
                     name: 'test_app',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
-                    }
+                    },
+                    ushahidi_map: 'https://godi.crowdmap.com/api'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -681,15 +682,6 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should receive a list of locations tht match to the user's input",function() {
-                return tester
-                    .setup.user.state('states:report:location')
-                    .input("21 conduit street south africa")
-                    .check(function(api) {
-                        //to run.
-                    }).run();
-            });
-
             it("should provide them with a list of locations matching their input",function() {
                 return tester
                     .setup.user.state('states:report:location')
@@ -705,9 +697,58 @@ describe("app", function() {
             });
 
             describe("when user selects which a location from the list",function() {
-               it("should save the index of the location",function() {
+                it.only("should post their report to ushahidi",function() {
+                    return tester
+                        .setup.user.addr('+273131')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273131',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    report_title: "test",
+                                    report_desc:"description",
+                                    report_type:"1"
+                                }
+                            });
+                        })
+                        .setup.user.state('states:report:verify_location',{
+                            creator_opts: {
+                                address_options: [
+                                    {
+                                        "formatted_address" : "21 Conduit Street, Randburg 2188, South Africa",
+                                        "geometry" : { "location" : { "lat" : -26.02674,"lng" : 27.97532}}
+                                    },{
+                                        "formatted_address" : "21 Conduit Street, Sandton 2191, South Africa",
+                                        "geometry" : {"location" : {"lat" : -26.0701361,"lng" : 27.9946541} }
+                                    }
+                                ]
+                            }
+                        })
+                        .input("1")
+                        .check(function(api) {
+                            var req = api.http.requests[0];
+                            //.log(req);
+                            var url = req.url;
+                            var body = req.body;
+                            var date = encodeURIComponent( app.ushahidi.get_formatted_date(app.get_date()));
+                            assert.equal(url,"https://godi.crowdmap.com/api");
+                            assert.equal(body,[
+                                "task=report",
+                                "incident_title=test" ,
+                                "incident_description=description" ,
+                                "incident_category=1" ,
+                                "incident_date="+ date ,
+                                "incident_hour=0" ,
+                                "incident_minute=0" ,
+                                "incident_ampm=am" ,
+                                "latitude=-26.0701361" ,
+                                "longitude=27.9946541" ,
+                                "location_name=21%20Conduit%20Street%2C%20Sandton%202191%2C%20South%20Africa"
+                            ].join('&'));
 
-               });
+                        }).run();
+                });
             });
         });
 
