@@ -211,7 +211,7 @@ module.exports = function() {
                 "headers": {
                     "Content-Type": ["x-www-form-urlencoded"]
                 },
-                "body": [
+                "data": [
                     "task=report",
                     "incident_title=test" ,
                     "incident_description=description" ,

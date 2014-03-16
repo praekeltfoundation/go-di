@@ -299,7 +299,7 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.it_engagement_question,app.get_date());
+                        assert.equal(contact.extra.it_engagement_question,app.get_date_string());
                     }).run();
             });
         });
@@ -427,7 +427,7 @@ describe("app", function() {
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.ward,"79400094");
-                        assert.equal(contact.extra.it_ward,app.get_date());
+                        assert.equal(contact.extra.it_ward,app.get_date_string());
                     }).run();
             });
         });
@@ -480,7 +480,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question1,"yes");
-                        assert.equal(contact.extra.it_question1,app.get_date());
+                        assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
 
@@ -513,7 +513,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question1,"no");
-                        assert.equal(contact.extra.it_question1,app.get_date());
+                        assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
         });
@@ -525,7 +525,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question1,"u18");
-                        assert.equal(contact.extra.it_question1,app.get_date());
+                        assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
         });
@@ -538,7 +538,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question2,"u18");
-                        assert.equal(contact.extra.it_question2,app.get_date());
+                        assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
 
@@ -567,7 +567,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question2,"19-20");
-                        assert.equal(contact.extra.it_question2,app.get_date());
+                        assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
         });
@@ -580,7 +580,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question2,"21-30");
-                        assert.equal(contact.extra.it_question2,app.get_date());
+                        assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
         });
@@ -593,7 +593,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question3,"highly_likely");
-                        assert.equal(contact.extra.it_question3,app.get_date());
+                        assert.equal(contact.extra.it_question3,app.get_date_string());
                     }).run();
             });
 
@@ -622,7 +622,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question3,"likely");
-                        assert.equal(contact.extra.it_question3,app.get_date());
+                        assert.equal(contact.extra.it_question3,app.get_date_string());
                     }).run();
             });
         });
@@ -635,7 +635,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question4,"less_than_matric");
-                        assert.equal(contact.extra.it_question4,app.get_date());
+                        assert.equal(contact.extra.it_question4,app.get_date_string());
                     }).run();
             });
 
@@ -697,7 +697,12 @@ describe("app", function() {
             });
 
             describe("when user selects which a location from the list",function() {
-                it.only("should post their report to ushahidi",function() {
+                it("should post their report to ushahidi",function() {
+                    app.get_date = function() {
+                        var d = new Date(2014,2,16);
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
                     return tester
                         .setup.user.addr('+273131')
                         .setup(function(api) {
