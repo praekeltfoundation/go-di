@@ -281,18 +281,12 @@ di.app = function() {
 
         self.states.add('states:quiz:vip:question2',function(name) {
             return new ChoiceState(name, {
-                question: $('How old are you?'),
+                question: $('Are you registered to vote in the upcoming elections?'),
                 choices: [
-                    new Choice('u18',$('under 18')),
-                    new Choice('19-20',$('19-20')),
-                    new Choice('21-30',$('21-30')),
-                    new Choice('31-40',$('31-40')),
-                    new Choice('41-50',$('41-50')),
-                    new Choice('51-60',$('51-60')),
-                    new Choice('61-70',$('61-70')),
-                    new Choice('71-80',$('71-80')),
-                    new Choice('81-90',$('81-90')),
-                    new Choice('90+',$('90+'))
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No')),
+                    new Choice('unsure',$('Unsure')),
+                    new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
                     self.contact.extra.question2 = content.value;

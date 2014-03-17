@@ -550,7 +550,7 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"yes");
+                        assert.equal(contact.extra.question1,"yes_many");
                         assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
@@ -561,54 +561,36 @@ describe("app", function() {
                     .check.interaction({
                         state: 'states:quiz:vip:question2',
                         reply: [
-                            'How old are you?',
-                            '1. under 18',
-                            '2. 19-20',
-                            '3. 21-30',
-                            '4. 31-40',
-                            '5. 41-50',
-                            '6. 51-60',
-                            '7. 61-70',
-                            '8. 71-80',
-                            '9. 81-90',
-                            '10. 90+'
+                            'Are you registered to vote in the upcoming elections?',
+                            '1. Yes',
+                            '2. No',
+                            '3. Unsure',
+                            '4. Skip'
                         ].join('\n')
                     }).run();
             });
         });
 
-        describe("when the user has answered the first question as 'No'", function() {
+        describe("when the user has answered the first question as 'Yes, a few'", function() {
             it("should should save their response the first question as well as interaction time",function() {
                 return tester.setup.user.state('states:quiz:vip:question1')
                     .input('2')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"no");
+                        assert.equal(contact.extra.question1,"yes_few");
                         assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
         });
 
-        describe("when the user has answered the first question as 'under 18'", function() {
-            it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:vip:question1')
-                    .input('3')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"u18");
-                        assert.equal(contact.extra.it_question1,app.get_date_string());
-                    }).run();
-            });
-        });
-
-        describe("when the user has answered the second question as under 18", function() {
+        describe("when the user has answered the second question as Yes", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
                     .setup.user.state('states:quiz:vip:question2')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"u18");
+                        assert.equal(contact.extra.question2,"yes");
                         assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
@@ -630,27 +612,27 @@ describe("app", function() {
 
         });
 
-        describe("when the user has answered the second question as 19-20", function() {
+        describe("when the user has answered the second question as No", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
                     .setup.user.state('states:quiz:vip:question2')
                     .input('2')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"19-20");
+                        assert.equal(contact.extra.question2,"no");
                         assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
         });
 
-        describe("when the user has answered the second question as 21-30", function() {
+        describe("when the user has answered the second question as Unsure", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
                     .setup.user.state('states:quiz:vip:question2')
                     .input('3')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"21-30");
+                        assert.equal(contact.extra.question2,"unsure");
                         assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
