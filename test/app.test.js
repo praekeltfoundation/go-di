@@ -417,7 +417,28 @@ describe("app", function() {
                             '2. 21 Conduit Street, Sandton 2191',
                             '3. 21 Conduit Street, Randburg 2194'
                         ].join("\n")
-                    }).run();
+                    })
+                    .run();
+
+            });
+
+            describe("when the list of appropriate electoral wards is too long to fit on one page",function() {
+                it("should display the first page of choices with next buttons",function(){
+                    return tester
+                        .setup.user.state('states:address')
+                        .input('main street')
+                        .check.interaction({
+                            state: "states:address:verify",
+                            reply: [
+                                'Please select your location from the options below:',
+                                '1. Main Street, Paarl',
+                                "2. Main Street, Lambert's Bay 8130",
+                                '3. Main Street, Glencoe',
+                                "4. More"
+                            ].join("\n")
+                        })
+                        .run();
+                });
             });
 
         });
@@ -479,6 +500,7 @@ describe("app", function() {
                     }).run();
             });
         });
+
 
 
         describe("when the user inputs an address that cant be found",function() {
