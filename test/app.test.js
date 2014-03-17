@@ -390,24 +390,9 @@ describe("app", function() {
             });
         });
 
-        describe("when a user has inputed their address",function() {
-            it("should take them to the menu page",function() {
-                return tester.setup.user.state('states:address')
-                    .input('21 conduit street')
-                    .check.interaction({
-                        state: 'states:menu',
-                        reply: [
-                            'Welcome to the Campaign',
-                            '1. Take the quiz & win!',
-                            '2. Report an Election Activity',
-                            '3. View the results...',
-                            '4. About',
-                            '5. End'
-                        ].join('\n')
-                    }).run();
-            });
+        describe("when a user has inputted their address",function() {
 
-            it("should get the appropriate electoral ward",function() {
+            it("should get a list of appropriate electoral wards",function() {
                 return tester
                     .setup.user.state('states:address')
                     .input('21 conduit street')
@@ -420,16 +405,103 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should save the electoral ward",function() {
-                return tester.setup.user.state('states:address')
+            it("should return the list of appropriate electoral wards to the user",function() {
+                return tester
+                    .setup.user.state('states:address')
                     .input('21 conduit street')
-                    .check(function(api) {
+                    .check.interaction({
+                        state: "states:address:verify",
+                        reply: [
+                            'Please select your location from the options below:',
+                            '1. 21 Conduit Street, Randburg 2188',
+                            '2. 21 Conduit Street, Sandton 2191',
+                            '3. 21 Conduit Street, Randburg 2194'
+                        ].join("\n")
+                    })
+                    .run();
+
+            });
+
+            describe("when the list of appropriate electoral wards is too long to fit on one page",function() {
+                it("should display the first page of choices with next buttons",function(){
+                    return tester
+                        .setup.user.state('states:address')
+                        .input('main street')
+                        .check.interaction({
+                            state: "states:address:verify",
+                            reply: [
+                                'Please select your location from the options below:',
+                                '1. Main Street, Paarl',
+                                "2. Main Street, Lambert's Bay 8130",
+                                '3. Main Street, Glencoe',
+                                "4. More"
+                            ].join("\n")
+                        })
+                        .run();
+                });
+            });
+
+        });
+
+        describe("when the user selects their address from the list provider",function(){
+            it("should save their electoral ward",function() {
+                return tester
+                    .setup.user.addr('+273123')
+                    .setup.user.state('states:address:verify',{
+                        creator_opts: {
+                            address_options: [{
+                                "address": "21 Conduit Street, Randburg 2188, South Africa",
+                                "ward": "79400094"
+                            },{
+                                "address": "21 Conduit Street, Sandton 2191, South Africa",
+                                "ward": "79400104"
+                            },{
+                                "address": "21 Conduit Street, Randburg 2194, South Africa",
+                                "ward": "79400094"
+                            }]
+                        }
+                    })
+                    .input("1")
+                    .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.ward,"79400094");
                         assert.equal(contact.extra.it_ward,app.get_date());
                     }).run();
             });
+
+            it("should take them to the menu page",function() {
+                return tester
+                    .setup.user.addr('+273132')
+                    .setup.user.state('states:address:verify',{
+                        creator_opts: {
+                            address_options: [{
+                                "address": "21 Conduit Street, Randburg 2188, South Africa",
+                                "ward": "79400094"
+                            },{
+                                "address": "21 Conduit Street, Sandton 2191, South Africa",
+                                "ward": "79400104"
+                            },{
+                                "address": "21 Conduit Street, Randburg 2194, South Africa",
+                                "ward": "79400094"
+                            }]
+                        }
+                    })
+                    .input("1")
+                    .check.interaction({
+                        state: 'states:menu',
+                        reply: [
+                            'Welcome to the Campaign',
+                            '1. Take the quiz & win!',
+                            '2. Report an Election Activity',
+                            '3. View the results...',
+                            '4. About',
+                            '5. End'
+                        ].join('\n')
+                    }).run();
+            });
         });
+
+
 
         describe("when the user inputs an address that cant be found",function() {
             it("should redirect them to the same address page, but show an error message",function() {
