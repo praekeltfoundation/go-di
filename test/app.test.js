@@ -532,12 +532,13 @@ describe("app", function() {
                return tester.setup.user.state('states:menu')
                    .input('1')
                    .check.interaction({
-                       state: 'states:quiz:tier2:question1',
+                       state: 'states:quiz:vip:question1',
                        reply: [
-                            'Are you registered to vote?',
-                           '1. Yes',
-                           '2. No',
-                           '3. I am u18 and not able to register yet'
+                            'During the past year, have you attended a demonstration or protest?',
+                           '1. Yes, many',
+                           '2. Yes, a few',
+                           '3. No',
+                           '4. Skip'
                        ].join('\n')
                    }).run();
            });
@@ -545,7 +546,7 @@ describe("app", function() {
 
         describe("when the user has answered the first question as 'Yes'", function() {
             it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
+                return tester.setup.user.state('states:quiz:vip:question1')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -555,10 +556,10 @@ describe("app", function() {
             });
 
             it("should take them to second question",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
+                return tester.setup.user.state('states:quiz:vip:question1')
                     .input('1')
                     .check.interaction({
-                        state: 'states:quiz:tier2:question2',
+                        state: 'states:quiz:vip:question2',
                         reply: [
                             'How old are you?',
                             '1. under 18',
@@ -578,7 +579,7 @@ describe("app", function() {
 
         describe("when the user has answered the first question as 'No'", function() {
             it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
+                return tester.setup.user.state('states:quiz:vip:question1')
                     .input('2')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -590,7 +591,7 @@ describe("app", function() {
 
         describe("when the user has answered the first question as 'under 18'", function() {
             it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
+                return tester.setup.user.state('states:quiz:vip:question1')
                     .input('3')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -603,7 +604,7 @@ describe("app", function() {
         describe("when the user has answered the second question as under 18", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question2')
+                    .setup.user.state('states:quiz:vip:question2')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -613,10 +614,10 @@ describe("app", function() {
             });
 
             it("should take them to 3rd question",function() {
-                return tester.setup.user.state('states:quiz:tier2:question2')
+                return tester.setup.user.state('states:quiz:vip:question2')
                     .input('1')
                     .check.interaction({
-                        state: 'states:quiz:tier2:question3',
+                        state: 'states:quiz:vip:question3',
                         reply: [
                             'How likely is it that you will vote in the upcoming election?',
                             '1. highly likely',
@@ -632,7 +633,7 @@ describe("app", function() {
         describe("when the user has answered the second question as 19-20", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question2')
+                    .setup.user.state('states:quiz:vip:question2')
                     .input('2')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -645,7 +646,7 @@ describe("app", function() {
         describe("when the user has answered the second question as 21-30", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question2')
+                    .setup.user.state('states:quiz:vip:question2')
                     .input('3')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -658,7 +659,7 @@ describe("app", function() {
         describe("when the user has answered the 3rd question as 'Highly Likely", function() {
             it("should should save their response 'highly_likely'  as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question3')
+                    .setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -668,10 +669,10 @@ describe("app", function() {
             });
 
             it("should take them to 4th question",function() {
-                return tester.setup.user.state('states:quiz:tier2:question3')
+                return tester.setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check.interaction({
-                        state: 'states:quiz:tier2:question4',
+                        state: 'states:quiz:vip:question4',
                         reply: [
                             'What education level do you have?',
                             '1. Less than a matric',
@@ -687,7 +688,7 @@ describe("app", function() {
         describe("when the user has answered the 3rd question", function() {
             it("should should save their response 'likely' as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question3')
+                    .setup.user.state('states:quiz:vip:question3')
                     .input('2')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -700,7 +701,7 @@ describe("app", function() {
         describe("when the user has answered the 4th question as 'Less than a matric'", function() {
             it("should should save their response 'less_than_matric' as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question4')
+                    .setup.user.state('states:quiz:vip:question4')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -710,7 +711,7 @@ describe("app", function() {
             });
 
             it("should take them back to the menu",function() {
-                return tester.setup.user.state('states:quiz:tier2:question4')
+                return tester.setup.user.state('states:quiz:vip:question4')
                     .input('1')
                     .check.interaction({
                         state: 'states:menu'

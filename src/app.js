@@ -249,7 +249,7 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to the Campaign'),
                 choices:[
-                    new Choice('states:quiz:tier2:question1',$('Take the quiz & win!')),
+                    new Choice('states:quiz:vip:question1',$('Take the quiz & win!')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View the results...')),
                     new Choice('states:about',$('About')),
@@ -258,13 +258,14 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:tier2:question1',function(name) {
+        self.states.add('states:quiz:vip:question1',function(name) {
             return new ChoiceState(name, {
-               question: $('Are you registered to vote?'),
+               question: $('During the past year, have you attended a demonstration or protest?'),
                choices: [
-                    new Choice('yes',$('Yes')),
+                    new Choice('yes_many',$('Yes, many')),
+                    new Choice('yes_few',$('Yes, a few')),
                     new Choice('no',$('No')),
-                    new Choice('u18',$('I am u18 and not able to register yet'))
+                    new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
                     self.contact.extra.question1 = content.value;
@@ -272,13 +273,13 @@ di.app = function() {
                     return self.im
                         .contacts.save(self.contact)
                         .then(function() {
-                            return 'states:quiz:tier2:question2';
+                            return 'states:quiz:vip:question2';
                         });
                 }
             });
         });
 
-        self.states.add('states:quiz:tier2:question2',function(name) {
+        self.states.add('states:quiz:vip:question2',function(name) {
             return new ChoiceState(name, {
                 question: $('How old are you?'),
                 choices: [
@@ -300,13 +301,13 @@ di.app = function() {
                     return self.im
                         .contacts.save(self.contact)
                         .then(function() {
-                            return 'states:quiz:tier2:question3';
+                            return 'states:quiz:vip:question3';
                         });
                 }
             });
         });
 
-        self.states.add('states:quiz:tier2:question3',function(name) {
+        self.states.add('states:quiz:vip:question3',function(name) {
             return new ChoiceState(name, {
                 question: $('How likely is it that you will vote in the upcoming election?'),
                 choices: [
@@ -322,13 +323,13 @@ di.app = function() {
                     return self.im
                         .contacts.save(self.contact)
                         .then(function() {
-                            return 'states:quiz:tier2:question4';
+                            return 'states:quiz:vip:question4';
                         });
                 }
             });
         });
 
-        self.states.add('states:quiz:tier2:question4',function(name) {
+        self.states.add('states:quiz:vip:question4',function(name) {
             return new ChoiceState(name,{
                 question: $('What education level do you have?'),
                 choices: [
