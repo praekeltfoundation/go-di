@@ -308,6 +308,7 @@ di.app = function() {
                     new Choice('very_likely',$('Very likely')),
                     new Choice('somewhat_likely',$('Somewhat likely')),
                     new Choice('somewhat_unlikely',$('Somewhat unlikely')),
+                    new Choice('very_unlikely',$('Very unlikely')),
                     new Choice('unsure',$('Unsure')),
                     new Choice('skip',$('Skip'))
                 ],

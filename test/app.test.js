@@ -602,10 +602,12 @@ describe("app", function() {
                         state: 'states:quiz:vip:question3',
                         reply: [
                             'How likely is it that you will vote in the upcoming election?',
-                            '1. highly likely',
-                            '2. likely',
-                            '3. not likely',
-                            '4. highly unlikely'
+                            '1. Very likely',
+                            '2. Somewhat likely',
+                            '3. Somewhat unlikely',
+                            '4. Very unlikely',
+                            '5. Unsure',
+                            '6. Skip'
                         ].join('\n')
                     }).run();
             });
@@ -638,62 +640,286 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has answered the 3rd question as 'Highly Likely", function() {
-            it("should should save their response 'highly_likely'  as well as interaction time",function() {
+        describe("when the user has answered the 3rd question as 'Very Likely'", function() {
+            it("should should save their response 'very_likely'  as well as interaction time",function() {
                 return tester
                     .setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question3,"highly_likely");
+                        assert.equal(contact.extra.question3,"very_likely");
                         assert.equal(contact.extra.it_question3,app.get_date_string());
                     }).run();
             });
 
             it("should take them to 4th question",function() {
-                return tester.setup.user.state('states:quiz:vip:question3')
+                return tester
+                    .setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question4',
                         reply: [
-                            'What education level do you have?',
-                            '1. Less than a matric',
-                            '2. matric',
-                            '3. diploma',
-                            '4. degree',
-                            '5. post-grad degree/diploma'
+                            'Which political party do you feel close to?',
+                            '1. ANC' ,
+                            '2. Agang' ,
+                            '3. COPE' ,
+                            '4. DA' ,
+                            '5. EFF' ,
+                            '6. IFP' ,
+                            '7. Other' ,
+                            "8. I don't feel close to a party",
+                            '9. Skip'
                         ].join('\n')
                     }).run();
             });
         });
 
-        describe("when the user has answered the 3rd question", function() {
-            it("should should save their response 'likely' as well as interaction time",function() {
-                return tester
-                    .setup.user.state('states:quiz:vip:question3')
-                    .input('2')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question3,"likely");
-                        assert.equal(contact.extra.it_question3,app.get_date_string());
-                    }).run();
-            });
-        });
-
-        describe("when the user has answered the 4th question as 'Less than a matric'", function() {
-            it("should should save their response 'less_than_matric' as well as interaction time",function() {
+        describe("when the user has answered the 4th question as 'ANC'", function() {
+            it("should should save their response 'anc' as well as interaction time",function() {
                 return tester
                     .setup.user.state('states:quiz:vip:question4')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question4,"less_than_matric");
+                        assert.equal(contact.extra.question4,"anc");
                         assert.equal(contact.extra.it_question4,app.get_date_string());
                     }).run();
             });
 
-            it("should take them back to the menu",function() {
+            it("should take them to question 5",function() {
                 return tester.setup.user.state('states:quiz:vip:question4')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question5',
+                        reply: [
+                            "During the past year, has your community had demonstrations or protests?" ,
+                            "1. Yes, several times" ,
+                            "2. Yes, once or twice" ,
+                            "3. No" ,
+                            "4. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 5th question as 'Yes several times'", function() {
+            it("should should save their response 'yes_several' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question5')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question5,"yes_several");
+                        assert.equal(contact.extra.it_question5,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to question 6",function() {
+                return tester.setup.user.state('states:quiz:vip:question5')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question6',
+                        reply: [
+                            "If your community has had demonstrations or protests in the last year, were they violent?",
+                            "1. Yes",
+                            "2. No",
+                            "3. Not applicable",
+                            "4. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 6th question as 'Yes'", function() {
+            it("should should save their response 'yes' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question6,"yes");
+                        assert.equal(contact.extra.it_question6,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to question 7",function() {
+                return tester.setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question7',
+                        reply: [
+                            "How easy is it for your neighbors to find out if you voted?" ,
+                            "1. Very easy" ,
+                            "2. Somewhat easy" ,
+                            "3. Somewhat difficult" ,
+                            "4. Very difficult" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 7th question as 'Very easy'", function() {
+            it("should should save their response 'very_easy' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question7')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question7,"very_easy");
+                        assert.equal(contact.extra.it_question7,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to question 8",function() {
+                return tester.setup.user.state('states:quiz:vip:question7')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question8',
+                        reply: [
+                            "People in my neighborhood look down on those who do not vote:" ,
+                            "1. Strongly agree" ,
+                            "2. Somewhat agree" ,
+                            "3. Somewhat disagree" ,
+                            "4. Strongly disagree" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 8th question as 'Strongly agree'", function() {
+            it("should should save their response 'strongly_agree' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question8')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question8,"strongly_agree");
+                        assert.equal(contact.extra.it_question8,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to question 9",function() {
+                return tester.setup.user.state('states:quiz:vip:question8')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question9',
+                        reply: [
+                            "How do you rate the overall performance of President Zuma?" ,
+                            "1. Excellent" ,
+                            "2. Good" ,
+                            "3. Just Fair" ,
+                            "4. Poor" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 9th question as 'Excellent'", function() {
+            it("should should save their response 'excellent' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question9')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question9,"excellent");
+                        assert.equal(contact.extra.it_question9,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to question 10",function() {
+                return tester.setup.user.state('states:quiz:vip:question9')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question10',
+                        reply: [
+                            "How do you rate the overall performance of your local government?" ,
+                            "1. Excellent" ,
+                            "2. Good" ,
+                            "3. Just Fair" ,
+                            "4. Poor" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 10th question as 'Good'", function() {
+            it("should should save their response 'good' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question10')
+                    .input('2')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question10,"good");
+                        assert.equal(contact.extra.it_question10,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to question 11",function() {
+                return tester.setup.user.state('states:quiz:vip:question10')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question11',
+                        reply: [
+                            "Which party has contacted you the most during this election campaign?" ,
+                                "1. None, I have not been contacted" ,
+                                "2. ANC" ,
+                                "3. Agang" ,
+                                "4. COPE" ,
+                                "5. DA" ,
+                                "6. EFF" ,
+                                "7. IFP" ,
+                                "8. Other" ,
+                                "9. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 11th question as 'ANC'", function() {
+            it("should should save their response 'anc' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question11')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question11,"none");
+                        assert.equal(contact.extra.it_question11,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to question 12",function() {
+                return tester.setup.user.state('states:quiz:vip:question11')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question12',
+                        reply: [
+                            "During the past two weeks, have you attended a campaign rally?" ,
+                            "1. Yes" ,
+                            "2. No" ,
+                            "3. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 12th question as 'Yes'", function() {
+            it("should should save their response 'yes' as well as interaction time",function() {
+                return tester
+                    .setup.user.state('states:quiz:vip:question12')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question12,"yes");
+                        assert.equal(contact.extra.it_question12,app.get_date_string());
+                    }).run();
+            });
+
+            it("should take them to the menu",function() {
+                return tester.setup.user.state('states:quiz:vip:question12')
                     .input('1')
                     .check.interaction({
                         state: 'states:menu'
