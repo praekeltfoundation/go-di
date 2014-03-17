@@ -611,7 +611,6 @@ describe("app", function() {
                         ].join('\n')
                     }).run();
             });
-
         });
 
         describe("when the user has answered the second question as No", function() {
