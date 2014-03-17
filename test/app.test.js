@@ -22,7 +22,7 @@ describe("app", function() {
             app.get_date = function() {
                 var d = new Date();
                 d.setHours(0,0,0,0);
-                return d.toISOString();
+                return d;
             };
 
             tester
@@ -30,7 +30,8 @@ describe("app", function() {
                     name: 'test_app',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
-                    }
+                    },
+                    ushahidi_map: 'https://godi.crowdmap.com/api'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -298,7 +299,7 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.it_engagement_question,app.get_date());
+                        assert.equal(contact.extra.it_engagement_question,app.get_date_string());
                     }).run();
             });
         });
@@ -426,7 +427,7 @@ describe("app", function() {
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.ward,"79400094");
-                        assert.equal(contact.extra.it_ward,app.get_date());
+                        assert.equal(contact.extra.it_ward,app.get_date_string());
                     }).run();
             });
         });
@@ -479,7 +480,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question1,"yes");
-                        assert.equal(contact.extra.it_question1,app.get_date());
+                        assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
 
@@ -512,7 +513,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question1,"no");
-                        assert.equal(contact.extra.it_question1,app.get_date());
+                        assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
         });
@@ -524,7 +525,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question1,"u18");
-                        assert.equal(contact.extra.it_question1,app.get_date());
+                        assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
         });
@@ -537,7 +538,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question2,"u18");
-                        assert.equal(contact.extra.it_question2,app.get_date());
+                        assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
 
@@ -566,7 +567,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question2,"19-20");
-                        assert.equal(contact.extra.it_question2,app.get_date());
+                        assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
         });
@@ -579,7 +580,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question2,"21-30");
-                        assert.equal(contact.extra.it_question2,app.get_date());
+                        assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
         });
@@ -592,7 +593,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question3,"highly_likely");
-                        assert.equal(contact.extra.it_question3,app.get_date());
+                        assert.equal(contact.extra.it_question3,app.get_date_string());
                     }).run();
             });
 
@@ -621,7 +622,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question3,"likely");
-                        assert.equal(contact.extra.it_question3,app.get_date());
+                        assert.equal(contact.extra.it_question3,app.get_date_string());
                     }).run();
             });
         });
@@ -634,7 +635,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question4,"less_than_matric");
-                        assert.equal(contact.extra.it_question4,app.get_date());
+                        assert.equal(contact.extra.it_question4,app.get_date_string());
                     }).run();
             });
 
@@ -644,6 +645,133 @@ describe("app", function() {
                     .check.interaction({
                         state: 'states:menu'
                     }).run();
+            });
+        });
+
+        describe("when the user selects the report election activity option from main menu", function() {
+            it("should take them to the report election activity page",function() {
+                return tester.setup.user.state('states:menu')
+                    .input('2')
+                    .check.interaction({
+                        state: 'states:report',
+                        reply: [
+                            'What type of report would you like to submit?',
+                            '1. Election Campaign/Rally',
+                            '2. Violence/Intimidation',
+                            '3. Fraud/Corruption',
+                            '4. Voting Station',
+                            '5. Post Election'
+                        ].join('\n')
+                    }).run();
+            });
+        });
+
+        describe("when the user enters their current location to the selection menu",function(){
+            it("should send a request to the mapping api",function() {
+                return tester
+                    .setup.user.state('states:report:location')
+                    .input("21 conduit street south africa")
+                    .check(function(api) {
+                        var req = api.http.requests[0];
+                        var url = req.url;
+                        var address = req.params.param_list[0];
+                        var sensor = req.params.param_list[1];
+                        assert.equal(url,"https://maps.googleapis.com/maps/api/geocode/json");
+                        assert.equal(address.value,'21 conduit street south africa');
+                        assert.equal(sensor.value,'false');
+                    }).run();
+            });
+
+            it("should provide them with a list of locations matching their input",function() {
+                return tester
+                    .setup.user.state('states:report:location')
+                    .input("21 conduit street south africa")
+                    .check.interaction({
+                        state: "states:report:verify_location",
+                        reply: [
+                            "Please select your location from the options below:",
+                            "1. 21 Conduit Street, Randburg 2188",
+                            "2. 21 Conduit Street, Sandton 2191"
+                        ].join("\n")
+                    }).run();
+            });
+
+            describe("when user selects which a location from the list",function() {
+                it("should post their report to ushahidi",function() {
+                    app.get_date = function() {
+                        var d = new Date(2014,2,16);
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
+                    return tester
+                        .setup.user.addr('+273131')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273131',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    report_title: "test",
+                                    report_desc:"description",
+                                    report_type:"1"
+                                }
+                            });
+                        })
+                        .setup.user.state('states:report:verify_location',{
+                            creator_opts: {
+                                address_options: [
+                                    {
+                                        "formatted_address" : "21 Conduit Street, Randburg 2188, South Africa",
+                                        "geometry" : { "location" : { "lat" : -26.02674,"lng" : 27.97532}}
+                                    },{
+                                        "formatted_address" : "21 Conduit Street, Sandton 2191, South Africa",
+                                        "geometry" : {"location" : {"lat" : -26.0701361,"lng" : 27.9946541} }
+                                    }
+                                ]
+                            }
+                        })
+                        .input("1")
+                        .check(function(api) {
+                            var req = api.http.requests[0];
+                            //.log(req);
+                            var url = req.url;
+                            var body = req.body;
+                            var date = encodeURIComponent( app.ushahidi.get_formatted_date(app.get_date()));
+                            assert.equal(url,"https://godi.crowdmap.com/api");
+                            assert.equal(body,[
+                                "task=report",
+                                "incident_title=test" ,
+                                "incident_description=description" ,
+                                "incident_category=1" ,
+                                "incident_date="+ date ,
+                                "incident_hour=0" ,
+                                "incident_minute=0" ,
+                                "incident_ampm=am" ,
+                                "latitude=-26.0701361" ,
+                                "longitude=27.9946541" ,
+                                "location_name=21%20Conduit%20Street%2C%20Sandton%202191%2C%20South%20Africa"
+                            ].join('&'));
+
+                        }).run();
+                });
+            });
+
+            describe("when the list of matching locations is too long to be displayed",function() {
+                it("should only show 3 and then provide them with the ability to view more locations", function() {
+                    return tester
+                        .setup.user.state('states:report:location')
+                        .input("main street south africa")
+                        .check.interaction({
+                            state: "states:report:verify_location",
+                            reply: [
+                                "Please select your location from the options below:",
+                                "1. Main Street, Johannesburg",
+                                "2. Main Street, Johannesburg 2192",
+                                "3. Main Street, Johannesburg South 2190",
+                                "4. More"
+                            ].join("\n")
+                        }).run();
+                });
             });
         });
 
