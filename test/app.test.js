@@ -682,6 +682,23 @@ describe("app", function() {
                     }).run();
             });
 
+            describe("if they don't specify south africa",function() {
+                it("should append 'south africa' to their request",function() {
+                    return tester
+                        .setup.user.state('states:report:location')
+                        .input("21 conduit street")
+                        .check(function(api) {
+                            var req = api.http.requests[0];
+                            var url = req.url;
+                            var address = req.params.param_list[0];
+                            var sensor = req.params.param_list[1];
+                            assert.equal(url,"https://maps.googleapis.com/maps/api/geocode/json");
+                            assert.equal(address.value,'21 conduit street south africa');
+                            assert.equal(sensor.value,'false');
+                        }).run();
+                });
+            });
+
             it("should provide them with a list of locations matching their input",function() {
                 return tester
                     .setup.user.state('states:report:location')
