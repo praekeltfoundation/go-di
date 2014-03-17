@@ -305,10 +305,11 @@ di.app = function() {
             return new ChoiceState(name, {
                 question: $('How likely is it that you will vote in the upcoming election?'),
                 choices: [
-                    new Choice('highly_likely',$('highly likely')),
-                    new Choice('likely',$('likely')),
-                    new Choice('not_likely',$('not likely')),
-                    new Choice('highly_unlikely',$('highly unlikely'))
+                    new Choice('very_likely',$('Very likely')),
+                    new Choice('somewhat_likely',$('Somewhat likely')),
+                    new Choice('somewhat_unlikely',$('Somewhat unlikely')),
+                    new Choice('unsure',$('Unsure')),
+                    new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
                     self.contact.extra.question3 = content.value;
@@ -325,18 +326,198 @@ di.app = function() {
 
         self.states.add('states:quiz:vip:question4',function(name) {
             return new ChoiceState(name,{
-                question: $('What education level do you have?'),
+                question: $('Which political party do you feel close to?'),
                 choices: [
-                    new Choice('less_than_matric',$('Less than a matric')),
-                    new Choice('matric',$('matric')),
-                    new Choice('diploma',$('diploma')),
-                    new Choice('degree',$('degree')),
-                    new Choice('postgrad',$('post-grad degree/diploma'))
+                    new Choice('anc',$('ANC')),
+                    new Choice('agang',$('Agang')),
+                    new Choice('cope',$('COPE')),
+                    new Choice('da',$('DA')),
+                    new Choice('eff',$('EFF')),
+                    new Choice('ifp',$('IFP')),
+                    new Choice('other',$('Other')),
+                    new Choice('none',$("I don't feel close to a party")),
+                    new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
                     self.contact.extra.question4 = content.value;
                     self.contact.extra.it_question4 = self.get_date_string();
 
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question5';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question5',function(name) {
+            return new ChoiceState(name, {
+                question: $('During the past year, has your community had demonstrations or protests?'),
+                choices: [
+                    new Choice('yes_several',$('Yes, several times')),
+                    new Choice('yes_once_twice',$('Yes, once or twice')),
+                    new Choice('no',$('No')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question5 = content.value;
+                    self.contact.extra.it_question5 = self.get_date_string();
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question6';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question6',function(name) {
+            return new ChoiceState(name, {
+                question: $('If your community has had demonstrations or protests in the last year, were they violent?'),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No')),
+                    new Choice('na',$('Not applicable')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question6 = content.value;
+                    self.contact.extra.it_question6 = self.get_date_string();
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question7';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question7',function(name) {
+            return new ChoiceState(name, {
+                question: $("How easy is it for your neighbors to find out if you voted?"),
+                choices: [
+                    new Choice('very_easy',$('Very easy')),
+                    new Choice('somewhat_easy',$('Somewhat easy')),
+                    new Choice('somewhat_difficult',$('Somewhat difficult')),
+                    new Choice('very_difficult',$('Very difficult')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question7 = content.value;
+                    self.contact.extra.it_question7 = self.get_date_string();
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question8';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question8',function(name) {
+            return new ChoiceState(name, {
+                question: $("People in my neighborhood look down on those who do not vote:"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewhat agree')),
+                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question8 = content.value;
+                    self.contact.extra.it_question8 = self.get_date_string();
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question9';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question9',function(name) {
+            return new ChoiceState(name, {
+                question: $("How do you rate the overall performance of President Zuma?"),
+                choices: [
+                    new Choice('excellent',$('Excellent')),
+                    new Choice('good',$('Good')),
+                    new Choice('just_fair',$('Just Fair')),
+                    new Choice('poor',$('Poor')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question9 = content.value;
+                    self.contact.extra.it_question9 = self.get_date_string();
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question10';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question10',function(name) {
+            return new ChoiceState(name, {
+                question: $("How do you rate the overall performance of your local government?"),
+                choices: [
+                    new Choice('excellent',$('Excellent')),
+                    new Choice('good',$('Good')),
+                    new Choice('just_fair',$('Just Fair')),
+                    new Choice('poor',$('Poor')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question10 = content.value;
+                    self.contact.extra.it_question10 = self.get_date_string();
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question11';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question11',function(name) {
+            return new ChoiceState(name, {
+                question: $("Which party has contacted you the most during this election campaign?"),
+                choices: [
+                    new Choice('none',$('None, I have not been contacted')),
+                    new Choice('anc',$('ANC')),
+                    new Choice('agang',$('Agang')),
+                    new Choice('cope',$('COPE')),
+                    new Choice('da',$('DA')),
+                    new Choice('eff',$('EFF')),
+                    new Choice('ifp',$('IFP')),
+                    new Choice('other',$('Other')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question11 = content.value;
+                    self.contact.extra.it_question11 = self.get_date_string();
+                    return self.im
+                        .contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:quiz:vip:question12';
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:quiz:vip:question12',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, have you attended a campaign rally?"),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    self.contact.extra.question12 = content.value;
+                    self.contact.extra.it_question12 = self.get_date_string();
                     return self.im
                         .contacts.save(self.contact)
                         .then(function() {
