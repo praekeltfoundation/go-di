@@ -755,6 +755,24 @@ describe("app", function() {
                         }).run();
                 });
             });
+
+            describe("when the list of matching locations is too long to be displayed",function() {
+                it("should only show 3 and then provide them with the ability to view more locations", function() {
+                    return tester
+                        .setup.user.state('states:report:location')
+                        .input("main street south africa")
+                        .check.interaction({
+                            state: "states:report:verify_location",
+                            reply: [
+                                "Please select your location from the options below:",
+                                "1. Main Street, Johannesburg",
+                                "2. Main Street, Johannesburg 2192",
+                                "3. Main Street, Johannesburg South 2190",
+                                "4. More"
+                            ].join("\n")
+                        }).run();
+                });
+            });
         });
 
 

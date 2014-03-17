@@ -205,6 +205,66 @@ module.exports = function() {
             }
         },
         {
+            "request": {
+                "method": "GET",
+                "url": "https://maps.googleapis.com/maps/api/geocode/json",
+                "params": [
+                    {"name":"address", "value": 'main street south africa'},
+                    {"name":"sensor","value":"false"}
+                ]
+            },
+            "response": {
+                "code": "200",
+                "data": {
+                    "results" : [
+                        {
+                            "formatted_address" : "Main Street, Johannesburg, South Africa",
+                            "geometry" : {
+                                "location" : {
+                                    "lat" : -26.2052996,
+                                    "lng" : 28.0550804
+                                }
+                            }
+                        },{
+                            "formatted_address" : "Main Street, Johannesburg 2192, South Africa",
+                            "geometry" : {
+                                "location" : {
+                                    "lat" : -26.148775,
+                                    "lng" : 28.090455
+                                }
+                            }
+                        },{
+                            "formatted_address" : "Main Street, Johannesburg South 2190, South Africa",
+                            "geometry" : {
+                                "location" : {
+                                    "lat" : -26.2519144,
+                                    "lng" : 28.0513759
+                                }
+                            }
+
+                        },{
+                            "formatted_address" : "Main Street, Soweto 1863, South Africa",
+                            "geometry" : {
+                                "location" : {
+                                    "lat" : -26.2304574,
+                                    "lng" : 27.8142978
+                                }
+                            }
+                        },{
+                            "formatted_address" : "Main Street, Soweto 1863, South Africa",
+                            "geometry" : {
+                                "location" : {
+                                    "lat" : -26.2236002,
+                                    "lng" : 27.8646498
+                                }
+                            }
+                        }
+                     ],
+                    "status" : "OK"
+                }
+            }
+        },
+        {
             "request" :{
                 "url": "https://godi.crowdmap.com/api",
                 "method": "POST",
@@ -239,5 +299,6 @@ module.exports = function() {
                 })
             }
         }
+
     ];
 };
