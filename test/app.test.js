@@ -2,6 +2,7 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var fixtures = require('./fixtures');
+var _ = require('lodash');
 
 describe("app", function() {
 
@@ -21,10 +22,6 @@ describe("app", function() {
                 var d = new Date();
                 d.setHours(0,0,0,0);
                 return d;
-            };
-            app.random = function(n) {
-                return 0;
-                //return Math.floor(Math.random()*n);
             };
 
             tester
@@ -524,8 +521,6 @@ describe("app", function() {
             });
         });
 
-
-
         describe("when the user inputs an address that cant be found",function() {
             it("should redirect them to the same address page, but show an error message",function() {
                return tester
@@ -553,23 +548,26 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has selected to do the quiz from the menu", function() {
-           it("should take them to the first question",function() {
-               return tester
-                   .setup.user.addr("+273123")
-                   .setup.user.state('states:menu')
-                   .input('1')
-                   .check.interaction({
-                       state: 'states:quiz:vip:question1',
-                       reply: [
+        describe("when 1 is randomly chosen as the next question",function() {
+            it("should take them to question 1",function(){
+                app.get_unanswered_question = function() {
+                    return 1;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:menu')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question1',
+                        reply: [
                             'During the past year, have you attended a demonstration or protest?',
-                           '1. Yes, many',
-                           '2. Yes, a few',
-                           '3. No',
-                           '4. Skip'
-                       ].join('\n')
-                   }).run();
-           });
+                            '1. Yes, many',
+                            '2. Yes, a few',
+                            '3. No',
+                            '4. Skip'
+                        ].join('\n')
+                    }).run();
+            });
         });
 
         describe("when the user has answered the first question as 'Yes'", function() {
@@ -584,8 +582,13 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
+        });
 
-            it.only("should take them to second question",function() {
+        describe("when 2 is randomly chosen as the next question",function() {
+            it("should take them to question 2",function(){
+                app.get_unanswered_question = function() {
+                    return 2;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question1')
@@ -618,8 +621,9 @@ describe("app", function() {
         });
 
         describe("when the user has answered the second question as Yes", function() {
-            it("should should save their response the 2nd question as well as interaction time",function() {
+            it("should save their response the 2nd question as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question2')
                     .input('1')
                     .check(function(api){
@@ -629,7 +633,13 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should take them to 3rd question",function() {
+        });
+
+        describe("when 3 is randomly chosen as the next question",function() {
+            it("should take them to question 3",function(){
+                app.get_unanswered_question = function() {
+                    return 3;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question2')
@@ -649,34 +659,6 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has answered the second question as No", function() {
-            it("should should save their response the 2nd question as well as interaction time",function() {
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:question2')
-                    .input('2')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"no");
-                        assert.equal(contact.extra.it_question2,app.get_date_string());
-                    }).run();
-            });
-        });
-
-        describe("when the user has answered the second question as Unsure", function() {
-            it("should should save their response the 2nd question as well as interaction time",function() {
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:question2')
-                    .input('3')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"unsure");
-                        assert.equal(contact.extra.it_question2,app.get_date_string());
-                    }).run();
-            });
-        });
-
         describe("when the user has answered the 3rd question as 'Very Likely'", function() {
             it("should should save their response 'very_likely'  as well as interaction time",function() {
                 return tester
@@ -690,7 +672,13 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should take them to 4th question",function() {
+        });
+
+        describe("when 4 is randomly chosen as the next question",function() {
+            it("should take them to question 4",function(){
+                app.get_unanswered_question = function() {
+                    return 4;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question3')
@@ -725,25 +713,25 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question4,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to the continue question",function() {
+        describe("when the user has answered the continue question as 'Main Menu'", function() {
+            it("should take them to the main menu",function() {
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:question4')
-                    .input('1')
+                    .setup.user.state('states:quiz:vip:continue')
+                    .input('2')
                     .check.interaction({
-                        state: 'states:quiz:vip:continue',
-                        reply: [
-                            "Would you like to continue answering questions? There are 12 in total." ,
-                            "1. Continue" ,
-                            "2. Main Menu"
-                        ].join("\n")
+                        state: 'states:menu'
                     }).run();
             });
         });
 
-        describe("when the user has answered the continue question as 'Continue'", function() {
-            it("should take them to the 5th question",function() {
+        describe("when 5 is randomly chosen as the next question",function() {
+            it("should take them to question 5",function(){
+                app.get_unanswered_question = function() {
+                    return 5;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:continue')
@@ -761,18 +749,6 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has answered the continue question as 'Main Menu'", function() {
-            it("should take them to the main menu",function() {
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:continue')
-                    .input('2')
-                    .check.interaction({
-                        state: 'states:menu'
-                    }).run();
-            });
-        });
-
         describe("when the user has answered the 5th question as 'Yes several times'", function() {
             it("should should save their response 'yes_several' as well as interaction time",function() {
                 return tester
@@ -785,8 +761,13 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question5,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to question 6",function() {
+        describe("when 6 is randomly chosen as the next question",function() {
+            it("should take them to question 6",function(){
+                app.get_unanswered_question = function() {
+                    return 6;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question5')
@@ -816,8 +797,13 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question6,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to question 7",function() {
+        describe("when 7 is randomly chosen as the next question",function() {
+            it("should take them to question 7",function(){
+                app.get_unanswered_question = function() {
+                    return 7;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question6')
@@ -848,8 +834,13 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question7,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to question 8",function() {
+        describe("when 8 is randomly chosen as the next question",function() {
+            it("should take them to question 8",function(){
+                app.get_unanswered_question = function() {
+                    return 8;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question7')
@@ -880,8 +871,13 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question8,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to question 9",function() {
+        describe("when 9 is randomly chosen as the next question",function() {
+            it("should take them to question 9",function(){
+                app.get_unanswered_question = function() {
+                    return 9;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question8')
@@ -912,8 +908,13 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question9,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to question 10",function() {
+        describe("when 10 is randomly chosen as the next question",function() {
+            it("should take them to question 10",function(){
+                app.get_unanswered_question = function() {
+                    return 10;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question9')
@@ -944,8 +945,13 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question10,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to question 11",function() {
+        describe("when 11 is randomly chosen as the next question",function() {
+            it("should take them to question 11",function(){
+                app.get_unanswered_question = function() {
+                    return 11;
+                };
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question10')
@@ -954,15 +960,15 @@ describe("app", function() {
                         state: 'states:quiz:vip:question11',
                         reply: [
                             "Which party has contacted you the most during this election campaign?" ,
-                                "1. None, I have not been contacted" ,
-                                "2. ANC" ,
-                                "3. Agang" ,
-                                "4. COPE" ,
-                                "5. DA" ,
-                                "6. EFF" ,
-                                "7. IFP" ,
-                                "8. Other" ,
-                                "9. Skip"
+                            "1. None, I have not been contacted" ,
+                            "2. ANC" ,
+                            "3. Agang" ,
+                            "4. COPE" ,
+                            "5. DA" ,
+                            "6. EFF" ,
+                            "7. IFP" ,
+                            "8. Other" ,
+                            "9. Skip"
                         ].join("\n")
                     }).run();
             });
@@ -980,22 +986,27 @@ describe("app", function() {
                         assert.equal(contact.extra.it_question11,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to question 12",function() {
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:question11')
-                    .input('1')
-                    .check.interaction({
-                        state: 'states:quiz:vip:question12',
-                        reply: [
-                            "During the past two weeks, have you attended a campaign rally?" ,
-                            "1. Yes" ,
-                            "2. No" ,
-                            "3. Skip"
-                        ].join("\n")
-                    }).run();
-            });
+        describe("when 12 is randomly chosen as the next question",function() {
+           it("should take them to question 12",function(){
+               app.get_unanswered_question = function() {
+                   return 12;
+               };
+               return tester
+                   .setup.user.addr("+273123")
+                   .setup.user.state('states:quiz:vip:question11')
+                   .input("1")
+                   .check.interaction({
+                       state: 'states:quiz:vip:question12',
+                       reply: [
+                           "During the past two weeks, have you attended a campaign rally?" ,
+                           "1. Yes" ,
+                           "2. No" ,
+                           "3. Skip"
+                       ].join("\n")
+                   }).run();
+           });
         });
 
         describe("when the user has answered the 12th question as 'Yes'", function() {
@@ -1008,16 +1019,6 @@ describe("app", function() {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.question12,"yes");
                         assert.equal(contact.extra.it_question12,app.get_date_string());
-                    }).run();
-            });
-
-            it("should take them to the menu",function() {
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:question12')
-                    .input('1')
-                    .check.interaction({
-                        state: 'states:menu'
                     }).run();
             });
         });
@@ -1165,6 +1166,96 @@ describe("app", function() {
                             ].join("\n")
                         }).run();
                 });
+            });
+        });
+
+        var get_question_number = function(state) {
+            return parseInt(state.state.name.split("question").pop());
+        };
+
+        describe("when the user has selected to do the quiz from the menu", function() {
+            it("should take them to a random unanswered question",function() {
+                var unanswered = [1,2,3,4,5,6,7,8,9,10,11,12];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273101',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273101")
+                    .setup.user.state('states:quiz:vip:continue')
+                    .input('1')
+                    .check.user.state(function(state){
+                        var question_num = get_question_number(state) ;
+                        assert.equal(_.contains(unanswered,question_num),true);
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the continue question as 'Continue'", function() {
+            it("should take them to a random unanswered question",function() {
+                var unanswered = [1,2,3,4];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273101")
+                    .setup.user.state('states:quiz:vip:continue')
+                    .input('1')
+                    .check.user.state(function(state){
+                        var question_num = get_question_number(state) ;
+                        assert.equal(_.contains(unanswered,question_num),true);
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered a question", function() {
+            it("should take them to a random unanswered question",function() {
+                var unanswered = [1,2,5,6,7];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check.user.state(function(state){
+                        var question_num = get_question_number(state) ;
+                        assert.equal(_.contains(unanswered,question_num),true);
+                        assert.notEqual(question_num,6);
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered a question", function() {
+            it("should remove the question from the unanswered list",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question11')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(_.indexOf(JSON.parse(contact.extra.vip_unanswered),11),-1);
+                    }).run();
             });
         });
 
