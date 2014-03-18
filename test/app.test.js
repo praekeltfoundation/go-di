@@ -685,8 +685,23 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should take them to question 5",function() {
+            it("should take them to the continue question",function() {
                 return tester.setup.user.state('states:quiz:vip:question4')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:continue',
+                        reply: [
+                            "Would you like to continue answering questions? There are 12 in total." ,
+                            "1. Continue" ,
+                            "2. Main Menu"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the continue question as 'Continue'", function() {
+            it("should take them to the 5th question",function() {
+                return tester.setup.user.state('states:quiz:vip:continue')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question5',
@@ -697,6 +712,16 @@ describe("app", function() {
                             "3. No" ,
                             "4. Skip"
                         ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the continue question as 'Main Menu'", function() {
+            it("should take them to the main menu",function() {
+                return tester.setup.user.state('states:quiz:vip:continue')
+                    .input('2')
+                    .check.interaction({
+                        state: 'states:menu'
                     }).run();
             });
         });
@@ -834,7 +859,7 @@ describe("app", function() {
                     .check.interaction({
                         state: 'states:quiz:vip:question10',
                         reply: [
-                            "How do you rate the overall performance of your local government?" ,
+                            "How do you rate the overall performance of your local government councillor?" ,
                             "1. Excellent" ,
                             "2. Good" ,
                             "3. Just Fair" ,

@@ -349,9 +349,19 @@ di.app = function() {
                     return self.im
                         .contacts.save(self.contact)
                         .then(function() {
-                            return 'states:quiz:vip:question5';
+                            return 'states:quiz:vip:continue';
                         });
                 }
+            });
+        });
+
+        self.states.add('states:quiz:vip:continue',function(name) {
+            return new MenuState(name,{
+                question: $('Would you like to continue answering questions? There are 12 in total.'),
+                choices: [
+                    new Choice('states:quiz:vip:question5',$('Continue')),
+                    new Choice('states:menu',$('Main Menu'))
+                ]
             });
         });
 
@@ -465,7 +475,7 @@ di.app = function() {
 
         self.states.add('states:quiz:vip:question10',function(name) {
             return new ChoiceState(name, {
-                question: $("How do you rate the overall performance of your local government?"),
+                question: $("How do you rate the overall performance of your local government councillor?"),
                 choices: [
                     new Choice('excellent',$('Excellent')),
                     new Choice('good',$('Good')),
