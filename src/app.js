@@ -149,11 +149,11 @@ di.app = function() {
         * If 4 questions have been answered then go to the "do you want to continue" state
         * Else return an unanswered question.
         * */
-        self.get_next_quiz_state = function() {
+        self.get_next_quiz_state = function(from_continue) {
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
             if (unanswered.length === 0) {
                 return 'states:menu';
-            } else if (unanswered.length === num_questions - 4) {
+            } else if (unanswered.length === num_questions - 4 && from_continue === false) {
                 return 'states:quiz:vip:continue';
             } else {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
@@ -410,7 +410,7 @@ di.app = function() {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
                 choices: [
-                    new Choice(self.get_next_quiz_state(),$('Continue')),
+                    new Choice(self.get_next_quiz_state(true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
                 ]
             });
