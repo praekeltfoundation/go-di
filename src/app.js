@@ -29,7 +29,8 @@ di.app = function() {
         };
 
         self.is_registered = function() {
-            return (typeof self.contact.extra.is_registered !== 'undefined' && self.contact.extra.is_registered === "true");
+            return (typeof self.contact.extra.is_registered !== 'undefined'
+                            && self.contact.extra.is_registered === "true");
         };
 
         self.is = function(boolean) {
@@ -102,6 +103,14 @@ di.app = function() {
             return Math.floor(Math.random()*n);
         }
 
+        /*
+        * When users are registered, a list of unanswered questions is generated.
+        * */
+        self.register = function() {
+            self.contact.extra.is_registered = 'true';
+            self.contact.extra.vip_unanswered = JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]);
+        }
+
         /**
          * Gets a random unanswered question n from the list of unanswered questions
          * Does not save the contact.
@@ -154,6 +163,7 @@ di.app = function() {
         self.is_answered = function(n) {
             return self.exists(self.contact.extra("question"+n ));
         }
+
 
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
@@ -222,7 +232,7 @@ di.app = function() {
 
         //Registers the user and saves then redirects to the address state.
         self.states.add('states:registration:accept',function(name){
-            self.contact.extra.is_registered = 'true';
+            self.register();
             return self.im.contacts.save(self.contact).then(function() {
                 return self.states.create('states:address');
             });
