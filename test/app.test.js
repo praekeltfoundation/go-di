@@ -1198,7 +1198,7 @@ describe("app", function() {
         });
 
         describe("when the user has answered the continue question as 'Continue'", function() {
-            it.only("should take them to a random unanswered question",function() {
+            it("should take them to a random unanswered question",function() {
                 var unanswered = [1,2,3,4];
                 return tester
                     .setup( function(api) {
