@@ -161,10 +161,6 @@ di.app = function() {
             }
         }
 
-        self.is_answered = function(n) {
-            return self.exists(self.contact.extra("question"+n ));
-        }
-
 
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
@@ -561,21 +557,35 @@ di.app = function() {
             });
         });
 
+        self.get_desc = function(choice) {
+            return [
+                'Party going door-to-door',
+                'Party intimidating voters',
+                'Party distributing food/money/gift',
+                'Campaign rally',
+                'Campaign violence',
+                'Protest/Demonstration'
+            ][choice.value-1];
+        }
+
         self.states.add('states:report',function(name) {
-            return new ChoiceState(name, {
-                question: $('What type of report would you like to submit?'),
+           return new ChoiceState(name, {
+                question: $("Choose a report type:"),
                 choices: [
-                    new Choice('1',$('Election Campaign/Rally')),
-                    new Choice('2',$('Violence/Intimidation')),
-                    new Choice('3',$('Fraud/Corruption')),
-                    new Choice('4',$('Voting Station')),
-                    new Choice('5',$('Post Election'))
+                    new Choice('1',$('Party going door-to-door')),
+                    new Choice('2',$('Party intimidating voters')),
+                    new Choice('3',$('Party distributing food/money/gift')),
+                    new Choice('4',$('Campaign rally')),
+                    new Choice('5',$('Campaign violence')),
+                    new Choice('6',$('Protest/Demonstration'))
                 ],
                 next: function(content) {
                     self.contact.extra.report_type = content.value;
+                    self.contact.extra.report_desc = self.get_desc(content);
                     self.contact.extra.it_report_type = self.get_date_string();
 
-                    return self.im.contacts.save(self.contact)
+                    return self
+                        .im.contacts.save(self.contact)
                         .then(function() {
                             return 'states:report:title';
                         });
@@ -585,25 +595,10 @@ di.app = function() {
 
         self.states.add('states:report:title',function(name) {
             return new FreeText(name, {
-                text: $('What is the title of your report?'),
+                question: $('What is the title of your report?'),
                 next: function(content) {
                     self.contact.extra.report_title = content;
                     self.contact.extra.it_report_title = self.get_date_string();
-
-                    return self.im.contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:report:description';
-                        });
-                }
-            });
-        });
-
-        self.states.add('states:report:description',function(name) {
-            return new FreeText(name, {
-                text: $('Describe the event:'),
-                next: function(content) {
-                    self.contact.extra.report_desc = content;
-                    self.contact.extra.it_report_desc = self.get_date_string();
 
                     return self.im.contacts.save(self.contact)
                         .then(function() {
@@ -621,7 +616,7 @@ di.app = function() {
             var response;
             var error =$('An error occured. Please try again');
             return new FreeText(name, {
-                text: $('Where did this happen? Type the address + city. i.e. 44 Stanley Avenue Johannesburg'),
+                question: $('Where did this event happen? Please be as specific as possible and give address and city.'),
                 check: function(content) {
                     return self
                         .http.get("https://maps.googleapis.com/maps/api/geocode/json",{
@@ -688,7 +683,12 @@ di.app = function() {
 
         self.states.add('states:report:end',function(name,opts) {
             return new EndState(name, {
-                text: $('Thanks for your report. Want to see your report and others on a map? Visit www.livevip.ushahidi.com'),
+                text: $([
+                    'Thank you for your report! Keep up the reporting',
+                    '& you may have a chance to be chosen as an official',
+                    'election day reporter where you can earn airtime or cash',
+                    'for your contribution.'
+                ].join(" ")),
                 next: function(content) {
                     return "states:menu";
                 }
