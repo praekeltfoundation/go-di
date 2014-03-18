@@ -14,6 +14,7 @@ di.app = function() {
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
+        var num_questions = 12;
 
         self.get_date = function() {
             return new Date();
@@ -95,6 +96,64 @@ di.app = function() {
                     return self.im.contacts.save(self.contact);
                 });
         };
+
+        //Return random number [0,n)
+        self.random = function(n) {
+            return Math.floor(Math.random()*n);
+        }
+
+        /**
+         * Gets a random unanswered question n from the list of unanswered questions
+         * Does not save the contact.
+         * */
+        self.get_unanswered_question = function() {
+            var questions = JSON.parse(self.contact.extra.vip_unanswered);
+            var num_unanswered = questions.length;
+            var index = self.random(num_unanswered);
+            return questions[index];
+        }
+
+        /**
+         * Removed question n from the list of unanswered questions
+         * Does not save the contact.
+         * */
+        self.set_answered = function(n) {
+            var questions = JSON.parse(self.contact.extra.vip_unanswered);
+            var index = questions.indexOf(n);
+            if (index > -1) {
+                questions.splice(index,1);
+            }
+            self.contact.extra.vip_unanswered = JSON.stringify(questions);
+        }
+
+        /*
+        * Sets value of answer + timestamp and remove question from unanswered list
+        * */
+        self.answer = function(n,value) {
+            self.contact.extra["question" +n] = value;
+            self.contact.extra["it_question" +n] = self.get_date_string();
+            self.set_answered(n);
+        }
+
+        /*
+        * If all questions have been answered then go to the menu
+        * If 4 questions have been answered then go to the "do you want to continue" state
+        * Else return an unanswered question.
+        * */
+        self.get_next_quiz_state = function() {
+            var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
+            if (unanswered.length === 0) {
+                return 'states:menu';
+            } else if (unanswered.length === num_questions - 4) {
+                return 'states:quiz:vip:continue';
+            } else {
+                return 'states:quiz:vip:question' + self.get_unanswered_question() ;
+            }
+        }
+
+        self.is_answered = function(n) {
+            return self.exists(self.contact.extra("question"+n ));
+        }
 
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
