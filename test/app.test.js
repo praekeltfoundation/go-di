@@ -1198,7 +1198,7 @@ describe("app", function() {
         });
 
         describe("when the user has answered the continue question as 'Continue'", function() {
-            it("should take them to a random unanswered question",function() {
+            it.only("should take them to a random unanswered question",function() {
                 var unanswered = [1,2,3,4];
                 return tester
                     .setup( function(api) {
@@ -1211,7 +1211,7 @@ describe("app", function() {
                             }
                         });
                     })
-                    .setup.user.addr("+273101")
+                    .setup.user.addr("+273465")
                     .setup.user.state('states:quiz:vip:continue')
                     .input('1')
                     .check.user.state(function(state){
