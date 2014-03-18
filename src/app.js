@@ -330,6 +330,15 @@ di.app = function() {
             });
         });
 
+        self.next_quiz = function(n,content) {
+            self.answer(n,content.value);
+            return self.im
+                .contacts.save(self.contact)
+                .then(function() {
+                    return self.get_next_quiz_state();
+                });
+        }
+
         self.states.add('states:quiz:vip:question1',function(name) {
             return new ChoiceState(name, {
                question: $('During the past year, have you attended a demonstration or protest?'),
@@ -340,12 +349,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.answer(1,content.value);
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return self.get_next_quiz_state();
-                        });
+                    return self.next_quiz(1,content);
                 }
             });
         });
@@ -360,14 +364,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question2 = content.value;
-                    self.contact.extra.it_question2 = self.get_date_string();
-
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question3';
-                        });
+                    return self.next_quiz(2,content);
                 }
             });
         });
@@ -384,14 +381,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question3 = content.value;
-                    self.contact.extra.it_question3 = self.get_date_string();
-
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question4';
-                        });
+                    return self.next_quiz(3,content);
                 }
             });
         });
@@ -411,14 +401,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question4 = content.value;
-                    self.contact.extra.it_question4 = self.get_date_string();
-
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:continue';
-                        });
+                    return self.next_quiz(4,content);
                 }
             });
         });
@@ -427,7 +410,7 @@ di.app = function() {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
                 choices: [
-                    new Choice('states:quiz:vip:question5',$('Continue')),
+                    new Choice(self.get_next_quiz_state(),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
                 ]
             });
@@ -443,13 +426,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question5 = content.value;
-                    self.contact.extra.it_question5 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question6';
-                        });
+                    return self.next_quiz(5,content);
                 }
             });
         });
@@ -464,13 +441,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question6 = content.value;
-                    self.contact.extra.it_question6 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question7';
-                        });
+                    return self.next_quiz(6,content);
                 }
             });
         });
@@ -486,13 +457,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question7 = content.value;
-                    self.contact.extra.it_question7 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question8';
-                        });
+                    return self.next_quiz(7,content);
                 }
             });
         });
@@ -508,13 +473,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question8 = content.value;
-                    self.contact.extra.it_question8 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question9';
-                        });
+                    return self.next_quiz(8,content);
                 }
             });
         });
@@ -530,13 +489,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question9 = content.value;
-                    self.contact.extra.it_question9 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question10';
-                        });
+                    return self.next_quiz(9,content);
                 }
             });
         });
@@ -552,13 +505,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question10 = content.value;
-                    self.contact.extra.it_question10 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question11';
-                        });
+                    return self.next_quiz(10,content);
                 }
             });
         });
@@ -578,13 +525,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question11 = content.value;
-                    self.contact.extra.it_question11 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:quiz:vip:question12';
-                        });
+                    return self.next_quiz(11,content);
                 }
             });
         });
@@ -598,13 +539,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question12 = content.value;
-                    self.contact.extra.it_question12 = self.get_date_string();
-                    return self.im
-                        .contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:menu';
-                        });
+                    return self.next_quiz(12,content);
                 }
             });
         });
