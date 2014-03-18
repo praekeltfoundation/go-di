@@ -2,6 +2,7 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var fixtures = require('./fixtures');
+var _ = require('lodash');
 
 describe("app", function() {
 
@@ -34,7 +35,18 @@ describe("app", function() {
                 .setup(function(api) {
                     // Add all of the fixtures.
                     fixtures().forEach(api.http.fixtures.add);
+                })
+                .setup(function(api) {
+                    api.contacts.add( {
+                        msisdn: '+273123',
+                        extra : {
+                            is_registered: 'true',
+                            vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]',
+                            register_sms_sent: 'true'
+                        }
+                    });
                 });
+
         });
 
         describe("when a session is terminated", function() {
@@ -171,13 +183,14 @@ describe("app", function() {
                 describe('if they have filled in their address before',function() {
                     it("should take them to the main menu",function() {
                         return tester
-                            .setup.user.addr('+273123')
+                            .setup.user.addr('+273456')
                             .setup(function(api) {
                                 api.contacts.add( {
-                                    msisdn: '+273123',
+                                    msisdn: '+273456',
                                     extra : {
                                         is_registered: 'true',
-                                        ward: '1234'
+                                        ward: '1234',
+                                        vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]'
                                     }
                                 });
                             }).start()
@@ -283,6 +296,7 @@ describe("app", function() {
 
             it("should save their answer as 'yes'",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:engagement')
                     .input('1')
                     .check(function(api){
@@ -293,6 +307,7 @@ describe("app", function() {
 
             it("should save their interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:engagement')
                     .input('1')
                     .check(function(api){
@@ -319,6 +334,7 @@ describe("app", function() {
 
            it("should save their answer as 'no_vote_anyway'",function() {
                return tester
+                   .setup.user.addr("+273123")
                    .setup.user.state('states:registration:engagement')
                    .input('2')
                    .check(function(api){
@@ -337,12 +353,15 @@ describe("app", function() {
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.is_registered,"true");
+                        assert.equal(contact.extra.vip_unanswered,"[1,2,3,4,5,6,7,8,9,10,11,12]");
                     }).run();
 
             });
 
             it("should take the user to the ward address state", function() {
-                return tester.setup.user.state('states:registration:tandc')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:registration:tandc')
                     .input('1')
                     .check.interaction({
                         state:'states:address',
@@ -357,6 +376,7 @@ describe("app", function() {
         describe("when the user chooses to read the terms and conditions",function() {
             it("should set user registration to false.",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:tandc')
                     .input('2')
                     .check(function(api) {
@@ -370,6 +390,7 @@ describe("app", function() {
         describe("when the user selects choose to quit",function() {
             it("should set user registration to false.",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:tandc')
                     .input('3')
                     .check(function(api) {
@@ -470,7 +491,7 @@ describe("app", function() {
 
             it("should take them to the menu page",function() {
                 return tester
-                    .setup.user.addr('+273132')
+                    .setup.user.addr('+273123')
                     .setup.user.state('states:address:verify',{
                         creator_opts: {
                             address_options: [{
@@ -500,8 +521,6 @@ describe("app", function() {
             });
         });
 
-
-
         describe("when the user inputs an address that cant be found",function() {
             it("should redirect them to the same address page, but show an error message",function() {
                return tester
@@ -518,7 +537,9 @@ describe("app", function() {
 
         describe("when the user has selected 'quit' from the menu",function() {
             it ("should take them to the end state",function() {
-                return tester.setup.user.state("states:menu")
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state("states:menu")
                     .input('5')
                     .check.interaction({
                         state: 'states:end',
@@ -527,200 +548,486 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has selected to do the quiz from the menu", function() {
-           it("should take them to the first question",function() {
-               return tester.setup.user.state('states:menu')
-                   .input('1')
-                   .check.interaction({
-                       state: 'states:quiz:tier2:question1',
-                       reply: [
-                            'Are you registered to vote?',
-                           '1. Yes',
-                           '2. No',
-                           '3. I am u18 and not able to register yet'
-                       ].join('\n')
-                   }).run();
-           });
+        describe("when 1 is randomly chosen as the next question",function() {
+            it("should take them to question 1",function(){
+                app.get_unanswered_question = function() {
+                    return 1;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:menu')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question1',
+                        reply: [
+                            'During the past year, have you attended a demonstration or protest?',
+                            '1. Yes, many',
+                            '2. Yes, a few',
+                            '3. No',
+                            '4. Skip'
+                        ].join('\n')
+                    }).run();
+            });
         });
 
         describe("when the user has answered the first question as 'Yes'", function() {
-            it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
+            it("should save their response the first question as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question1')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"yes");
+                        assert.equal(contact.extra.question1,"yes_many");
                         assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them to second question",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
+        describe("when 2 is randomly chosen as the next question",function() {
+            it("should take them to question 2",function(){
+                app.get_unanswered_question = function() {
+                    return 2;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question1')
                     .input('1')
                     .check.interaction({
-                        state: 'states:quiz:tier2:question2',
+                        state: 'states:quiz:vip:question2',
                         reply: [
-                            'How old are you?',
-                            '1. under 18',
-                            '2. 19-20',
-                            '3. 21-30',
-                            '4. 31-40',
-                            '5. 41-50',
-                            '6. 51-60',
-                            '7. 61-70',
-                            '8. 71-80',
-                            '9. 81-90',
-                            '10. 90+'
+                            'Are you registered to vote in the upcoming elections?',
+                            '1. Yes',
+                            '2. No',
+                            '3. Unsure',
+                            '4. Skip'
                         ].join('\n')
                     }).run();
             });
         });
 
-        describe("when the user has answered the first question as 'No'", function() {
+        describe("when the user has answered the first question as 'Yes, a few'", function() {
             it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question1')
                     .input('2')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"no");
+                        assert.equal(contact.extra.question1,"yes_few");
                         assert.equal(contact.extra.it_question1,app.get_date_string());
                     }).run();
             });
         });
 
-        describe("when the user has answered the first question as 'under 18'", function() {
-            it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:tier2:question1')
-                    .input('3')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"u18");
-                        assert.equal(contact.extra.it_question1,app.get_date_string());
-                    }).run();
-            });
-        });
-
-        describe("when the user has answered the second question as under 18", function() {
-            it("should should save their response the 2nd question as well as interaction time",function() {
+        describe("when the user has answered the second question as Yes", function() {
+            it("should save their response the 2nd question as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question2')
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question2')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"u18");
+                        assert.equal(contact.extra.question2,"yes");
                         assert.equal(contact.extra.it_question2,app.get_date_string());
                     }).run();
             });
 
-            it("should take them to 3rd question",function() {
-                return tester.setup.user.state('states:quiz:tier2:question2')
+        });
+
+        describe("when 3 is randomly chosen as the next question",function() {
+            it("should take them to question 3",function(){
+                app.get_unanswered_question = function() {
+                    return 3;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question2')
                     .input('1')
                     .check.interaction({
-                        state: 'states:quiz:tier2:question3',
+                        state: 'states:quiz:vip:question3',
                         reply: [
                             'How likely is it that you will vote in the upcoming election?',
-                            '1. highly likely',
-                            '2. likely',
-                            '3. not likely',
-                            '4. highly unlikely'
+                            '1. Very likely',
+                            '2. Somewhat likely',
+                            '3. Somewhat unlikely',
+                            '4. Very unlikely',
+                            '5. Unsure',
+                            '6. Skip'
                         ].join('\n')
                     }).run();
             });
-
         });
 
-        describe("when the user has answered the second question as 19-20", function() {
-            it("should should save their response the 2nd question as well as interaction time",function() {
+        describe("when the user has answered the 3rd question as 'Very Likely'", function() {
+            it("should should save their response 'very_likely'  as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question2')
-                    .input('2')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"19-20");
-                        assert.equal(contact.extra.it_question2,app.get_date_string());
-                    }).run();
-            });
-        });
-
-        describe("when the user has answered the second question as 21-30", function() {
-            it("should should save their response the 2nd question as well as interaction time",function() {
-                return tester
-                    .setup.user.state('states:quiz:tier2:question2')
-                    .input('3')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"21-30");
-                        assert.equal(contact.extra.it_question2,app.get_date_string());
-                    }).run();
-            });
-        });
-
-        describe("when the user has answered the 3rd question as 'Highly Likely", function() {
-            it("should should save their response 'highly_likely'  as well as interaction time",function() {
-                return tester
-                    .setup.user.state('states:quiz:tier2:question3')
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question3,"highly_likely");
+                        assert.equal(contact.extra.question3,"very_likely");
                         assert.equal(contact.extra.it_question3,app.get_date_string());
                     }).run();
             });
 
-            it("should take them to 4th question",function() {
-                return tester.setup.user.state('states:quiz:tier2:question3')
+        });
+
+        describe("when 4 is randomly chosen as the next question",function() {
+            it("should take them to question 4",function(){
+                app.get_unanswered_question = function() {
+                    return 4;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check.interaction({
-                        state: 'states:quiz:tier2:question4',
+                        state: 'states:quiz:vip:question4',
                         reply: [
-                            'What education level do you have?',
-                            '1. Less than a matric',
-                            '2. matric',
-                            '3. diploma',
-                            '4. degree',
-                            '5. post-grad degree/diploma'
+                            'Which political party do you feel close to?',
+                            '1. ANC' ,
+                            '2. Agang' ,
+                            '3. COPE' ,
+                            '4. DA' ,
+                            '5. EFF' ,
+                            '6. IFP' ,
+                            '7. Other' ,
+                            "8. I don't feel close to a party",
+                            '9. Skip'
                         ].join('\n')
                     }).run();
             });
         });
 
-        describe("when the user has answered the 3rd question", function() {
-            it("should should save their response 'likely' as well as interaction time",function() {
+        describe("when the user has answered the 4th question as 'ANC'", function() {
+            it("should should save their response 'anc' as well as interaction time",function() {
                 return tester
-                    .setup.user.state('states:quiz:tier2:question3')
-                    .input('2')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question3,"likely");
-                        assert.equal(contact.extra.it_question3,app.get_date_string());
-                    }).run();
-            });
-        });
-
-        describe("when the user has answered the 4th question as 'Less than a matric'", function() {
-            it("should should save their response 'less_than_matric' as well as interaction time",function() {
-                return tester
-                    .setup.user.state('states:quiz:tier2:question4')
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question4')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question4,"less_than_matric");
+                        assert.equal(contact.extra.question4,"anc");
                         assert.equal(contact.extra.it_question4,app.get_date_string());
                     }).run();
             });
+        });
 
-            it("should take them back to the menu",function() {
-                return tester.setup.user.state('states:quiz:tier2:question4')
-                    .input('1')
+        describe("when the user has answered the continue question as 'Main Menu'", function() {
+            it("should take them to the main menu",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:continue')
+                    .input('2')
                     .check.interaction({
                         state: 'states:menu'
                     }).run();
             });
         });
 
+        describe("when 5 is randomly chosen as the next question",function() {
+            it("should take them to question 5",function(){
+                app.get_unanswered_question = function() {
+                    return 5;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:continue')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question5',
+                        reply: [
+                            "During the past year, has your community had demonstrations or protests?" ,
+                            "1. Yes, several times" ,
+                            "2. Yes, once or twice" ,
+                            "3. No" ,
+                            "4. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 5th question as 'Yes several times'", function() {
+            it("should should save their response 'yes_several' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question5')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question5,"yes_several");
+                        assert.equal(contact.extra.it_question5,app.get_date_string());
+                    }).run();
+            });
+        });
+
+        describe("when 6 is randomly chosen as the next question",function() {
+            it("should take them to question 6",function(){
+                app.get_unanswered_question = function() {
+                    return 6;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question5')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question6',
+                        reply: [
+                            "If your community has had demonstrations or protests in the last year, were they violent?",
+                            "1. Yes",
+                            "2. No",
+                            "3. Not applicable",
+                            "4. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 6th question as 'Yes'", function() {
+            it("should should save their response 'yes' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question6,"yes");
+                        assert.equal(contact.extra.it_question6,app.get_date_string());
+                    }).run();
+            });
+        });
+
+        describe("when 7 is randomly chosen as the next question",function() {
+            it("should take them to question 7",function(){
+                app.get_unanswered_question = function() {
+                    return 7;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question7',
+                        reply: [
+                            "How easy is it for your neighbors to find out if you voted?" ,
+                            "1. Very easy" ,
+                            "2. Somewhat easy" ,
+                            "3. Somewhat difficult" ,
+                            "4. Very difficult" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 7th question as 'Very easy'", function() {
+            it("should should save their response 'very_easy' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question7')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question7,"very_easy");
+                        assert.equal(contact.extra.it_question7,app.get_date_string());
+                    }).run();
+            });
+        });
+
+        describe("when 8 is randomly chosen as the next question",function() {
+            it("should take them to question 8",function(){
+                app.get_unanswered_question = function() {
+                    return 8;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question7')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question8',
+                        reply: [
+                            "People in my neighborhood look down on those who do not vote:" ,
+                            "1. Strongly agree" ,
+                            "2. Somewhat agree" ,
+                            "3. Somewhat disagree" ,
+                            "4. Strongly disagree" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 8th question as 'Strongly agree'", function() {
+            it("should should save their response 'strongly_agree' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question8')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question8,"strongly_agree");
+                        assert.equal(contact.extra.it_question8,app.get_date_string());
+                    }).run();
+            });
+        });
+
+        describe("when 9 is randomly chosen as the next question",function() {
+            it("should take them to question 9",function(){
+                app.get_unanswered_question = function() {
+                    return 9;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question8')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question9',
+                        reply: [
+                            "How do you rate the overall performance of President Zuma?" ,
+                            "1. Excellent" ,
+                            "2. Good" ,
+                            "3. Just Fair" ,
+                            "4. Poor" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 9th question as 'Excellent'", function() {
+            it("should should save their response 'excellent' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question9')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question9,"excellent");
+                        assert.equal(contact.extra.it_question9,app.get_date_string());
+                    }).run();
+            });
+        });
+
+        describe("when 10 is randomly chosen as the next question",function() {
+            it("should take them to question 10",function(){
+                app.get_unanswered_question = function() {
+                    return 10;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question9')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question10',
+                        reply: [
+                            "How do you rate the overall performance of your local government councillor?" ,
+                            "1. Excellent" ,
+                            "2. Good" ,
+                            "3. Just Fair" ,
+                            "4. Poor" ,
+                            "5. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 10th question as 'Good'", function() {
+            it("should should save their response 'good' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question10')
+                    .input('2')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question10,"good");
+                        assert.equal(contact.extra.it_question10,app.get_date_string());
+                    }).run();
+            });
+        });
+
+        describe("when 11 is randomly chosen as the next question",function() {
+            it("should take them to question 11",function(){
+                app.get_unanswered_question = function() {
+                    return 11;
+                };
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question10')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:question11',
+                        reply: [
+                            "Which party has contacted you the most during this election campaign?" ,
+                            "1. None, I have not been contacted" ,
+                            "2. ANC" ,
+                            "3. Agang" ,
+                            "4. COPE" ,
+                            "5. DA" ,
+                            "6. EFF" ,
+                            "7. IFP" ,
+                            "8. Other" ,
+                            "9. Skip"
+                        ].join("\n")
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the 11th question as 'ANC'", function() {
+            it("should should save their response 'anc' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question11')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question11,"none");
+                        assert.equal(contact.extra.it_question11,app.get_date_string());
+                    }).run();
+            });
+        });
+
+        describe("when 12 is randomly chosen as the next question",function() {
+           it("should take them to question 12",function(){
+               app.get_unanswered_question = function() {
+                   return 12;
+               };
+               return tester
+                   .setup.user.addr("+273123")
+                   .setup.user.state('states:quiz:vip:question11')
+                   .input("1")
+                   .check.interaction({
+                       state: 'states:quiz:vip:question12',
+                       reply: [
+                           "During the past two weeks, have you attended a campaign rally?" ,
+                           "1. Yes" ,
+                           "2. No" ,
+                           "3. Skip"
+                       ].join("\n")
+                   }).run();
+           });
+        });
+
+        describe("when the user has answered the 12th question as 'Yes'", function() {
+            it("should should save their response 'yes' as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question12')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.question12,"yes");
+                        assert.equal(contact.extra.it_question12,app.get_date_string());
+                    }).run();
+            });
+        });
+
         describe("when the user selects the report election activity option from main menu", function() {
             it("should take them to the report election activity page",function() {
-                return tester.setup.user.state('states:menu')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:menu')
                     .input('2')
                     .check.interaction({
                         state: 'states:report',
@@ -859,6 +1166,96 @@ describe("app", function() {
                             ].join("\n")
                         }).run();
                 });
+            });
+        });
+
+        var get_question_number = function(state) {
+            return parseInt(state.state.name.split("question").pop());
+        };
+
+        describe("when the user has selected to do the quiz from the menu", function() {
+            it("should take them to a random unanswered question",function() {
+                var unanswered = [1,2,3,4,5,6,7,8,9,10,11,12];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273101',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273101")
+                    .setup.user.state('states:quiz:vip:continue')
+                    .input('1')
+                    .check.user.state(function(state){
+                        var question_num = get_question_number(state) ;
+                        assert.equal(_.contains(unanswered,question_num),true);
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered the continue question as 'Continue'", function() {
+            it("should take them to a random unanswered question",function() {
+                var unanswered = [1,2,3,4];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:continue')
+                    .input('1')
+                    .check.user.state(function(state){
+                        var question_num = get_question_number(state) ;
+                        assert.equal(_.contains(unanswered,question_num),true);
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered a question", function() {
+            it("should take them to a random unanswered question",function() {
+                var unanswered = [1,2,5,6,7];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check.user.state(function(state){
+                        var question_num = get_question_number(state) ;
+                        assert.equal(_.contains(unanswered,question_num),true);
+                        assert.notEqual(question_num,6);
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered a question", function() {
+            it("should remove the question from the unanswered list",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question11')
+                    .input('1')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(_.indexOf(JSON.parse(contact.extra.vip_unanswered),11),-1);
+                    }).run();
             });
         });
 
