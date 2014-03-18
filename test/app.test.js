@@ -461,6 +461,7 @@ describe("app", function() {
                 });
             });
 
+           
         });
 
         describe("when the user selects their address from the list provider",function(){
