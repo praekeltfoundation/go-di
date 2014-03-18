@@ -156,7 +156,7 @@ di.app = function() {
             } else if (unanswered.length === num_questions - 4) {
                 return 'states:quiz:vip:continue';
             } else {
-                return 'states:quiz:vip:question' + self.get_unanswered_question() ;
+                return 'states:quiz:vip:question' + self.get_unanswered_question();
             }
         }
 
@@ -321,7 +321,7 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to the Campaign'),
                 choices:[
-                    new Choice('states:quiz:vip:question1',$('Take the quiz & win!')),
+                    new Choice(self.get_next_quiz_state(),$('Take the quiz & win!')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View the results...')),
                     new Choice('states:about',$('About')),
@@ -340,12 +340,11 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    self.contact.extra.question1 = content.value;
-                    self.contact.extra.it_question1 = self.get_date_string();
+                    self.answer(1,content.value);
                     return self.im
                         .contacts.save(self.contact)
                         .then(function() {
-                            return 'states:quiz:vip:question2';
+                            return self.get_next_quiz_state();
                         });
                 }
             });

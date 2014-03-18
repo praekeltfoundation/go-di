@@ -22,6 +22,10 @@ describe("app", function() {
                 d.setHours(0,0,0,0);
                 return d;
             };
+            app.random = function(n) {
+                return 0;
+                //return Math.floor(Math.random()*n);
+            };
 
             tester
                 .setup.config.app({
@@ -34,7 +38,18 @@ describe("app", function() {
                 .setup(function(api) {
                     // Add all of the fixtures.
                     fixtures().forEach(api.http.fixtures.add);
+                })
+                .setup(function(api) {
+                    api.contacts.add( {
+                        msisdn: '+273123',
+                        extra : {
+                            is_registered: 'true',
+                            vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]',
+                            register_sms_sent: 'true'
+                        }
+                    });
                 });
+
         });
 
         describe("when a session is terminated", function() {
@@ -171,13 +186,14 @@ describe("app", function() {
                 describe('if they have filled in their address before',function() {
                     it("should take them to the main menu",function() {
                         return tester
-                            .setup.user.addr('+273123')
+                            .setup.user.addr('+273456')
                             .setup(function(api) {
                                 api.contacts.add( {
-                                    msisdn: '+273123',
+                                    msisdn: '+273456',
                                     extra : {
                                         is_registered: 'true',
-                                        ward: '1234'
+                                        ward: '1234',
+                                        vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]'
                                     }
                                 });
                             }).start()
@@ -283,6 +299,7 @@ describe("app", function() {
 
             it("should save their answer as 'yes'",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:engagement')
                     .input('1')
                     .check(function(api){
@@ -293,6 +310,7 @@ describe("app", function() {
 
             it("should save their interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:engagement')
                     .input('1')
                     .check(function(api){
@@ -319,6 +337,7 @@ describe("app", function() {
 
            it("should save their answer as 'no_vote_anyway'",function() {
                return tester
+                   .setup.user.addr("+273123")
                    .setup.user.state('states:registration:engagement')
                    .input('2')
                    .check(function(api){
@@ -343,7 +362,9 @@ describe("app", function() {
             });
 
             it("should take the user to the ward address state", function() {
-                return tester.setup.user.state('states:registration:tandc')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:registration:tandc')
                     .input('1')
                     .check.interaction({
                         state:'states:address',
@@ -358,6 +379,7 @@ describe("app", function() {
         describe("when the user chooses to read the terms and conditions",function() {
             it("should set user registration to false.",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:tandc')
                     .input('2')
                     .check(function(api) {
@@ -371,6 +393,7 @@ describe("app", function() {
         describe("when the user selects choose to quit",function() {
             it("should set user registration to false.",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:tandc')
                     .input('3')
                     .check(function(api) {
@@ -471,7 +494,7 @@ describe("app", function() {
 
             it("should take them to the menu page",function() {
                 return tester
-                    .setup.user.addr('+273132')
+                    .setup.user.addr('+273123')
                     .setup.user.state('states:address:verify',{
                         creator_opts: {
                             address_options: [{
@@ -519,7 +542,9 @@ describe("app", function() {
 
         describe("when the user has selected 'quit' from the menu",function() {
             it ("should take them to the end state",function() {
-                return tester.setup.user.state("states:menu")
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state("states:menu")
                     .input('5')
                     .check.interaction({
                         state: 'states:end',
@@ -530,7 +555,9 @@ describe("app", function() {
 
         describe("when the user has selected to do the quiz from the menu", function() {
            it("should take them to the first question",function() {
-               return tester.setup.user.state('states:menu')
+               return tester
+                   .setup.user.addr("+273123")
+                   .setup.user.state('states:menu')
                    .input('1')
                    .check.interaction({
                        state: 'states:quiz:vip:question1',
@@ -546,8 +573,10 @@ describe("app", function() {
         });
 
         describe("when the user has answered the first question as 'Yes'", function() {
-            it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:vip:question1')
+            it("should save their response the first question as well as interaction time",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question1')
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -556,8 +585,10 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should take them to second question",function() {
-                return tester.setup.user.state('states:quiz:vip:question1')
+            it.only("should take them to second question",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question1')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question2',
@@ -574,7 +605,9 @@ describe("app", function() {
 
         describe("when the user has answered the first question as 'Yes, a few'", function() {
             it("should should save their response the first question as well as interaction time",function() {
-                return tester.setup.user.state('states:quiz:vip:question1')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question1')
                     .input('2')
                     .check(function(api){
                         var contact = api.contacts.store[0];
@@ -597,7 +630,9 @@ describe("app", function() {
             });
 
             it("should take them to 3rd question",function() {
-                return tester.setup.user.state('states:quiz:vip:question2')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question2')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question3',
@@ -617,6 +652,7 @@ describe("app", function() {
         describe("when the user has answered the second question as No", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question2')
                     .input('2')
                     .check(function(api){
@@ -630,6 +666,7 @@ describe("app", function() {
         describe("when the user has answered the second question as Unsure", function() {
             it("should should save their response the 2nd question as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question2')
                     .input('3')
                     .check(function(api){
@@ -643,6 +680,7 @@ describe("app", function() {
         describe("when the user has answered the 3rd question as 'Very Likely'", function() {
             it("should should save their response 'very_likely'  as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check(function(api){
@@ -654,6 +692,7 @@ describe("app", function() {
 
             it("should take them to 4th question",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question3')
                     .input('1')
                     .check.interaction({
@@ -677,6 +716,7 @@ describe("app", function() {
         describe("when the user has answered the 4th question as 'ANC'", function() {
             it("should should save their response 'anc' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question4')
                     .input('1')
                     .check(function(api){
@@ -687,7 +727,9 @@ describe("app", function() {
             });
 
             it("should take them to the continue question",function() {
-                return tester.setup.user.state('states:quiz:vip:question4')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question4')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:continue',
@@ -702,7 +744,9 @@ describe("app", function() {
 
         describe("when the user has answered the continue question as 'Continue'", function() {
             it("should take them to the 5th question",function() {
-                return tester.setup.user.state('states:quiz:vip:continue')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:continue')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question5',
@@ -719,7 +763,9 @@ describe("app", function() {
 
         describe("when the user has answered the continue question as 'Main Menu'", function() {
             it("should take them to the main menu",function() {
-                return tester.setup.user.state('states:quiz:vip:continue')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:continue')
                     .input('2')
                     .check.interaction({
                         state: 'states:menu'
@@ -730,6 +776,7 @@ describe("app", function() {
         describe("when the user has answered the 5th question as 'Yes several times'", function() {
             it("should should save their response 'yes_several' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question5')
                     .input('1')
                     .check(function(api){
@@ -740,7 +787,9 @@ describe("app", function() {
             });
 
             it("should take them to question 6",function() {
-                return tester.setup.user.state('states:quiz:vip:question5')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question5')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question6',
@@ -758,6 +807,7 @@ describe("app", function() {
         describe("when the user has answered the 6th question as 'Yes'", function() {
             it("should should save their response 'yes' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question6')
                     .input('1')
                     .check(function(api){
@@ -768,7 +818,9 @@ describe("app", function() {
             });
 
             it("should take them to question 7",function() {
-                return tester.setup.user.state('states:quiz:vip:question6')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question6')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question7',
@@ -787,6 +839,7 @@ describe("app", function() {
         describe("when the user has answered the 7th question as 'Very easy'", function() {
             it("should should save their response 'very_easy' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question7')
                     .input('1')
                     .check(function(api){
@@ -797,7 +850,9 @@ describe("app", function() {
             });
 
             it("should take them to question 8",function() {
-                return tester.setup.user.state('states:quiz:vip:question7')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question7')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question8',
@@ -816,6 +871,7 @@ describe("app", function() {
         describe("when the user has answered the 8th question as 'Strongly agree'", function() {
             it("should should save their response 'strongly_agree' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question8')
                     .input('1')
                     .check(function(api){
@@ -826,7 +882,9 @@ describe("app", function() {
             });
 
             it("should take them to question 9",function() {
-                return tester.setup.user.state('states:quiz:vip:question8')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question8')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question9',
@@ -845,6 +903,7 @@ describe("app", function() {
         describe("when the user has answered the 9th question as 'Excellent'", function() {
             it("should should save their response 'excellent' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question9')
                     .input('1')
                     .check(function(api){
@@ -855,7 +914,9 @@ describe("app", function() {
             });
 
             it("should take them to question 10",function() {
-                return tester.setup.user.state('states:quiz:vip:question9')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question9')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question10',
@@ -874,6 +935,7 @@ describe("app", function() {
         describe("when the user has answered the 10th question as 'Good'", function() {
             it("should should save their response 'good' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question10')
                     .input('2')
                     .check(function(api){
@@ -884,7 +946,9 @@ describe("app", function() {
             });
 
             it("should take them to question 11",function() {
-                return tester.setup.user.state('states:quiz:vip:question10')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question10')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question11',
@@ -907,6 +971,7 @@ describe("app", function() {
         describe("when the user has answered the 11th question as 'ANC'", function() {
             it("should should save their response 'anc' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question11')
                     .input('1')
                     .check(function(api){
@@ -917,7 +982,9 @@ describe("app", function() {
             });
 
             it("should take them to question 12",function() {
-                return tester.setup.user.state('states:quiz:vip:question11')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question11')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question12',
@@ -934,6 +1001,7 @@ describe("app", function() {
         describe("when the user has answered the 12th question as 'Yes'", function() {
             it("should should save their response 'yes' as well as interaction time",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:quiz:vip:question12')
                     .input('1')
                     .check(function(api){
@@ -944,7 +1012,9 @@ describe("app", function() {
             });
 
             it("should take them to the menu",function() {
-                return tester.setup.user.state('states:quiz:vip:question12')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:quiz:vip:question12')
                     .input('1')
                     .check.interaction({
                         state: 'states:menu'
@@ -954,7 +1024,9 @@ describe("app", function() {
 
         describe("when the user selects the report election activity option from main menu", function() {
             it("should take them to the report election activity page",function() {
-                return tester.setup.user.state('states:menu')
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:menu')
                     .input('2')
                     .check.interaction({
                         state: 'states:report',
