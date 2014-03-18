@@ -194,10 +194,13 @@ di.app = function() {
             var response;
 
             return new FreeText(name,{
-                question: $("Thanks 4 joining!2 begin we need ur voting ward. " +
-                            "Reply with ur home address & we'll work it out. " +
-                            "This will be kept private, only ur voting ward will be stored " +
-                            "&u will be anonymous."),
+                question: $([
+                        "Thanks 4 joining!2 begin we need ur voting ward.",
+                        "Reply with ur home address & we'll work it out.",
+                        "This will be kept private, only ur voting ward will be stored",
+                        "&u will be anonymous."
+                    ].join(" ")
+                ),
                 check: function(content) {
                     return self
                         .http.get('http://wards.code4sa.org/',{
