@@ -1262,6 +1262,7 @@ describe("app", function() {
         describe("when the user selects 'Terms and conditions' from the terms and conditions menu", function() {
             it("should take the user to the first page of the terms",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:registration:tandc')
                     .input("2")
                     .check.interaction({
@@ -1278,6 +1279,7 @@ describe("app", function() {
         describe("when the user selects next on the terms and conditions page", function() {
             it("should take them to page 2 of the terms",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state("states:registration:read")
                     .input("2")
                     .check.interaction({
@@ -1294,6 +1296,7 @@ describe("app", function() {
         describe("when the user selects Exit", function() {
            it("should take them back to the terms and conditions choice page",function() {
                return tester
+                   .setup.user.addr("+273123")
                    .setup.user.state("states:registration:read")
                    .input("3")
                    .check.interaction({
@@ -1305,6 +1308,7 @@ describe("app", function() {
         describe("when the user selects 'About' from the main menu", function() {
             it("should take the user to the first page of the about section",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state('states:menu')
                     .input("4")
                     .check.interaction({
@@ -1322,6 +1326,7 @@ describe("app", function() {
         describe("when the user selects next on the 'About' page", function() {
             it("should take them to page 2 of the about section",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state("states:about")
                     .input("2")
                     .check.interaction({
@@ -1336,8 +1341,9 @@ describe("app", function() {
         });
 
         describe("when the user selects Exit", function() {
-            it.only("should take them back to the menu page",function() {
+            it("should take them back to the menu page",function() {
                 return tester
+                    .setup.user.addr("+273123")
                     .setup.user.state("states:about")
                     .input("3")
                     .check.interaction({
