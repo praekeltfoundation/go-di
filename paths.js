@@ -1,12 +1,13 @@
 var src = {};
 
 src.app = [
-    'src/index.js',
     'src/ushahidi.js',
     'src/app.js'
 ];
 
-src.prd = src.app.concat([
+src.prd = [
+    'src/index.js'
+].concat(src.app, [
     'src/init.js'
 ]);
 
