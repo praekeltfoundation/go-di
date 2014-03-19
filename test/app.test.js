@@ -496,11 +496,10 @@ describe("app", function() {
                     });
                 });
 
-
                 it.only("should display the 2nd page of choices",function(){
                     return tester
                         .setup.user.addr('+273123')
-                        .input("1")
+                        .input("4")
                         .check.interaction({
                             state: "states:address:verify",
                             reply: [
@@ -508,7 +507,8 @@ describe("app", function() {
                                 '1. Main Street, Howick',
                                 "2. Main Street, Despatch 6220",
                                 '3. Main Street, Matatiele 4730',
-                                "4. More"
+                                "4. More",
+                                "5. Back"
                             ].join("\n")
                         })
                         .run();
