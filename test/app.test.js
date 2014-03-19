@@ -1260,6 +1260,31 @@ describe("app", function() {
             });
         });
 
+        describe("when the user has answered their 4th or 8th question", function() {
+            it("should take them if they want to continue",function() {
+                var unanswered = [4,5,6,7,8,9,10,11,12];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check.user.interaction({
+                        state: 'states:quiz:vip:continue',
+                        reply: [
+                        ]
+                    }).run();
+            });
+        });
+
         describe("when the user selects 'Terms and conditions' from the terms and conditions menu", function() {
             it("should take the user to the first page of the terms",function() {
                 return tester
