@@ -154,7 +154,9 @@ di.app = function() {
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
             if (unanswered.length === 0) {
                 return 'states:menu';
-            } else if (unanswered.length === num_questions - 4 && from_continue === false) {
+            } else if (unanswered.length === num_questions - 4
+                        && unanswered.length === num_questions - 8
+                        && from_continue === false) {
                 return 'states:quiz:vip:continue';
             } else {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
