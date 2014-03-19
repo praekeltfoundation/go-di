@@ -569,10 +569,10 @@ di.app = function() {
             return new ChoiceState(name, {
                 question: $("Choose a report type:"),
                 choices: _.map(report_types,function (description,index) {
-                    return new Choice((index+1).toString(),$(description))
+                    return new Choice(index+1,$(description))
                 }),
                 next: function(choice) {
-                    self.contact.extra.report_type = choice.value;
+                    self.contact.extra.report_type = choice.value.toString();
                     self.contact.extra.report_desc = report_types[choice.value-1];
                     self.contact.extra.it_report_type = self.get_date_string();
 
