@@ -569,7 +569,6 @@ describe("app", function() {
                         .run();
                 });
             });
-
         describe("when the user is on the 2nd page and selects 'back",function() {
             beforeEach(function() {
                 tester.setup.user.state({
@@ -604,7 +603,6 @@ describe("app", function() {
                     }
                 });
             });
-
             it("should go to the first page",function(){
                 return tester
                     .setup.user.addr('+273123')
