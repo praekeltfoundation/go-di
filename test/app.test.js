@@ -519,7 +519,7 @@ describe("app", function() {
             beforeEach(function() {
                 tester.setup.user.state({
                     name: 'states:address:verify',
-                    metadata: {page_start: 0},
+                    metadata: {page_start: 4},
                     creator_opts: {
                         address_options:  [{
                             "address": "Main Street, Paarl, South Africa",
@@ -550,10 +550,9 @@ describe("app", function() {
                 });
             });
 
-            it("should go to the first page",function(){
+            it.only("should go to the first page",function(){
                 return tester
                     .setup.user.addr('+273123')
-                    .input("4")
                     .input("5")
                     .check.interaction({
                         state: "states:address:verify",
