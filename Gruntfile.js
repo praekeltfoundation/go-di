@@ -13,7 +13,7 @@ module.exports = function (grunt) {
             options: {jshintrc: '.jshintrc'},
             all: [
                 'Gruntfile.js',
-                'paths.src.app',
+                '<%= paths.src.app %>',
                 'test/**/*.js',
             ]
         },
