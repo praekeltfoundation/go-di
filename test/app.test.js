@@ -1192,6 +1192,7 @@ describe("app", function() {
                     .setup.user.state('states:quiz:vip:continue')
                     .input('1')
                     .check.user.state(function(state){
+
                         var question_num = get_question_number(state) ;
                         assert.equal(_.contains(unanswered,question_num),true);
                     }).run();
@@ -1216,7 +1217,8 @@ describe("app", function() {
                     .setup.user.state('states:quiz:vip:continue')
                     .input('1')
                     .check.user.state(function(state){
-                        var question_num = get_question_number(state) ;
+                        var question_num = get_question_number(state);
+                        assert.notEqual(state.name,'states:quiz:vip:continue');
                         assert.equal(_.contains(unanswered,question_num),true);
                     }).run();
             });
@@ -1224,7 +1226,7 @@ describe("app", function() {
 
         describe("when the user has answered a question", function() {
             it("should take them to a random unanswered question",function() {
-                var unanswered = [1,2,5,6,7];
+                var unanswered = [1,2,5,6,7,8];
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
@@ -1240,7 +1242,7 @@ describe("app", function() {
                     .setup.user.state('states:quiz:vip:question6')
                     .input('1')
                     .check.user.state(function(state){
-                        var question_num = get_question_number(state) ;
+                        var question_num = get_question_number(state);
                         assert.equal(_.contains(unanswered,question_num),true);
                         assert.notEqual(question_num,6);
                     }).run();
@@ -1260,7 +1262,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has answered their 4th or 8th question", function() {
+        describe("when the user has answered their 4th question", function() {
             it("should take them if they want to continue",function() {
                 var unanswered = [4,5,6,7,8,9,10,11,12];
                 return tester
@@ -1277,10 +1279,41 @@ describe("app", function() {
                     .setup.user.addr("+273465")
                     .setup.user.state('states:quiz:vip:question6')
                     .input('1')
-                    .check.user.interaction({
+                    .check.interaction({
                         state: 'states:quiz:vip:continue',
                         reply: [
-                        ]
+                            'Would you like to continue answering questions? There are 12 in total.',
+                            '1. Continue',
+                            '2. Main Menu'
+                        ].join('\n')
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered their 8th question", function() {
+            it("should take them if they want to continue",function() {
+                var unanswered = [8,9,10,11,12];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question8')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:quiz:vip:continue',
+                        reply: [
+                            'Would you like to continue answering questions? There are 12 in total.',
+                            '1. Continue',
+                            '2. Main Menu'
+                        ].join('\n')
                     }).run();
             });
         });

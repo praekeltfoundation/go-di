@@ -31,12 +31,12 @@ di.app = function() {
 
         self.is_registered = function() {
             return (typeof self.contact.extra.is_registered !== 'undefined'
-                            && self.contact.extra.is_registered === "true");
+                            && (self.contact.extra.is_registered === "true"));
         };
 
         self.is = function(boolean) {
             //If is is not undefined and boolean is true
-            return (!_.isUndefined(boolean) && boolean==='true');
+            return (!_.isUndefined(boolean) && (boolean==='true' || boolean===true));
         };
 
         self.exists = function(extra) {
@@ -152,11 +152,10 @@ di.app = function() {
         * */
         self.get_next_quiz_state = function(from_continue) {
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
-            if (unanswered.length === 0) {
+            var answered = num_questions - unanswered.length;
+            if (answered === 12) {
                 return 'states:menu';
-            } else if (unanswered.length === num_questions - 4
-                        && unanswered.length === num_questions - 8
-                        && from_continue === false) {
+            } else if ((answered == 4 || answered == 8) && !self.is(from_continue)) {
                 return 'states:quiz:vip:continue';
             } else {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
