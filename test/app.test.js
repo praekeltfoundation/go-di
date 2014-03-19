@@ -461,8 +461,113 @@ describe("app", function() {
                 });
             });
 
-           
+        describe("when the user has selected to view the second page of electoral options",function() {
+                beforeEach(function() {
+                    tester.setup.user.state({
+                        name: 'states:address:verify',
+                        metadata: {page_start: 0},
+                        creator_opts: {
+                            address_options:  [{
+                                    "address": "Main Street, Paarl, South Africa",
+                                    "ward": "10203019"
+                                }, {
+                                    "address": "Main Street, Lambert's Bay 8130, South Africa",
+                                    "ward": "10102005"
+                                }, {
+                                    "address": "Main Street, Glencoe, South Africa",
+                                    "ward": "52401001"
+                                },{
+                                    "address": "Main Street, Howick, South Africa",
+                                    "ward": "52202009"
+                                },{
+                                    "address": "Main Street, Despatch 6220, South Africa",
+                                    "ward": "29500060"
+                                },{
+                                    "address": "Main Street, Matatiele 4730, South Africa",
+                                    "ward": "24401019"
+                                },{
+                                    "address": "Main Street, Emalahleni, South Africa",
+                                    "ward": "83102017"
+                                },{
+                                    "address": "Main Street, Darling 7345, South Africa",
+                                    "ward": "10105004"
+                                }]
+                        }
+                    });
+                });
+
+                it("should display the 2nd page of choices",function(){
+                    return tester
+                        .setup.user.addr('+273123')
+                        .input("4")
+                        .check.interaction({
+                            state: "states:address:verify",
+                            reply: [
+                                'Please select your location from the options below:',
+                                '1. Main Street, Howick',
+                                "2. Main Street, Despatch 6220",
+                                '3. Main Street, Matatiele 4730',
+                                "4. More",
+                                "5. Back"
+                            ].join("\n")
+                        })
+                        .run();
+                });
+            });
+
+        describe("when the user is on the 2nd page and selects 'back",function() {
+            beforeEach(function() {
+                tester.setup.user.state({
+                    name: 'states:address:verify',
+                    metadata: {page_start: 3},
+                    creator_opts: {
+                        address_options:  [{
+                            "address": "Main Street, Paarl, South Africa",
+                            "ward": "10203019"
+                        }, {
+                            "address": "Main Street, Lambert's Bay 8130, South Africa",
+                            "ward": "10102005"
+                        }, {
+                            "address": "Main Street, Glencoe, South Africa",
+                            "ward": "52401001"
+                        },{
+                            "address": "Main Street, Howick, South Africa",
+                            "ward": "52202009"
+                        },{
+                            "address": "Main Street, Despatch 6220, South Africa",
+                            "ward": "29500060"
+                        },{
+                            "address": "Main Street, Matatiele 4730, South Africa",
+                            "ward": "24401019"
+                        },{
+                            "address": "Main Street, Emalahleni, South Africa",
+                            "ward": "83102017"
+                        },{
+                            "address": "Main Street, Darling 7345, South Africa",
+                            "ward": "10105004"
+                        }]
+                    }
+                });
+            });
+
+            it.only("should go to the first page",function(){
+                return tester
+                    .setup.user.addr('+273123')
+                    .input("5")
+                    .check.interaction({
+                        state: "states:address:verify",
+                        reply: [
+                            'Please select your location from the options below:',
+                            '1. Main Street, Paarl',
+                            "2. Main Street, Lambert's Bay 8130",
+                            '3. Main Street, Glencoe',
+                            "4. More"
+                        ].join("\n")
+                    })
+                    .run();
+            });
         });
+    });
 
         describe("when the user selects their address from the list provider",function(){
             it("should save their electoral ward",function() {
