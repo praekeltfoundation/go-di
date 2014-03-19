@@ -428,7 +428,7 @@ module.exports = function() {
                 "data": [
                     "task=report",
                     "incident_title=test" ,
-                    "incident_description=description" ,
+                    "incident_description=Party%20going%20door-to-door" ,
                     "incident_category=1",
                     "incident_date=03%2F16%2F2014" ,
                     "incident_hour=0" ,

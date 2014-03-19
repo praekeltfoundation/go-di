@@ -1033,13 +1033,63 @@ describe("app", function() {
                     .check.interaction({
                         state: 'states:report',
                         reply: [
-                            'What type of report would you like to submit?',
-                            '1. Election Campaign/Rally',
-                            '2. Violence/Intimidation',
-                            '3. Fraud/Corruption',
-                            '4. Voting Station',
-                            '5. Post Election'
+                            'Choose a report type:',
+                            '1. Party going door-to-door',
+                            '2. Party intimidating voters',
+                            '3. Party distributing food/money/gift',
+                            '4. Campaign rally',
+                            '5. Campaign violence',
+                            '6. Protest/Demonstration'
                         ].join('\n')
+                    }).run();
+            });
+        });
+
+        describe("when the user submits a category",function() {
+            it("should save their category and description",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:report')
+                    .input('1')
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.report_type,"1");
+                        assert.equal(contact.extra.report_desc,"Party going door-to-door");
+                    }).run();
+            });
+
+            it("should take them to the 'title' page",function(){
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:report')
+                    .input('1')
+                    .check.interaction({
+                        state: 'states:report:title',
+                        reply: 'What is the title of your report?'
+                    }).run();
+            });
+        });
+
+        describe("when the user submits a title",function() {
+            it("should save their title",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:report:title')
+                    .input('test')
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.report_title,"test");
+                    }).run();
+            });
+
+            it("should take them to the 'location' page",function(){
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:report:title')
+                    .input('test')
+                    .check.interaction({
+                        state: 'states:report:location',
+                        reply: 'Where did this event happen? Please be as specific as possible and give address and city.'
                     }).run();
             });
         });
@@ -1107,7 +1157,7 @@ describe("app", function() {
                                     is_registered: 'true',
                                     register_sms_sent: 'true',
                                     report_title: "test",
-                                    report_desc:"description",
+                                    report_desc:"Party going door-to-door",
                                     report_type:"1"
                                 }
                             });
@@ -1136,7 +1186,7 @@ describe("app", function() {
                             assert.equal(body,[
                                 "task=report",
                                 "incident_title=test" ,
-                                "incident_description=description" ,
+                                "incident_description=Party%20going%20door-to-door" ,
                                 "incident_category=1" ,
                                 "incident_date="+ date ,
                                 "incident_hour=0" ,
