@@ -11,6 +11,7 @@ di.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var UshahidiApi = di.ushahidi.UshahidiApi;
+    var MetricStore = vumigo.MetricStore;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
@@ -46,6 +47,7 @@ di.app = function() {
         self.init = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
+            self.metricstore = new MetricStore(self.im);
 
             self.im.on('session:close', function(e) {
                 if (!self.should_send_dialback(e)) { return; }
@@ -110,6 +112,7 @@ di.app = function() {
         self.register = function() {
             self.contact.extra.is_registered = 'true';
             self.contact.extra.vip_unanswered = JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]);
+            self.metricstore.fire.inc('registered_participants');
         };
 
         /**
@@ -688,7 +691,10 @@ di.app = function() {
         });
 
         self.states.add('states:results',function(name) {
-
+            self.im.api_request('kv.handle_count_inbound_uniques').
+                then(function(reply) {
+                    console.log(reply.count);
+                });
             return new EndState(name, {
                 text: $('To be continued'),
                 next: 'states:start'

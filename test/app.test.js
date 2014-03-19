@@ -1565,5 +1565,17 @@ describe("app", function() {
                     }).run();
             });
         });
+
+        describe("when the user selects View results from the main menu",function() {
+           it.only("should take them to view the results",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state("states:menu")
+                    .input("3")
+                    .check.interaction({
+                        state: "states:results"
+                    }).run();
+           });
+        });
     });
 });
