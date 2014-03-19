@@ -461,6 +461,25 @@ describe("app", function() {
                 });
             });
 
+            /*describe("when the 'More' button is selected",function() {
+                it("should display the 2nd page of choices with next buttons",function(){
+                    return tester
+                        .setup.user.state('states:address')
+                        .input('main street')
+                        .input('4')
+                        .check.interaction({
+                            state: "states:address:verify",
+                            reply: [
+                                'Please select your location from the options below:',
+                                '1. Main Street, Howick',
+                                "2. Main Street, Despatch 6220",
+                                '3. Main Street, Matatiele 4730',
+                                "4. More"
+                            ].join("\n")
+                        })
+                        .run();
+                });
+            });*/
         });
 
         describe("when the user selects their address from the list provider",function(){
@@ -471,13 +490,16 @@ describe("app", function() {
                         creator_opts: {
                             address_options: [{
                                 "address": "21 Conduit Street, Randburg 2188, South Africa",
-                                "ward": "79400094"
+                                "ward": "79400094",
+                                "voting_district": "32840591"
                             },{
                                 "address": "21 Conduit Street, Sandton 2191, South Africa",
-                                "ward": "79400104"
+                                "ward": "79400104",
+                                "voting_district": "32840489"
                             },{
                                 "address": "21 Conduit Street, Randburg 2194, South Africa",
-                                "ward": "79400094"
+                                "ward": "79400094",
+                                "voting_district": "32840445"
                             }]
                         }
                     })
@@ -485,6 +507,7 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.ward,"79400094");
+                        assert.equal(contact.extra.voting_district,"32840591");
                         assert.equal(contact.extra.it_ward,app.get_date_string());
                     }).run();
             });
@@ -496,13 +519,16 @@ describe("app", function() {
                         creator_opts: {
                             address_options: [{
                                 "address": "21 Conduit Street, Randburg 2188, South Africa",
-                                "ward": "79400094"
+                                "ward": "79400094",
+                                "voting_district": "32840591"
                             },{
                                 "address": "21 Conduit Street, Sandton 2191, South Africa",
-                                "ward": "79400104"
+                                "ward": "79400104",
+                                "voting_district": "32840489"
                             },{
                                 "address": "21 Conduit Street, Randburg 2194, South Africa",
-                                "ward": "79400094"
+                                "ward": "79400094",
+                                "voting_district": "32840445"
                             }]
                         }
                     })
