@@ -519,7 +519,7 @@ describe("app", function() {
             beforeEach(function() {
                 tester.setup.user.state({
                     name: 'states:address:verify',
-                    metadata: {page_start: 4},
+                    metadata: {page_start: 3},
                     creator_opts: {
                         address_options:  [{
                             "address": "Main Street, Paarl, South Africa",
