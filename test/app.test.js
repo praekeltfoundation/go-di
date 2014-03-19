@@ -461,6 +461,25 @@ describe("app", function() {
                 });
             });
 
+            describe("when the 'More' button is selected",function() {
+                it.only("should display the 2nd page of choices with next buttons",function(){
+                    return tester
+                        .setup.user.state('states:address')
+                        .input('main street')
+                        .input('4')
+                        .check.interaction({
+                            state: "states:address:verify",
+                            reply: [
+                                'Please select your location from the options below:',
+                                '1. Main Street, Howick',
+                                "2. Main Street, Despatch 6220",
+                                '3. Main Street, Matatiele 4730',
+                                "4. More"
+                            ].join("\n")
+                        })
+                        .run();
+                });
+            });
         });
 
         describe("when the user selects their address from the list provider",function(){
