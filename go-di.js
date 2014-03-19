@@ -111,12 +111,12 @@ di.app = function() {
 
         self.is_registered = function() {
             return (typeof self.contact.extra.is_registered !== 'undefined'
-                            && self.contact.extra.is_registered === "true");
+                            && (self.contact.extra.is_registered === "true"));
         };
 
         self.is = function(boolean) {
             //If is is not undefined and boolean is true
-            return (!_.isUndefined(boolean) && boolean==='true');
+            return (!_.isUndefined(boolean) && (boolean==='true' || boolean===true));
         };
 
         self.exists = function(extra) {
@@ -232,19 +232,15 @@ di.app = function() {
         * */
         self.get_next_quiz_state = function(from_continue) {
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
-            if (unanswered.length === 0) {
+            var answered = num_questions - unanswered.length;
+            if (answered === 12) {
                 return 'states:menu';
-            } else if (unanswered.length === num_questions - 4 && from_continue === false) {
+            } else if ((answered == 4 || answered == 8) && !self.is(from_continue)) {
                 return 'states:quiz:vip:continue';
             } else {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
             }
         };
-
-        self.is_answered = function(n) {
-            return self.exists(self.contact.extra("question"+n ));
-        };
-
 
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
@@ -642,20 +638,26 @@ di.app = function() {
         });
 
         self.states.add('states:report',function(name) {
+            var report_types = [
+                'Party going door-to-door',
+                'Party intimidating voters',
+                'Party distributing food/money/gift',
+                'Campaign rally',
+                'Campaign violence',
+                'Protest/Demonstration'
+            ];
             return new ChoiceState(name, {
-                question: $('What type of report would you like to submit?'),
-                choices: [
-                    new Choice('1',$('Election Campaign/Rally')),
-                    new Choice('2',$('Violence/Intimidation')),
-                    new Choice('3',$('Fraud/Corruption')),
-                    new Choice('4',$('Voting Station')),
-                    new Choice('5',$('Post Election'))
-                ],
-                next: function(content) {
-                    self.contact.extra.report_type = content.value;
+                question: $("Choose a report type:"),
+                choices: _.map(report_types,function (description,index) {
+                    return new Choice(index+1,$(description));
+                }),
+                next: function(choice) {
+                    self.contact.extra.report_type = choice.value.toString();
+                    self.contact.extra.report_desc = report_types[choice.value-1];
                     self.contact.extra.it_report_type = self.get_date_string();
 
-                    return self.im.contacts.save(self.contact)
+                    return self
+                        .im.contacts.save(self.contact)
                         .then(function() {
                             return 'states:report:title';
                         });
@@ -665,25 +667,10 @@ di.app = function() {
 
         self.states.add('states:report:title',function(name) {
             return new FreeText(name, {
-                text: $('What is the title of your report?'),
+                question: $('What is the title of your report?'),
                 next: function(content) {
                     self.contact.extra.report_title = content;
                     self.contact.extra.it_report_title = self.get_date_string();
-
-                    return self.im.contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:report:description';
-                        });
-                }
-            });
-        });
-
-        self.states.add('states:report:description',function(name) {
-            return new FreeText(name, {
-                text: $('Describe the event:'),
-                next: function(content) {
-                    self.contact.extra.report_desc = content;
-                    self.contact.extra.it_report_desc = self.get_date_string();
 
                     return self.im.contacts.save(self.contact)
                         .then(function() {
@@ -701,7 +688,7 @@ di.app = function() {
             var response;
             var error =$('An error occured. Please try again');
             return new FreeText(name, {
-                text: $('Where did this happen? Type the address + city. i.e. 44 Stanley Avenue Johannesburg'),
+                question: $('Where did this event happen? Please be as specific as possible and give address and city.'),
                 check: function(content) {
                     return self
                         .http.get("https://maps.googleapis.com/maps/api/geocode/json",{
@@ -768,7 +755,12 @@ di.app = function() {
 
         self.states.add('states:report:end',function(name,opts) {
             return new EndState(name, {
-                text: $('Thanks for your report. Want to see your report and others on a map? Visit www.livevip.ushahidi.com'),
+                text: $([
+                    'Thank you for your report! Keep up the reporting',
+                    '& you may have a chance to be chosen as an official',
+                    'election day reporter where you can earn airtime or cash',
+                    'for your contribution.'
+                ].join(" ")),
                 next: function(content) {
                     return "states:menu";
                 }
