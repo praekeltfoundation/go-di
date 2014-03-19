@@ -32,6 +32,117 @@ module.exports = function() {
                 "code": "200",
                 "data": [
                     {
+                        "province": "9",
+                        "municipality": "9910",
+                        "voting_station": "Paarl Boland College",
+                        "coords": [
+                            -33.725839,
+                            18.9633809
+                        ],
+                        "address": "Main Street, Paarl, South Africa",
+                        "voting_district": "98380042",
+                        "ward": "10203019"
+                    },
+                    {
+                        "province": "9",
+                        "municipality": "9903",
+                        "voting_station": "Recreation Hall",
+                        "coords": [
+                            -32.0929697,
+                            18.3313228
+                        ],
+                        "address": "Main Street, Lambert's Bay 8130, South Africa",
+                        "voting_district": "97680022",
+                        "ward": "10102005"
+                    },
+                    {
+                        "province": "4",
+                        "municipality": "4426",
+                        "voting_station": "Glencoe Town Hall",
+                        "coords": [
+                            -28.181081,
+                            30.1673192
+                        ],
+                        "address": "Main Street, Glencoe, South Africa",
+                        "voting_district": "43650019",
+                        "ward": "52401002"
+                    },
+                    {
+                        "province": "4",
+                        "municipality": "4410",
+                        "voting_station": "Roman Catholic Church",
+                        "coords": [
+                            -29.476725,
+                            30.2084741
+                        ],
+                        "address": "Main Street, Howick, South Africa",
+                        "voting_district": "43870114",
+                        "ward": "52202005"
+                    },
+                    {
+                        "province": "1",
+                        "municipality": "1001",
+                        "voting_station": "Ng Church Despatch South Hall",
+                        "coords": [
+                            -33.8027891,
+                            25.4793096
+                        ],
+                        "address": "Main Street, Despatch 6220, South Africa",
+                        "voting_district": "10080065",
+                        "ward": "29300053"
+                    },
+                    {
+                        "province": "1",
+                        "municipality": "4034",
+                        "voting_station": "Matatiele Town Hall",
+                        "coords": [
+                            -30.344456,
+                            28.812005
+                        ],
+                        "address": "Main Street, Matatiele 4730, South Africa",
+                        "voting_district": "43920019",
+                        "ward": "24401019"
+                    },
+                    {
+                        "province": "5",
+                        "municipality": "5511",
+                        "voting_station": "Licensing Office Witbank",
+                        "coords": [
+                            -25.8702116,
+                            29.2090598
+                        ],
+                        "address": "Main Street, Emalahleni, South Africa",
+                        "voting_district": "54650493",
+                        "ward": "83102017"
+                    },
+                    {
+                        "province": "9",
+                        "municipality": "9906",
+                        "voting_station": "Uniting Reformed Church Darling",
+                        "coords": [
+                            -33.3778176,
+                            18.3843956
+                        ],
+                        "address": "Main Street, Darling 7345, South Africa",
+                        "voting_district": "97610014",
+                        "ward": "10105006"
+                    }
+                ]
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "http://wards.code4sa.org/",
+                "params": [
+                    {"name":"address", "value": '21 conduit street'},
+                    {"name":"database","value": "vd_2014"}
+                ]
+            },
+            "response": {
+                "code": "200",
+                "data": [
+                    {
                         "province": "3",
                         "municipality": "3003",
                         "voting_station": "River Walk Centre",
