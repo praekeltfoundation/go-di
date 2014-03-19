@@ -557,31 +557,23 @@ di.app = function() {
             });
         });
 
-        self.get_desc = function(choice) {
-            return [
+        self.states.add('states:report',function(name) {
+            var report_types = [
                 'Party going door-to-door',
                 'Party intimidating voters',
                 'Party distributing food/money/gift',
                 'Campaign rally',
                 'Campaign violence',
                 'Protest/Demonstration'
-            ][choice.value-1];
-        }
-
-        self.states.add('states:report',function(name) {
-           return new ChoiceState(name, {
+            ];
+            return new ChoiceState(name, {
                 question: $("Choose a report type:"),
-                choices: [
-                    new Choice('1',$('Party going door-to-door')),
-                    new Choice('2',$('Party intimidating voters')),
-                    new Choice('3',$('Party distributing food/money/gift')),
-                    new Choice('4',$('Campaign rally')),
-                    new Choice('5',$('Campaign violence')),
-                    new Choice('6',$('Protest/Demonstration'))
-                ],
-                next: function(content) {
-                    self.contact.extra.report_type = content.value;
-                    self.contact.extra.report_desc = self.get_desc(content);
+                choices: _.map(report_types,function (description,index) {
+                    return new Choice((index+1).toString(),$(description))
+                }),
+                next: function(choice) {
+                    self.contact.extra.report_type = choice.value;
+                    self.contact.extra.report_desc = report_types[choice.value-1];
                     self.contact.extra.it_report_type = self.get_date_string();
 
                     return self
