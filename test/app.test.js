@@ -4,6 +4,10 @@ var assert = require('assert');
 var fixtures = require('./fixtures');
 var _ = require('lodash');
 
+var messagestore = require('./messagestore');
+var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
+
+
 describe("app", function() {
 
     describe("GoDiApp", function() {
@@ -25,6 +29,10 @@ describe("app", function() {
             };
 
             tester
+                .setup(function(api) {
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+                })
                 .setup.config.app({
                     name: 'test_app',
                     endpoints: {
@@ -48,7 +56,7 @@ describe("app", function() {
                 });
 
         });
-
+        
         describe("when a session is terminated", function() {
             describe("when they are registered",function() {
                 describe("when they have not inputted their location",function() {
