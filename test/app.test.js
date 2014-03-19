@@ -550,7 +550,7 @@ describe("app", function() {
                 });
             });
 
-            it.only("should go to the first page",function(){
+            it("should go to the first page",function(){
                 return tester
                     .setup.user.addr('+273123')
                     .input("5")
