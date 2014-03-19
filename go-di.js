@@ -182,7 +182,7 @@ di.app = function() {
         //Return random number [0,n)
         self.random = function(n) {
             return Math.floor(Math.random()*n);
-        }
+        };
 
         /*
         * When users are registered, a list of unanswered questions is generated.
@@ -190,7 +190,7 @@ di.app = function() {
         self.register = function() {
             self.contact.extra.is_registered = 'true';
             self.contact.extra.vip_unanswered = JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]);
-        }
+        };
 
         /**
          * Gets a random unanswered question n from the list of unanswered questions
@@ -201,7 +201,7 @@ di.app = function() {
             var num_unanswered = questions.length;
             var index = self.random(num_unanswered);
             return questions[index];
-        }
+        };
 
         /**
          * Removed question n from the list of unanswered questions
@@ -214,7 +214,7 @@ di.app = function() {
                 questions.splice(index,1);
             }
             self.contact.extra.vip_unanswered = JSON.stringify(questions);
-        }
+        };
 
         /*
         * Sets value of answer + timestamp and remove question from unanswered list
@@ -223,7 +223,7 @@ di.app = function() {
             self.contact.extra["question" +n] = value;
             self.contact.extra["it_question" +n] = self.get_date_string();
             self.set_answered(n);
-        }
+        };
 
         /*
         * If all questions have been answered then go to the menu
@@ -239,11 +239,11 @@ di.app = function() {
             } else {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
             }
-        }
+        };
 
         self.is_answered = function(n) {
             return self.exists(self.contact.extra("question"+n ));
-        }
+        };
 
 
         self.states.add('states:start',function(name) {
@@ -337,7 +337,7 @@ di.app = function() {
             return self.im.contacts.save(self.contact).then(function() {
                 return new BookletState(name, {
                     pages: terms.length,
-                    page_text: function(n) {return terms[n]},
+                    page_text: function(n) {return terms[n];},
                     buttons: {"1": -1, "2": +1, "3": "exit"},
                     footer_text: "\n1. Prev 2. Next 3. Exit",
                     next: 'states:registration:tandc'
@@ -434,7 +434,7 @@ di.app = function() {
                 .then(function() {
                     return self.get_next_quiz_state();
                 });
-        }
+        };
 
         self.states.add('states:quiz:vip:question1',function(name) {
             return new ChoiceState(name, {
@@ -799,7 +799,7 @@ di.app = function() {
             var about = self.get_about();
             return new BookletState(name, {
                 pages: about.length,
-                page_text: function(n) {return about[n]},
+                page_text: function(n) {return about[n];},
                 buttons: {"1": -1, "2": +1, "3": "exit"},
                 footer_text: "\n1. Prev 2. Next 3. Exit",
                 next: 'states:menu'
