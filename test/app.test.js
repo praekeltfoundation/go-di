@@ -1282,7 +1282,7 @@ describe("app", function() {
             });
 
             describe("when user selects which a location from the list",function() {
-                it("should post their report to ushahidi",function() {
+                beforeEach(function() {
                     app.get_date = function() {
                         var d = new Date(2014,2,16);
                         d.setHours(0,0,0,0);
@@ -1315,7 +1315,11 @@ describe("app", function() {
                                 ]
                             }
                         })
-                        .input("1")
+                        .input("1");
+                });
+
+                it("should post their report to ushahidi",function() {
+                   return tester
                         .check(function(api) {
                             var req = api.http.requests[0];
                             //.log(req);
@@ -1337,6 +1341,34 @@ describe("app", function() {
                                 "location_name=21%20Conduit%20Street%2C%20Sandton%202191%2C%20South%20Africa"
                             ].join('&'));
 
+                        }).run();
+                });
+
+                it("should take them to the submit report thank you state",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:report:end',
+                            reply: [
+                                'Thank you for your report! Keep up the reporting',
+                                '& you may have a chance to be chosen as an official',
+                                'election day reporter where you can earn airtime or cash',
+                                'for your contribution.'
+                            ].join(" ")
+                        }).run();
+                });
+
+                it("should fire a 'total.reports' metric",function() {
+                    return tester
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_app;
+                            assert.deepEqual(metrics['total.reports'].values, [1]);
+                        }).run();
+                });
+
+                it("should incr 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.kv.store['total.reports'], 1);
                         }).run();
                 });
             });

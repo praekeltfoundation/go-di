@@ -123,9 +123,11 @@ di.app = function() {
             self.contact.extra.vip_unanswered = JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]);
 
             //Fire metrics + increment kv store
-            return self.incr_kv('registered.participants',function(result) {
-                return self.im.metrics.fire.inc('registered.participants');
-            });
+            return self
+                .incr_kv('registered.participants')
+                .then(function(result) {
+                    return self.im.metrics.fire.inc('registered.participants');
+                });
         };
 
         /**
@@ -397,10 +399,8 @@ di.app = function() {
                 });
         };
 
-        self.incr_kv = function(name,func) {
-            return self.im
-                .api_request('kv.incr', {key: name})
-                .then(func);
+        self.incr_kv = function(name) {
+            return self.im.api_request('kv.incr', {key: name});
         };
 
         self.get_metrics = function() {
@@ -737,7 +737,6 @@ di.app = function() {
                             date:  self.get_date()
                         })
                         .then(function(resp) {
-                            self.im.metrics.fire.inc('total_reports',1);
                             return {
                                 name:'states:report:end',
                                 creator_opts: {
@@ -750,17 +749,24 @@ di.app = function() {
         });
 
         self.states.add('states:report:end',function(name,opts) {
-            return new EndState(name, {
-                text: $([
-                    'Thank you for your report! Keep up the reporting',
-                    '& you may have a chance to be chosen as an official',
-                    'election day reporter where you can earn airtime or cash',
-                    'for your contribution.'
-                ].join(" ")),
-                next: function(content) {
-                    return "states:menu";
-                }
-            });
+            return self
+                .incr_kv('total.reports')
+                .then(function() {
+                    return self.im.metrics.fire.inc('total.reports');
+                })
+                .then(function() {
+                    return new EndState(name, {
+                        text: $([
+                            'Thank you for your report! Keep up the reporting',
+                            '& you may have a chance to be chosen as an official',
+                            'election day reporter where you can earn airtime or cash',
+                            'for your contribution.'
+                        ].join(" ")),
+                        next: function() {
+                            return 'states:menu';
+                        }
+                    });
+                });
         });
 
         self.states.add('states:results',function(name) {
