@@ -362,10 +362,17 @@ describe("app", function() {
         });
 
         describe("when the user selects accept and join",function() {
+            beforeEach(function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup(function(api) {
+                        api.kv.store['registered.participants'] = 3;
+                    })
+                    .setup.user.state('states:registration:tandc')
+                    .input('1');
+            });
             it("should register the user using contacts",function() {
                 return tester
-                    .setup.user.state('states:registration:tandc')
-                    .input('1')
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.is_registered,"true");
@@ -376,19 +383,21 @@ describe("app", function() {
 
             it("should fire a 'registered.participants' metric",function() {
                 return tester
-                    .setup.user.state('states:registration:tandc')
-                    .input('1')
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
                         assert.deepEqual(metrics['registered.participants'].values, [1]);
                     }).run();
             });
 
+            it("should increment 'registered.participants' kv store",function() {
+                return tester
+                    .check(function(api) {
+                        assert.equal(api.kv.store['registered.participants'], 4);
+                    }).run();
+            });
+
             it("should take the user to the ward address state", function() {
                 return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:registration:tandc')
-                    .input('1')
                     .check.interaction({
                         state:'states:address',
                         reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
@@ -1373,7 +1382,6 @@ describe("app", function() {
                     .setup.user.state('states:quiz:vip:continue')
                     .input('1')
                     .check.user.state(function(state){
-
                         var question_num = get_question_number(state) ;
                         assert.equal(_.contains(unanswered,question_num),true);
                     }).run();
@@ -1406,8 +1414,83 @@ describe("app", function() {
         });
 
         describe("when the user has answered a question", function() {
-            it("should fire a 'total.questions' metric",function() {
 
+            describe("if it was the last question",function() {
+                beforeEach(function() {
+                    var unanswered = [6];
+                    return tester
+                        .setup( function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273465',
+                                extra : {
+                                    is_registered: 'true',
+                                    vip_unanswered: JSON.stringify(unanswered),
+                                    register_sms_sent: 'true'
+                                }
+                            });
+                        })
+                        .setup.user.addr("+273465")
+                        .setup.user.state('states:quiz:vip:question6')
+                        .input('1');
+                });
+
+                it("should return them to the main menu",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:menu'
+                        }).run();
+                });
+
+                it("should fire a 'total.quiz.complete' metric",function() {
+                    return tester
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_app;
+                            assert.deepEqual(metrics['total.quiz.complete'].values, [1]);
+                        }).run();
+                });
+            });
+
+            it("should fire a 'total.questions' metric",function() {
+                var unanswered = [1,2,5,6,7,8];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['total.questions'].values, [1]);
+                    }).run();
+            });
+
+            it("should increment 'total.questions' kv store",function() {
+                var unanswered = [1,2,5,6,7,8];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check(function(api) {
+                        assert.equal(api.kv.store['total.questions'], 1);
+                    }).run();
             });
 
             it("should take them to a random unanswered question",function() {
