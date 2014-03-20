@@ -10,7 +10,7 @@ di.ushahidi = function() {
     var UshahidiApi = HttpApi.extend(function(self, im, opts) {
 
         opts = _.defaults(opts || {}, {headers: {}});
-        opts.headers['Content-Type'] = ['x-www-form-urlencoded'];
+        opts.headers['Content-Type'] = ['application/x-www-form-urlencoded'];
         HttpApi.call(self, im, opts);
 
         self.decode_response_body = function(body) {
