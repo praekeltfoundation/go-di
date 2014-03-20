@@ -1725,7 +1725,7 @@ describe("app", function() {
                         reply: "You are 1 of 3 citizens who are active " +
                                 "citizen election reporters! " +
                                 "4 questions and 5 election activity posts " +
-                                "have been submitted"
+                                "have been submitted. View results at www.url.com"
                     }).run();
            });
         });

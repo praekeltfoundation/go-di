@@ -761,7 +761,8 @@ di.app = function() {
                             questions.value,
                             'questions and',
                             reports.value,
-                            'election activity posts have been submitted'
+                            'election activity posts have been submitted.',
+                            'View results at www.url.com'
                         ].join(' '),
                         next: 'states:start'
                     });
