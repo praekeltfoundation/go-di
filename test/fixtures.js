@@ -425,7 +425,7 @@ module.exports = function() {
                 "headers": {
                     "Content-Type": ["x-www-form-urlencoded"]
                 },
-                "data": [
+                "body": [
                     "task=report",
                     "incident_title=test" ,
                     "incident_description=Party%20going%20door-to-door" ,
@@ -438,7 +438,7 @@ module.exports = function() {
                     "longitude=27.97532" ,
                     "location_name=21%20Conduit%20Street%2C%20Randburg%202188%2C%20South%20Africa"
                 ].join('&')
-            },
+            },//https://godi.crowdmap.com/api?task=report&incident_title=test&incident_description=description&incident_date=01%2F01%2F2010&incident_hour=8&incident_minute=10&incident_ampm=am&incident_category=1&latitude=-26.0253910197085&longitude=27.9766689802915&location_name=ZeroPoint
             "response" : {
                 "code": 200,
                 "body": JSON.stringify({ //This is ACTUALLY what a successful response looks like
