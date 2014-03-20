@@ -388,34 +388,11 @@ di.app = function() {
         };
 
         self.get_kv = function(name) {
-            return self.im
-                .api_request('kv.get', {key: name})
-                .then(function(questions) {
-                    if (questions.success) {
-                        return name.value;
-                    } else {
-                        return null;
-                    }
-                });
+            return self.im.api_request('kv.get', {key: name});
         };
 
         self.incr_kv = function(name) {
             return self.im.api_request('kv.incr', {key: name});
-        };
-
-        self.get_metrics = function() {
-            return Q.all([
-                    self.get_kv('total_registered'),
-                    self.get_kv('total_questions'),
-                    self.get_kv('total_reports')
-                ])
-                .spread(function(registered, questions, reports) {
-                    return {
-                        registered: registered,
-                        questions: questions,
-                        reports: reports
-                    };
-                }).done();
         };
 
         self.next_quiz = function(n,content) {
@@ -770,10 +747,25 @@ di.app = function() {
         });
 
         self.states.add('states:results',function(name) {
-            return new EndState(name, {
-                text: $('To be continued'),
-                next: 'states:start'
-            });
+                return Q.all([
+                    self.get_kv('registered.participants'),
+                    self.get_kv('total.questions'),
+                    self.get_kv('total.reports')
+                ])
+                .spread(function(registered, questions, reports) {
+                    return new EndState(name, {
+                        text: [
+                            'You are 1 of',
+                            registered.value,
+                            'citizens who are active citizen election reporters!',
+                            questions.value,
+                            'questions and',
+                            reports.value,
+                            'election activity posts have been submitted'
+                        ].join(' '),
+                        next: 'states:start'
+                    });
+                });
         });
 
         self.get_about = function() {

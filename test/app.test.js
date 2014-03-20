@@ -1710,13 +1710,22 @@ describe("app", function() {
         });
 
         describe("when the user selects View results from the main menu",function() {
-           it("should take them to view the results",function() {
+           it.only("should take them to view the results",function() {
                 return tester
                     .setup.user.addr("+273123")
+                    .setup(function(api) {
+                        api.kv.store['registered.participants'] = 3;
+                        api.kv.store['total.questions'] = 4;
+                        api.kv.store['total.reports'] = 5;
+                    })
                     .setup.user.state("states:menu")
                     .input("3")
                     .check.interaction({
-                        state: "states:results"
+                        state: "states:results",
+                        reply: "You are 1 of 3 citizens who are active " +
+                                "citizen election reporters! " +
+                                "4 questions and 5 election activity posts " +
+                                "have been submitted"
                     }).run();
            });
         });
