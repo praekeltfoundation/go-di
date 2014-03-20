@@ -46,7 +46,6 @@ describe("app", function() {
                         }
                     });
                 });
-
         });
 
         describe("when a session is terminated", function() {
@@ -156,6 +155,24 @@ describe("app", function() {
         });
 
         describe("when the user starts a session",function() {
+            it("should fire a 'total.visits' metric",function() {
+               return tester
+                   .start()
+                   .check(function(api) {
+                       var metrics = api.metrics.stores.test_app;
+                       assert.deepEqual(metrics['total.visits'].values, [1]);
+                   }).run();
+            });
+
+            it("should fire a 'avg.visits' metric",function() {
+                return tester
+                    .start()
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['avg.visits'].values, [1]);
+                    }).run();
+            });
+
             describe('if they are registered',function() {
                 describe('if they have not filled in their address before',function() {
                     it("should tell take them to fill in address",function() {
@@ -346,7 +363,6 @@ describe("app", function() {
 
         describe("when the user selects accept and join",function() {
             it("should register the user using contacts",function() {
-
                 return tester
                     .setup.user.state('states:registration:tandc')
                     .input('1')
@@ -356,6 +372,16 @@ describe("app", function() {
                         assert.equal(contact.extra.vip_unanswered,"[1,2,3,4,5,6,7,8,9,10,11,12]");
                     }).run();
 
+            });
+
+            it("should fire a 'registered.participants' metric",function() {
+                return tester
+                    .setup.user.state('states:registration:tandc')
+                    .input('1')
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['registered.participants'].values, [1]);
+                    }).run();
             });
 
             it("should take the user to the ward address state", function() {
@@ -550,7 +576,7 @@ describe("app", function() {
                 });
             });
 
-            it.only("should go to the first page",function(){
+            it("should go to the first page",function(){
                 return tester
                     .setup.user.addr('+273123')
                     .input("5")
@@ -1380,6 +1406,10 @@ describe("app", function() {
         });
 
         describe("when the user has answered a question", function() {
+            it("should fire a 'total.questions' metric",function() {
+
+            });
+
             it("should take them to a random unanswered question",function() {
                 var unanswered = [1,2,5,6,7,8];
                 return tester
@@ -1402,9 +1432,7 @@ describe("app", function() {
                         assert.notEqual(question_num,6);
                     }).run();
             });
-        });
 
-        describe("when the user has answered a question", function() {
             it("should remove the question from the unanswered list",function() {
                 return tester
                     .setup.user.addr("+273123")
@@ -1567,7 +1595,7 @@ describe("app", function() {
         });
 
         describe("when the user selects View results from the main menu",function() {
-           it.only("should take them to view the results",function() {
+           it("should take them to view the results",function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state("states:menu")

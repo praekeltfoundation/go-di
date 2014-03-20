@@ -1,5 +1,6 @@
 di.app = function() {
     var vumigo = require('vumigo_v02');
+    var Q = require('q');
     var _ = require('lodash');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
@@ -11,7 +12,6 @@ di.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var UshahidiApi = di.ushahidi.UshahidiApi;
-    var MetricStore = vumigo.MetricStore;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
@@ -47,7 +47,13 @@ di.app = function() {
         self.init = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
-            self.metricstore = new MetricStore(self.im);
+
+            self.im.on('session:new',function() {
+                return Q.all([
+                    self.im.metrics.fire.inc("total.visits"),
+                    self.im.metrics.fire.avg("avg.visits",1)
+                ]);
+            });
 
             self.im.on('session:close', function(e) {
                 if (!self.should_send_dialback(e)) { return; }
@@ -107,12 +113,19 @@ di.app = function() {
         };
 
         /*
-        * When users are registered, a list of unanswered questions is generated.
+        * When users are registered:
+        * set as registered.
+        * a list of unanswered questions is generated.
+        * kv + metrics are fired
         * */
         self.register = function() {
             self.contact.extra.is_registered = 'true';
             self.contact.extra.vip_unanswered = JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]);
-            self.metricstore.fire.inc('registered_participants');
+
+            //Fire metrics + increment kv store
+            return self.incr_kv('registered.participants',function(result) {
+                return self.im.metrics.fire.inc('registered.participants');
+            });
         };
 
         /**
@@ -124,6 +137,14 @@ di.app = function() {
             var num_unanswered = questions.length;
             var index = self.random(num_unanswered);
             return questions[index];
+        };
+
+        /**
+         * Get's quiz completion
+         * */
+        self.is_quiz_complete = function() {
+            var questions = JSON.parse(self.contact.extra.vip_unanswered);
+            return (questions.length === 0);
         };
 
         /**
@@ -146,6 +167,7 @@ di.app = function() {
             self.contact.extra["question" +n] = value;
             self.contact.extra["it_question" +n] = self.get_date_string();
             self.set_answered(n);
+            return self.im.contacts.save(self.contact);
         };
 
         /*
@@ -157,6 +179,7 @@ di.app = function() {
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
             var answered = num_questions - unanswered.length;
             if (answered === 12) {
+                //self.im.metrics.fire.inc('total_quiz_completed');
                 return 'states:menu';
             } else if ((answered == 4 || answered == 8) && !self.is(from_continue)) {
                 return 'states:quiz:vip:continue';
@@ -232,10 +255,12 @@ di.app = function() {
 
         //Registers the user and saves then redirects to the address state.
         self.states.add('states:registration:accept',function(name){
-            self.register();
-            return self.im.contacts.save(self.contact).then(function() {
-                return self.states.create('states:address');
-            });
+            return self.register()
+                .then(function(result) {
+                    return self.im.contacts.save(self.contact).then(function() {
+                        return self.states.create('states:address');
+                    });
+                });
         });
 
         self.get_terms = function() {
@@ -346,10 +371,60 @@ di.app = function() {
             });
         });
 
-        self.next_quiz = function(n,content) {
-            self.answer(n,content.value);
+        self.incr_quiz_metrics = function() {
+            //Increment total.questions: kv store + metric
+            var promise =  self.incr_kv('total.questions').then(function(result) {
+                return self.im.metrics.fire.inc('total.questions');
+            });
+
+            //Check if all questions have been answered and increment total quiz's completed
+            if (self.is_quiz_complete()) {
+                promise.then(function(result) {
+                    return self.im.metrics.fire.inc('total.quiz.complete');
+                });
+            }
+            return promise;
+        };
+
+        self.get_kv = function(name) {
             return self.im
-                .contacts.save(self.contact)
+                .api_request('kv.get', {key: name})
+                .then(function(questions) {
+                    if (questions.success) {
+                        return name.value;
+                    } else {
+                        return null;
+                    }
+                });
+        };
+
+        self.incr_kv = function(name,func) {
+            return self.im
+                .api_request('kv.incr', {key: name})
+                .then(func);
+        };
+
+        self.get_metrics = function() {
+            return Q.all([
+                    self.get_kv('total_registered'),
+                    self.get_kv('total_questions'),
+                    self.get_kv('total_reports')
+                ])
+                .spread(function(registered, questions, reports) {
+                    return {
+                        registered: registered,
+                        questions: questions,
+                        reports: reports
+                    };
+                }).done();
+        };
+
+        self.next_quiz = function(n,content) {
+            return self
+                .answer(n,content.value)
+                .then(function() {
+                    return self.incr_quiz_metrics();
+                })
                 .then(function() {
                     return self.get_next_quiz_state();
                 });
@@ -663,8 +738,7 @@ di.app = function() {
                             date:  self.get_date()
                         })
                         .then(function(resp) {
-
-                            //get correct result + pass to ushahidi state.
+                            self.im.metrics.fire.inc('total_reports',1);
                             return {
                                 name:'states:report:end',
                                 creator_opts: {
@@ -691,10 +765,6 @@ di.app = function() {
         });
 
         self.states.add('states:results',function(name) {
-            self.im.api_request('kv.handle_count_inbound_uniques').
-                then(function(reply) {
-                    console.log(reply.count);
-                });
             return new EndState(name, {
                 text: $('To be continued'),
                 next: 'states:start'
