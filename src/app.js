@@ -315,7 +315,11 @@ di.app = function() {
                 check: function(content) {
                     return self
                         .http.get('http://wards.code4sa.org/',{
-                            params: {address: content}
+                            params: {
+                                address: content,
+                                database: 'vd_2014'
+                            }
+
                         })
                         .then(function(resp) {
                             response = resp;
@@ -349,9 +353,10 @@ di.app = function() {
                 characters_per_page: 180,
                 options_per_page: 3,
                 next: function(choice) {
-                    self.contact.extra.ward = opts.address_options[choice.value-1].ward;
+                    var index = choice.value-1;
+                    self.contact.extra.ward = opts.address_options[index].ward;
+                    self.contact.extra.voting_district = opts.address_options[index].voting_district;
                     self.contact.extra.it_ward = self.get_date_string();
-
                     return self.im.contacts.save(self.contact).then(function() {
                         return "states:menu";
                     });
