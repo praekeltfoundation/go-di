@@ -50,7 +50,7 @@ di.app = function() {
 
             self.im.on('session:new',function() {
                 return Q.all([
-                    self.im.metrics.fire.inc("total.visits"),
+                    self.im.metrics.fire.inc("sum.visits"),
                     self.im.metrics.fire.avg("avg.visits",1)
                 ]);
             });
@@ -126,7 +126,8 @@ di.app = function() {
             return self
                 .incr_kv('registered.participants')
                 .then(function(result) {
-                    return self.im.metrics.fire.inc('registered.participants');
+                    console.log(result);
+                    return self.im.metrics.fire.last('registered.participants',result.value);
                 });
         };
 
@@ -375,13 +376,13 @@ di.app = function() {
         self.incr_quiz_metrics = function() {
             //Increment total.questions: kv store + metric
             var promise =  self.incr_kv('total.questions').then(function(result) {
-                return self.im.metrics.fire.inc('total.questions');
+                return self.im.metrics.fire.last('total.questions',result.value);
             });
 
             //Check if all questions have been answered and increment total quiz's completed
             if (self.is_quiz_complete()) {
                 promise.then(function(result) {
-                    return self.im.metrics.fire.inc('total.quiz.complete');
+                    return self.im.metrics.fire.inc('quiz.complete');
                 });
             }
             return promise;
@@ -728,8 +729,8 @@ di.app = function() {
         self.states.add('states:report:end',function(name,opts) {
             return self
                 .incr_kv('total.reports')
-                .then(function() {
-                    return self.im.metrics.fire.inc('total.reports');
+                .then(function(results) {
+                    return self.im.metrics.fire.last('total.reports',results.value);
                 })
                 .then(function() {
                     return new EndState(name, {

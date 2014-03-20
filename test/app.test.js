@@ -155,20 +155,22 @@ describe("app", function() {
         });
 
         describe("when the user starts a session",function() {
-            it("should fire a 'total.visits' metric",function() {
+            it("should fire a 'visits' metric",function() {
                return tester
                    .start()
                    .check(function(api) {
                        var metrics = api.metrics.stores.test_app;
-                       assert.deepEqual(metrics['total.visits'].values, [1]);
+                       assert.deepEqual(metrics['sum.visits'].values, [1]);
+                       assert.deepEqual(metrics['avg.visits'].values, [1]);
                    }).run();
             });
 
-            it("should fire a 'avg.visits' metric",function() {
+            it("should fire a 'visits' metric",function() {
                 return tester
                     .start()
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['sum.visits'].values, [1]);
                         assert.deepEqual(metrics['avg.visits'].values, [1]);
                     }).run();
             });
@@ -378,14 +380,13 @@ describe("app", function() {
                         assert.equal(contact.extra.is_registered,"true");
                         assert.equal(contact.extra.vip_unanswered,"[1,2,3,4,5,6,7,8,9,10,11,12]");
                     }).run();
-
             });
 
             it("should fire a 'registered.participants' metric",function() {
                 return tester
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
-                        assert.deepEqual(metrics['registered.participants'].values, [1]);
+                        assert.deepEqual(metrics['registered.participants'].values, [4]);
                     }).run();
             });
 
@@ -1357,7 +1358,7 @@ describe("app", function() {
                         }).run();
                 });
 
-                it("should fire a 'total.reports' metric",function() {
+                it("should fire a 'reports' metric",function() {
                     return tester
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_app;
@@ -1473,16 +1474,16 @@ describe("app", function() {
                         }).run();
                 });
 
-                it("should fire a 'total.quiz.complete' metric",function() {
+                it("should fire a 'quiz.complete' metric",function() {
                     return tester
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_app;
-                            assert.deepEqual(metrics['total.quiz.complete'].values, [1]);
+                            assert.deepEqual(metrics['quiz.complete'].values, [1]);
                         }).run();
                 });
             });
 
-            it("should fire a 'total.questions' metric",function() {
+            it("should fire a 'questions' metric",function() {
                 var unanswered = [1,2,5,6,7,8];
                 return tester
                     .setup( function(api) {
@@ -1504,7 +1505,7 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should increment 'total.questions' kv store",function() {
+            it("should increment 'questions' kv store",function() {
                 var unanswered = [1,2,5,6,7,8];
                 return tester
                     .setup( function(api) {
@@ -1710,7 +1711,7 @@ describe("app", function() {
         });
 
         describe("when the user selects View results from the main menu",function() {
-           it.only("should take them to view the results",function() {
+           it("should take them to view the results",function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
