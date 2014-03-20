@@ -13,6 +13,7 @@ di.ushahidi = function() {
 
         opts = _.defaults(opts || {}, {headers: {}});
         opts.headers['Content-Type'] = ['application/x-www-form-urlencoded'];
+
         HttpApi.call(self, im, opts);
 
         self.decode_response_body = function(body) {
@@ -727,7 +728,7 @@ di.app = function() {
                 choices: choices,
                 characters_per_page: 180,
                 options_per_page: 3,
-                next: function(content) {
+                next: function(choice) {
                     return self.ushahidi
                         .post_report(self.im.config.ushahidi_map, {
                             task: "report",
@@ -736,7 +737,7 @@ di.app = function() {
                                 description: self.contact.extra.report_desc,
                                 category: self.contact.extra.report_type
                             },
-                            place: opts.address_options[content.value],
+                            place: opts.address_options[choice.value-1],
                             date:  self.get_date()
                         })
                         .then(function(resp) {

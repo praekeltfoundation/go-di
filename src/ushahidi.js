@@ -11,6 +11,7 @@ di.ushahidi = function() {
 
         opts = _.defaults(opts || {}, {headers: {}});
         opts.headers['Content-Type'] = ['application/x-www-form-urlencoded'];
+
         HttpApi.call(self, im, opts);
 
         self.decode_response_body = function(body) {

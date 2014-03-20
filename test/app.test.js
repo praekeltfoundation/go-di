@@ -1291,7 +1291,6 @@ describe("app", function() {
                         .input("1")
                         .check(function(api) {
                             var req = api.http.requests[0];
-                            //.log(req);
                             var url = req.url;
                             var body = req.body;
                             var date = encodeURIComponent( app.ushahidi.get_formatted_date(app.get_date()));
@@ -1305,9 +1304,9 @@ describe("app", function() {
                                 "incident_hour=0" ,
                                 "incident_minute=0" ,
                                 "incident_ampm=am" ,
-                                "latitude=-26.0701361" ,
-                                "longitude=27.9946541" ,
-                                "location_name=21%20Conduit%20Street%2C%20Sandton%202191%2C%20South%20Africa"
+                                "latitude=-26.02674" ,
+                                "longitude=27.97532" ,
+                                "location_name=21%20Conduit%20Street%2C%20Randburg%202188%2C%20South%20Africa"
                             ].join('&'));
 
                         }).run();
