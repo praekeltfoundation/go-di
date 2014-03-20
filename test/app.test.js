@@ -54,7 +54,6 @@ describe("app", function() {
                         }
                     });
                 });
-
         });
         
         describe("when a session is terminated", function() {
@@ -164,6 +163,26 @@ describe("app", function() {
         });
 
         describe("when the user starts a session",function() {
+            it("should fire a 'visits' metric",function() {
+               return tester
+                   .start()
+                   .check(function(api) {
+                       var metrics = api.metrics.stores.test_app;
+                       assert.deepEqual(metrics['sum.visits'].values, [1]);
+                       assert.deepEqual(metrics['avg.visits'].values, [1]);
+                   }).run();
+            });
+
+            it("should fire a 'visits' metric",function() {
+                return tester
+                    .start()
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['sum.visits'].values, [1]);
+                        assert.deepEqual(metrics['avg.visits'].values, [1]);
+                    }).run();
+            });
+
             describe('if they are registered',function() {
                 describe('if they have not filled in their address before',function() {
                     it("should tell take them to fill in address",function() {
@@ -353,24 +372,41 @@ describe("app", function() {
         });
 
         describe("when the user selects accept and join",function() {
-            it("should register the user using contacts",function() {
-
+            beforeEach(function() {
                 return tester
+                    .setup.user.addr("+273123")
+                    .setup(function(api) {
+                        api.kv.store['registered.participants'] = 3;
+                    })
                     .setup.user.state('states:registration:tandc')
-                    .input('1')
+                    .input('1');
+            });
+            it("should register the user using contacts",function() {
+                return tester
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.is_registered,"true");
                         assert.equal(contact.extra.vip_unanswered,"[1,2,3,4,5,6,7,8,9,10,11,12]");
                     }).run();
+            });
 
+            it("should fire a 'registered.participants' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['registered.participants'].values, [4]);
+                    }).run();
+            });
+
+            it("should increment 'registered.participants' kv store",function() {
+                return tester
+                    .check(function(api) {
+                        assert.equal(api.kv.store['registered.participants'], 4);
+                    }).run();
             });
 
             it("should take the user to the ward address state", function() {
                 return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:registration:tandc')
-                    .input('1')
                     .check.interaction({
                         state:'states:address',
                         reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
@@ -1255,7 +1291,7 @@ describe("app", function() {
             });
 
             describe("when user selects which a location from the list",function() {
-                it("should post their report to ushahidi",function() {
+                beforeEach(function() {
                     app.get_date = function() {
                         var d = new Date(2014,2,16);
                         d.setHours(0,0,0,0);
@@ -1288,7 +1324,11 @@ describe("app", function() {
                                 ]
                             }
                         })
-                        .input("1")
+                        .input("1");
+                });
+
+                it("should post their report to ushahidi",function() {
+                   return tester
                         .check(function(api) {
                             var req = api.http.requests[0];
                             var url = req.url;
@@ -1309,6 +1349,34 @@ describe("app", function() {
                                 "location_name=21%20Conduit%20Street%2C%20Randburg%202188%2C%20South%20Africa"
                             ].join('&'));
 
+                        }).run();
+                });
+
+                it("should take them to the submit report thank you state",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:report:end',
+                            reply: [
+                                'Thank you for your report! Keep up the reporting',
+                                '& you may have a chance to be chosen as an official',
+                                'election day reporter where you can earn airtime or cash',
+                                'for your contribution.'
+                            ].join(" ")
+                        }).run();
+                });
+
+                it("should fire a 'reports' metric",function() {
+                    return tester
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_app;
+                            assert.deepEqual(metrics['total.reports'].values, [1]);
+                        }).run();
+                });
+
+                it("should incr 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.kv.store['total.reports'], 1);
                         }).run();
                 });
             });
@@ -1354,7 +1422,6 @@ describe("app", function() {
                     .setup.user.state('states:quiz:vip:continue')
                     .input('1')
                     .check.user.state(function(state){
-
                         var question_num = get_question_number(state) ;
                         assert.equal(_.contains(unanswered,question_num),true);
                     }).run();
@@ -1387,6 +1454,85 @@ describe("app", function() {
         });
 
         describe("when the user has answered a question", function() {
+
+            describe("if it was the last question",function() {
+                beforeEach(function() {
+                    var unanswered = [6];
+                    return tester
+                        .setup( function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273465',
+                                extra : {
+                                    is_registered: 'true',
+                                    vip_unanswered: JSON.stringify(unanswered),
+                                    register_sms_sent: 'true'
+                                }
+                            });
+                        })
+                        .setup.user.addr("+273465")
+                        .setup.user.state('states:quiz:vip:question6')
+                        .input('1');
+                });
+
+                it("should return them to the main menu",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:menu'
+                        }).run();
+                });
+
+                it("should fire a 'quiz.complete' metric",function() {
+                    return tester
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_app;
+                            assert.deepEqual(metrics['quiz.complete'].values, [1]);
+                        }).run();
+                });
+            });
+
+            it("should fire a 'questions' metric",function() {
+                var unanswered = [1,2,5,6,7,8];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['total.questions'].values, [1]);
+                    }).run();
+            });
+
+            it("should increment 'questions' kv store",function() {
+                var unanswered = [1,2,5,6,7,8];
+                return tester
+                    .setup( function(api) {
+                        api.contacts.add( {
+                            msisdn: '+273465',
+                            extra : {
+                                is_registered: 'true',
+                                vip_unanswered: JSON.stringify(unanswered),
+                                register_sms_sent: 'true'
+                            }
+                        });
+                    })
+                    .setup.user.addr("+273465")
+                    .setup.user.state('states:quiz:vip:question6')
+                    .input('1')
+                    .check(function(api) {
+                        assert.equal(api.kv.store['total.questions'], 1);
+                    }).run();
+            });
+
             it("should take them to a random unanswered question",function() {
                 var unanswered = [1,2,5,6,7,8];
                 return tester
@@ -1409,9 +1555,7 @@ describe("app", function() {
                         assert.notEqual(question_num,6);
                     }).run();
             });
-        });
 
-        describe("when the user has answered a question", function() {
             it("should remove the question from the unanswered list",function() {
                 return tester
                     .setup.user.addr("+273123")
@@ -1571,6 +1715,44 @@ describe("app", function() {
                         state: "states:menu"
                     }).run();
             });
+        });
+
+        describe("when the user selects View results from the main menu",function() {
+           it("should take them to view the results",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup(function(api) {
+                        api.kv.store['registered.participants'] = 3;
+                        api.kv.store['total.questions'] = 4;
+                        api.kv.store['total.reports'] = 5;
+                    })
+                    .setup.user.state("states:menu")
+                    .input("3")
+                    .check.interaction({
+                        state: "states:results",
+                        reply: "You are 1 of 3 citizens who are active " +
+                                "citizen election reporters! " +
+                                "4 questions and 5 election activity posts " +
+                                "have been submitted. View results at www.url.com"
+                    }).run();
+           });
+
+            describe("if the the kv store value has not been set yet",function() {
+                it("should default the values to 0",function() {
+                    return tester
+                        .setup.user.addr("+273123")
+                        .setup.user.state("states:menu")
+                        .input("3")
+                        .check.interaction({
+                            state: "states:results",
+                            reply: "You are 1 of 0 citizens who are active " +
+                                "citizen election reporters! " +
+                                "0 questions and 0 election activity posts " +
+                                "have been submitted. View results at www.url.com"
+                        }).run();
+                });
+            });
+
         });
     });
 });
