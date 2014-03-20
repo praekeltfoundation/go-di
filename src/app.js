@@ -126,7 +126,6 @@ di.app = function() {
             return self
                 .incr_kv('registered.participants')
                 .then(function(result) {
-                    console.log(result);
                     return self.im.metrics.fire.last('registered.participants',result.value);
                 });
         };
