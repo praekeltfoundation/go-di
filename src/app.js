@@ -179,7 +179,6 @@ di.app = function() {
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
             var answered = num_questions - unanswered.length;
             if (answered === 12) {
-                //self.im.metrics.fire.inc('total_quiz_completed');
                 return 'states:menu';
             } else if ((answered == 4 || answered == 8) && !self.is(from_continue)) {
                 return 'states:quiz:vip:continue';
