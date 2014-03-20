@@ -1729,6 +1729,23 @@ describe("app", function() {
                                 "have been submitted. View results at www.url.com"
                     }).run();
            });
+
+            describe("if the the kv store value has not been set yet",function() {
+                it("should default the values to 0",function() {
+                    return tester
+                        .setup.user.addr("+273123")
+                        .setup.user.state("states:menu")
+                        .input("3")
+                        .check.interaction({
+                            state: "states:results",
+                            reply: "You are 1 of 0 citizens who are active " +
+                                "citizen election reporters! " +
+                                "0 questions and 0 election activity posts " +
+                                "have been submitted. View results at www.url.com"
+                        }).run();
+                });
+            });
+
         });
     });
 });

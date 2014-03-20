@@ -380,7 +380,7 @@ di.app = function() {
 
             //Check if all questions have been answered and increment total quiz's completed
             if (self.is_quiz_complete()) {
-                promise.then(function(result) {
+                promise = promise.then(function(result) {
                     return self.im.metrics.fire.inc('quiz.complete');
                 });
             }
@@ -756,11 +756,11 @@ di.app = function() {
                     return new EndState(name, {
                         text: [
                             'You are 1 of',
-                            registered.value,
+                            registered.value || 0,
                             'citizens who are active citizen election reporters!',
-                            questions.value,
+                            questions.value || 0,
                             'questions and',
-                            reports.value,
+                            reports.value || 0,
                             'election activity posts have been submitted.',
                             'View results at www.url.com'
                         ].join(' '),
