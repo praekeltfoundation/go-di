@@ -132,9 +132,13 @@ di.app = function() {
             self.im.on('session:new',function() {
                 return Q.all([
                     self.im.metrics.fire.inc("sum.visits"),
-                    self.im.metrics.fire.avg("avg.visits",1),
-                    self.get_unique_users()
+                    self.im.metrics.fire.avg("avg.visits",1)
                 ]);
+            });
+
+            self.im.on('user:new',function() {
+                console.log("here!");
+                return self.im.metrics.fire.inc("unique.participants");
             });
 
             self.im.on('session:close', function(e) {
@@ -269,14 +273,6 @@ di.app = function() {
             } else {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
             }
-        };
-
-        self.get_unique_users = function() {
-            return self.im
-                .api_request('messagestore.count_inbound_uniques',{})
-                .then(function(result) {
-                    return self.im.metrics.fire.last('unique.participants',result.count);
-                });
         };
 
         self.states.add('states:start',function(name) {
