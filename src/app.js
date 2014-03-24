@@ -12,15 +12,23 @@ di.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var UshahidiApi = di.ushahidi.UshahidiApi;
-    var AppStates = vumigo.states.AppStates;
+    var AppStates = vumigo.app.AppStates;
 
-    var QuizStates = AppStates.extend(function(self, app, name) {
+    var QuizStates = AppStates.extend(function(self,app,name,next) {
         AppStates.call(self, app);
+        self.name = name;
+        self.next = next;
+
+        var is_valid = function(state) {
+            return _.contains(state,self.name)  //quiz name
+                && state!=self.next             //filter next state
+                && !_.contains(state,'begin');  //filter begin state
+        };
 
         self.filter = function(names) {
-            //filter via quiz
+            //filter via quiz name
             var quiz = _.filter(names,function(state) {
-                _.contains(state,self.name);
+                return is_valid(state);
             });
 
             //Return unanswered questions.
@@ -42,6 +50,10 @@ di.app = function() {
         App.call(self, 'states:start');
         var $ = self.$;
         var num_questions = 12;
+
+        self.quizzes = {};
+        self.quizzes.vip = new QuizStates(self);
+        self.quizzes.whatsup = new QuizStates(self);
 
         self.get_date = function() {
             return new Date();
@@ -213,6 +225,7 @@ di.app = function() {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
             }
         };
+
 
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
@@ -426,15 +439,20 @@ di.app = function() {
         };
 
         self.next_quiz = function(n,content) {
-            return self
+            return 'states:quiz:begin';
+            /*return self
                 .answer(n,content.value)
                 .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
                     return self.get_next_quiz_state();
-                });
+                });*/
         };
+
+        self.states.add('states:quiz:begin',function(name) {
+            return self.quizzes.vip.create.random(opts);
+        });
 
         self.states.add('states:quiz:vip:question1',function(name) {
             return new ChoiceState(name, {
