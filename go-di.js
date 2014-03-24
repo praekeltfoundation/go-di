@@ -132,7 +132,8 @@ di.app = function() {
             self.im.on('session:new',function() {
                 return Q.all([
                     self.im.metrics.fire.inc("sum.visits"),
-                    self.im.metrics.fire.avg("avg.visits",1)
+                    self.im.metrics.fire.avg("avg.visits",1),
+                    self.get_unique_users()
                 ]);
             });
 
@@ -270,6 +271,14 @@ di.app = function() {
             }
         };
 
+        self.get_unique_users = function() {
+            return self.im
+                .api_request('messagestore.count_inbound_uniques',{})
+                .then(function(result) {
+                    return self.im.metrics.fire.last('unique.participants',result.count);
+                });
+        };
+
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
                 return self.states.create('states:register');
@@ -396,7 +405,11 @@ di.app = function() {
                 check: function(content) {
                     return self
                         .http.get('http://wards.code4sa.org/',{
-                            params: {address: content}
+                            params: {
+                                address: content,
+                                database: 'vd_2014'
+                            }
+
                         })
                         .then(function(resp) {
                             response = resp;
@@ -430,9 +443,10 @@ di.app = function() {
                 characters_per_page: 180,
                 options_per_page: 3,
                 next: function(choice) {
-                    self.contact.extra.ward = opts.address_options[choice.value-1].ward;
+                    var index = choice.value-1;
+                    self.contact.extra.ward = opts.address_options[index].ward;
+                    self.contact.extra.voting_district = opts.address_options[index].voting_district;
                     self.contact.extra.it_ward = self.get_date_string();
-
                     return self.im.contacts.save(self.contact).then(function() {
                         return "states:menu";
                     });

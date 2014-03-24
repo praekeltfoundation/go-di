@@ -183,6 +183,19 @@ describe("app", function() {
                     }).run();
             });
 
+            it.only("should fire a 'unique.participants' metric",function() {
+               return tester
+                   .setup.user.addr('+273123')
+                   .setup(function(api) {
+                       api.messagestore.inbound_uniques = 42;
+                   })
+                   .start()
+                   .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                       assert.deepEqual(metrics['unique.participants'].values,[42]);
+                   }).run();
+            });
+
             describe('if they are registered',function() {
                 describe('if they have not filled in their address before',function() {
                     it("should tell take them to fill in address",function() {
