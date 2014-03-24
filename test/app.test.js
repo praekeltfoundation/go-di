@@ -183,16 +183,13 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should fire a 'unique.participants' metric",function() {
+            it.only("should fire a 'unique.participants' metric",function() {
                return tester
-                   .setup.user.addr('+273123')
-                   .setup(function(api) {
-                       api.messagestore.inbound_uniques = 42;
-                   })
+                   .setup.user.addr('+273000')
                    .start()
                    .check(function(api) {
-                        var metrics = api.metrics.stores.test_app;
-                       assert.deepEqual(metrics['unique.participants'].values,[42]);
+                       var metrics = api.metrics.stores.test_app;
+                       assert.deepEqual(metrics['unique.participants'].values,[1]);
                    }).run();
             });
 
