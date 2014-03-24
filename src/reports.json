@@ -1,0 +1,82 @@
+{
+    "layout": [
+        {
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Registered Participants",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "registered.participants",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Answered Questions",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "total.questions",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Quizzes Completed",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "quiz.complete",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Average visits per user",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "avg.visits",
+                "aggregator": "avg"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Average visits per user",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "sum.visits",
+                "aggregator": "sum"
+            }
+        },
+        {
+            "type": "diamondash.widgets.graph.GraphWidget",
+            "name": "Total Users and Total Registrations per Week",
+            "width": 12,
+            "time_range": "1d",
+            "bucket_size": "1h",
+            "metrics": [
+                {
+                    "name": "Total Users",
+                    "target": {
+                        "metric_type": "account",
+                        "store": "di_test_app",
+                        "name": "unique.participants",
+                        "aggregator": "last"
+                    }
+                },
+                {
+                    "name": "Total Registrations",
+                    "target": {
+                        "metric_type": "account",
+                        "store": "di_test_app",
+                        "name": "registered.participants",
+                        "aggregator": "last"
+                    }
+                }
+            ]
+        }
+    ]
+}
