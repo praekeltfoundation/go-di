@@ -12,6 +12,31 @@ di.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var UshahidiApi = di.ushahidi.UshahidiApi;
+    var AppStates = vumigo.states.AppStates;
+
+    var QuizStates = AppStates.extend(function(self, app, name) {
+        AppStates.call(self, app);
+
+        self.filter = function(names) {
+            //filter via quiz
+            var quiz = _.filter(names,function(state) {
+                _.contains(state,self.name);
+            });
+
+            //Return unanswered questions.
+            return _.difference(quiz,app.im.user.answers);
+        };
+
+        self.random_quiz_name = function() {
+            var names = _.keys(self.creators);
+            var unanswered = self.filter(names);
+            return unanswered[_.random(unanswered.length)];
+        };
+
+        self.create.random = function(opts) {
+            return self.create(self.random_quiz_name(), opts);
+        };
+    });
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
