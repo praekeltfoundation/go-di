@@ -55,7 +55,7 @@ di.app = function() {
                 ]);
             });
 
-            self.im.on('user:new',function() {
+            self.im.user.on('user:new',function() {
                 return self.im.metrics.fire.inc("unique.participants");
             });
 
