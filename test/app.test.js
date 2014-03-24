@@ -183,7 +183,7 @@ describe("app", function() {
                     }).run();
             });
 
-            it.only("should fire a 'unique.participants' metric",function() {
+            it("should fire a 'unique.participants' metric",function() {
                return tester
                    .setup.user.addr('+273123')
                    .setup(function(api) {
