@@ -183,14 +183,16 @@ describe("app", function() {
                     }).run();
             });
 
-            it.only("should fire a 'unique.participants' metric",function() {
-               return tester
-                   .setup.user.addr('+273000')
-                   .start()
-                   .check(function(api) {
-                       var metrics = api.metrics.stores.test_app;
-                       assert.deepEqual(metrics['unique.participants'].values,[1]);
-                   }).run();
+            describe('if it is their first visit',function() {
+                it.skip("should fire a 'unique.participants' metric",function() {
+                    return tester
+                        .setup.user.addr('+273000')
+                        .start()
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_app;
+                            assert.deepEqual(metrics['unique.participants'].values,[1]);
+                        }).run();
+                });
             });
 
             describe('if they are registered',function() {

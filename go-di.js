@@ -136,7 +136,7 @@ di.app = function() {
                 ]);
             });
 
-            self.im.user.on('user:reset',function() {
+            self.im.user.on('user:new',function() {
                 return self.im.metrics.fire.inc("unique.participants");
             });
 
