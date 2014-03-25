@@ -33,6 +33,16 @@
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
             "time_range": "1d",
+            "name": "Total Reports Sent",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "total.reports",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
             "name": "Average visits per user",
             "target": {
                 "metric_type": "account",
