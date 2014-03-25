@@ -14,16 +14,26 @@ di.app = function() {
     var UshahidiApi = di.ushahidi.UshahidiApi;
     var AppStates = vumigo.app.AppStates;
 
-    var QuizStates = AppStates.extend(function(self,app,name,next) {
+    /**
+     * Does randomization of quizzes.
+     * Requires a next state to be defined.
+     * Requires a continue state.
+     * */
+    var QuizStates = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
-        self.name = name;
-        self.next = next;
+
+        self.count = 0;
+        self.name = opts.name;
+        self.next = opts.next;
+        self.num_questions = opts.num_questions;
+        self.continue_interval = opts.continue_interval;
+        self.continue = opts.continue;
 
         var is_valid = function(state) {
             return _.contains(state,self.name)      //quiz name - filters out __start__ & __end__
                 && !_.contains(state,'begin')       //Filter begin state, if its included
-                && !_.contains(state,'continue')   //Filter continue state
-                && !_.contains(state,'end');   //Filter end state
+                && !_.contains(state,'continue')    //Filter continue state
+                && !_.contains(state,'end');        //Filter end state
         };
 
         /**
@@ -44,10 +54,22 @@ di.app = function() {
             var names = _.keys(self.creators);
             var unanswered = self.filter(names);
             var index = self.random(unanswered.length);
+            self.count++;
             return unanswered[index] || self.next ;
         };
 
+        self.create_continue = function() {
+            return (
+                self.count > 0
+                && self.count < self.num_questions
+                && (self.count % self.continue_interval) === 0
+            );
+        };
+
         self.create.random = function(opts) {
+            if (self.create_continue()) {
+                return self.create(self.continue,opts);
+            }
             return self.create(self.random_quiz_name(), opts);
         };
     });
@@ -55,10 +77,15 @@ di.app = function() {
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
-       //var num_questions = 12;
 
         self.quizzes = {};
-        self.quizzes.vip = new QuizStates(self,'vip','states:quiz:vip:end');
+        self.quizzes.vip = new QuizStates(self,{
+            name:'vip',
+            next:'states:quiz:vip:end',
+            num_questions: 12,
+            continue: 'states:quiz:vip:continue',
+            continue_interval: 4
+        });
 
         self.get_date = function() {
             return new Date();
