@@ -25,6 +25,13 @@ di.app = function() {
                 && !_.contains(state,'begin');  //filter begin state
         };
 
+        /**
+         * Random function: To enable easy deterministic testing.
+         * */
+        self.random = function(n) {
+            return _.random(n);
+        };
+
         self.filter = function(names) {
             //filter via quiz name
             var quiz = _.filter(names,function(state) {
@@ -38,7 +45,7 @@ di.app = function() {
         self.random_quiz_name = function() {
             var names = _.keys(self.creators);
             var unanswered = self.filter(names);
-            return unanswered[_.random(unanswered.length)];
+            return unanswered[self.random(unanswered.length)] || self.next ;
         };
 
         self.create.random = function(opts) {
@@ -49,11 +56,10 @@ di.app = function() {
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
-        var num_questions = 12;
+       //var num_questions = 12;
 
         self.quizzes = {};
-        self.quizzes.vip = new QuizStates(self);
-        self.quizzes.whatsup = new QuizStates(self);
+        self.quizzes.vip = new QuizStates(self,'vip','states:quiz:vip:');
 
         self.get_date = function() {
             return new Date();
@@ -215,6 +221,7 @@ di.app = function() {
         * Else return an unanswered question.
         * */
         self.get_next_quiz_state = function(from_continue) {
+            return 'states:quiz:begin';/*
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
             var answered = num_questions - unanswered.length;
             if (answered === 12) {
@@ -223,7 +230,7 @@ di.app = function() {
                 return 'states:quiz:vip:continue';
             } else {
                 return 'states:quiz:vip:question' + self.get_unanswered_question();
-            }
+            }*/
         };
 
 
@@ -439,15 +446,14 @@ di.app = function() {
         };
 
         self.next_quiz = function(n,content) {
-            return 'states:quiz:begin';
-            /*return self
+            return self
                 .answer(n,content.value)
                 .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
                     return self.get_next_quiz_state();
-                });*/
+                });
         };
 
         self.states.add('states:quiz:begin',function(name) {
