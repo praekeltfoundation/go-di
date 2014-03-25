@@ -20,9 +20,10 @@ di.app = function() {
         self.next = next;
 
         var is_valid = function(state) {
-            return _.contains(state,self.name)  //quiz name
-                && state!=self.next             //filter next state
-                && !_.contains(state,'begin');  //filter begin state
+            return _.contains(state,self.name)      //quiz name - filters out __start__ & __end__
+                && !_.contains(state,'begin')       //Filter begin state, if its included
+                && !_.contains(state,'continue')   //Filter continue state
+                && !_.contains(state,'end');   //Filter end state
         };
 
         /**
@@ -33,19 +34,17 @@ di.app = function() {
         };
 
         self.filter = function(names) {
-            //filter via quiz name
-            var quiz = _.filter(names,function(state) {
-                return is_valid(state);
+            return _.filter(names,function(state) {
+                return is_valid(state)
+                    && !_.has(app.im.user.answers,state);
             });
-
-            //Return unanswered questions.
-            return _.difference(quiz,app.im.user.answers);
         };
 
         self.random_quiz_name = function() {
             var names = _.keys(self.creators);
             var unanswered = self.filter(names);
-            return unanswered[self.random(unanswered.length)] || self.next ;
+            var index = self.random(unanswered.length);
+            return unanswered[index] || self.next ;
         };
 
         self.create.random = function(opts) {
@@ -59,7 +58,7 @@ di.app = function() {
        //var num_questions = 12;
 
         self.quizzes = {};
-        self.quizzes.vip = new QuizStates(self,'vip','states:quiz:vip:');
+        self.quizzes.vip = new QuizStates(self,'vip','states:quiz:vip:end');
 
         self.get_date = function() {
             return new Date();
@@ -221,7 +220,7 @@ di.app = function() {
         * Else return an unanswered question.
         * */
         self.get_next_quiz_state = function(from_continue) {
-            return 'states:quiz:begin';/*
+            return 'states:quiz:vip:begin';/*
             var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
             var answered = num_questions - unanswered.length;
             if (answered === 12) {
@@ -456,11 +455,11 @@ di.app = function() {
                 });
         };
 
-        self.states.add('states:quiz:begin',function(name) {
-            return self.quizzes.vip.create.random(opts);
+        self.states.add('states:quiz:vip:begin',function(name) {
+            return self.quizzes.vip.create.random();
         });
 
-        self.states.add('states:quiz:vip:question1',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question1',function(name) {
             return new ChoiceState(name, {
                question: $('During the past year, have you attended a demonstration or protest?'),
                choices: [
@@ -475,7 +474,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question2',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question2',function(name) {
             return new ChoiceState(name, {
                 question: $('Are you registered to vote in the upcoming elections?'),
                 choices: [
@@ -490,7 +489,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question3',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question3',function(name) {
             return new ChoiceState(name, {
                 question: $('How likely is it that you will vote in the upcoming election?'),
                 choices: [
@@ -507,7 +506,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question4',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question4',function(name) {
             return new ChoiceState(name,{
                 question: $('Which political party do you feel close to?'),
                 choices: [
@@ -527,7 +526,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:continue',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:continue',function(name) {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
                 choices: [
@@ -537,7 +536,11 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question5',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:end',function(name) {
+            return self.states.create("states:menu");
+        });
+
+        self.quizzes.vip.add('states:quiz:vip:question5',function(name) {
             return new ChoiceState(name, {
                 question: $('During the past year, has your community had demonstrations or protests?'),
                 choices: [
@@ -552,7 +555,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question6',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question6',function(name) {
             return new ChoiceState(name, {
                 question: $('If your community has had demonstrations or protests in the last year, were they violent?'),
                 choices: [
@@ -567,7 +570,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question7',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question7',function(name) {
             return new ChoiceState(name, {
                 question: $("How easy is it for your neighbors to find out if you voted?"),
                 choices: [
@@ -583,7 +586,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question8',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question8',function(name) {
             return new ChoiceState(name, {
                 question: $("People in my neighborhood look down on those who do not vote:"),
                 choices: [
@@ -599,7 +602,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question9',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question9',function(name) {
             return new ChoiceState(name, {
                 question: $("How do you rate the overall performance of President Zuma?"),
                 choices: [
@@ -615,7 +618,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question10',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question10',function(name) {
             return new ChoiceState(name, {
                 question: $("How do you rate the overall performance of your local government councillor?"),
                 choices: [
@@ -631,7 +634,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question11',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question11',function(name) {
             return new ChoiceState(name, {
                 question: $("Which party has contacted you the most during this election campaign?"),
                 choices: [
@@ -651,7 +654,7 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:quiz:vip:question12',function(name) {
+        self.quizzes.vip.add('states:quiz:vip:question12',function(name) {
             return new ChoiceState(name, {
                 question: $("During the past two weeks, have you attended a campaign rally?"),
                 choices: [
