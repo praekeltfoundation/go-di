@@ -461,7 +461,7 @@ describe("app", function() {
                 return tester.setup.user.state('states:registration:tandc')
                     .input('3')
                     .check.interaction({
-                        state:'states:registration:end',
+                        state:'states:start',
                         reply: 'Thank you for your time. Remember, you can always reconsider becoming a citizen reporter.'
                     }).run();
             });
@@ -711,7 +711,7 @@ describe("app", function() {
                     .setup.user.state("states:menu")
                     .input('5')
                     .check.interaction({
-                        state: 'states:end',
+                        state: 'states:start',
                         reply: 'Bye.'
                     }).run();
             });
@@ -1374,7 +1374,7 @@ describe("app", function() {
                 it("should take them to the submit report thank you state",function() {
                     return tester
                         .check.interaction({
-                            state: 'states:report:end',
+                            state: 'states:menu',
                             reply: [
                                 'Thank you for your report! Keep up the reporting',
                                 '& you may have a chance to be chosen as an official',
@@ -1748,7 +1748,7 @@ describe("app", function() {
                     .setup.user.state("states:menu")
                     .input("3")
                     .check.interaction({
-                        state: "states:results",
+                        state: "states:start",
                         reply: "You are 1 of 3 citizens who are active " +
                                 "citizen election reporters! " +
                                 "4 questions and 5 election activity posts " +
@@ -1763,7 +1763,7 @@ describe("app", function() {
                         .setup.user.state("states:menu")
                         .input("3")
                         .check.interaction({
-                            state: "states:results",
+                            state: "states:start",
                             reply: "You are 1 of 0 citizens who are active " +
                                 "citizen election reporters! " +
                                 "0 questions and 0 election activity posts " +
