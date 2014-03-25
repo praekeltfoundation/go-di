@@ -22,7 +22,6 @@ di.app = function() {
     var QuizStates = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
 
-        self.count = 0;
         self.name = opts.name;
         self.next = opts.next;
         self.num_questions = opts.num_questions;
@@ -36,11 +35,21 @@ di.app = function() {
                 && !_.contains(state,'end');        //Filter end state
         };
 
+        self.is_complete = function() {
+            return self.count() === 0;
+        };
+
+        self.count = function() {
+            var names = _.keys(self.creators);
+            var unanswered = self.filter(names);
+            return unanswered.length;
+        };
+
         /**
          * Random function: To enable easy deterministic testing.
          * */
         self.random = function(n) {
-            return _.random(n);
+            return _.random(n-1);
         };
 
         self.filter = function(names) {
@@ -54,16 +63,16 @@ di.app = function() {
             var names = _.keys(self.creators);
             var unanswered = self.filter(names);
             var index = self.random(unanswered.length);
-            self.count++;
             return unanswered[index] || self.next ;
         };
         //If an interval of the questions save for last and first question
         //If not from a continue state.
         self.create_continue = function(opts) {
+            var count = self.count();
             return (
-                self.count > 0
-                && self.count < self.num_questions
-                && (self.count % self.continue_interval) === 0
+                count > 0
+                && count < self.num_questions
+                && (count % self.continue_interval) === 0
                 && !opts.from_continue
             );
         };
@@ -216,21 +225,7 @@ di.app = function() {
          * Get's quiz completion
          * */
         self.is_quiz_complete = function() {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            return (questions.length === 0);
-        };
-
-        /**
-         * Removed question n from the list of unanswered questions
-         * Does not save the contact.
-         * */
-        self.set_answered = function(n) {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            var index = questions.indexOf(n);
-            if (index > -1) {
-                questions.splice(index,1);
-            }
-            self.contact.extra.vip_unanswered = JSON.stringify(questions);
+            return self.quizzes.vip.is_complete();
         };
 
         /*
@@ -239,7 +234,6 @@ di.app = function() {
         self.answer = function(n,value) {
             self.contact.extra["question" +n] = value;
             self.contact.extra["it_question" +n] = self.get_date_string();
-            self.set_answered(n);
             return self.im.contacts.save(self.contact);
         };
 
