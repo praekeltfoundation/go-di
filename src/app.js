@@ -57,17 +57,19 @@ di.app = function() {
             self.count++;
             return unanswered[index] || self.next ;
         };
-
-        self.create_continue = function() {
+        //If an interval of the questions save for last and first question
+        //If not from a continue state.
+        self.create_continue = function(opts) {
             return (
                 self.count > 0
                 && self.count < self.num_questions
                 && (self.count % self.continue_interval) === 0
+                && !opts.from_continue
             );
         };
 
         self.create.random = function(opts) {
-            if (self.create_continue()) {
+            if (self.create_continue(opts)) {
                 return self.create(self.continue,opts);
             }
             return self.create(self.random_quiz_name(), opts);
@@ -242,23 +244,17 @@ di.app = function() {
         };
 
         /*
-        * If all questions have been answered then go to the menu
-        * If 4 questions have been answered then go to the "do you want to continue" state
-        * Else return an unanswered question.
+        * Returns to quiz delegation state.
+        * Adds came from 'continue' state.
         * */
         self.get_next_quiz_state = function(from_continue) {
-            return 'states:quiz:vip:begin';/*
-            var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
-            var answered = num_questions - unanswered.length;
-            if (answered === 12) {
-                return 'states:menu';
-            } else if ((answered == 4 || answered == 8) && !self.is(from_continue)) {
-                return 'states:quiz:vip:continue';
-            } else {
-                return 'states:quiz:vip:question' + self.get_unanswered_question();
-            }*/
+            return {
+                name:'states:quiz:vip:begin',
+                creator_opts: {
+                    from_continue: from_continue || false
+                }
+            };
         };
-
 
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
@@ -482,8 +478,8 @@ di.app = function() {
                 });
         };
 
-        self.states.add('states:quiz:vip:begin',function(name) {
-            return self.quizzes.vip.create.random();
+        self.states.add('states:quiz:vip:begin',function(name,opts) {
+            return self.quizzes.vip.create.random(opts);
         });
 
         self.quizzes.vip.add('states:quiz:vip:question1',function(name) {
