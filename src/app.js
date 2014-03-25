@@ -319,12 +319,12 @@ di.app = function() {
 
         self.get_terms = function() {
             return [
-                "University of California San Diego requests ur consent to act as a research subject for " +
-                    "improving electoral performance through citizen engagement in SA.",
-                "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology " +
-                    "to improve how elections r monitored by citizen volunteers.",
-                "If u participate,we will ask questions about urself&ur observations of the elections.U will b " +
-                    "anonymous.Ur answers will be kept confidential&won't b shared.",
+                $("University of California San Diego requests ur consent to act as a research subject for " +
+                    "improving electoral performance through citizen engagement in SA."),
+                $("Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology " +
+                    "to improve how elections r monitored by citizen volunteers."),
+                $("If u participate,we will ask questions about urself&ur observations of the elections.U will b " +
+                    "anonymous.Ur answers will be kept confidential&won't b shared."),
                 "To view full T&Cs please visit www.yal.mobi/vip."
             ];
         };
@@ -837,13 +837,13 @@ di.app = function() {
 
         self.get_about = function() {
               return [
-                  "The VIP-Ask is a multi-channel political engagement portal.VIP: " +
+                  $("The VIP-Ask is a multi-channel political engagement portal.VIP: " +
                     "Ask will engage South Africans from all walks of life to " +
-                    "report on electoral activities,",
-                  "voice their opinions on current issues surrounding the elections, " +
-                    "and report on election processes on voting day.",
-                  "VIP:Ask is a partnership between academics, " +
-                    "Democracy International, Livity Africa and the Praekelt Foundation"
+                    "report on electoral activities,"),
+                  $("voice their opinions on current issues surrounding the elections, " +
+                    "and report on election processes on voting day."),
+                      $("VIP:Ask is a partnership between academics, " +
+                    "Democracy International, Livity Africa and the Praekelt Foundation")
               ];
         };
 
