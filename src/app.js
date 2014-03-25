@@ -65,6 +65,7 @@ di.app = function() {
             var index = self.random(unanswered.length);
             return unanswered[index] || self.next ;
         };
+
         //If an interval of the questions save for last and first question
         //If not from a continue state.
         self.create_continue = function(opts) {
@@ -188,11 +189,6 @@ di.app = function() {
                 });
         };
 
-        //Return random number [0,n)
-        self.random = function(n) {
-            return Math.floor(Math.random()*n);
-        };
-
         /*
         * When users are registered:
         * set as registered.
@@ -201,7 +197,6 @@ di.app = function() {
         * */
         self.register = function() {
             self.contact.extra.is_registered = 'true';
-            self.contact.extra.vip_unanswered = JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]);
 
             //Fire metrics + increment kv store
             return self
@@ -209,17 +204,6 @@ di.app = function() {
                 .then(function(result) {
                     return self.im.metrics.fire.last('registered.participants',result.value);
                 });
-        };
-
-        /**
-         * Gets a random unanswered question n from the list of unanswered questions
-         * Does not save the contact.
-         * */
-        self.get_unanswered_question = function() {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            var num_unanswered = questions.length;
-            var index = self.random(num_unanswered);
-            return questions[index];
         };
 
         /**
@@ -342,7 +326,7 @@ di.app = function() {
                     "to improve how elections r monitored by citizen volunteers."),
                 $("If u participate,we will ask questions about urself&ur observations of the elections.U will b " +
                     "anonymous.Ur answers will be kept confidential&won't b shared."),
-                "To view full T&Cs please visit www.yal.mobi/vip."
+                $("To view full T&Cs please visit www.yal.mobi/vip.")
             ];
         };
 
