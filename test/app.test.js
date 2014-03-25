@@ -399,7 +399,6 @@ describe("app", function() {
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.is_registered,"true");
-                        assert.equal(contact.extra.vip_unanswered,"[1,2,3,4,5,6,7,8,9,10,11,12]");
                     }).run();
             });
 
@@ -941,73 +940,76 @@ describe("app", function() {
             return parseInt(state.state.name.split("question").pop());
         };
 
+
+        var get_question_states = function(n) {
+            var states = {};
+            for (var i=0; i < n; i++) {
+                states['states:quiz:vip:question'+(i+1)] = '1';
+            }
+            return states;
+        };
+
         describe("when the user has selected to do the quiz from the menu", function() {
             it("should take them to a random unanswered question",function() {
-                var unanswered = [1,2,3,4,5,6,7,8,9,10,11,12];
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
                             msisdn: '+273101',
                             extra : {
                                 is_registered: 'true',
-                                vip_unanswered: JSON.stringify(unanswered),
                                 register_sms_sent: 'true'
                             }
                         });
                     })
                     .setup.user.addr("+273101")
-                    .setup.user.state('states:quiz:vip:continue')
+                    .setup.user.state('states:menu')
                     .input('1')
                     .check.user.state(function(state){
                         var question_num = get_question_number(state) ;
-                        assert.equal(_.contains(unanswered,question_num),true);
+                        assert.equal(0 < question_num && question_num <= 12,true);
                     }).run();
             });
         });
-
         describe("when the user has answered the continue question as 'Continue'", function() {
             it("should take them to a random unanswered question",function() {
-                var unanswered = [1,2,3,4];
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
                             msisdn: '+273465',
                             extra : {
                                 is_registered: 'true',
-                                vip_unanswered: JSON.stringify(unanswered),
                                 register_sms_sent: 'true'
                             }
                         });
                     })
                     .setup.user.addr("+273465")
-                    .setup.user.state('states:quiz:vip:continue')
+                    .setup.user({
+                        answers: get_question_states(4)
+                    })
+                    .setup.user.state({
+                        name: 'states:quiz:vip:begin',
+                        creator_opts: {
+                            from_continue: true
+                        }
+                    })
                     .input('1')
                     .check.user.state(function(state){
                         var question_num = get_question_number(state);
                         assert.notEqual(state.name,'states:quiz:vip:continue');
-                        assert.equal(_.contains(unanswered,question_num),true);
+                        assert.equal(question_num > 4 && question_num <= 12 ,true);
                     }).run();
             });
         });
 
         describe("when the user has answered a question", function() {
-
             describe("if it was the last question",function() {
                 beforeEach(function() {
-                    var unanswered = [6];
                     return tester
-                        .setup( function(api) {
-                            api.contacts.add( {
-                                msisdn: '+273465',
-                                extra : {
-                                    is_registered: 'true',
-                                    vip_unanswered: JSON.stringify(unanswered),
-                                    register_sms_sent: 'true'
-                                }
-                            });
+                        .setup.user.addr("+273123")
+                        .setup.user({
+                            state: 'states:quiz:vip:begin',
+                            answers: get_question_states(11)
                         })
-                        .setup.user.addr("+273465")
-                        .setup.user.state('states:quiz:vip:question6')
                         .input('1');
                 });
 
@@ -1028,20 +1030,18 @@ describe("app", function() {
             });
 
             it("should fire a 'questions' metric",function() {
-                var unanswered = [1,2,5,6,7,8];
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
                             msisdn: '+273465',
                             extra : {
                                 is_registered: 'true',
-                                vip_unanswered: JSON.stringify(unanswered),
                                 register_sms_sent: 'true'
                             }
                         });
                     })
                     .setup.user.addr("+273465")
-                    .setup.user.state('states:quiz:vip:question6')
+                    .setup.user.state('states:quiz:vip:begin')
                     .input('1')
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
@@ -1050,78 +1050,42 @@ describe("app", function() {
             });
 
             it("should increment 'questions' kv store",function() {
-                var unanswered = [1,2,5,6,7,8];
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
                             msisdn: '+273465',
                             extra : {
                                 is_registered: 'true',
-                                vip_unanswered: JSON.stringify(unanswered),
                                 register_sms_sent: 'true'
                             }
                         });
                     })
                     .setup.user.addr("+273465")
-                    .setup.user.state('states:quiz:vip:question6')
+                    .setup.user.state('states:quiz:vip:begin')
                     .input('1')
                     .check(function(api) {
                         assert.equal(api.kv.store['total.questions'], 1);
-                    }).run();
-            });
-
-            it("should take them to a random unanswered question",function() {
-                var unanswered = [1,2,5,6,7,8];
-                return tester
-                    .setup( function(api) {
-                        api.contacts.add( {
-                            msisdn: '+273465',
-                            extra : {
-                                is_registered: 'true',
-                                vip_unanswered: JSON.stringify(unanswered),
-                                register_sms_sent: 'true'
-                            }
-                        });
-                    })
-                    .setup.user.addr("+273465")
-                    .setup.user.state('states:quiz:vip:question6')
-                    .input('1')
-                    .check.user.state(function(state){
-                        var question_num = get_question_number(state);
-                        assert.equal(_.contains(unanswered,question_num),true);
-                        assert.notEqual(question_num,6);
-                    }).run();
-            });
-
-            it("should remove the question from the unanswered list",function() {
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:question11')
-                    .setup.user.set_answer('states:quiz:vip:question1','')
-                    .input('1')
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(_.indexOf(JSON.parse(contact.extra.vip_unanswered),11),-1);
                     }).run();
             });
         });
 
         describe("when the user has answered their 4th question", function() {
             it("should take them if they want to continue",function() {
-                var unanswered = [4,5,6,7,8,9,10,11,12];
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
                             msisdn: '+273465',
                             extra : {
                                 is_registered: 'true',
-                                vip_unanswered: JSON.stringify(unanswered),
                                 register_sms_sent: 'true'
                             }
                         });
                     })
                     .setup.user.addr("+273465")
-                    .setup.user.state('states:quiz:vip:question6')
+                    .setup.user({
+                        state: 'states:quiz:vip:begin',
+                        answers: get_question_states(3)
+                    })
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:continue',
@@ -1136,20 +1100,21 @@ describe("app", function() {
 
         describe("when the user has answered their 8th question", function() {
             it("should take them if they want to continue",function() {
-                var unanswered = [8,9,10,11,12];
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
                             msisdn: '+273465',
                             extra : {
                                 is_registered: 'true',
-                                vip_unanswered: JSON.stringify(unanswered),
                                 register_sms_sent: 'true'
                             }
                         });
                     })
                     .setup.user.addr("+273465")
-                    .setup.user.state('states:quiz:vip:question8')
+                    .setup.user({
+                        state: 'states:quiz:vip:begin',
+                        answers: get_question_states(7)
+                    })
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:continue',
@@ -1286,21 +1251,14 @@ describe("app", function() {
                             reply: "You are 1 of 0 citizens who are active " +
                                 "citizen election reporters! " +
                                 "0 questions and 0 election activity posts " +
-                                "have been sbmitted. View results at www.url.com"
+                                "have been submitted. View results at www.url.com"
                         }).run();
                 });
             });
         });
 
-        var get_question_states = function(n) {
-            var states = {};
-            for (var i=0; i < n; i++) {
-                states['states:quiz:vip:question'+(i+1)] = '1';
-            }
-            return states;
-        };
 
-        describe.only("if the user has answered questions 1 to 7", function() {
+        describe("if the user has answered questions 1 to 7", function() {
             it("should take the user to question in[8,12]",function() {
                 return tester
                     .setup.user.addr("+273123")
@@ -1315,18 +1273,5 @@ describe("app", function() {
             });
         });
 
-        describe("if the user has completed all the questions",function() {
-            it("should take them to the next state: states:menu",function() {
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user({
-                        state: 'states:quiz:vip:begin',
-                        answers: get_question_states(12)
-                    })
-                    .check.interaction({
-                        state: 'states:menu'
-                    }).run();
-            });
-        });
     });
 });
