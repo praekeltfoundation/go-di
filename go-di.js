@@ -95,23 +95,42 @@ di.app = function() {
     var UshahidiApi = di.ushahidi.UshahidiApi;
     var AppStates = vumigo.app.AppStates;
 
-    var QuizStates = AppStates.extend(function(self,app,name,next) {
+    /**
+     * Does randomization of quizzes.
+     * Requires a next state to be defined.
+     * Requires a continue state.
+     * */
+    var QuizStates = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
-        self.name = name;
-        self.next = next;
+
+        self.name = opts.name;
+        self.next = opts.next;
+        self.num_questions = opts.num_questions;
+        self.continue_interval = opts.continue_interval;
+        self.continue = opts.continue;
 
         var is_valid = function(state) {
             return _.contains(state,self.name)      //quiz name - filters out __start__ & __end__
                 && !_.contains(state,'begin')       //Filter begin state, if its included
-                && !_.contains(state,'continue')   //Filter continue state
-                && !_.contains(state,'end');   //Filter end state
+                && !_.contains(state,'continue')    //Filter continue state
+                && !_.contains(state,'end');        //Filter end state
+        };
+
+        self.is_complete = function() {
+            return self.count() === 0;
+        };
+
+        self.count = function() {
+            var names = _.keys(self.creators);
+            var unanswered = self.filter(names);
+            return unanswered.length;
         };
 
         /**
          * Random function: To enable easy deterministic testing.
          * */
         self.random = function(n) {
-            return _.random(n);
+            return _.random(n-1);
         };
 
         self.filter = function(names) {
@@ -127,8 +146,22 @@ di.app = function() {
             var index = self.random(unanswered.length);
             return unanswered[index] || self.next ;
         };
+        //If an interval of the questions save for last and first question
+        //If not from a continue state.
+        self.create_continue = function(opts) {
+            var count = self.count();
+            return (
+                count > 0
+                && count < self.num_questions
+                && (count % self.continue_interval) === 0
+                && !opts.from_continue
+            );
+        };
 
         self.create.random = function(opts) {
+            if (self.create_continue(opts)) {
+                return self.create(self.continue,opts);
+            }
             return self.create(self.random_quiz_name(), opts);
         };
     });
@@ -136,10 +169,15 @@ di.app = function() {
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
-       //var num_questions = 12;
 
         self.quizzes = {};
-        self.quizzes.vip = new QuizStates(self,'vip','states:quiz:vip:end');
+        self.quizzes.vip = new QuizStates(self,{
+            name:'vip',
+            next:'states:quiz:vip:end',
+            num_questions: 12,
+            continue: 'states:quiz:vip:continue',
+            continue_interval: 4
+        });
 
         self.get_date = function() {
             return new Date();
@@ -268,21 +306,7 @@ di.app = function() {
          * Get's quiz completion
          * */
         self.is_quiz_complete = function() {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            return (questions.length === 0);
-        };
-
-        /**
-         * Removed question n from the list of unanswered questions
-         * Does not save the contact.
-         * */
-        self.set_answered = function(n) {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            var index = questions.indexOf(n);
-            if (index > -1) {
-                questions.splice(index,1);
-            }
-            self.contact.extra.vip_unanswered = JSON.stringify(questions);
+            return self.quizzes.vip.is_complete();
         };
 
         /*
@@ -291,28 +315,21 @@ di.app = function() {
         self.answer = function(n,value) {
             self.contact.extra["question" +n] = value;
             self.contact.extra["it_question" +n] = self.get_date_string();
-            self.set_answered(n);
             return self.im.contacts.save(self.contact);
         };
 
         /*
-        * If all questions have been answered then go to the menu
-        * If 4 questions have been answered then go to the "do you want to continue" state
-        * Else return an unanswered question.
+        * Returns to quiz delegation state.
+        * Adds came from 'continue' state.
         * */
         self.get_next_quiz_state = function(from_continue) {
-            return 'states:quiz:vip:begin';/*
-            var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
-            var answered = num_questions - unanswered.length;
-            if (answered === 12) {
-                return 'states:menu';
-            } else if ((answered == 4 || answered == 8) && !self.is(from_continue)) {
-                return 'states:quiz:vip:continue';
-            } else {
-                return 'states:quiz:vip:question' + self.get_unanswered_question();
-            }*/
+            return {
+                name:'states:quiz:vip:begin',
+                creator_opts: {
+                    from_continue: from_continue || false
+                }
+            };
         };
-
 
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
@@ -391,12 +408,12 @@ di.app = function() {
 
         self.get_terms = function() {
             return [
-                "University of California San Diego requests ur consent to act as a research subject for " +
-                    "improving electoral performance through citizen engagement in SA.",
-                "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology " +
-                    "to improve how elections r monitored by citizen volunteers.",
-                "If u participate,we will ask questions about urself&ur observations of the elections.U will b " +
-                    "anonymous.Ur answers will be kept confidential&won't b shared.",
+                $("University of California San Diego requests ur consent to act as a research subject for " +
+                    "improving electoral performance through citizen engagement in SA."),
+                $("Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology " +
+                    "to improve how elections r monitored by citizen volunteers."),
+                $("If u participate,we will ask questions about urself&ur observations of the elections.U will b " +
+                    "anonymous.Ur answers will be kept confidential&won't b shared."),
                 "To view full T&Cs please visit www.yal.mobi/vip."
             ];
         };
@@ -536,8 +553,8 @@ di.app = function() {
                 });
         };
 
-        self.states.add('states:quiz:vip:begin',function(name) {
-            return self.quizzes.vip.create.random();
+        self.states.add('states:quiz:vip:begin',function(name,opts) {
+            return self.quizzes.vip.create.random(opts);
         });
 
         self.quizzes.vip.add('states:quiz:vip:question1',function(name) {
@@ -909,13 +926,13 @@ di.app = function() {
 
         self.get_about = function() {
               return [
-                  "The VIP-Ask is a multi-channel political engagement portal.VIP: " +
+                  $("The VIP-Ask is a multi-channel political engagement portal.VIP: " +
                     "Ask will engage South Africans from all walks of life to " +
-                    "report on electoral activities,",
-                  "voice their opinions on current issues surrounding the elections, " +
-                    "and report on election processes on voting day.",
-                  "VIP:Ask is a partnership between academics, " +
-                    "Democracy International, Livity Africa and the Praekelt Foundation"
+                    "report on electoral activities,"),
+                  $("voice their opinions on current issues surrounding the elections, " +
+                    "and report on election processes on voting day."),
+                      $("VIP:Ask is a partnership between academics, " +
+                    "Democracy International, Livity Africa and the Praekelt Foundation")
               ];
         };
 
