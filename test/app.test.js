@@ -1292,25 +1292,39 @@ describe("app", function() {
             });
         });
 
-        var get_question_states = function() {
-            var states = [];
-            for (var i=0; i < 7; i++) {
-                states.push({'states:quiz:vip:question'+(i+1): );
+        var get_question_states = function(n) {
+            var states = {};
+            for (var i=0; i < n; i++) {
+                states['states:quiz:vip:question'+(i+1)] = '1';
             }
             return states;
         };
 
-        describe("if the user has answered questions 1 to 7", function() {
-            it.only("should take the user to question in[8,12]",function() {
+        describe.only("if the user has answered questions 1 to 7", function() {
+            it("should take the user to question in[8,12]",function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user({
                         state: 'states:quiz:vip:begin',
-                        answers: get_question_states()
+                        answers: get_question_states(7)
                     })
                     .check.user.state(function(state){
                         var question_num = get_question_number(state);
-                        assert.equal(question_num > 6,true);
+                        assert.equal(question_num > 7,true);
+                    }).run();
+            });
+        });
+
+        describe("if the user has completed all the questions",function() {
+            it("should take them to the next state: states:menu",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user({
+                        state: 'states:quiz:vip:begin',
+                        answers: get_question_states(12)
+                    })
+                    .check.interaction({
+                        state: 'states:menu'
                     }).run();
             });
         });
