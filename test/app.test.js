@@ -49,7 +49,6 @@ describe("app", function() {
                         msisdn: '+273123',
                         extra : {
                             is_registered: 'true',
-                            vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]',
                             register_sms_sent: 'true'
                         }
                     });
