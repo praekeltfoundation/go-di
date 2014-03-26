@@ -7,10 +7,10 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "http://wards.code4sa.org/",
-                "params": [
-                    {"name":"address", "value": 'bad input'},
-                    {"name":"database","value": "vd_2014"}
-                ]
+                "params": {
+                    "address": 'bad input',
+                    "database": "vd_2014"
+                }
             },
             "response": {
                 "code": 200,
@@ -23,10 +23,10 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "http://wards.code4sa.org/",
-                "params": [
-                    {"name":"address", "value": 'main street'},
-                    {"name":"database","value": "vd_2014"}
-                ]
+                "params": {
+                    "address": 'main street',
+                    "database": "vd_2014"
+                }
             },
             "response": {
                 "code": "200",
@@ -134,10 +134,10 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "http://wards.code4sa.org/",
-                "params": [
-                    {"name":"address", "value": '21 conduit street'},
-                    {"name":"database","value": "vd_2014"}
-                ]
+                "params": {
+                    "address": "21 conduit street",
+                    "database": "vd_2014"
+                }
             },
             "response": {
                 "code": "200",
@@ -185,10 +185,10 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "https://maps.googleapis.com/maps/api/geocode/json",
-                "params": [
-                    {"name":"address", "value": '21 conduit street south africa'},
-                    {"name":"sensor","value":"false"}
-                ]
+                "params": {
+                    "address": '21 conduit street south africa',
+                    "sensor": "false"
+                }
             },
             "response": {
                 "code": "200",
@@ -349,10 +349,10 @@ module.exports = function() {
             "request": {
                 "method": "GET",
                 "url": "https://maps.googleapis.com/maps/api/geocode/json",
-                "params": [
-                    {"name":"address", "value": 'main street south africa'},
-                    {"name":"sensor","value":"false"}
-                ]
+                "params": {
+                    "address": 'main street south africa',
+                    "sensor": "false"
+                }
             },
             "response": {
                 "code": "200",

@@ -475,9 +475,8 @@ describe("app", function() {
                     .check(function(api){
                         var req = api.http.requests[0];
                         var url = req.url;
-                        var param = req.params.param_list[0];
                         assert.equal(url,'http://wards.code4sa.org/');
-                        assert.equal(param.value,'21 conduit street');
+                        assert.equal(req.params.address ,'21 conduit street');
                     }).run();
             });
 
@@ -792,11 +791,9 @@ describe("app", function() {
                     .check(function(api) {
                         var req = api.http.requests[0];
                         var url = req.url;
-                        var address = req.params.param_list[0];
-                        var sensor = req.params.param_list[1];
                         assert.equal(url,"https://maps.googleapis.com/maps/api/geocode/json");
-                        assert.equal(address.value,'21 conduit street south africa');
-                        assert.equal(sensor.value,'false');
+                        assert.equal(req.params.address,'21 conduit street south africa');
+                        assert.equal(req.params.sensor,'false');
                     }).run();
             });
 
@@ -808,11 +805,9 @@ describe("app", function() {
                         .check(function(api) {
                             var req = api.http.requests[0];
                             var url = req.url;
-                            var address = req.params.param_list[0];
-                            var sensor = req.params.param_list[1];
                             assert.equal(url,"https://maps.googleapis.com/maps/api/geocode/json");
-                            assert.equal(address.value,'21 conduit street south africa');
-                            assert.equal(sensor.value,'false');
+                            assert.equal(req.params.address,'21 conduit street south africa');
+                            assert.equal(req.params.sensor,'false');
                         }).run();
                 });
             });
