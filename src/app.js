@@ -36,13 +36,17 @@ di.app = function() {
         };
 
         self.is_complete = function() {
-            return self.count() === 0;
+            return self.count() === self.num_questions;
         };
 
+        /**
+         * Counts the answered questions
+         * @returns {number of answered questions}
+         */
         self.count = function() {
             var names = _.keys(self.creators);
             var unanswered = self.filter(names);
-            return unanswered.length;
+            return self.num_questions - unanswered.length;
         };
 
         /**
@@ -52,6 +56,9 @@ di.app = function() {
             return _.random(n-1);
         };
 
+        /*
+        * Returns the all question states which have not been answered.
+        * */
         self.filter = function(names) {
             return _.filter(names,function(state) {
                 return is_valid(state)
@@ -579,6 +586,10 @@ di.app = function() {
             return self.states.create("states:menu");
         });
 
+        self.quizzes.whatsup.add('states:quiz:whatsup:end',function(name) {
+            return self.states.create("states:menu");
+        });
+
         self.quizzes.vip.add('states:quiz:vip:question5',function(name) {
             return new ChoiceState(name, {
                 question: $('During the past year, has your community had demonstrations or protests?'),
@@ -765,7 +776,6 @@ di.app = function() {
             });
         });
 
-
         self.quizzes.whatsup.add('states:quiz:whatsup:frequency_intimidation',function(name) {
             return new ChoiceState(name, {
                 question: $("During the past two weeks, how frequently have party agents intimidated voters in your community?"),
@@ -778,6 +788,106 @@ di.app = function() {
                 ],
                 next: function(content) {
                     return self.next_quiz('whatsup_frequency_intimidation',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:trust_anc',function(name) {
+            return new ChoiceState(name, {
+                question: $("How much do you trust the ANC?"),
+                choices: [
+                    new Choice('a_lot',$('A lot')),
+                    new Choice('some',$('Some')),
+                    new Choice('not_much',$('Not much')),
+                    new Choice('not_at_all',$('Not at all')),
+                    new Choice('no_opinion',$('No Opinion')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_trust_anc',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:trust_da',function(name) {
+            return new ChoiceState(name, {
+                question: $("How much do you trust the Democratic Alliance (DA)?"),
+                choices: [
+                    new Choice('a_lot',$('A lot')),
+                    new Choice('some',$('Some')),
+                    new Choice('not_much',$('Not much')),
+                    new Choice('not_at_all',$('Not at all')),
+                    new Choice('no_opinion',$('No Opinion')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_trust_da',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:trust_eff',function(name) {
+            return new ChoiceState(name, {
+                question: $("How much do you trust the Economic Freedom Fighters (EFF)?"),
+                choices: [
+                    new Choice('a_lot',$('A lot')),
+                    new Choice('some',$('Some')),
+                    new Choice('not_much',$('Not much')),
+                    new Choice('not_at_all',$('Not at all')),
+                    new Choice('no_opinion',$('No Opinion')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_trust_eff',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:food_to_eat',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past year, how often have you or anyone in your family gone without enough food to eat?"),
+                choices: [
+                    new Choice('never',$('Never')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('sometimes',$('Sometimes')),
+                    new Choice('many_times',$('Many Times')),
+                    new Choice('always',$('Always')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_food_to_eat',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:violence_for_just_cause',function(name) {
+            return new ChoiceState(name, {
+                question: $("In South Africa, it is sometimes necessary to use violence for a just cause:"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewhat agree')),
+                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_violence_for_just_cause',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:not_voting',function(name) {
+            return new ChoiceState(name, {
+                question: $("In South Africa, it is sometimes necessary to use violence for a just cause:"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewhat agree')),
+                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_not_voting',content,'whatsup');
                 }
             });
         });

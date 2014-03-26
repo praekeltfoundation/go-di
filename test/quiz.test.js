@@ -21,7 +21,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-                .setup.char_limit(180);
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -555,30 +555,6 @@ describe("app", function() {
             return states;
         };
 
-        var whatsup_states = ['states:quiz:whatsup:satisfied_democracy',
-            'states:quiz:whatsup:frequency_campaign_rallies',
-            'states:quiz:whatsup:frequency_party_agents',
-            'states:quiz:whatsup:frequency_intimidation'
-        ];
-
-        var get_whatsup_quiz_states = function(n) {
-            var states = whatsup_states.slice(0,n);
-            var answers = {};
-            _.forEach(states,function(value) {
-                answers[value] = '1';
-            });
-            return answers;
-        };
-
-        var get_unanswered_whatsup_quiz_states = function(n) {
-            var states = whatsup_states.slice(n,whatsup_states.length);
-            var answers = {};
-            _.forEach(states,function(value) {
-                answers[value] = '1';
-            });
-            return answers;
-        };
-
         describe("when the user has selected to do the quiz from the menu", function() {
             it("should take them to a random unanswered question",function() {
                 return tester
@@ -772,17 +748,111 @@ describe("app", function() {
             });
         });
 
+        var whatsup_states = [
+            'states:quiz:whatsup:satisfied_democracy',
+            'states:quiz:whatsup:frequency_campaign_rallies',
+            'states:quiz:whatsup:frequency_party_agents',
+            'states:quiz:whatsup:frequency_intimidation',
+            'states:quiz:whatsup:trust_anc',
+            'states:quiz:whatsup:trust_da',
+            'states:quiz:whatsup:trust_eff',
+            'states:quiz:whatsup:food_to_eat',
+            'states:quiz:whatsup:violence_for_just_cause',
+            'states:quiz:whatsup:not_voting'
+        ];
+
+        /**
+         * Returns a n subset of the questions to be used as the answered questions.
+         * */
+        var get_answered_whatsup_quiz_states = function(n) {
+            var states = whatsup_states.slice(0,n);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
+        /**
+         * Returns a n subset of the questions to be used as the unanswered questions.
+         * */
+        var get_unanswered_whatsup_quiz_states = function(n) {
+            var states = whatsup_states.slice(n,whatsup_states.length);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
         describe("when the user selects to do the 'What's up' quiz",function() {
-            it.only("should take them to a random whatsup quiz",function() {
+            it("should take them to a random whatsup question",function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user({
                         state: 'states:quiz:whatsup:begin',
-                        answers: get_whatsup_quiz_states(0)
+                        answers: get_answered_whatsup_quiz_states(0)
                     })
                     .check.user.state(function(state){
                         var unanswered = get_unanswered_whatsup_quiz_states(0);
-                        assert.equal(_.indexOf(unanswered,state.name) > -1,true);
+                        assert.equal(_.has(unanswered,state.name),true);
+                    }).run();
+            });
+        });
+
+        describe("when the user has already answered a random question",function() {
+            it("should take them to another random whatsup question",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user({
+                        state: 'states:quiz:whatsup:begin',
+                        answers: get_answered_whatsup_quiz_states(1)
+                    })
+                    .check.user.state(function(state){
+                        var unanswered = get_unanswered_whatsup_quiz_states(1);
+                        assert.equal(_.has(unanswered,state.name),true);
+                    }).run();
+            });
+        });
+
+        describe("when the user has already answered 4 random questions",function() {
+            it.only("should ask them if they want to continue",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user({
+                        state: 'states:quiz:whatsup:begin',
+                        answers: get_answered_whatsup_quiz_states(4)
+                    })
+                    .check.interaction({
+                        state:'states:quiz:whatsup:continue'
+                    }).run();
+            });
+        });
+
+        describe("when the user has already answered 8 random questions",function() {
+            it.only("should ask them if they want to continue",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user({
+                        state: 'states:quiz:whatsup:begin',
+                        answers: get_answered_whatsup_quiz_states(8)
+                    })
+                    .check.interaction({
+                        state:'states:quiz:whatsup:continue'
+                    }).run();
+            });
+        });
+
+        describe("when the user has answered all whatsup questions",function() {
+            it("should take them to the end state",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user({
+                        state: 'states:quiz:whatsup:begin',
+                        answers: get_answered_whatsup_quiz_states(10)
+                    })
+                    .check.interaction({
+                        state:'states:menu'
                     }).run();
             });
         });
