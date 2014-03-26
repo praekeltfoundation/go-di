@@ -117,13 +117,17 @@ di.app = function() {
         };
 
         self.is_complete = function() {
-            return self.count() === 0;
+            return self.count() === self.num_questions;
         };
 
+        /**
+         * Counts the answered questions
+         * @returns {number of answered questions}
+         */
         self.count = function() {
             var names = _.keys(self.creators);
             var unanswered = self.filter(names);
-            return unanswered.length;
+            return self.num_questions - unanswered.length;
         };
 
         /**
@@ -133,6 +137,9 @@ di.app = function() {
             return _.random(n-1);
         };
 
+        /*
+        * Returns the all question states which have not been answered.
+        * */
         self.filter = function(names) {
             return _.filter(names,function(state) {
                 return is_valid(state)
@@ -177,6 +184,14 @@ di.app = function() {
             next:'states:quiz:vip:end',
             num_questions: 12,
             continue: 'states:quiz:vip:continue',
+            continue_interval: 4
+        });
+
+        self.quizzes.whatsup = new QuizStates(self,{
+            name:'whatsup',
+            next:'states:quiz:whatsup:end',
+            num_questions: 10,
+            continue: 'states:quiz:whatsup:continue',
             continue_interval: 4
         });
 
@@ -307,9 +322,9 @@ di.app = function() {
         * Returns to quiz delegation state.
         * Adds came from 'continue' state.
         * */
-        self.get_next_quiz_state = function(from_continue) {
+        self.get_next_quiz_state = function(name,from_continue) {
             return {
-                name:'states:quiz:vip:begin',
+                name:'states:quiz:'+name+':begin',
                 creator_opts: {
                     from_continue: from_continue || false
                 }
@@ -501,11 +516,28 @@ di.app = function() {
 
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
-                question: $('Welcome to the Campaign'),
+                question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice(self.get_next_quiz_state(),$('Take the quiz & win!')),
+                    new Choice(self.get_next_quiz_state('vip'),$('Answer & win!')),
+                    new Choice(self.get_next_quiz_state('vip'),$('VIP Quiz')),
+                    new Choice('states:report',$('Report an Election Activity')),
+                    new Choice('states:results',$('View VIP results...')),
+                    new Choice(self.get_next_quiz_state('whatsup'),$("What's up?")),
+                    new Choice('states:about',$('About')),
+                    new Choice('states:end',$('End'))
+                ]
+            });
+        });
+
+        self.states.add('states:answerwin',function(name) {
+            return new MenuState(name, {
+                question: $('Welcome to VIP!'),
+                choices:[
+                    new Choice(self.get_next_quiz_state('vip'),$('Answer & win!')),
+                    new Choice(self.get_next_quiz_state('vip'),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View the results...')),
+                    new Choice(self.get_next_quiz_state('whatsup'),$("What's up?")),
                     new Choice('states:about',$('About')),
                     new Choice('states:end',$('End'))
                 ]
@@ -535,19 +567,23 @@ di.app = function() {
             return self.im.api_request('kv.incr', {key: name});
         };
 
-        self.next_quiz = function(n,content) {
+        self.next_quiz = function(n,content,name) {
             return self
                 .answer(n,content.value)
                 .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
-                    return self.get_next_quiz_state();
+                    return self.get_next_quiz_state(name);
                 });
         };
 
         self.states.add('states:quiz:vip:begin',function(name,opts) {
             return self.quizzes.vip.create.random(opts);
+        });
+
+        self.states.add('states:quiz:whatsup:begin',function(name,opts) {
+            return self.quizzes.whatsup.create.random(opts);
         });
 
         self.quizzes.vip.add('states:quiz:vip:question1',function(name) {
@@ -560,7 +596,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(1,content);
+                    return self.next_quiz(1,content,'vip');
                 }
             });
         });
@@ -575,7 +611,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(2,content);
+                    return self.next_quiz(2,content,'vip');
                 }
             });
         });
@@ -592,7 +628,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(3,content);
+                    return self.next_quiz(3,content,'vip');
                 }
             });
         });
@@ -612,7 +648,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(4,content);
+                    return self.next_quiz(4,content,'vip');
                 }
             });
         });
@@ -621,13 +657,17 @@ di.app = function() {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
                 choices: [
-                    new Choice(self.get_next_quiz_state(true),$('Continue')),
+                    new Choice(self.get_next_quiz_state('vip',true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
                 ]
             });
         });
 
         self.quizzes.vip.add('states:quiz:vip:end',function(name) {
+            return self.states.create("states:menu");
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:end',function(name) {
             return self.states.create("states:menu");
         });
 
@@ -641,7 +681,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(5,content);
+                    return self.next_quiz(5,content,'vip');
                 }
             });
         });
@@ -656,7 +696,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(6,content);
+                    return self.next_quiz(6,content,'vip');
                 }
             });
         });
@@ -672,7 +712,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(7,content);
+                    return self.next_quiz(7,content,'vip');
                 }
             });
         });
@@ -688,7 +728,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(8,content);
+                    return self.next_quiz(8,content,'vip');
                 }
             });
         });
@@ -704,7 +744,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(9,content);
+                    return self.next_quiz(9,content,'vip');
                 }
             });
         });
@@ -720,7 +760,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(10,content);
+                    return self.next_quiz(10,content,'vip');
                 }
             });
         });
@@ -740,7 +780,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(11,content);
+                    return self.next_quiz(11,content,'vip');
                 }
             });
         });
@@ -754,7 +794,181 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(12,content);
+                    return self.next_quiz(12,content,'vip');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:continue',function(name) {
+            return new MenuState(name,{
+                question: $('Would you like to continue answering questions? There are 12 in total.'),
+                choices: [
+                    new Choice(self.get_next_quiz_state('whatsup',true),$('Continue')),
+                    new Choice('states:menu',$('Main Menu'))
+                ]
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:satisfied_democracy',function(name) {
+            return new ChoiceState(name, {
+                question: $("How satisfied are you with the way democracy works in South Africa?"),
+                choices: [
+                    new Choice('very_satisfied',$('Very satisfied')),
+                    new Choice('somewhat_satisfied',$('Somewhat satisfied')),
+                    new Choice('dissatisfied',$('Dissatisfied')),
+                    new Choice('very_dissatisfied',$('Very dissatisfied')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_satisfied_democracy',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:frequency_campaign_rallies',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, how frequently have campaign rallies occurred in your community?"),
+                choices: [
+                    new Choice('often',$('Often')),
+                    new Choice('several_times',$('Several times')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('never',$('Never')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_frequency_campaign_rallies',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:frequency_party_agents',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, how frequently have party agents gone door to door in your community to mobilize voters?"),
+                choices: [
+                    new Choice('often',$('Often')),
+                    new Choice('several_times',$('Several times')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('never',$('Never')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_frequency_party_agents',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:frequency_intimidation',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, how frequently have party agents intimidated voters in your community?"),
+                choices: [
+                    new Choice('often',$('Often')),
+                    new Choice('serveral_times',$('Several times')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('never',$('Never')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_frequency_intimidation',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:trust_anc',function(name) {
+            return new ChoiceState(name, {
+                question: $("How much do you trust the ANC?"),
+                choices: [
+                    new Choice('a_lot',$('A lot')),
+                    new Choice('some',$('Some')),
+                    new Choice('not_much',$('Not much')),
+                    new Choice('not_at_all',$('Not at all')),
+                    new Choice('no_opinion',$('No opinion')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_trust_anc',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:trust_da',function(name) {
+            return new ChoiceState(name, {
+                question: $("How much do you trust the Democratic Alliance (DA)?"),
+                choices: [
+                    new Choice('a_lot',$('A lot')),
+                    new Choice('some',$('Some')),
+                    new Choice('not_much',$('Not much')),
+                    new Choice('not_at_all',$('Not at all')),
+                    new Choice('no_opinion',$('No opinion')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_trust_da',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:trust_eff',function(name) {
+            return new ChoiceState(name, {
+                question: $("How much do you trust the Economic Freedom Fighters (EFF)?"),
+                choices: [
+                    new Choice('a_lot',$('A lot')),
+                    new Choice('some',$('Some')),
+                    new Choice('not_much',$('Not much')),
+                    new Choice('not_at_all',$('Not at all')),
+                    new Choice('no_opinion',$('No opinion')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_trust_eff',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:food_to_eat',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past year, how often have you or anyone in your family gone without enough food to eat?"),
+                choices: [
+                    new Choice('never',$('Never')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('sometimes',$('Sometimes')),
+                    new Choice('many_times',$('Many times')),
+                    new Choice('always',$('Always')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_food_to_eat',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:violence_for_just_cause',function(name) {
+            return new ChoiceState(name, {
+                question: $("In South Africa, it is sometimes necessary to use violence for a just cause:"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewhat agree')),
+                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_violence_for_just_cause',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:not_voting',function(name) {
+            return new ChoiceState(name, {
+                question: $("Sometimes not voting is the best way to express your political preferences:"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewhat agree')),
+                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_not_voting',content,'whatsup');
                 }
             });
         });
