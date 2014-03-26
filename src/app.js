@@ -718,22 +718,6 @@ di.app = function() {
             });
         });
 
-        self.quizzes.whatsup.add('states:quiz:whatsup:satisfied_democracy',function(name) {
-            return new ChoiceState(name, {
-                question: $("How satisfied are you with the way democracy works in South Africa?"),
-                choices: [
-                    new Choice('very_satisfied',$('Very Satisfied')),
-                    new Choice('somewhat_satisfied',$('Somewhat Satisfied')),
-                    new Choice('dissatisfied',$('Dissatisfied')),
-                    new Choice('very_dissatisfied',$('Very Dissatisfied')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('whatsup_satisfied_democracy',content,'whatsup');
-                }
-            });
-        });
-
         self.quizzes.whatsup.add('states:quiz:whatsup:continue',function(name) {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
@@ -741,6 +725,22 @@ di.app = function() {
                     new Choice(self.get_next_quiz_state('whatsup',true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
                 ]
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:satisfied_democracy',function(name) {
+            return new ChoiceState(name, {
+                question: $("How satisfied are you with the way democracy works in South Africa?"),
+                choices: [
+                    new Choice('very_satisfied',$('Very satisfied')),
+                    new Choice('somewhat_satisfied',$('Somewhat satisfied')),
+                    new Choice('dissatisfied',$('Dissatisfied')),
+                    new Choice('very_dissatisfied',$('Very dissatisfied')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('_whatsup_satisfied_democracy',content,'whatsup');
+                }
             });
         });
 
@@ -755,7 +755,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_frequency_campaign_rallies',content,'whatsup');
+                    return self.next_quiz('_whatsup_frequency_campaign_rallies',content,'whatsup');
                 }
             });
         });
@@ -771,7 +771,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_frequency_party_agents',content,'whatsup');
+                    return self.next_quiz('_whatsup_frequency_party_agents',content,'whatsup');
                 }
             });
         });
@@ -787,7 +787,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_frequency_intimidation',content,'whatsup');
+                    return self.next_quiz('_whatsup_frequency_intimidation',content,'whatsup');
                 }
             });
         });
@@ -800,11 +800,11 @@ di.app = function() {
                     new Choice('some',$('Some')),
                     new Choice('not_much',$('Not much')),
                     new Choice('not_at_all',$('Not at all')),
-                    new Choice('no_opinion',$('No Opinion')),
+                    new Choice('no_opinion',$('No opinion')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_trust_anc',content,'whatsup');
+                    return self.next_quiz('_whatsup_trust_anc',content,'whatsup');
                 }
             });
         });
@@ -817,11 +817,11 @@ di.app = function() {
                     new Choice('some',$('Some')),
                     new Choice('not_much',$('Not much')),
                     new Choice('not_at_all',$('Not at all')),
-                    new Choice('no_opinion',$('No Opinion')),
+                    new Choice('no_opinion',$('No opinion')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_trust_da',content,'whatsup');
+                    return self.next_quiz('_whatsup_trust_da',content,'whatsup');
                 }
             });
         });
@@ -834,11 +834,11 @@ di.app = function() {
                     new Choice('some',$('Some')),
                     new Choice('not_much',$('Not much')),
                     new Choice('not_at_all',$('Not at all')),
-                    new Choice('no_opinion',$('No Opinion')),
+                    new Choice('no_opinion',$('No opinion')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_trust_eff',content,'whatsup');
+                    return self.next_quiz('_whatsup_trust_eff',content,'whatsup');
                 }
             });
         });
@@ -850,12 +850,12 @@ di.app = function() {
                     new Choice('never',$('Never')),
                     new Choice('once_or_twice',$('Once or twice')),
                     new Choice('sometimes',$('Sometimes')),
-                    new Choice('many_times',$('Many Times')),
+                    new Choice('many_times',$('Many times')),
                     new Choice('always',$('Always')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_food_to_eat',content,'whatsup');
+                    return self.next_quiz('_whatsup_food_to_eat',content,'whatsup');
                 }
             });
         });
@@ -871,14 +871,14 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_violence_for_just_cause',content,'whatsup');
+                    return self.next_quiz('_whatsup_violence_for_just_cause',content,'whatsup');
                 }
             });
         });
 
         self.quizzes.whatsup.add('states:quiz:whatsup:not_voting',function(name) {
             return new ChoiceState(name, {
-                question: $("In South Africa, it is sometimes necessary to use violence for a just cause:"),
+                question: $("Sometimes not voting is the best way to express your political preferences:"),
                 choices: [
                     new Choice('strongly_agree',$('Strongly agree')),
                     new Choice('somewhat_agree',$('Somewhat agree')),
@@ -887,7 +887,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('whatsup_not_voting',content,'whatsup');
+                    return self.next_quiz('_whatsup_not_voting',content,'whatsup');
                 }
             });
         });
