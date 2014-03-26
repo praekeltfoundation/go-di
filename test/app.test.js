@@ -229,20 +229,21 @@ describe("app", function() {
                                     msisdn: '+273456',
                                     extra : {
                                         is_registered: 'true',
-                                        ward: '1234',
-                                        vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]'
+                                        ward: '1234'
                                     }
                                 });
                             }).start()
                             .check.interaction({
                                 state: 'states:menu',
                                 reply: [
-                                    'Welcome to the Campaign',
-                                    '1. Take the quiz & win!',
-                                    '2. Report an Election Activity',
-                                    '3. View the results...',
-                                    '4. About',
-                                    '5. End'
+                                    'Welcome to VIP!',
+                                    '1. Answer & win!',
+                                    '2. VIP Quiz',
+                                    '3. Report an Election Activity',
+                                    '4. View VIP results...',
+                                    "5. What's up?",
+                                    '6. About',
+                                    '7. End'
                                 ].join('\n')
                             }).run();
                     });
@@ -673,15 +674,7 @@ describe("app", function() {
                     })
                     .input("1")
                     .check.interaction({
-                        state: 'states:menu',
-                        reply: [
-                            'Welcome to the Campaign',
-                            '1. Take the quiz & win!',
-                            '2. Report an Election Activity',
-                            '3. View the results...',
-                            '4. About',
-                            '5. End'
-                        ].join('\n')
+                        state: 'states:menu'
                     }).run();
             });
         });
@@ -705,7 +698,7 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state("states:menu")
-                    .input('5')
+                    .input('7')
                     .check.interaction({
                         state: 'states:start',
                         reply: 'Bye.'
@@ -718,7 +711,7 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:menu')
-                    .input('2')
+                    .input('3')
                     .check.interaction({
                         state: 'states:report',
                         reply: [
@@ -988,7 +981,7 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:menu')
-                    .input("4")
+                    .input("6")
                     .check.interaction({
                         state: "states:about",
                         reply: [
@@ -1040,7 +1033,7 @@ describe("app", function() {
                         api.kv.store['total.reports'] = 5;
                     })
                     .setup.user.state("states:menu")
-                    .input("3")
+                    .input("4")
                     .check.interaction({
                         state: "states:start",
                         reply: "You are 1 of 3 citizens who are active " +
@@ -1055,7 +1048,7 @@ describe("app", function() {
                     return tester
                         .setup.user.addr("+273123")
                         .setup.user.state("states:menu")
-                        .input("3")
+                        .input("4")
                         .check.interaction({
                             state: "states:start",
                             reply: "You are 1 of 0 citizens who are active " +

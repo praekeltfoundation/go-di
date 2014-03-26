@@ -99,6 +99,14 @@ di.app = function() {
             continue_interval: 4
         });
 
+        self.quizzes.whatsup = new QuizStates(self,{
+            name:'whatsup',
+            next:'states:quiz:whatsup:end',
+            num_questions: 10,
+            continue: 'states:quiz:whatsup:continue',
+            continue_interval: 4
+        });
+
         self.get_date = function() {
             return new Date();
         };
@@ -226,9 +234,9 @@ di.app = function() {
         * Returns to quiz delegation state.
         * Adds came from 'continue' state.
         * */
-        self.get_next_quiz_state = function(from_continue) {
+        self.get_next_quiz_state = function(name,from_continue) {
             return {
-                name:'states:quiz:vip:begin',
+                name:'states:quiz:'+name+':begin',
                 creator_opts: {
                     from_continue: from_continue || false
                 }
@@ -420,11 +428,28 @@ di.app = function() {
 
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
-                question: $('Welcome to the Campaign'),
+                question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice(self.get_next_quiz_state(),$('Take the quiz & win!')),
+                    new Choice(self.get_next_quiz_state('vip'),$('Answer & win!')),
+                    new Choice(self.get_next_quiz_state('vip'),$('VIP Quiz')),
+                    new Choice('states:report',$('Report an Election Activity')),
+                    new Choice('states:results',$('View VIP results...')),
+                    new Choice(self.get_next_quiz_state('whatsup'),$("What's up?")),
+                    new Choice('states:about',$('About')),
+                    new Choice('states:end',$('End'))
+                ]
+            });
+        });
+
+        self.states.add('states:answerwin',function(name) {
+            return new MenuState(name, {
+                question: $('Welcome to VIP!'),
+                choices:[
+                    new Choice(self.get_next_quiz_state('vip'),$('Answer & win!')),
+                    new Choice(self.get_next_quiz_state('vip'),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View the results...')),
+                    new Choice(self.get_next_quiz_state('whatsup'),$("What's up?")),
                     new Choice('states:about',$('About')),
                     new Choice('states:end',$('End'))
                 ]
@@ -454,14 +479,14 @@ di.app = function() {
             return self.im.api_request('kv.incr', {key: name});
         };
 
-        self.next_quiz = function(n,content) {
+        self.next_quiz = function(n,content,name) {
             return self
                 .answer(n,content.value)
                 .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
-                    return self.get_next_quiz_state();
+                    return self.get_next_quiz_state(name);
                 });
         };
 
@@ -479,7 +504,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(1,content);
+                    return self.next_quiz(1,content,'vip');
                 }
             });
         });
@@ -494,7 +519,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(2,content);
+                    return self.next_quiz(2,content,'vip');
                 }
             });
         });
@@ -511,7 +536,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(3,content);
+                    return self.next_quiz(3,content,'vip');
                 }
             });
         });
@@ -531,7 +556,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(4,content);
+                    return self.next_quiz(4,content,'vip');
                 }
             });
         });
@@ -560,7 +585,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(5,content);
+                    return self.next_quiz(5,content,'vip');
                 }
             });
         });
@@ -575,7 +600,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(6,content);
+                    return self.next_quiz(6,content,'vip');
                 }
             });
         });
@@ -591,7 +616,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(7,content);
+                    return self.next_quiz(7,content,'vip');
                 }
             });
         });
@@ -607,7 +632,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(8,content);
+                    return self.next_quiz(8,content,'vip');
                 }
             });
         });
@@ -623,7 +648,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(9,content);
+                    return self.next_quiz(9,content,'vip');
                 }
             });
         });
@@ -639,7 +664,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(10,content);
+                    return self.next_quiz(10,content,'vip');
                 }
             });
         });
@@ -659,7 +684,7 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(11,content);
+                    return self.next_quiz(11,content,'vip');
                 }
             });
         });
@@ -673,7 +698,82 @@ di.app = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(12,content);
+                    return self.next_quiz(12,content,'vip');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:satisfied_democracy',function(name) {
+            return new ChoiceState(name, {
+                question: $("How satisfied are you with the way democracy works in South Africa?"),
+                choices: [
+                    new Choice('very_satisfied',$('Very Satisfied')),
+                    new Choice('somewhat_satisfied',$('Somewhat Satisfied')),
+                    new Choice('dissatisfied',$('Dissatisfied')),
+                    new Choice('very_dissatisfied',$('Very Dissatisfied')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_satisfied_democracy',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:continue',function(name) {
+            return new MenuState(name,{
+                question: $('Would you like to continue answering questions? There are 12 in total.'),
+                choices: [
+                    new Choice(self.get_next_quiz_state(true),$('Continue')),
+                    new Choice('states:menu',$('Main Menu'))
+                ]
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:frequency_campaign_rallies',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, how frequently have campaign rallies occurred in your community?"),
+                choices: [
+                    new Choice('often',$('Often')),
+                    new Choice('several_times',$('Several times')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('never',$('Never')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_frequency_campaign_rallies',content,'whatsup');
+                }
+            });
+        });
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:frequency_party_agents',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, how frequently have party agents gone door to door in your community to mobilize voters?"),
+                choices: [
+                    new Choice('often',$('Often')),
+                    new Choice('several_times',$('Several times')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('never',$('Never')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_frequency_party_agents',content,'whatsup');
+                }
+            });
+        });
+
+
+        self.quizzes.whatsup.add('states:quiz:whatsup:frequency_intimidation',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, how frequently have party agents intimidated voters in your community?"),
+                choices: [
+                    new Choice('often',$('Often')),
+                    new Choice('serveral_times',$('Several times')),
+                    new Choice('once_or_twice',$('Once or twice')),
+                    new Choice('never',$('Never')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('whatsup_frequency_intimidation',content,'whatsup');
                 }
             });
         });
