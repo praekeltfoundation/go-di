@@ -323,6 +323,7 @@ di.app = function() {
                     return self.im.metrics.fire.last('unique.participants',result.count);
                 });
         };
+
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
                 return self.states.create('states:register');
@@ -449,7 +450,6 @@ di.app = function() {
                 check: function(content) {
                     return self
                         .http.get('http://wards.code4sa.org/',{
-                            params: {
                             params: {
                                 address: content,
                                 database: 'vd_2014'
