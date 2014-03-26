@@ -494,6 +494,10 @@ di.app = function() {
             return self.quizzes.vip.create.random(opts);
         });
 
+        self.states.add('states:quiz:whatsup:begin',function(name,opts) {
+            return self.quizzes.whatsup.create.random(opts);
+        });
+
         self.quizzes.vip.add('states:quiz:vip:question1',function(name) {
             return new ChoiceState(name, {
                question: $('During the past year, have you attended a demonstration or protest?'),
@@ -565,7 +569,7 @@ di.app = function() {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
                 choices: [
-                    new Choice(self.get_next_quiz_state(true),$('Continue')),
+                    new Choice(self.get_next_quiz_state('vip',true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
                 ]
             });
@@ -723,7 +727,7 @@ di.app = function() {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
                 choices: [
-                    new Choice(self.get_next_quiz_state(true),$('Continue')),
+                    new Choice(self.get_next_quiz_state('whatsup',true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
                 ]
             });

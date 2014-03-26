@@ -1024,7 +1024,7 @@ describe("app", function() {
         });
 
         describe("when the user selects View results from the main menu",function() {
-           it("should take them to view the results",function() {
+            it("should take them to view the results",function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
@@ -1037,11 +1037,11 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:start",
                         reply: "You are 1 of 3 citizens who are active " +
-                                "citizen election reporters! " +
-                                "4 questions and 5 election activity posts " +
-                                "have been submitted. View results at www.url.com"
+                            "citizen election reporters! " +
+                            "4 questions and 5 election activity posts " +
+                            "have been submitted. View results at www.url.com"
                     }).run();
-           });
+            });
 
             describe("if the the kv store value has not been set yet",function() {
                 it("should default the values to 0",function() {

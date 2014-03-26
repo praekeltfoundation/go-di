@@ -5,7 +5,7 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var fixtures = require('./fixtures');
-
+var _ = require('lodash');
 var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 
@@ -555,6 +555,30 @@ describe("app", function() {
             return states;
         };
 
+        var whatsup_states = ['states:quiz:whatsup:satisfied_democracy',
+            'states:quiz:whatsup:frequency_campaign_rallies',
+            'states:quiz:whatsup:frequency_party_agents',
+            'states:quiz:whatsup:frequency_intimidation'
+        ];
+
+        var get_whatsup_quiz_states = function(n) {
+            var states = whatsup_states.slice(0,n);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
+        var get_unanswered_whatsup_quiz_states = function(n) {
+            var states = whatsup_states.slice(n,whatsup_states.length);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
         describe("when the user has selected to do the quiz from the menu", function() {
             it("should take them to a random unanswered question",function() {
                 return tester
@@ -744,6 +768,21 @@ describe("app", function() {
                     .check.user.state(function(state){
                         var question_num = get_question_number(state);
                         assert.equal(question_num > 7,true);
+                    }).run();
+            });
+        });
+
+        describe("when the user selects to do the 'What's up' quiz",function() {
+            it.only("should take them to a random whatsup quiz",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user({
+                        state: 'states:quiz:whatsup:begin',
+                        answers: get_whatsup_quiz_states(0)
+                    })
+                    .check.user.state(function(state){
+                        var unanswered = get_unanswered_whatsup_quiz_states(0);
+                        assert.equal(_.indexOf(unanswered,state.name) > -1,true);
                     }).run();
             });
         });
