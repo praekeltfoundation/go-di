@@ -25,27 +25,44 @@ di.quiz = function() {
         };
 
         self.add_question = function(name,state) {
-            self.questions.push(name);
-            self.add(name,state);
+            var question = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
+            self.questions.push(question);
+            self.add(question,state);
         };
 
         self.add_continue = function(name,state) {
-            self.continue = name;
-            self.add(name,state);
+            self.continue = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
+            self.add(self.continue,state);
         };
 
         self.add_next = function(name,state) {
-            self.next = name;
-            self.add(name,state);
+            self.next = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
+            self.add(self.next,state);
         };
 
         self.add_begin = function(name) {
-            self.begin = name;
+            self.begin = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
             /*
              * This needs to be part of the app for testing.
              * My test cases wont initialize to it otherwise.
              * */
-            app.states.add(name,function(name,opts) {
+            app.states.add(self.begin,function(name,opts) {
                 return self.create.random(opts);
             });
         };
