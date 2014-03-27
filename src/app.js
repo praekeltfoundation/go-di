@@ -319,7 +319,7 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('Answer & win!')),
+                    new Choice('states:answerwin',$('Answer & win!')),
                     new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View VIP results...')),
