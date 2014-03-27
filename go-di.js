@@ -79,6 +79,396 @@ di.ushahidi = function() {
     };
 }();
 
+di.quiz = function() {
+    var vumigo = require('vumigo_v02');
+    var _ = require('lodash');
+    var AppStates = vumigo.app.AppStates;
+
+    var QuizStates = AppStates.extend(function(self,app,opts) {
+        AppStates.call(self, app);
+
+        self.continue_interval = opts.continue_interval;
+        self.name = opts.name;
+        self.questions = [];
+
+        self.is_complete = function() {
+            return self.count_answered() === self.questions.length;
+        };
+
+        self.count_answered = function() {
+            var unanswered = self.get_unanswered_questions();
+            return self.questions.length - unanswered.length;
+        };
+
+        self.count_unanswered = function() {
+            var unanswered = self.get_unanswered_questions();
+            return unanswered.length;
+        };
+
+        self.add_question = function(name,state) {
+            var question = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
+            self.questions.push(question);
+            self.add(question,state);
+        };
+
+        self.add_continue = function(name,state) {
+            self.continue = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
+            self.add(self.continue,state);
+        };
+
+        self.add_next = function(name,state) {
+            self.next = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
+            self.add(self.next,state);
+        };
+
+        self.add_begin = function(name) {
+            self.begin = [
+                'states:quiz',
+                self.name,
+                name
+            ].join(':');
+            /*
+             * This needs to be part of the app for testing.
+             * My test cases wont initialize to it otherwise.
+             * */
+            app.states.add(self.begin,function(name,opts) {
+                return self.create.random(opts);
+            });
+        };
+
+        self.get_next_quiz_state = function(from_continue) {
+            return {
+                name:self.begin,
+                creator_opts: {
+                    from_continue: from_continue || false
+                }
+            };
+        };
+
+        self.random = function(n) {
+            return _.random(n-1);
+        };
+
+        self.get_unanswered_questions = function() {
+            return _.filter(self.questions,function(state) {
+                return !_.has(app.im.user.answers,state);
+            });
+        };
+
+        self.random_quiz_name = function() {
+            var unanswered = self.get_unanswered_questions();
+            var index = self.random(unanswered.length);
+            return unanswered[index] || self.next ;
+        };
+
+        //If an interval of the questions save for last and first question
+        //If not from a continue state.
+        self.create_continue = function(opts) {
+            var count = self.count_answered();
+            return (
+                count > 0
+                    && count < self.questions.length
+                    && (count % self.continue_interval) === 0
+                    && !opts.from_continue
+                );
+        };
+
+        self.create.random = function(opts) {
+            if (self.create_continue(opts)) {
+                return self.create(self.continue,opts);
+            }
+            return self.create(self.random_quiz_name(), opts);
+        };
+
+        self.incr_quiz_metrics = function() {
+            //Increment total.questions: kv store + metric
+            var promise =  app.incr_kv(self.name+'.total.questions').then(function(result) {
+                return app.im.metrics.fire.last(self.name+'.total.questions',result.value);
+            });
+
+            //Check if all questions have been answered and increment total quiz's completed
+            if (self.is_complete()) {
+                promise = promise.then(function(result) {
+                    return app.im.metrics.fire.inc(self.name+'.quiz.complete');
+                });
+            }
+            return promise;
+        };
+
+        self.next_quiz = function(n,content) {
+            return self
+                .answer(n,content.value)
+                .then(function() {
+                    return self.incr_quiz_metrics();
+                })
+                .then(function() {
+                    return self.get_next_quiz_state();
+                });
+        };
+
+        self.answer = function(n,value) {
+            var contact_field = [
+                self.name,
+                "question",
+                n
+            ].join('_');
+            app.contact.extra[contact_field] = value;
+            app.contact.extra["it_"+contact_field] = app.get_date_string();
+            return app.im.contacts.save(app.contact);
+        };
+    });
+
+    return {
+        QuizStates: QuizStates
+    };
+}();
+
+/**
+ * Created by Jade on 2014/03/27.
+ */
+di.quiz.vip = function() {
+    var QuizStates = di.quiz.QuizStates;
+    var vumigo = require('vumigo_v02');
+    var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
+    var MenuState = vumigo.states.MenuState;
+
+    var VipQuiz = QuizStates.extend(function(self,app) {
+        QuizStates.call(self,app,{
+            name:'vip',
+            continue_interval: 4
+        });
+        var $ = app.$;
+
+        self.add_question('question1',function(name) {
+            return new ChoiceState(name, {
+                question: $('During the past year, have you attended a demonstration or protest?'),
+                choices: [
+                    new Choice('yes_many',$('Yes, many')),
+                    new Choice('yes_few',$('Yes, a few')),
+                    new Choice('no',$('No')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(1,content);
+                }
+            });
+        });
+
+        self.add_question('question2',function(name) {
+            return new ChoiceState(name, {
+                question: $('Are you registered to vote in the upcoming elections?'),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No')),
+                    new Choice('unsure',$('Unsure')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(2,content);
+                }
+            });
+        });
+
+        self.add_question('question3',function(name) {
+            return new ChoiceState(name, {
+                question: $('How likely is it that you will vote in the upcoming election?'),
+                choices: [
+                    new Choice('very_likely',$('Very likely')),
+                    new Choice('somewhat_likely',$('Somewhat likely')),
+                    new Choice('somewhat_unlikely',$('Somewhat unlikely')),
+                    new Choice('very_unlikely',$('Very unlikely')),
+                    new Choice('unsure',$('Unsure')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(3,content);
+                }
+            });
+        });
+
+        self.add_question('question4',function(name) {
+            return new ChoiceState(name,{
+                question: $('Which political party do you feel close to?'),
+                choices: [
+                    new Choice('anc',$('ANC')),
+                    new Choice('agang',$('Agang')),
+                    new Choice('cope',$('COPE')),
+                    new Choice('da',$('DA')),
+                    new Choice('eff',$('EFF')),
+                    new Choice('ifp',$('IFP')),
+                    new Choice('other',$('Other')),
+                    new Choice('none',$("I don't feel close to a party")),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(4,content);
+                }
+            });
+        });
+
+        self.add_continue('continue',function(name) {
+            return new MenuState(name,{
+                question: $('Would you like to continue answering questions? There are 12 in total.'),
+                choices: [
+                    new Choice(self.get_next_quiz_state(true),$('Continue')),
+                    new Choice('states:menu',$('Main Menu'))
+                ]
+            });
+        });
+
+        self.add_next('end',function(name) {
+            return app.states.create("states:menu");
+        });
+
+        self.add_question('question5',function(name) {
+            return new ChoiceState(name, {
+                question: $('During the past year, has your community had demonstrations or protests?'),
+                choices: [
+                    new Choice('yes_several',$('Yes, several times')),
+                    new Choice('yes_once_twice',$('Yes, once or twice')),
+                    new Choice('no',$('No')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(5,content);
+                }
+            });
+        });
+
+        self.add_question('question6',function(name) {
+            return new ChoiceState(name, {
+                question: $('If your community has had demonstrations or protests in the last year, were they violent?'),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No')),
+                    new Choice('na',$('Not applicable')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(6,content);
+                }
+            });
+        });
+
+        self.add_question('question7',function(name) {
+            return new ChoiceState(name, {
+                question: $("How easy is it for your neighbors to find out if you voted?"),
+                choices: [
+                    new Choice('very_easy',$('Very easy')),
+                    new Choice('somewhat_easy',$('Somewhat easy')),
+                    new Choice('somewhat_difficult',$('Somewhat difficult')),
+                    new Choice('very_difficult',$('Very difficult')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(7,content);
+                }
+            });
+        });
+
+        self.add_question('question8',function(name) {
+            return new ChoiceState(name, {
+                question: $("People in my neighborhood look down on those who do not vote:"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewhat agree')),
+                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(8,content);
+                }
+            });
+        });
+
+        self.add_question('question9',function(name) {
+            return new ChoiceState(name, {
+                question: $("How do you rate the overall performance of President Zuma?"),
+                choices: [
+                    new Choice('excellent',$('Excellent')),
+                    new Choice('good',$('Good')),
+                    new Choice('just_fair',$('Just Fair')),
+                    new Choice('poor',$('Poor')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(9,content);
+                }
+            });
+        });
+
+        self.add_question('question10',function(name) {
+            return new ChoiceState(name, {
+                question: $("How do you rate the overall performance of your local government councillor?"),
+                choices: [
+                    new Choice('excellent',$('Excellent')),
+                    new Choice('good',$('Good')),
+                    new Choice('just_fair',$('Just Fair')),
+                    new Choice('poor',$('Poor')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(10,content);
+                }
+            });
+        });
+
+        self.add_question('question11',function(name) {
+            return new ChoiceState(name, {
+                question: $("Which party has contacted you the most during this election campaign?"),
+                choices: [
+                    new Choice('none',$('None, I have not been contacted')),
+                    new Choice('anc',$('ANC')),
+                    new Choice('agang',$('Agang')),
+                    new Choice('cope',$('COPE')),
+                    new Choice('da',$('DA')),
+                    new Choice('eff',$('EFF')),
+                    new Choice('ifp',$('IFP')),
+                    new Choice('other',$('Other')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(11,content);
+                }
+            });
+        });
+
+        self.add_question('question12',function(name) {
+            return new ChoiceState(name, {
+                question: $("During the past two weeks, have you attended a campaign rally?"),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz(12,content);
+                }
+            });
+        });
+
+        self.add_begin('begin');
+    });
+
+    return {
+        VipQuiz: VipQuiz
+    };
+}();
+
 di.app = function() {
     var vumigo = require('vumigo_v02');
     var Q = require('q');
@@ -93,11 +483,14 @@ di.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var UshahidiApi = di.ushahidi.UshahidiApi;
+    var VipQuiz = di.quiz.vip.VipQuiz;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
-        var num_questions = 12;
+
+        self.quizzes = {};
+        self.quizzes.vip = new VipQuiz(self);
 
         self.get_date = function() {
             return new Date();
@@ -189,11 +582,6 @@ di.app = function() {
                 });
         };
 
-        //Return random number [0,n)
-        self.random = function(n) {
-            return Math.floor(Math.random()*n);
-        };
-
         /*
         * When users are registered:
         * set as registered.
@@ -202,7 +590,6 @@ di.app = function() {
         * */
         self.register = function() {
             self.contact.extra.is_registered = 'true';
-            self.contact.extra.vip_unanswered = JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]);
 
             //Fire metrics + increment kv store
             return self
@@ -212,64 +599,7 @@ di.app = function() {
                 });
         };
 
-        /**
-         * Gets a random unanswered question n from the list of unanswered questions
-         * Does not save the contact.
-         * */
-        self.get_unanswered_question = function() {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            var num_unanswered = questions.length;
-            var index = self.random(num_unanswered);
-            return questions[index];
-        };
 
-        /**
-         * Get's quiz completion
-         * */
-        self.is_quiz_complete = function() {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            return (questions.length === 0);
-        };
-
-        /**
-         * Removed question n from the list of unanswered questions
-         * Does not save the contact.
-         * */
-        self.set_answered = function(n) {
-            var questions = JSON.parse(self.contact.extra.vip_unanswered);
-            var index = questions.indexOf(n);
-            if (index > -1) {
-                questions.splice(index,1);
-            }
-            self.contact.extra.vip_unanswered = JSON.stringify(questions);
-        };
-
-        /*
-        * Sets value of answer + timestamp and remove question from unanswered list
-        * */
-        self.answer = function(n,value) {
-            self.contact.extra["question" +n] = value;
-            self.contact.extra["it_question" +n] = self.get_date_string();
-            self.set_answered(n);
-            return self.im.contacts.save(self.contact);
-        };
-
-        /*
-        * If all questions have been answered then go to the menu
-        * If 4 questions have been answered then go to the "do you want to continue" state
-        * Else return an unanswered question.
-        * */
-        self.get_next_quiz_state = function(from_continue) {
-            var unanswered = JSON.parse(self.contact.extra.vip_unanswered);
-            var answered = num_questions - unanswered.length;
-            if (answered === 12) {
-                return 'states:menu';
-            } else if ((answered == 4 || answered == 8) && !self.is(from_continue)) {
-                return 'states:quiz:vip:continue';
-            } else {
-                return 'states:quiz:vip:question' + self.get_unanswered_question();
-            }
-        };
 
         self.get_unique_users = function() {
             return self.im
@@ -356,13 +686,13 @@ di.app = function() {
 
         self.get_terms = function() {
             return [
-                "University of California San Diego requests ur consent to act as a research subject for " +
-                    "improving electoral performance through citizen engagement in SA.",
-                "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology " +
-                    "to improve how elections r monitored by citizen volunteers.",
-                "If u participate,we will ask questions about urself&ur observations of the elections.U will b " +
-                    "anonymous.Ur answers will be kept confidential&won't b shared.",
-                "To view full T&Cs please visit www.yal.mobi/vip."
+                $("University of California San Diego requests ur consent to act as a research subject for " +
+                    "improving electoral performance through citizen engagement in SA."),
+                $("Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology " +
+                    "to improve how elections r monitored by citizen volunteers."),
+                $("If u participate,we will ask questions about urself&ur observations of the elections.U will b " +
+                    "anonymous.Ur answers will be kept confidential&won't b shared."),
+                $("To view full T&Cs please visit www.yal.mobi/vip.")
             ];
         };
 
@@ -458,7 +788,7 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to the Campaign'),
                 choices:[
-                    new Choice(self.get_next_quiz_state(),$('Take the quiz & win!')),
+                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('Take the quiz & win!')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View the results...')),
                     new Choice('states:about',$('About')),
@@ -467,21 +797,6 @@ di.app = function() {
             });
         });
 
-        self.incr_quiz_metrics = function() {
-            //Increment total.questions: kv store + metric
-            var promise =  self.incr_kv('total.questions').then(function(result) {
-                return self.im.metrics.fire.last('total.questions',result.value);
-            });
-
-            //Check if all questions have been answered and increment total quiz's completed
-            if (self.is_quiz_complete()) {
-                promise = promise.then(function(result) {
-                    return self.im.metrics.fire.inc('quiz.complete');
-                });
-            }
-            return promise;
-        };
-
         self.get_kv = function(name) {
             return self.im.api_request('kv.get', {key: name});
         };
@@ -489,222 +804,6 @@ di.app = function() {
         self.incr_kv = function(name) {
             return self.im.api_request('kv.incr', {key: name});
         };
-
-        self.next_quiz = function(n,content) {
-            return self
-                .answer(n,content.value)
-                .then(function() {
-                    return self.incr_quiz_metrics();
-                })
-                .then(function() {
-                    return self.get_next_quiz_state();
-                });
-        };
-
-        self.states.add('states:quiz:vip:question1',function(name) {
-            return new ChoiceState(name, {
-               question: $('During the past year, have you attended a demonstration or protest?'),
-               choices: [
-                    new Choice('yes_many',$('Yes, many')),
-                    new Choice('yes_few',$('Yes, a few')),
-                    new Choice('no',$('No')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(1,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question2',function(name) {
-            return new ChoiceState(name, {
-                question: $('Are you registered to vote in the upcoming elections?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('unsure',$('Unsure')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(2,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question3',function(name) {
-            return new ChoiceState(name, {
-                question: $('How likely is it that you will vote in the upcoming election?'),
-                choices: [
-                    new Choice('very_likely',$('Very likely')),
-                    new Choice('somewhat_likely',$('Somewhat likely')),
-                    new Choice('somewhat_unlikely',$('Somewhat unlikely')),
-                    new Choice('very_unlikely',$('Very unlikely')),
-                    new Choice('unsure',$('Unsure')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(3,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question4',function(name) {
-            return new ChoiceState(name,{
-                question: $('Which political party do you feel close to?'),
-                choices: [
-                    new Choice('anc',$('ANC')),
-                    new Choice('agang',$('Agang')),
-                    new Choice('cope',$('COPE')),
-                    new Choice('da',$('DA')),
-                    new Choice('eff',$('EFF')),
-                    new Choice('ifp',$('IFP')),
-                    new Choice('other',$('Other')),
-                    new Choice('none',$("I don't feel close to a party")),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(4,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:continue',function(name) {
-            return new MenuState(name,{
-                question: $('Would you like to continue answering questions? There are 12 in total.'),
-                choices: [
-                    new Choice(self.get_next_quiz_state(true),$('Continue')),
-                    new Choice('states:menu',$('Main Menu'))
-                ]
-            });
-        });
-
-        self.states.add('states:quiz:vip:question5',function(name) {
-            return new ChoiceState(name, {
-                question: $('During the past year, has your community had demonstrations or protests?'),
-                choices: [
-                    new Choice('yes_several',$('Yes, several times')),
-                    new Choice('yes_once_twice',$('Yes, once or twice')),
-                    new Choice('no',$('No')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(5,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question6',function(name) {
-            return new ChoiceState(name, {
-                question: $('If your community has had demonstrations or protests in the last year, were they violent?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('na',$('Not applicable')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(6,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question7',function(name) {
-            return new ChoiceState(name, {
-                question: $("How easy is it for your neighbors to find out if you voted?"),
-                choices: [
-                    new Choice('very_easy',$('Very easy')),
-                    new Choice('somewhat_easy',$('Somewhat easy')),
-                    new Choice('somewhat_difficult',$('Somewhat difficult')),
-                    new Choice('very_difficult',$('Very difficult')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(7,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question8',function(name) {
-            return new ChoiceState(name, {
-                question: $("People in my neighborhood look down on those who do not vote:"),
-                choices: [
-                    new Choice('strongly_agree',$('Strongly agree')),
-                    new Choice('somewhat_agree',$('Somewhat agree')),
-                    new Choice('somewhat_disagree',$('Somewhat disagree')),
-                    new Choice('strongly_disagree',$('Strongly disagree')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(8,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question9',function(name) {
-            return new ChoiceState(name, {
-                question: $("How do you rate the overall performance of President Zuma?"),
-                choices: [
-                    new Choice('excellent',$('Excellent')),
-                    new Choice('good',$('Good')),
-                    new Choice('just_fair',$('Just Fair')),
-                    new Choice('poor',$('Poor')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(9,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question10',function(name) {
-            return new ChoiceState(name, {
-                question: $("How do you rate the overall performance of your local government councillor?"),
-                choices: [
-                    new Choice('excellent',$('Excellent')),
-                    new Choice('good',$('Good')),
-                    new Choice('just_fair',$('Just Fair')),
-                    new Choice('poor',$('Poor')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(10,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question11',function(name) {
-            return new ChoiceState(name, {
-                question: $("Which party has contacted you the most during this election campaign?"),
-                choices: [
-                    new Choice('none',$('None, I have not been contacted')),
-                    new Choice('anc',$('ANC')),
-                    new Choice('agang',$('Agang')),
-                    new Choice('cope',$('COPE')),
-                    new Choice('da',$('DA')),
-                    new Choice('eff',$('EFF')),
-                    new Choice('ifp',$('IFP')),
-                    new Choice('other',$('Other')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(11,content);
-                }
-            });
-        });
-
-        self.states.add('states:quiz:vip:question12',function(name) {
-            return new ChoiceState(name, {
-                question: $("During the past two weeks, have you attended a campaign rally?"),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(12,content);
-                }
-            });
-        });
 
         self.states.add('states:report',function(name) {
             var report_types = [
@@ -866,13 +965,13 @@ di.app = function() {
 
         self.get_about = function() {
               return [
-                  "The VIP-Ask is a multi-channel political engagement portal.VIP: " +
+                  $("The VIP-Ask is a multi-channel political engagement portal.VIP: " +
                     "Ask will engage South Africans from all walks of life to " +
-                    "report on electoral activities,",
-                  "voice their opinions on current issues surrounding the elections, " +
-                    "and report on election processes on voting day.",
-                  "VIP:Ask is a partnership between academics, " +
-                    "Democracy International, Livity Africa and the Praekelt Foundation"
+                    "report on electoral activities,"),
+                  $("voice their opinions on current issues surrounding the elections, " +
+                    "and report on election processes on voting day."),
+                      $("VIP:Ask is a partnership between academics, " +
+                    "Democracy International, Livity Africa and the Praekelt Foundation")
               ];
         };
 
