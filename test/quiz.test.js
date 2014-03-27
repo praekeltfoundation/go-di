@@ -676,7 +676,7 @@ describe("app", function() {
         });
 
         describe("when the user has answered their 4th question", function() {
-            it("should take them if they want to continue",function() {
+            it("should ask them if they want to continue",function() {
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
@@ -705,7 +705,7 @@ describe("app", function() {
         });
 
         describe("when the user has answered their 8th question", function() {
-            it("should take them if they want to continue",function() {
+            it("should ask them if they want to continue",function() {
                 return tester
                     .setup( function(api) {
                         api.contacts.add( {
