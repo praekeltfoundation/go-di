@@ -179,7 +179,6 @@ di.quiz.whatsup = function() {
             });
         });
 
-
         self.add_continue('continue',function(name) {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 10 in total.'),

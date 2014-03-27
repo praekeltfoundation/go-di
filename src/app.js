@@ -317,14 +317,23 @@ di.app = function() {
 
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
-                question: $('Welcome to the Campaign'),
+                question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('Take the quiz & win!')),
+                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('Answer & win!')),
+                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
-                    new Choice('states:results',$('View the results...')),
+                    new Choice('states:results',$('View VIP results...')),
+                    new Choice(self.quizzes.whatsup.get_next_quiz_state(),$("What's up?")),
                     new Choice('states:about',$('About')),
                     new Choice('states:end',$('End'))
                 ]
+            });
+        });
+
+        self.states.add('states:answerwin',function(name) {
+            return new EndState(name, {
+                text: $('To be continued'),
+                next: 'states:start'
             });
         });
 

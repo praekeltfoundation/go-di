@@ -20,7 +20,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-            .setup.char_limit(180);
+                .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -49,13 +49,12 @@ describe("app", function() {
                         msisdn: '+273123',
                         extra : {
                             is_registered: 'true',
-                            vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]',
                             register_sms_sent: 'true'
                         }
                     });
                 });
         });
-        
+
         describe("when a session is terminated", function() {
             describe("when they are registered",function() {
                 describe("when they have not inputted their location",function() {
@@ -82,7 +81,7 @@ describe("app", function() {
                                     assert.equal(smses.length,0);
                                 }).run();
                         });
-                     });
+                    });
 
                     describe("when they have not been sent a registration sms",function() {
                         it ("should send them an sms asking them to input their location next time",function() {
@@ -135,42 +134,42 @@ describe("app", function() {
                                 }).run();
                         });
                     });
-                   describe("when they have already been sent a registration sms",function() {
-                       it("should send them an sms thanking them for their registration",function() {
-                           tester
-                               .setup.user.addr('+273000')
-                               .setup.user.state('states:register')
-                               .input('1')
-                               .input.session_event('close')
-                               .check(function(api) {
-                                   var smses = _.where(api.outbound.store, {
-                                       endpoint: 'sms'
-                                   });
+                    describe("when they have already been sent a registration sms",function() {
+                        it("should send them an sms thanking them for their registration",function() {
+                            tester
+                                .setup.user.addr('+273000')
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
 
-                                   var sms = smses[0];
-                                   assert.equal(smses.length,1);
-                                   assert.equal(sms.content,[
-                                       'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
-                                       'Get started by answering questions or reporting election activity!',
-                                       'Dial back in to *5555# to begin!'
-                                   ].join(' '));
-                                   assert.equal(sms.to_addr,'+273000');
-                               }).run();
-                       });
-                   });
+                                    var sms = smses[0];
+                                    assert.equal(smses.length,1);
+                                    assert.equal(sms.content,[
+                                        'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
+                                        'Get started by answering questions or reporting election activity!',
+                                        'Dial back in to *5555# to begin!'
+                                    ].join(' '));
+                                    assert.equal(sms.to_addr,'+273000');
+                                }).run();
+                        });
+                    });
                 });
             });
         });
 
         describe("when the user starts a session",function() {
             it("should fire a 'visits' metric",function() {
-               return tester
-                   .start()
-                   .check(function(api) {
-                       var metrics = api.metrics.stores.test_app;
-                       assert.deepEqual(metrics['sum.visits'].values, [1]);
-                       assert.deepEqual(metrics['avg.visits'].values, [1]);
-                   }).run();
+                return tester
+                    .start()
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['sum.visits'].values, [1]);
+                        assert.deepEqual(metrics['avg.visits'].values, [1]);
+                    }).run();
             });
 
             it("should fire a 'visits' metric",function() {
@@ -184,16 +183,16 @@ describe("app", function() {
             });
 
             it("should fire a 'unique.participants' metric",function() {
-               return tester
-                   .setup.user.addr('+273123')
-                   .setup(function(api) {
-                       api.messagestore.inbound_uniques = 42;
-                   })
-                   .start()
-                   .check(function(api) {
+                return tester
+                    .setup.user.addr('+273123')
+                    .setup(function(api) {
+                        api.messagestore.inbound_uniques = 42;
+                    })
+                    .start()
+                    .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
-                       assert.deepEqual(metrics['unique.participants'].values,[42]);
-                   }).run();
+                        assert.deepEqual(metrics['unique.participants'].values,[42]);
+                    }).run();
             });
 
             describe('if they are registered',function() {
@@ -212,9 +211,9 @@ describe("app", function() {
                             .check.interaction({
                                 states:'states:address',
                                 reply: "Thanks 4 joining!2 begin we need ur voting ward. " +
-                                        "Reply with ur home address & we'll work it out. " +
-                                        "This will be kept private, only ur voting ward will be stored " +
-                                        "&u will be anonymous."
+                                    "Reply with ur home address & we'll work it out. " +
+                                    "This will be kept private, only ur voting ward will be stored " +
+                                    "&u will be anonymous."
                             })
                             .run();
                     });
@@ -229,20 +228,21 @@ describe("app", function() {
                                     msisdn: '+273456',
                                     extra : {
                                         is_registered: 'true',
-                                        ward: '1234',
-                                        vip_unanswered: '[1,2,3,4,5,6,7,8,9,10,11,12]'
+                                        ward: '1234'
                                     }
                                 });
                             }).start()
                             .check.interaction({
                                 state: 'states:menu',
                                 reply: [
-                                    'Welcome to the Campaign',
-                                    '1. Take the quiz & win!',
-                                    '2. Report an Election Activity',
-                                    '3. View the results...',
-                                    '4. About',
-                                    '5. End'
+                                    'Welcome to VIP!',
+                                    '1. Answer & win!',
+                                    '2. VIP Quiz',
+                                    '3. Report an Election Activity',
+                                    '4. View VIP results...',
+                                    "5. What's up?",
+                                    '6. About',
+                                    '7. End'
                                 ].join('\n')
                             }).run();
                     });
@@ -250,29 +250,29 @@ describe("app", function() {
             });
 
             describe("if they are not registered",function() {
-               it ("should take them to the language page",function() {
-                   return tester.setup.user.addr('+273321')
-                       .setup(function(api) {
-                          api.contacts.add( {
-                              msisdn: '+273321',
-                              extra : {
-                                  is_registered: 'false'
-                              }
-                          });
-                       })
-                       .start()
-                       .check.interaction({
-                           state: 'states:register',
-                           reply: ['Welcome to Voting is Power! Start by choosing your language:',
-                               '1. English',
-                               '2. Afrikaans',
-                               '3. Zulu',
-                               '4. Xhosa',
-                               '5. Sotho'
-                           ].join('\n')
-                       })
-                       .run();
-               });
+                it ("should take them to the language page",function() {
+                    return tester.setup.user.addr('+273321')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273321',
+                                extra : {
+                                    is_registered: 'false'
+                                }
+                            });
+                        })
+                        .start()
+                        .check.interaction({
+                            state: 'states:register',
+                            reply: ['Welcome to Voting is Power! Start by choosing your language:',
+                                '1. English',
+                                '2. Afrikaans',
+                                '3. Zulu',
+                                '4. Xhosa',
+                                '5. Sotho'
+                            ].join('\n')
+                        })
+                        .run();
+                });
             });
         });
 
@@ -283,11 +283,11 @@ describe("app", function() {
                     .check.interaction({
                         state: 'states:register',
                         reply: ['Welcome to Voting is Power! Start by choosing your language:',
-                                '1. English',
-                                '2. Afrikaans',
-                                '3. Zulu',
-                                '4. Xhosa',
-                                '5. Sotho'
+                            '1. English',
+                            '2. Afrikaans',
+                            '3. Zulu',
+                            '4. Xhosa',
+                            '5. Sotho'
                         ].join('\n')
                     })
                     .run();
@@ -321,18 +321,18 @@ describe("app", function() {
         });
 
         describe("when the user selects 'Yes' for the engagement question",function() {
-           it("should take them to the terms and conditions menu",function() {
+            it("should take them to the terms and conditions menu",function() {
                 return tester
                     .setup.user.state('states:registration:engagement')
                     .input('1')
-                   .check.interaction({
+                    .check.interaction({
                         state:'states:registration:tandc',
                         reply: ['Please accept the terms and conditions to get started.',
                             '1. Accept & Join',
                             '2. Read t&c',
                             '3. Quit'].join('\n')
-                   }).run();
-           });
+                    }).run();
+            });
 
             it("should save their answer as 'yes'",function() {
                 return tester
@@ -357,7 +357,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user selects 'NO but I’ll vote anyway' for the engagement question",function() {
+        describe("when the user selects 'NO but Iâ€™ll vote anyway' for the engagement question",function() {
 
             it("should take them to the terms and conditions menu",function() {
                 return tester
@@ -372,16 +372,16 @@ describe("app", function() {
                     }).run();
             });
 
-           it("should save their answer as 'no_vote_anyway'",function() {
-               return tester
-                   .setup.user.addr("+273123")
-                   .setup.user.state('states:registration:engagement')
-                   .input('2')
-                   .check(function(api){
-                       var contact = api.contacts.store[0];
-                       assert.equal(contact.extra.engagement_question,"no_vote_anyway");
-                   }).run();
-           }) ;
+            it("should save their answer as 'no_vote_anyway'",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:registration:engagement')
+                    .input('2')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.engagement_question,"no_vote_anyway");
+                    }).run();
+            }) ;
         });
 
         describe("when the user selects accept and join",function() {
@@ -515,37 +515,37 @@ describe("app", function() {
                         .run();
                 });
             });
-        describe("when the user has selected to view the second page of electoral options",function() {
+            describe("when the user has selected to view the second page of electoral options",function() {
                 beforeEach(function() {
                     tester.setup.user.state({
                         name: 'states:address:verify',
                         metadata: {page_start: 0},
                         creator_opts: {
                             address_options:  [{
-                                    "address": "Main Street, Paarl, South Africa",
-                                    "ward": "10203019"
-                                }, {
-                                    "address": "Main Street, Lambert's Bay 8130, South Africa",
-                                    "ward": "10102005"
-                                }, {
-                                    "address": "Main Street, Glencoe, South Africa",
-                                    "ward": "52401001"
-                                },{
-                                    "address": "Main Street, Howick, South Africa",
-                                    "ward": "52202009"
-                                },{
-                                    "address": "Main Street, Despatch 6220, South Africa",
-                                    "ward": "29500060"
-                                },{
-                                    "address": "Main Street, Matatiele 4730, South Africa",
-                                    "ward": "24401019"
-                                },{
-                                    "address": "Main Street, Emalahleni, South Africa",
-                                    "ward": "83102017"
-                                },{
-                                    "address": "Main Street, Darling 7345, South Africa",
-                                    "ward": "10105004"
-                                }]
+                                "address": "Main Street, Paarl, South Africa",
+                                "ward": "10203019"
+                            }, {
+                                "address": "Main Street, Lambert's Bay 8130, South Africa",
+                                "ward": "10102005"
+                            }, {
+                                "address": "Main Street, Glencoe, South Africa",
+                                "ward": "52401001"
+                            },{
+                                "address": "Main Street, Howick, South Africa",
+                                "ward": "52202009"
+                            },{
+                                "address": "Main Street, Despatch 6220, South Africa",
+                                "ward": "29500060"
+                            },{
+                                "address": "Main Street, Matatiele 4730, South Africa",
+                                "ward": "24401019"
+                            },{
+                                "address": "Main Street, Emalahleni, South Africa",
+                                "ward": "83102017"
+                            },{
+                                "address": "Main Street, Darling 7345, South Africa",
+                                "ward": "10105004"
+                            }]
                         }
                     });
                 });
@@ -568,58 +568,58 @@ describe("app", function() {
                         .run();
                 });
             });
-        describe("when the user is on the 2nd page and selects 'back",function() {
-            beforeEach(function() {
-                tester.setup.user.state({
-                    name: 'states:address:verify',
-                    metadata: {page_start: 3},
-                    creator_opts: {
-                        address_options:  [{
-                            "address": "Main Street, Paarl, South Africa",
-                            "ward": "10203019"
-                        }, {
-                            "address": "Main Street, Lambert's Bay 8130, South Africa",
-                            "ward": "10102005"
-                        }, {
-                            "address": "Main Street, Glencoe, South Africa",
-                            "ward": "52401001"
-                        },{
-                            "address": "Main Street, Howick, South Africa",
-                            "ward": "52202009"
-                        },{
-                            "address": "Main Street, Despatch 6220, South Africa",
-                            "ward": "29500060"
-                        },{
-                            "address": "Main Street, Matatiele 4730, South Africa",
-                            "ward": "24401019"
-                        },{
-                            "address": "Main Street, Emalahleni, South Africa",
-                            "ward": "83102017"
-                        },{
-                            "address": "Main Street, Darling 7345, South Africa",
-                            "ward": "10105004"
-                        }]
-                    }
+            describe("when the user is on the 2nd page and selects 'back",function() {
+                beforeEach(function() {
+                    tester.setup.user.state({
+                        name: 'states:address:verify',
+                        metadata: {page_start: 3},
+                        creator_opts: {
+                            address_options:  [{
+                                "address": "Main Street, Paarl, South Africa",
+                                "ward": "10203019"
+                            }, {
+                                "address": "Main Street, Lambert's Bay 8130, South Africa",
+                                "ward": "10102005"
+                            }, {
+                                "address": "Main Street, Glencoe, South Africa",
+                                "ward": "52401001"
+                            },{
+                                "address": "Main Street, Howick, South Africa",
+                                "ward": "52202009"
+                            },{
+                                "address": "Main Street, Despatch 6220, South Africa",
+                                "ward": "29500060"
+                            },{
+                                "address": "Main Street, Matatiele 4730, South Africa",
+                                "ward": "24401019"
+                            },{
+                                "address": "Main Street, Emalahleni, South Africa",
+                                "ward": "83102017"
+                            },{
+                                "address": "Main Street, Darling 7345, South Africa",
+                                "ward": "10105004"
+                            }]
+                        }
+                    });
+                });
+                it("should go to the first page",function(){
+                    return tester
+                        .setup.user.addr('+273123')
+                        .input("5")
+                        .check.interaction({
+                            state: "states:address:verify",
+                            reply: [
+                                'Please select your location from the options below:',
+                                '1. Main Street, Paarl',
+                                "2. Main Street, Lambert's Bay 8130",
+                                '3. Main Street, Glencoe',
+                                "4. More"
+                            ].join("\n")
+                        })
+                        .run();
                 });
             });
-            it("should go to the first page",function(){
-                return tester
-                    .setup.user.addr('+273123')
-                    .input("5")
-                    .check.interaction({
-                        state: "states:address:verify",
-                        reply: [
-                            'Please select your location from the options below:',
-                            '1. Main Street, Paarl',
-                            "2. Main Street, Lambert's Bay 8130",
-                            '3. Main Street, Glencoe',
-                            "4. More"
-                        ].join("\n")
-                    })
-                    .run();
-            });
         });
-    });
 
         describe("when the user selects their address from the list provider",function(){
             it("should save their electoral ward",function() {
@@ -673,30 +673,22 @@ describe("app", function() {
                     })
                     .input("1")
                     .check.interaction({
-                        state: 'states:menu',
-                        reply: [
-                            'Welcome to the Campaign',
-                            '1. Take the quiz & win!',
-                            '2. Report an Election Activity',
-                            '3. View the results...',
-                            '4. About',
-                            '5. End'
-                        ].join('\n')
+                        state: 'states:menu'
                     }).run();
             });
         });
 
         describe("when the user inputs an address that cant be found",function() {
             it("should redirect them to the same address page, but show an error message",function() {
-               return tester
-                   .setup.user.addr('user_bad_input')
-                   .setup.user.state('states:address')
-                   .input('bad input')
-                   .check.reply(
-                       'Oops! Something went wrong! Please try again.'
-                   )
-                   .check.user.state('states:address')
-                   .run();
+                return tester
+                    .setup.user.addr('user_bad_input')
+                    .setup.user.state('states:address')
+                    .input('bad input')
+                    .check.reply(
+                        'Oops! Something went wrong! Please try again.'
+                    )
+                    .check.user.state('states:address')
+                    .run();
             });
         });
 
@@ -705,7 +697,7 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state("states:menu")
-                    .input('5')
+                    .input('7')
                     .check.interaction({
                         state: 'states:start',
                         reply: 'Bye.'
@@ -718,7 +710,7 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:menu')
-                    .input('2')
+                    .input('3')
                     .check.interaction({
                         state: 'states:report',
                         reply: [
@@ -864,7 +856,7 @@ describe("app", function() {
                 });
 
                 it("should post their report to ushahidi",function() {
-                   return tester
+                    return tester
                         .check(function(api) {
                             var req = api.http.requests[0];
                             var url = req.url;
@@ -972,15 +964,15 @@ describe("app", function() {
         });
 
         describe("when the user selects Exit", function() {
-           it("should take them back to the terms and conditions choice page",function() {
-               return tester
-                   .setup.user.addr("+273123")
-                   .setup.user.state("states:registration:read")
-                   .input("3")
-                   .check.interaction({
-                       state: "states:registration:tandc"
-                   }).run();
-           });
+            it("should take them back to the terms and conditions choice page",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state("states:registration:read")
+                    .input("3")
+                    .check.interaction({
+                        state: "states:registration:tandc"
+                    }).run();
+            });
         });
 
         describe("when the user selects 'About' from the main menu", function() {
@@ -988,7 +980,7 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:menu')
-                    .input("4")
+                    .input("6")
                     .check.interaction({
                         state: "states:about",
                         reply: [
@@ -1031,7 +1023,7 @@ describe("app", function() {
         });
 
         describe("when the user selects View results from the main menu",function() {
-           it("should take them to view the results",function() {
+            it("should take them to view the results",function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
@@ -1040,22 +1032,22 @@ describe("app", function() {
                         api.kv.store['total.reports'] = 5;
                     })
                     .setup.user.state("states:menu")
-                    .input("3")
+                    .input("4")
                     .check.interaction({
                         state: "states:start",
                         reply: "You are 1 of 3 citizens who are active " +
-                                "citizen election reporters! " +
-                                "4 questions and 5 election activity posts " +
-                                "have been submitted. View results at www.url.com"
+                            "citizen election reporters! " +
+                            "4 questions and 5 election activity posts " +
+                            "have been submitted. View results at www.url.com"
                     }).run();
-           });
+            });
 
             describe("if the the kv store value has not been set yet",function() {
                 it("should default the values to 0",function() {
                     return tester
                         .setup.user.addr("+273123")
                         .setup.user.state("states:menu")
-                        .input("3")
+                        .input("4")
                         .check.interaction({
                             state: "states:start",
                             reply: "You are 1 of 0 citizens who are active " +
