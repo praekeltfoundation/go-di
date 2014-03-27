@@ -4,6 +4,7 @@ src.app = [
     'src/ushahidi.js',
     'src/quiz.js',
     'src/vipquiz.js',
+    'src/whatsupquiz.js',
     'src/app.js'
 ];
 

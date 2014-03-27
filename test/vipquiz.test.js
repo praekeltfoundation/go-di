@@ -5,13 +5,12 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var fixtures = require('./fixtures');
-
 var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 
 describe("app", function() {
 
-    describe("GoDiApp", function() {
+    describe("VIP Quiz", function() {
         var app;
         var tester;
 
@@ -64,7 +63,7 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup.user.state('states:menu')
-                    .input('1')
+                    .input('2')
                     .check.interaction({
                         state: 'states:quiz:vip:question1',
                         reply: [
@@ -569,7 +568,7 @@ describe("app", function() {
                     })
                     .setup.user.addr("+273101")
                     .setup.user.state('states:menu')
-                    .input('1')
+                    .input('2')
                     .check.user.state(function(state){
                         var question_num = get_question_number(state) ;
                         assert.equal(0 < question_num && question_num <= 12,true);
@@ -747,5 +746,6 @@ describe("app", function() {
                     }).run();
             });
         });
+
     });
 });

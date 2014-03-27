@@ -13,6 +13,7 @@ di.app = function() {
     var JsonApi = vumigo.http.api.JsonApi;
     var UshahidiApi = di.ushahidi.UshahidiApi;
     var VipQuiz = di.quiz.vip.VipQuiz;
+    var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
@@ -20,6 +21,7 @@ di.app = function() {
 
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
+        self.quizzes.whatsup = new WhatsupQuiz(self);
 
         self.get_date = function() {
             return new Date();
@@ -315,14 +317,23 @@ di.app = function() {
 
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
-                question: $('Welcome to the Campaign'),
+                question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('Take the quiz & win!')),
+                    new Choice('states:answerwin',$('Answer & win!')),
+                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
-                    new Choice('states:results',$('View the results...')),
+                    new Choice('states:results',$('View VIP results...')),
+                    new Choice(self.quizzes.whatsup.get_next_quiz_state(),$("What's up?")),
                     new Choice('states:about',$('About')),
                     new Choice('states:end',$('End'))
                 ]
+            });
+        });
+
+        self.states.add('states:answerwin',function(name) {
+            return new EndState(name, {
+                text: $('To be continued'),
+                next: 'states:start'
             });
         });
 
