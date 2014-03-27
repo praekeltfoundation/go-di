@@ -13,6 +13,7 @@ di.app = function() {
     var JsonApi = vumigo.http.api.JsonApi;
     var UshahidiApi = di.ushahidi.UshahidiApi;
     var VipQuiz = di.quiz.vip.VipQuiz;
+    var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
@@ -20,6 +21,7 @@ di.app = function() {
 
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
+        self.quizzes.whatsup = new WhatsupQuiz(self);
 
         self.get_date = function() {
             return new Date();
