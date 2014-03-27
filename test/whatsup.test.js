@@ -57,6 +57,18 @@ describe("app", function() {
                 });
         });
 
+        /**
+         * Does setup to test the named question.
+         * */
+        function setup_question_test(state_name) {
+            app.quizzes.whatsup.random_quiz_name = function(n) {
+                return state_name;
+            };
+            tester
+                .setup.user.state('states:quiz:whatsup:begin')
+                .setup.user.addr("+273123");
+        }
+
         var whatsup_states = [
             'states:quiz:whatsup:satisfied_democracy',
             'states:quiz:whatsup:frequency_campaign_rallies',
@@ -187,14 +199,12 @@ describe("app", function() {
             });
 
             describe("when 'Satisfied Democracy' is randomly chosen as the next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:whatsup:satisfied_democracy');
+                });
                 it("should take them to question 'Satisfied Democracy'",function(){
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:satisfied_democracy';
-                    };
                     return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1')
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:satisfied_democracy',
                             reply: [
@@ -210,12 +220,7 @@ describe("app", function() {
 
                 describe("when the user has answered the what's up 'Satisfied Democracy'  as 'Very satisfied'", function() {
                     it("should should save their response 'very_satisfied' as well as interaction time",function() {
-                        app.quizzes.whatsup.random_quiz_name = function(n) {
-                            return 'states:quiz:whatsup:satisfied_democracy';
-                        };
                         return tester
-                            .setup.user.addr("+273123")
-                            .setup.user.state('states:quiz:whatsup:begin')
                             .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
@@ -227,14 +232,12 @@ describe("app", function() {
             });
 
             describe("when 'Frequency Campaign Rallies' is randomly chosen as the next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:whatsup:frequency_campaign_rallies');
+                });
                 it("should take them to question 'Frequency Campaign Rallies'",function(){
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:frequency_campaign_rallies';
-                    };
                     return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1')
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:frequency_campaign_rallies',
                             reply: [
@@ -250,12 +253,7 @@ describe("app", function() {
 
                 describe("when the user has answered the question as 'Often'", function() {
                     it("should should save their response 'often' as well as interaction time",function() {
-                        app.quizzes.whatsup.random_quiz_name = function(n) {
-                            return 'states:quiz:whatsup:frequency_campaign_rallies';
-                        };
                         return tester
-                            .setup.user.addr("+273123")
-                            .setup.user.state('states:quiz:whatsup:begin')
                             .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
@@ -268,16 +266,11 @@ describe("app", function() {
 
             describe("when 'Frequency Party Agents' is randomly chosen as the next question",function() {
                 beforeEach(function() {
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:frequency_party_agents';
-                    };
-                    return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1');
+                    setup_question_test('states:quiz:whatsup:frequency_party_agents');
                 });
                 it("should take them to question 'Frequency Party Agents'",function(){
                     return tester
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:frequency_party_agents',
                             reply: [
@@ -294,6 +287,7 @@ describe("app", function() {
                 describe("when the user has answered the question as 'Often'", function() {
                     it("should should save their response 'often' as well as interaction time",function() {
                         return tester
+                            .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
                                 assert.equal(contact.extra.whatsup_question_frequency_party_agents,"often");
@@ -305,16 +299,11 @@ describe("app", function() {
 
             describe("when 'Frequency Intimidation' is randomly chosen as the next question",function() {
                 beforeEach(function() {
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:frequency_intimidation';
-                    };
-                    return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1');
+                    setup_question_test('states:quiz:whatsup:frequency_intimidation');
                 });
                 it("should take them to question 'Frequency Intimidation'",function(){
                     return tester
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:frequency_intimidation',
                             reply: [
@@ -331,6 +320,7 @@ describe("app", function() {
                 describe("when the user has answered the question as 'Often'", function() {
                     it("should should save their response 'often' as well as interaction time",function() {
                         return tester
+                            .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
                                 assert.equal(contact.extra.whatsup_question_frequency_intimidation,"often");
@@ -342,16 +332,11 @@ describe("app", function() {
 
             describe("when 'Trust ANC' is randomly chosen as the next question",function() {
                 beforeEach(function() {
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:trust_anc';
-                    };
-                    return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1');
+                    setup_question_test('states:quiz:whatsup:trust_anc');
                 });
                 it("should take them to question 'Trust ANC'",function(){
                     return tester
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:trust_anc',
                             reply: [
@@ -369,6 +354,7 @@ describe("app", function() {
                 describe("when the user has answered the question as 'A lot'", function() {
                     it("should should save their response 'a_lot' as well as interaction time",function() {
                         return tester
+                            .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
                                 assert.equal(contact.extra.whatsup_question_trust_anc,"a_lot");
@@ -380,16 +366,11 @@ describe("app", function() {
 
             describe("when 'Trust DA' is randomly chosen as the next question",function() {
                 beforeEach(function() {
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:trust_da';
-                    };
-                    return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1');
+                    setup_question_test('states:quiz:whatsup:trust_da');
                 });
                 it("should take them to question 'Trust DA'",function(){
                     return tester
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:trust_da',
                             reply: [
@@ -407,6 +388,7 @@ describe("app", function() {
                 describe("when the user has answered the question as 'A lot'", function() {
                     it("should should save their response 'a_lot' as well as interaction time",function() {
                         return tester
+                            .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
                                 assert.equal(contact.extra.whatsup_question_trust_da,"a_lot");
@@ -418,16 +400,11 @@ describe("app", function() {
 
             describe("when 'Trust EFF' is randomly chosen as the next question",function() {
                 beforeEach(function() {
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:trust_eff';
-                    };
-                    return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1');
+                    setup_question_test('states:quiz:whatsup:trust_eff');
                 });
                 it("should take them to question 'Trust EFF'",function(){
                     return tester
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:trust_eff',
                             reply: [
@@ -445,6 +422,7 @@ describe("app", function() {
                 describe("when the user has answered the question as 'A lot'", function() {
                     it("should should save their response 'a_lot' as well as interaction time",function() {
                         return tester
+                            .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
                                 assert.equal(contact.extra.whatsup_question_trust_eff,"a_lot");
@@ -456,16 +434,11 @@ describe("app", function() {
 
             describe("when 'Food to Eat' is randomly chosen as the next question",function() {
                 beforeEach(function() {
-                    app.quizzes.whatsup.random_quiz_name = function(n) {
-                        return 'states:quiz:whatsup:food_to_eat';
-                    };
-                    return tester
-                        .setup.user.addr("+273123")
-                        .setup.user.state('states:quiz:whatsup:begin')
-                        .input('1');
+                    setup_question_test('states:quiz:whatsup:food_to_eat');
                 });
                 it("should take them to question 'Food to Eat'",function(){
                     return tester
+                        .start()
                         .check.interaction({
                             state: 'states:quiz:whatsup:food_to_eat',
                             reply: [
@@ -483,6 +456,7 @@ describe("app", function() {
                 describe("when the user has answered the question as 'Never'", function() {
                     it("should should save their response 'never' as well as interaction time",function() {
                         return tester
+                            .input('1')
                             .check(function(api){
                                 var contact = api.contacts.store[0];
                                 assert.equal(contact.extra.whatsup_question_food_to_eat,"never");
@@ -495,16 +469,11 @@ describe("app", function() {
 
         describe("when 'Food to Eat' is randomly chosen as the next question",function() {
             beforeEach(function() {
-                app.quizzes.whatsup.random_quiz_name = function(n) {
-                    return 'states:quiz:whatsup:food_to_eat';
-                };
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:whatsup:begin')
-                    .input('1');
+                setup_question_test('states:quiz:whatsup:food_to_eat');
             });
             it("should take them to question 'Food to Eat'",function(){
                 return tester
+                    .start()
                     .check.interaction({
                         state: 'states:quiz:whatsup:food_to_eat',
                         reply: [
@@ -522,6 +491,7 @@ describe("app", function() {
             describe("when the user has answered the question as 'Never'", function() {
                 it("should should save their response 'never' as well as interaction time",function() {
                     return tester
+                        .input('1')
                         .check(function(api){
                             var contact = api.contacts.store[0];
                             assert.equal(contact.extra.whatsup_question_food_to_eat,"never");
@@ -533,16 +503,11 @@ describe("app", function() {
 
         describe("when 'Violence for Just Cause' is randomly chosen as the next question",function() {
             beforeEach(function() {
-                app.quizzes.whatsup.random_quiz_name = function(n) {
-                    return 'states:quiz:whatsup:violence_for_just_cause';
-                };
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:whatsup:begin')
-                    .input('1');
+                setup_question_test('states:quiz:whatsup:violence_for_just_cause');
             });
             it("should take them to question 'Violence for Just Cause'",function(){
                 return tester
+                    .start()
                     .check.interaction({
                         state: 'states:quiz:whatsup:violence_for_just_cause',
                         reply: [
@@ -559,6 +524,7 @@ describe("app", function() {
             describe("when the user has answered the question as 'Strongly agree'", function() {
                 it("should should save their response 'strongly_agree' as well as interaction time",function() {
                     return tester
+                        .input('1')
                         .check(function(api){
                             var contact = api.contacts.store[0];
                             assert.equal(contact.extra.whatsup_question_violence_for_just_cause,"strongly_agree");
@@ -570,16 +536,11 @@ describe("app", function() {
 
         describe("when 'Not voting' is randomly chosen as the next question",function() {
             beforeEach(function() {
-                app.quizzes.whatsup.random_quiz_name = function(n) {
-                    return 'states:quiz:whatsup:not_voting';
-                };
-                return tester
-                    .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:whatsup:begin')
-                    .input('1');
+                setup_question_test('states:quiz:whatsup:not_voting');
             });
             it("should take them to question 'Not voting'",function(){
                 return tester
+                    .start()
                     .check.interaction({
                         state: 'states:quiz:whatsup:not_voting',
                         reply: [
@@ -596,6 +557,7 @@ describe("app", function() {
             describe("when the user has answered the question as 'Strongly agree'", function() {
                 it("should should save their response 'strongly_agree' as well as interaction time",function() {
                     return tester
+                        .input('1')
                         .check(function(api){
                             var contact = api.contacts.store[0];
                             assert.equal(contact.extra.whatsup_question_not_voting,"strongly_agree");
