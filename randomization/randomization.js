@@ -4380,7 +4380,7 @@ module.exports = function() {
             '94705031'
         ];
 
-    test_random("user_ward_treatment.csv", 10000);
+    test_random("user_ward_treatment.csv", 1000000);
 }
 
 
