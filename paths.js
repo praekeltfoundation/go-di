@@ -2,6 +2,7 @@ var src = {};
 
 src.app = [
     'src/ushahidi.js',
+    'src/quiz.js',
     'src/app.js'
 ];
 
