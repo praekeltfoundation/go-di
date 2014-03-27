@@ -845,15 +845,36 @@ describe("app", function() {
             });
 
             describe("when the user has answered all whatsup questions",function() {
-                it("should take them to the end state",function() {
+                beforeEach(function() {
                     return tester
                         .setup.user.addr("+273123")
                         .setup.user({
                             state: 'states:quiz:whatsup:begin',
-                            answers: get_answered_whatsup_quiz_states(10)
+                            answers: get_answered_whatsup_quiz_states(9)
                         })
+                        .input('1');
+                });
+
+                it("should take them to the end state",function() {
+                    return tester
                         .check.interaction({
                             state:'states:menu'
+                        }).run();
+                });
+
+                it("should fire a 'whatsup.quiz.complete' metric",function() {
+                    return tester
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_app;
+                            assert.deepEqual(metrics['whatsup.quiz.complete'].values, [1]);
+                        }).run();
+                });
+
+                it("should fire a 'whatsup.total.questions' metric",function() {
+                    return tester
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_app;
+                            assert.deepEqual(metrics['whatsup.total.questions'].values, [1]);
                         }).run();
                 });
             });
