@@ -30,7 +30,6 @@ module.exports = function() {
 
         var category = treatment[ward];
         var geographical_group ="";
-        var monitoring_group = "";
 
         //get geographical group
         switch (category) {
