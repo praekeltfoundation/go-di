@@ -357,7 +357,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user selects 'NO but Iâ€™ll vote anyway' for the engagement question",function() {
+        describe("when the user selects 'NO but I'll vote anyway' for the engagement question",function() {
 
             it("should take them to the terms and conditions menu",function() {
                 return tester
