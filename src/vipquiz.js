@@ -25,7 +25,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(1,content);
+                    return self.next_quiz(1,content);
                 }
             });
         });
@@ -40,7 +40,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(2,content);
+                    return self.next_quiz(2,content);
                 }
             });
         });
@@ -57,7 +57,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(3,content);
+                    return self.next_quiz(3,content);
                 }
             });
         });
@@ -77,7 +77,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(4,content);
+                    return self.next_quiz(4,content);
                 }
             });
         });
@@ -86,7 +86,7 @@ di.quiz.vip = function() {
             return new MenuState(name,{
                 question: $('Would you like to continue answering questions? There are 12 in total.'),
                 choices: [
-                    new Choice(app.get_next_quiz_state(true),$('Continue')),
+                    new Choice(self.get_next_quiz_state(true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
                 ]
             });
@@ -106,7 +106,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(5,content);
+                    return self.next_quiz(5,content);
                 }
             });
         });
@@ -121,7 +121,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(6,content);
+                    return self.next_quiz(6,content);
                 }
             });
         });
@@ -137,7 +137,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(7,content);
+                    return self.next_quiz(7,content);
                 }
             });
         });
@@ -153,7 +153,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(8,content);
+                    return self.next_quiz(8,content);
                 }
             });
         });
@@ -169,7 +169,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(9,content);
+                    return self.next_quiz(9,content);
                 }
             });
         });
@@ -185,7 +185,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(10,content);
+                    return self.next_quiz(10,content);
                 }
             });
         });
@@ -205,7 +205,7 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(11,content);
+                    return self.next_quiz(11,content);
                 }
             });
         });
@@ -219,10 +219,23 @@ di.quiz.vip = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return app.next_quiz(12,content);
+                    return self.next_quiz(12,content);
                 }
             });
         });
+
+        /*
+         * Returns to quiz delegation state.
+         * Adds came from 'continue' state.
+         * */
+        self.get_next_quiz_state = function(from_continue) {
+            return {
+                name:'states:quiz:vip:begin',
+                creator_opts: {
+                    from_continue: from_continue || false
+                }
+            };
+        };
     });
 
     return {

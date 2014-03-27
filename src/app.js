@@ -128,34 +128,7 @@ di.app = function() {
                 });
         };
 
-        /**
-         * Get's quiz completion
-         * */
-        self.is_quiz_complete = function() {
-            return self.quizzes.vip.is_complete();
-        };
 
-        /*
-        * Sets value of answer + timestamp and remove question from unanswered list
-        * */
-        self.answer = function(n,value) {
-            self.contact.extra["question" +n] = value;
-            self.contact.extra["it_question" +n] = self.get_date_string();
-            return self.im.contacts.save(self.contact);
-        };
-
-        /*
-        * Returns to quiz delegation state.
-        * Adds came from 'continue' state.
-        * */
-        self.get_next_quiz_state = function(from_continue) {
-            return {
-                name:'states:quiz:vip:begin',
-                creator_opts: {
-                    from_continue: from_continue || false
-                }
-            };
-        };
 
         self.get_unique_users = function() {
             return self.im
@@ -344,7 +317,7 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to the Campaign'),
                 choices:[
-                    new Choice(self.get_next_quiz_state(),$('Take the quiz & win!')),
+                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('Take the quiz & win!')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View the results...')),
                     new Choice('states:about',$('About')),
@@ -353,38 +326,12 @@ di.app = function() {
             });
         });
 
-        self.incr_quiz_metrics = function() {
-            //Increment total.questions: kv store + metric
-            var promise =  self.incr_kv('total.questions').then(function(result) {
-                return self.im.metrics.fire.last('total.questions',result.value);
-            });
-
-            //Check if all questions have been answered and increment total quiz's completed
-            if (self.is_quiz_complete()) {
-                promise = promise.then(function(result) {
-                    return self.im.metrics.fire.inc('quiz.complete');
-                });
-            }
-            return promise;
-        };
-
         self.get_kv = function(name) {
             return self.im.api_request('kv.get', {key: name});
         };
 
         self.incr_kv = function(name) {
             return self.im.api_request('kv.incr', {key: name});
-        };
-
-        self.next_quiz = function(n,content) {
-            return self
-                .answer(n,content.value)
-                .then(function() {
-                    return self.incr_quiz_metrics();
-                })
-                .then(function() {
-                    return self.get_next_quiz_state();
-                });
         };
 
         self.states.add('states:quiz:vip:begin',function(name,opts) {

@@ -77,6 +77,38 @@ di.quiz = function() {
             }
             return self.create(self.random_quiz_name(), opts);
         };
+
+        self.incr_quiz_metrics = function() {
+            //Increment total.questions: kv store + metric
+            var promise =  app.incr_kv('total.questions').then(function(result) {
+                return app.im.metrics.fire.last('total.questions',result.value);
+            });
+
+            //Check if all questions have been answered and increment total quiz's completed
+            if (self.is_complete()) {
+                promise = promise.then(function(result) {
+                    return app.im.metrics.fire.inc('quiz.complete');
+                });
+            }
+            return promise;
+        };
+
+        self.next_quiz = function(n,content) {
+            return self
+                .answer(n,content.value)
+                .then(function() {
+                    return self.incr_quiz_metrics();
+                })
+                .then(function() {
+                    return self.get_next_quiz_state();
+                });
+        };
+
+        self.answer = function(n,value) {
+            app.contact.extra["question" +n] = value;
+            app.contact.extra["it_question" +n] = app.get_date_string();
+            return app.im.contacts.save(app.contact);
+        };
     });
 
     return {
