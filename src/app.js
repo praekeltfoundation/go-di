@@ -334,11 +334,6 @@ di.app = function() {
             return self.im.api_request('kv.incr', {key: name});
         };
 
-        self.states.add('states:quiz:vip:begin',function(name,opts) {
-            return self.quizzes.vip.create.random(opts);
-        });
-
-
         self.states.add('states:report',function(name) {
             var report_types = [
                 'Party going door-to-door',

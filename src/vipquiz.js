@@ -224,18 +224,7 @@ di.quiz.vip = function() {
             });
         });
 
-        /*
-         * Returns to quiz delegation state.
-         * Adds came from 'continue' state.
-         * */
-        self.get_next_quiz_state = function(from_continue) {
-            return {
-                name:'states:quiz:vip:begin',
-                creator_opts: {
-                    from_continue: from_continue || false
-                }
-            };
-        };
+        self.add_begin('states:quiz:vip:begin');
     });
 
     return {

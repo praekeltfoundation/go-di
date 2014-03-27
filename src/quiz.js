@@ -38,9 +38,24 @@ di.quiz = function() {
             self.add(name,state);
         };
 
-        self.add_begin = function(name,state) {
+        self.add_begin = function(name) {
             self.begin = name;
-            self.add(name,state);
+            /*
+             * This needs to be part of the app for testing.
+             * My test cases wont initialize to it otherwise.
+             * */
+            app.states.add(name,function(name,opts) {
+                return self.create.random(opts);
+            });
+        };
+
+        self.get_next_quiz_state = function(from_continue) {
+            return {
+                name:self.begin,
+                creator_opts: {
+                    from_continue: from_continue || false
+                }
+            };
         };
 
         self.random = function(n) {
