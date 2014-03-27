@@ -89,8 +89,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question1,"yes_many");
-                        assert.equal(contact.extra.it_question1,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_1,"yes_many");
+                        assert.equal(contact.extra.it_vip_question_1,app.get_date_string());
                     }).run();
             });
         });
@@ -128,8 +128,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question2,"yes");
-                        assert.equal(contact.extra.it_question2,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_2,"yes");
+                        assert.equal(contact.extra.it_vip_question_2,app.get_date_string());
                     }).run();
             });
         });
@@ -169,8 +169,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question3,"very_likely");
-                        assert.equal(contact.extra.it_question3,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_3,"very_likely");
+                        assert.equal(contact.extra.it_vip_question_3,app.get_date_string());
                     }).run();
             });
 
@@ -214,8 +214,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question4,"anc");
-                        assert.equal(contact.extra.it_question4,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_4,"anc");
+                        assert.equal(contact.extra.it_vip_question_4,app.get_date_string());
                     }).run();
             });
         });
@@ -253,8 +253,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question5,"yes_several");
-                        assert.equal(contact.extra.it_question5,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_5,"yes_several");
+                        assert.equal(contact.extra.it_vip_question_5,app.get_date_string());
                     }).run();
             });
         });
@@ -292,8 +292,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question6,"yes");
-                        assert.equal(contact.extra.it_question6,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_6,"yes");
+                        assert.equal(contact.extra.it_vip_question_6,app.get_date_string());
                     }).run();
             });
         });
@@ -332,8 +332,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question7,"very_easy");
-                        assert.equal(contact.extra.it_question7,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_7,"very_easy");
+                        assert.equal(contact.extra.it_vip_question_7,app.get_date_string());
                     }).run();
             });
         });
@@ -372,8 +372,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question8,"strongly_agree");
-                        assert.equal(contact.extra.it_question8,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_8,"strongly_agree");
+                        assert.equal(contact.extra.it_vip_question_8,app.get_date_string());
                     }).run();
             });
         });
@@ -413,8 +413,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question9,"excellent");
-                        assert.equal(contact.extra.it_question9,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_9,"excellent");
+                        assert.equal(contact.extra.it_vip_question_9,app.get_date_string());
                     }).run();
             });
         });
@@ -453,8 +453,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question10,"excellent");
-                        assert.equal(contact.extra.it_question10,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_10,"excellent");
+                        assert.equal(contact.extra.it_vip_question_10,app.get_date_string());
                     }).run();
             });
         });
@@ -497,8 +497,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question11,"none");
-                        assert.equal(contact.extra.it_question11,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_11,"none");
+                        assert.equal(contact.extra.it_vip_question_11,app.get_date_string());
                     }).run();
             });
         });
@@ -535,8 +535,8 @@ describe("app", function() {
                     .input('1')
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.question12,"yes");
-                        assert.equal(contact.extra.it_question12,app.get_date_string());
+                        assert.equal(contact.extra.vip_question_12,"yes");
+                        assert.equal(contact.extra.it_vip_question_12,app.get_date_string());
                     }).run();
             });
         });
@@ -626,11 +626,11 @@ describe("app", function() {
                         }).run();
                 });
 
-                it("should fire a 'quiz.complete' metric",function() {
+                it("should fire a 'vip.quiz.complete' metric",function() {
                     return tester
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_app;
-                            assert.deepEqual(metrics['quiz.complete'].values, [1]);
+                            assert.deepEqual(metrics['vip.quiz.complete'].values, [1]);
                         }).run();
                 });
             });
@@ -651,7 +651,7 @@ describe("app", function() {
                     .input('1')
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
-                        assert.deepEqual(metrics['total.questions'].values, [1]);
+                        assert.deepEqual(metrics['vip.total.questions'].values, [1]);
                     }).run();
             });
 
@@ -670,7 +670,7 @@ describe("app", function() {
                     .setup.user.state('states:quiz:vip:begin')
                     .input('1')
                     .check(function(api) {
-                        assert.equal(api.kv.store['total.questions'], 1);
+                        assert.equal(api.kv.store['vip.total.questions'], 1);
                     }).run();
             });
         });

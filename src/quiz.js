@@ -7,6 +7,7 @@ di.quiz = function() {
         AppStates.call(self, app);
 
         self.continue_interval = opts.continue_interval;
+        self.name = opts.name;
         self.questions = [];
 
         self.is_complete = function() {
@@ -95,14 +96,14 @@ di.quiz = function() {
 
         self.incr_quiz_metrics = function() {
             //Increment total.questions: kv store + metric
-            var promise =  app.incr_kv('total.questions').then(function(result) {
-                return app.im.metrics.fire.last('total.questions',result.value);
+            var promise =  app.incr_kv(self.name+'.total.questions').then(function(result) {
+                return app.im.metrics.fire.last(self.name+'.total.questions',result.value);
             });
 
             //Check if all questions have been answered and increment total quiz's completed
             if (self.is_complete()) {
                 promise = promise.then(function(result) {
-                    return app.im.metrics.fire.inc('quiz.complete');
+                    return app.im.metrics.fire.inc(self.name+'.quiz.complete');
                 });
             }
             return promise;
@@ -120,8 +121,13 @@ di.quiz = function() {
         };
 
         self.answer = function(n,value) {
-            app.contact.extra["question" +n] = value;
-            app.contact.extra["it_question" +n] = app.get_date_string();
+            var contact_field = [
+                self.name,
+                "question",
+                n
+            ].join('_');
+            app.contact.extra[contact_field] = value;
+            app.contact.extra["it_"+contact_field] = app.get_date_string();
             return app.im.contacts.save(app.contact);
         };
     });
