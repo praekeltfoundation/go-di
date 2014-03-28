@@ -579,6 +579,7 @@ di.quiz.answerwin = function() {
         AnswerWinQuiz: AnswerWinQuiz
     };
 }();
+}();
 /**
  * Created by Jade on 2014/03/27.
  */
