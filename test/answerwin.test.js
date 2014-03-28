@@ -47,7 +47,7 @@ describe("app", function() {
                         .setup.user.state('states:menu')
                         .input('1')
                         .check.interaction({
-                            state: 'states:answerwin:gender',
+                            state: 'states:quiz:answerwin:gender',
                             reply: [
                                 'I am...',
                                 '1. Male',
@@ -61,7 +61,7 @@ describe("app", function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:answerwin:gender')
+                    .setup.user.state('states:quiz:answerwin:gender')
                     .input('1');
             });
 
@@ -77,7 +77,7 @@ describe("app", function() {
             it("should take them to the age question",function() {
                 return tester
                     .check.interaction({
-                        state: 'states:answerwin:age',
+                        state: 'states:quiz:answerwin:age',
                         reply: [
                             'How old are you?',
                             '1. u14',
@@ -95,7 +95,7 @@ describe("app", function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:answerwin:age');
+                    .setup.user.state('states:quiz:answerwin:age');
             });
 
             it("should save their answer to the age question",function() {
@@ -112,7 +112,7 @@ describe("app", function() {
                 return tester
                     .input("1")
                     .check.interaction({
-                        state: 'states:answerwin:2009election',
+                        state: 'states:quiz:answerwin:2009election',
                         reply: [
                             'Did you vote in the 2009 election?',
                             '1. Yes',
@@ -129,7 +129,7 @@ describe("app", function() {
                     return tester
                         .input("6")
                         .check.interaction({
-                            state: 'states:answerwin:age',
+                            state: 'states:quiz:answerwin:age',
                             reply: [
                                 'How old are you?',
                                 '1. 50-59',
@@ -147,7 +147,7 @@ describe("app", function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:answerwin:2009election')
+                    .setup.user.state('states:quiz:answerwin:2009election')
                     .input('1');
             });
 
@@ -163,7 +163,7 @@ describe("app", function() {
             it("should take them to the race question",function() {
                 return tester
                     .check.interaction({
-                        state: 'states:answerwin:race',
+                        state: 'states:quiz:answerwin:race',
                         reply: [
                             'I am...',
                             '1. Black African',
@@ -181,7 +181,7 @@ describe("app", function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:answerwin:2009election')
+                    .setup.user.state('states:quiz:answerwin:2009election')
                     .input('1');
             });
 
@@ -197,7 +197,7 @@ describe("app", function() {
             it("should take them to the race question",function() {
                 return tester
                     .check.interaction({
-                        state: 'states:answerwin:race',
+                        state: 'states:quiz:answerwin:race',
                         reply: [
                             'I am...',
                             '1. Black African',
@@ -215,7 +215,7 @@ describe("app", function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:answerwin:race')
+                    .setup.user.state('states:quiz:answerwin:race')
                     .input('1');
             });
 
@@ -231,7 +231,7 @@ describe("app", function() {
             it("should take them to the thank you question",function() {
                 return tester
                     .check.interaction({
-                        state: 'states:answerwin:thankyou',
+                        state: 'states:quiz:answerwin:thankyou',
                         reply: [
                             'Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!',
                             '1. Main Menu'
@@ -244,7 +244,7 @@ describe("app", function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:answerwin:thankyou')
+                    .setup.user.state('states:quiz:answerwin:thankyou')
                     .input('1');
             });
 
