@@ -231,6 +231,22 @@ describe("app", function() {
                 });
             });
 
+            describe("when the user has answered the previous question", function() {
+                it("should take them to a new random question",function() {
+                    return tester
+                        .setup.user.addr("+273123")
+                        .setup.user({
+                            state: 'states:quiz:whatsup:satisfied_democracy',
+                            answers: get_answered_whatsup_quiz_states(1)
+                        })
+                        .input('1')
+                        .check.user.state(function(state){
+                            var unanswered = get_unanswered_whatsup_quiz_states(1);
+                            assert.equal(_.has(unanswered,state.name),true);
+                        }).run();
+                });
+            });
+
             describe("when 'Frequency Campaign Rallies' is randomly chosen as the next question",function() {
                 beforeEach(function() {
                     setup_question_test('states:quiz:whatsup:frequency_campaign_rallies');

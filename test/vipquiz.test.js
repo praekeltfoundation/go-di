@@ -101,7 +101,7 @@ describe("app", function() {
                 };
                 return tester
                     .setup.user.addr("+273123")
-                    .setup.user.state('states:quiz:vip:begin')
+                    .setup.user.state('states:quiz:vip:question1')
                     .input('1')
                     .check.interaction({
                         state: 'states:quiz:vip:question2',

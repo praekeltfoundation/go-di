@@ -117,17 +117,17 @@ di.quiz = function() {
         self.add_question = function(name,state) {
             var question = self.construct_state_name(name);
             self.questions.push(question);
-            self.add(question,state);
+            app.states.add(question,state);
         };
 
         self.add_continue = function(name,state) {
             self.continue = self.construct_state_name(name);
-            self.add(self.continue,state);
+            app.states.add(self.continue,state);
         };
 
         self.add_next = function(name,state) {
             self.next = self.construct_state_name(name);
-            self.add(self.next,state);
+            app.states.add(self.next,state);
         };
 
         self.add_begin = function(name) {
@@ -184,9 +184,9 @@ di.quiz = function() {
 
         self.create.random = function(opts) {
             if (self.create_continue(opts)) {
-                return self.create(self.continue,opts);
+                return app.states.create(self.continue,opts);
             }
-            return self.create(self.random_quiz_name(), opts);
+            return app.states.create(self.random_quiz_name(), opts);
         };
 
         self.incr_quiz_metrics = function() {
@@ -578,7 +578,6 @@ di.quiz.answerwin = function() {
     return {
         AnswerWinQuiz: AnswerWinQuiz
     };
-}();
 }();
 /**
  * Created by Jade on 2014/03/27.
