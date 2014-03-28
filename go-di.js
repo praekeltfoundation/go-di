@@ -714,9 +714,9 @@ di.app = function() {
             }
         };
 
-        self.random_geographical = function(ward) {
+        self.random_geographical = function(ward,ward_treatment) {
 
-            var category = self.ward_treatment[ward];
+            var category = ward_treatment[ward];
             var geographical_group="";
             //get geographical group
             switch (category) {
@@ -727,13 +727,13 @@ di.app = function() {
             return geographical_group;
         };
 
-        self.random_monitoring = function(geographical_group) {
+        self.random_monitoring = function(geographical_group,push_message_group) {
 
             if (geographical_group === "GH"|| geographical_group === "GS2") {
                 //Choose day from 0 to 6 inclusive
                 var week_day = self.week_day_code[self.random(0,6)];
                 var push_group = self.random(1,30);
-                var per_sms_group = self.push_message_group[push_group];
+                var per_sms_group = push_message_group[push_group];
                 return {
                     monitoring_group:'true',
                     week_day: week_day,
@@ -753,10 +753,10 @@ di.app = function() {
             };
         };
 
-        self.set_contact_group = function(ward) {
+        self.set_contact_group = function(ward,ward_treatment, push_message_group) {
             //Random group setup.
-            var geographical = self.random_geographical(ward);
-            var monitoring = self.random_monitoring(geographical);
+            var geographical = self.random_geographical(ward,ward_treatment);
+            var monitoring = self.random_monitoring(geographical,push_message_group);
             self.contact.extra.geographical_group = geographical;
             self.contact.extra.monitoring_group = monitoring.monitoring_group;
             self.contact.extra.week_day = monitoring.week_day;
@@ -1069,12 +1069,12 @@ di.app = function() {
                     return self
                         .get_group_config()
                         .spread(function(ward_treatment, push_message_group) {
-                            //Get the configs
-                            self.ward_treatment = ward_treatment;
-                            self.push_message_group = push_message_group;
-
                             //Set the contact group
-                            self.set_contact_group(self.contact.extra.ward);
+                            self.set_contact_group(
+                                self.contact.extra.ward,
+                                ward_treatment,
+                                push_message_group
+                            );
 
                             //Save contact.
                             return self.im.contacts.save(self.contact).then(function() {

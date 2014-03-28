@@ -42,8 +42,7 @@ describe("app", function() {
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
-                    ushahidi_map: 'https://godi.crowdmap.com/api',
-                    ward_treatment:  ward_treatment()
+                    ushahidi_map: 'https://godi.crowdmap.com/api'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -391,7 +390,7 @@ describe("app", function() {
 
         describe("when the user selects accept and join",function() {
             beforeEach(function() {
-                return tester
+                tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
                         api.kv.store['registered.participants'] = 3;
@@ -650,29 +649,6 @@ describe("app", function() {
                             }]
                         }
                     });
-
-            });
-
-            it("should load the 'ward_treatment' config",function() {
-                return tester
-                    .setup.user.addr('+273123')
-                    .start()
-                    .check(function(api) {
-                        var ward_treatment = api.config.store.ward_treatment;
-                        assert.deepEqual(_.has(ward_treatment,"79800096"),true);
-                        assert.equal(ward_treatment["79800096"],"High Intensity");
-                    }).run();
-            });
-
-            it("should load the 'push_message_allocations' config",function() {
-                return tester
-                    .setup.user.addr('+273123')
-                    .start()
-                    .check(function(api) {
-                        var push_message_group = api.config.store.push_message_group;
-                        assert.deepEqual(_.has(push_message_group,"1"),true);
-                        assert.equal(push_message_group["1"].sms_1,"1");
-                    }).run();
             });
 
             it("should save their electoral ward and voting district",function() {
@@ -910,7 +886,7 @@ describe("app", function() {
                         d.setHours(0,0,0,0);
                         return d;
                     };
-                    return tester
+                    tester
                         .setup.user.addr('+273131')
                         .setup(function(api) {
                             api.contacts.add( {
