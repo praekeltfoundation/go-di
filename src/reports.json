@@ -13,26 +13,66 @@
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
             "time_range": "1d",
-            "name": "Total Answered Questions",
+            "name": "Total VIP Answered Questions",
             "target": {
                 "metric_type": "account",
                 "store": "di_test_app",
-                "name": "total.questions",
+                "name": "vip.total.questions",
                 "aggregator": "last"
             }
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
             "time_range": "1d",
-            "name": "Total Quizzes Completed",
+            "name": "Total VIP Quizzes Completed",
             "target": {
                 "metric_type": "account",
                 "store": "di_test_app",
-                "name": "quiz.complete",
+                "name": "vip.quiz.complete",
                 "aggregator": "last"
             }
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
             "time_range": "1d",
+            "name": "Total Whatsup Answered Questions",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "whatsup.total.questions",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total VIP Quizzes Completed",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "whatsup.quiz.complete",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Answer and Win Answered Questions",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "answerwin.total.questions",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Answer and Win Quizzes Completed",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "answerwin.quiz.complete",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1da",
             "name": "Total Reports Sent",
             "target": {
                 "metric_type": "account",
@@ -53,7 +93,7 @@
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
             "time_range": "1d",
-            "name": "Average visits per user",
+            "name": "Total visits per user",
             "target": {
                 "metric_type": "account",
                 "store": "di_test_app",
