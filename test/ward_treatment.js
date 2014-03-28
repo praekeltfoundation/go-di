@@ -4277,5 +4277,5 @@ module.exports = function() {
         "19100109": "Standard",
         "19100110": "Standard",
         "19100111": "Standard"
-    }
-}
+    };
+};
