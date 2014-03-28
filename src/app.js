@@ -23,6 +23,75 @@ di.app = function() {
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
 
+        /*
+         * To abstract which random class is being used
+         * */
+        self.random = function(begin,end,float) {
+            return _.random(begin,end,float);
+        };
+
+        self.week_day_code = ['M','T','W','Th','F','S','Su'];
+
+        self.random_standard = function() {
+            if (self.random(0,1,true) < 0.2) {
+                return 'GS1';
+            } else {
+                return 'GS2';
+            }
+        };
+
+        self.random_geographical = function(ward,ward_treatment) {
+
+            var category = ward_treatment[ward];
+            var geographical_group="";
+            //get geographical group
+            switch (category) {
+                case "Standard": geographical_group = self.random_standard(); break;
+                case "Control": geographical_group = 'GC'; break;
+                case "High Intensity": geographical_group = 'GH'; break;
+            }
+            return geographical_group;
+        };
+
+        self.random_monitoring = function(geographical_group,push_message_group) {
+
+            if (geographical_group === "GH"|| geographical_group === "GS2") {
+                //Choose day from 0 to 6 inclusive
+                var week_day = self.week_day_code[self.random(0,6)];
+                var push_group = self.random(1,30);
+                var per_sms_group = push_message_group[push_group];
+                return {
+                    monitoring_group:'true',
+                    week_day: week_day,
+                    push_group: push_group.toString(),
+                    sms_1: per_sms_group.sms_1,
+                    sms_2: per_sms_group.sms_2,
+                    sms_3: per_sms_group.sms_3
+                };
+            }
+            return {
+                monitoring_group:'false',
+                week_day: '',
+                push_group: '',
+                sms_1: '',
+                sms_2:'',
+                sms_3: ''
+            };
+        };
+
+        self.set_contact_group = function(ward,ward_treatment, push_message_group) {
+            //Random group setup.
+            var geographical = self.random_geographical(ward,ward_treatment);
+            var monitoring = self.random_monitoring(geographical,push_message_group);
+            self.contact.extra.geographical_group = geographical;
+            self.contact.extra.monitoring_group = monitoring.monitoring_group;
+            self.contact.extra.week_day = monitoring.week_day;
+            self.contact.extra.push_group = monitoring.push_group;
+            self.contact.extra.sms_1 = monitoring.sms_1;
+            self.contact.extra.sms_2 = monitoring.sms_2;
+            self.contact.extra.sms_3 = monitoring.sms_3;
+        };
+
         self.get_date = function() {
             return new Date();
         };
@@ -49,6 +118,17 @@ di.app = function() {
             return typeof extra !== 'undefined';
         };
 
+        self.get_group_config = function() {
+              return Q.all([
+                      self.im.sandbox_config.get('ward_treatment',{
+                          json:true
+                      }),
+                      self.im.sandbox_config.get('push_message_group',{
+                          json:true
+                      })
+                  ]);
+        };
+
         self.init = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
@@ -69,7 +149,8 @@ di.app = function() {
                     : self.send_noward_dialback();
             });
 
-            return self.im.contacts.for_user()
+            return self.im.contacts
+                .for_user()
                 .then(function(user_contact) {
                    self.contact = user_contact;
                 });
@@ -304,13 +385,28 @@ di.app = function() {
                 characters_per_page: 180,
                 options_per_page: 3,
                 next: function(choice) {
+                    //Set ward data
                     var index = choice.value-1;
                     self.contact.extra.ward = opts.address_options[index].ward;
                     self.contact.extra.voting_district = opts.address_options[index].voting_district;
                     self.contact.extra.it_ward = self.get_date_string();
-                    return self.im.contacts.save(self.contact).then(function() {
-                        return "states:menu";
-                    });
+
+                    //Set contact group
+                    return self
+                        .get_group_config()
+                        .spread(function(ward_treatment, push_message_group) {
+                            //Set the contact group
+                            self.set_contact_group(
+                                self.contact.extra.ward,
+                                ward_treatment,
+                                push_message_group
+                            );
+
+                            //Save contact.
+                            return self.im.contacts.save(self.contact).then(function() {
+                                return "states:menu";
+                            });
+                        });
                 }
             });
         });
