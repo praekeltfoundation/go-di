@@ -14,6 +14,7 @@ di.app = function() {
     var UshahidiApi = di.ushahidi.UshahidiApi;
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
+    var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
@@ -22,6 +23,7 @@ di.app = function() {
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
+        self.quizzes.answerwin = new AnswerWinQuiz(self);
 
         /*
          * To abstract which random class is being used
@@ -167,11 +169,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: [
+                    content: $([
                         "Hello VIP!2 begin we need ur voting ward.",
                         "Dial *55555# & give us ur home address & we'll work it out.",
                         "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                    ].join(' ')
+                    ].join(' '))
                 })
                 .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
@@ -183,11 +185,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: [
+                    content: $([
                         'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
                         'Get started by answering questions or reporting election activity!',
                         'Dial back in to *5555# to begin!'
-                    ].join(' ')
+                    ].join(' '))
                 }).then(function() {
                     self.contact.extra.register_sms_sent = 'true';
                     return self.im.contacts.save(self.contact);
@@ -210,8 +212,6 @@ di.app = function() {
                     return self.im.metrics.fire.last('registered.participants',result.value);
                 });
         };
-
-
 
         self.get_unique_users = function() {
             return self.im
@@ -415,7 +415,7 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice('states:answerwin',$('Answer & win!')),
+                    new Choice('states:quiz:answerwin:begin',$('Answer & win!')),
                     new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View VIP results...')),
@@ -423,13 +423,6 @@ di.app = function() {
                     new Choice('states:about',$('About')),
                     new Choice('states:end',$('End'))
                 ]
-            });
-        });
-
-        self.states.add('states:answerwin',function(name) {
-            return new EndState(name, {
-                text: $('To be continued'),
-                next: 'states:start'
             });
         });
 

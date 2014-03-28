@@ -105,32 +105,29 @@ di.quiz = function() {
             return unanswered.length;
         };
 
-        self.add_question = function(name,state) {
-            var question = [
+        self.construct_state_name = function(name) {
+            var state = [
                 'states:quiz',
                 self.name,
                 name
             ].join(':');
+            return state;
+        };
+
+        self.add_question = function(name,state) {
+            var question = self.construct_state_name(name);
             self.questions.push(question);
-            self.add(question,state);
+            app.states.add(question,state);
         };
 
         self.add_continue = function(name,state) {
-            self.continue = [
-                'states:quiz',
-                self.name,
-                name
-            ].join(':');
-            self.add(self.continue,state);
+            self.continue = self.construct_state_name(name);
+            app.states.add(self.continue,state);
         };
 
         self.add_next = function(name,state) {
-            self.next = [
-                'states:quiz',
-                self.name,
-                name
-            ].join(':');
-            self.add(self.next,state);
+            self.next = self.construct_state_name(name);
+            app.states.add(self.next,state);
         };
 
         self.add_begin = function(name) {
@@ -187,9 +184,9 @@ di.quiz = function() {
 
         self.create.random = function(opts) {
             if (self.create_continue(opts)) {
-                return self.create(self.continue,opts);
+                return app.states.create(self.continue,opts);
             }
-            return self.create(self.random_quiz_name(), opts);
+            return app.states.create(self.random_quiz_name(), opts);
         };
 
         self.incr_quiz_metrics = function() {
@@ -469,6 +466,119 @@ di.quiz.vip = function() {
     };
 }();
 
+di.quiz.answerwin = function() {
+    var QuizStates = di.quiz.QuizStates;
+    var vumigo = require('vumigo_v02');
+    var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    var MenuState = vumigo.states.MenuState;
+
+    var AnswerWinQuiz = QuizStates.extend(function(self,app) {
+        QuizStates.call(self,app,{
+            name:'answerwin'
+        });
+
+        self.next_quiz = function(n,content,next) {
+            return self
+                .answer(n,content.value)
+                .then(function() {
+                    return self.incr_quiz_metrics();
+                })
+                .then(function() {
+                    return self.construct_state_name(next);
+                });
+        };
+
+        var $ = app.$;
+
+        app.states.add("states:quiz:answerwin:begin",function(name) {
+            return app.states.create(self.construct_state_name('gender'));
+        });
+
+        app.states.add(self.construct_state_name('gender'),function(name) {
+            return new ChoiceState(name, {
+                question: $('I am...'),
+                choices: [
+                    new Choice('male',$('Male')),
+                    new Choice('female',$('Female')),
+                ],
+                next: function(choice) {
+                    return self.next_quiz('gender',choice,'age');
+                }
+            });
+        });
+
+        app.states.add(self.construct_state_name('age'),function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $('How old are you?'),
+                choices: [
+                    new Choice('u14',$('u14')),
+                    new Choice('15-19',$('15-19')),
+                    new Choice('20-29',$('20-29')),
+                    new Choice('30-39',$('30-39')),
+                    new Choice('40-49',$('40-49')),
+                    new Choice('50-59',$('50-59')),
+                    new Choice('60-69',$('60-69')),
+                    new Choice('70-79',$('70-79')),
+                    new Choice('80+',$('80+'))
+                ],
+                characters_per_page: 160,
+                options_per_page: 5,
+                next: function(choice) {
+                    return self.next_quiz('age',choice,'2009election');
+                }
+            });
+        });
+
+        app.states.add(self.construct_state_name('2009election'),function(name) {
+            return new ChoiceState(name, {
+                question: $('Did you vote in the 2009 election?'),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no_not_registered',$('No, could not/was not registered')),
+                    new Choice('no_didnt_want_to',$('No, did not want to')),
+                    new Choice('no_other',$('No, other')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(choice) {
+                    return self.next_quiz('2009election',choice,'race');
+                }
+            });
+        });
+
+        app.states.add(self.construct_state_name('race'),function(name) {
+            return new ChoiceState(name, {
+                question: $('I am...'),
+                choices: [
+                    new Choice('black_african',$('Black African')),
+                    new Choice('coloured',$('Coloured')),
+                    new Choice('indian_or_asian',$('Indian/Asian')),
+                    new Choice('white',$('White')),
+                    new Choice('other',$('Other')),
+                    new Choice('skip',$('Skip')),
+                ],
+                next: function(choice) {
+                    return self.next_quiz('race',choice,'thankyou');
+                }
+            });
+        });
+
+        app.states.add(self.construct_state_name('thankyou'),function(name) {
+            return new MenuState(name, {
+                question: $('Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!'),
+                choices: [
+                    new Choice('states:menu',$('Main Menu'))
+                ]
+            });
+        });
+
+
+    });
+    return {
+        AnswerWinQuiz: AnswerWinQuiz
+    };
+}();
 /**
  * Created by Jade on 2014/03/27.
  */
@@ -688,6 +798,7 @@ di.app = function() {
     var UshahidiApi = di.ushahidi.UshahidiApi;
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
+    var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
@@ -696,6 +807,7 @@ di.app = function() {
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
+        self.quizzes.answerwin = new AnswerWinQuiz(self);
 
         /*
          * To abstract which random class is being used
@@ -841,11 +953,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: [
+                    content: $([
                         "Hello VIP!2 begin we need ur voting ward.",
                         "Dial *55555# & give us ur home address & we'll work it out.",
                         "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                    ].join(' ')
+                    ].join(' '))
                 })
                 .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
@@ -857,11 +969,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: [
+                    content: $([
                         'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
                         'Get started by answering questions or reporting election activity!',
                         'Dial back in to *5555# to begin!'
-                    ].join(' ')
+                    ].join(' '))
                 }).then(function() {
                     self.contact.extra.register_sms_sent = 'true';
                     return self.im.contacts.save(self.contact);
@@ -884,8 +996,6 @@ di.app = function() {
                     return self.im.metrics.fire.last('registered.participants',result.value);
                 });
         };
-
-
 
         self.get_unique_users = function() {
             return self.im
@@ -1089,7 +1199,7 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice('states:answerwin',$('Answer & win!')),
+                    new Choice('states:quiz:answerwin:begin',$('Answer & win!')),
                     new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View VIP results...')),
@@ -1097,13 +1207,6 @@ di.app = function() {
                     new Choice('states:about',$('About')),
                     new Choice('states:end',$('End'))
                 ]
-            });
-        });
-
-        self.states.add('states:answerwin',function(name) {
-            return new EndState(name, {
-                text: $('To be continued'),
-                next: 'states:start'
             });
         });
 
