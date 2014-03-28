@@ -486,7 +486,6 @@ di.quiz.answerwin = function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
-                    console.log(self.next);
                     return self.construct_state_name(next);
                 });
         };
