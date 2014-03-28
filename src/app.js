@@ -14,6 +14,7 @@ di.app = function() {
     var UshahidiApi = di.ushahidi.UshahidiApi;
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
+    var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
@@ -22,6 +23,7 @@ di.app = function() {
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
+        self.quizzes.answerwin = new AnswerWinQuiz(self);
 
         self.get_date = function() {
             return new Date();
@@ -317,114 +319,13 @@ di.app = function() {
             return new MenuState(name, {
                 question: $('Welcome to VIP!'),
                 choices:[
-                    new Choice('states:answerwin:gender',$('Answer & win!')),
+                    new Choice('states:quiz:answerwin:begin',$('Answer & win!')),
                     new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
                     new Choice('states:report',$('Report an Election Activity')),
                     new Choice('states:results',$('View VIP results...')),
                     new Choice(self.quizzes.whatsup.get_next_quiz_state(),$("What's up?")),
                     new Choice('states:about',$('About')),
                     new Choice('states:end',$('End'))
-                ]
-            });
-        });
-
-        self.states.add('states:answerwin:gender',function(name) {
-            return new ChoiceState(name, {
-                question: $('I am...'),
-                choices: [
-                    new Choice('male',$('Male')),
-                    new Choice('female',$('Female')),
-                ],
-                next: function(choice) {
-                    self.contact.extra.answerwin_question_gender = choice.value;
-                    self.contact.extra.it_answerwin_question_gender = self.get_date_string();
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:answerwin:age';
-                        });
-                }
-            });
-        });
-
-        self.states.add('states:answerwin:age',function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $('How old are you?'),
-                choices: [
-                    new Choice('u14',$('u14')),
-                    new Choice('15-19',$('15-19')),
-                    new Choice('20-29',$('20-29')),
-                    new Choice('30-39',$('30-39')),
-                    new Choice('40-49',$('40-49')),
-                    new Choice('50-59',$('50-59')),
-                    new Choice('60-69',$('60-69')),
-                    new Choice('70-79',$('70-79')),
-                    new Choice('80+',$('80+'))
-                ],
-                characters_per_page: 160,
-                options_per_page: 5,
-                next: function(choice) {
-                    self.contact.extra.answerwin_question_age = choice.value;
-                    self.contact.extra.it_answerwin_question_age = self.get_date_string();
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:answerwin:2009election';
-                        });
-                }
-            });
-        });
-
-        self.states.add('states:answerwin:2009election',function(name) {
-            return new ChoiceState(name, {
-                question: $('Did you vote in the 2009 election?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no_not_registered',$('No, could not/was not registered')),
-                    new Choice('no_didnt_want_to',$('No, did not want to')),
-                    new Choice('no_other',$('No, other')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(choice) {
-                    self.contact.extra.answerwin_question_2009election = choice.value;
-                    self.contact.extra.it_answerwin_question_2009election = self.get_date_string();
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:answerwin:race';
-                        });
-                }
-            });
-        });
-
-        self.states.add('states:answerwin:race',function(name) {
-            return new ChoiceState(name, {
-                question: $('I am...'),
-                choices: [
-                    new Choice('black_african',$('Black African')),
-                    new Choice('coloured',$('Coloured')),
-                    new Choice('indian_or_asian',$('Indian/Asian')),
-                    new Choice('white',$('White')),
-                    new Choice('other',$('Other')),
-                    new Choice('skip',$('Skip')),
-                ],
-                next: function(choice) {
-                    self.contact.extra.answerwin_question_race = choice.value;
-                    self.contact.extra.it_answerwin_question_race = self.get_date_string();
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:answerwin:thankyou';
-                        });
-                }
-            });
-        });
-
-        self.states.add('states:answerwin:thankyou',function(name) {
-            return new MenuState(name, {
-                question: $('Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!'),
-                choices: [
-                    new Choice('states:menu',$('Main Menu'))
                 ]
             });
         });

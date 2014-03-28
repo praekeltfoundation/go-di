@@ -24,31 +24,28 @@ di.quiz = function() {
             return unanswered.length;
         };
 
-        self.add_question = function(name,state) {
-            var question = [
+        self.construct_state_name = function(name) {
+            var state = [
                 'states:quiz',
                 self.name,
                 name
             ].join(':');
+            return state;
+        };
+
+        self.add_question = function(name,state) {
+            var question = self.construct_state_name(name);
             self.questions.push(question);
             self.add(question,state);
         };
 
         self.add_continue = function(name,state) {
-            self.continue = [
-                'states:quiz',
-                self.name,
-                name
-            ].join(':');
+            self.continue = self.construct_state_name(name);
             self.add(self.continue,state);
         };
 
         self.add_next = function(name,state) {
-            self.next = [
-                'states:quiz',
-                self.name,
-                name
-            ].join(':');
+            self.next = self.construct_state_name(name);
             self.add(self.next,state);
         };
 
