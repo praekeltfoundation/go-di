@@ -954,11 +954,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: [
+                    content: $([
                         "Hello VIP!2 begin we need ur voting ward.",
                         "Dial *55555# & give us ur home address & we'll work it out.",
                         "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                    ].join(' ')
+                    ].join(' '))
                 })
                 .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
@@ -970,11 +970,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: [
+                    content: $([
                         'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
                         'Get started by answering questions or reporting election activity!',
                         'Dial back in to *5555# to begin!'
-                    ].join(' ')
+                    ].join(' '))
                 }).then(function() {
                     self.contact.extra.register_sms_sent = 'true';
                     return self.im.contacts.save(self.contact);

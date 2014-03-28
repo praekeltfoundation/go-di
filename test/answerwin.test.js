@@ -3,7 +3,7 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
 describe("app", function() {
-    describe.only("Answer & Win Quiz", function() {
+    describe("Answer & Win Quiz", function() {
 
         var app;
         var tester;
