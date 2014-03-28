@@ -645,7 +645,7 @@ describe("app", function() {
                                 "voting_district": "32840489"
                             },{
                                 "address": "21 Conduit Street, Randburg 2194, South Africa",
-                                "ward": "79800104",
+                                "ward": "21004003",
                                 "voting_district": "32840445"
                             }]
                         }
@@ -716,6 +716,40 @@ describe("app", function() {
                             assert.equal(contact.extra.sms_1,'');
                             assert.equal(contact.extra.sms_2,'');
                             assert.equal(contact.extra.sms_3,'');
+                        }).run();
+                });
+            });
+
+            describe("if they are in GS1 ward",function() {
+                it("should allocate them to the correct group, ",function() {
+                    return tester
+                        .input("3")
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.geographical_group,"GS1");
+                            assert.equal(contact.extra.monitoring_group,"false");
+                            assert.equal(contact.extra.week_day,'');
+                            assert.equal(contact.extra.push_group,'');
+                            assert.equal(contact.extra.sms_1,'');
+                            assert.equal(contact.extra.sms_2,'');
+                            assert.equal(contact.extra.sms_3,'');
+                        }).run();
+                });
+            });
+
+            describe("if they are in GS2 ward",function() {
+                it("should allocate them to GS2 ",function() {
+                    app.random = function(begin,end) {
+                        return end;
+                    };
+                    return tester
+                        .input("3")
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.geographical_group,"GS2");
+                            assert.equal(contact.extra.monitoring_group,"true");
+                            assert.equal(contact.extra.week_day,'Su');
+                            assert.equal(contact.extra.push_group,'30');
                         }).run();
                 });
             });

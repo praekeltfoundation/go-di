@@ -176,7 +176,7 @@ module.exports = function() {
                         ],
                         "address": "21 Conduit Street, Randburg 2194, South Africa",
                         "voting_district": "32840445",
-                        "ward": "79800104"
+                        "ward": "21004003"
                     }
                 ]
             }

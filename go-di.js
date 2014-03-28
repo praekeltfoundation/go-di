@@ -700,14 +700,14 @@ di.app = function() {
         /*
          * To abstract which random class is being used
          * */
-        self.random = function(begin,end) {
-            return _.random(begin,end);
+        self.random = function(begin,end,float) {
+            return _.random(begin,end,float);
         };
 
         self.week_day_code = ['M','T','W','Th','F','S','Su'];
 
         self.random_standard = function() {
-            if (_.random(0,1,true) < 0.2) {
+            if (self.random(0,1,true) < 0.2) {
                 return 'GS1';
             } else {
                 return 'GS2';
