@@ -2,6 +2,8 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var fixtures = require('./fixtures');
+var ward_treatment = require('./ward_treatment');
+var push_message_group = require('./push_message_group');
 var _ = require('lodash');
 
 var messagestore = require('./messagestore');
@@ -20,7 +22,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-                .setup.char_limit(180);
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -32,6 +34,8 @@ describe("app", function() {
                 .setup(function(api) {
                     api.resources.add(new DummyMessageStoreResource());
                     api.resources.attach(api);
+                    api.config.store.ward_treatment = ward_treatment();
+                    api.config.store.push_message_group = push_message_group();
                 })
                 .setup.config.app({
                     name: 'test_app',
@@ -386,7 +390,7 @@ describe("app", function() {
 
         describe("when the user selects accept and join",function() {
             beforeEach(function() {
-                return tester
+                tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
                         api.kv.store['registered.participants'] = 3;
@@ -622,55 +626,112 @@ describe("app", function() {
         });
 
         describe("when the user selects their address from the list provider",function(){
-            it("should save their electoral ward",function() {
+            beforeEach(function() {
+                app.random = function(begin,end) {
+                    return begin;
+                };
                 return tester
                     .setup.user.addr('+273123')
                     .setup.user.state('states:address:verify',{
                         creator_opts: {
                             address_options: [{
                                 "address": "21 Conduit Street, Randburg 2188, South Africa",
-                                "ward": "79400094",
+                                "ward": "79800096",
                                 "voting_district": "32840591"
                             },{
                                 "address": "21 Conduit Street, Sandton 2191, South Africa",
-                                "ward": "79400104",
+                                "ward": "79800104",
                                 "voting_district": "32840489"
                             },{
                                 "address": "21 Conduit Street, Randburg 2194, South Africa",
-                                "ward": "79400094",
+                                "ward": "21004003",
                                 "voting_district": "32840445"
                             }]
                         }
-                    })
+                    });
+            });
+
+            it("should save their electoral ward and voting district",function() {
+                return tester
                     .input("1")
                     .check(function(api){
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.ward,"79400094");
+                        assert.equal(contact.extra.ward,"79800096");
                         assert.equal(contact.extra.voting_district,"32840591");
                         assert.equal(contact.extra.it_ward,app.get_date_string());
                     }).run();
             });
 
+            describe("if they are in a high intensity ward",function() {
+                it("should allocate them to the correct group",function() {
+                    return tester
+                        .input("1")
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.geographical_group,"GH");
+                            assert.equal(contact.extra.monitoring_group,"true");
+                            assert.equal(contact.extra.week_day,'M');
+                            assert.equal(contact.extra.push_group,'1');
+                            assert.equal(contact.extra.sms_1,'1');
+                            assert.equal(contact.extra.sms_2,'2');
+                            assert.equal(contact.extra.sms_3,'1');
+                        }).run();
+                });
+            });
+
+            describe("if they are in a not high intensity or GS2 ward",function() {
+                it("should allocate them to the correct group, with monitoring set to false",function() {
+                    return tester
+                        .input("2")
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.geographical_group,"GC");
+                            assert.equal(contact.extra.monitoring_group,"false");
+                            assert.equal(contact.extra.week_day,'');
+                            assert.equal(contact.extra.push_group,'');
+                            assert.equal(contact.extra.sms_1,'');
+                            assert.equal(contact.extra.sms_2,'');
+                            assert.equal(contact.extra.sms_3,'');
+                        }).run();
+                });
+            });
+
+            describe("if they are in GS1 ward",function() {
+                it("should allocate them to the correct group, ",function() {
+                    return tester
+                        .input("3")
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.geographical_group,"GS1");
+                            assert.equal(contact.extra.monitoring_group,"false");
+                            assert.equal(contact.extra.week_day,'');
+                            assert.equal(contact.extra.push_group,'');
+                            assert.equal(contact.extra.sms_1,'');
+                            assert.equal(contact.extra.sms_2,'');
+                            assert.equal(contact.extra.sms_3,'');
+                        }).run();
+                });
+            });
+
+            describe("if they are in GS2 ward",function() {
+                it("should allocate them to GS2 ",function() {
+                    app.random = function(begin,end) {
+                        return end;
+                    };
+                    return tester
+                        .input("3")
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.geographical_group,"GS2");
+                            assert.equal(contact.extra.monitoring_group,"true");
+                            assert.equal(contact.extra.week_day,'Su');
+                            assert.equal(contact.extra.push_group,'30');
+                        }).run();
+                });
+            });
+
             it("should take them to the menu page",function() {
                 return tester
-                    .setup.user.addr('+273123')
-                    .setup.user.state('states:address:verify',{
-                        creator_opts: {
-                            address_options: [{
-                                "address": "21 Conduit Street, Randburg 2188, South Africa",
-                                "ward": "79400094",
-                                "voting_district": "32840591"
-                            },{
-                                "address": "21 Conduit Street, Sandton 2191, South Africa",
-                                "ward": "79400104",
-                                "voting_district": "32840489"
-                            },{
-                                "address": "21 Conduit Street, Randburg 2194, South Africa",
-                                "ward": "79400094",
-                                "voting_district": "32840445"
-                            }]
-                        }
-                    })
                     .input("1")
                     .check.interaction({
                         state: 'states:menu'
@@ -825,7 +886,7 @@ describe("app", function() {
                         d.setHours(0,0,0,0);
                         return d;
                     };
-                    return tester
+                    tester
                         .setup.user.addr('+273131')
                         .setup(function(api) {
                             api.contacts.add( {
