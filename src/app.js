@@ -437,21 +437,22 @@ di.app = function() {
 
         self.states.add('states:report',function(name) {
             var report_types = [
-                'Party going door-to-door',
-                'Party intimidating voters',
-                'Party distributing food/money/gift',
-                'Campaign rally',
-                'Campaign violence',
-                'Protest/Demonstration'
+                new Choice('Party going door-to-door',$('Party going door-to-door')),
+                new Choice('Party intimidating voters',$('Party intimidating voters')),
+                new Choice('Party distributing food/money/gift',$('Party distributing food/money/gift')),
+                new Choice('Campaign rally',$('Campaign rally')),
+                new Choice('Campaign violence',$('Campaign violence')),
+                new Choice('Protest/Demonstration',$('Protest/Demonstration'))
             ];
             return new ChoiceState(name, {
                 question: $("Choose a report type:"),
-                choices: _.map(report_types,function (description,index) {
-                    return new Choice(index+1,$(description));
-                }),
+                choices: report_types ,
                 next: function(choice) {
-                    self.contact.extra.report_type = choice.value.toString();
-                    self.contact.extra.report_desc = report_types[choice.value-1];
+                    var category_index = _.findIndex(report_types,function(c) {
+                        return c.value === choice.value;
+                    });
+                    self.contact.extra.report_type = (category_index + 1).toString();
+                    self.contact.extra.report_desc = choice.value;
                     self.contact.extra.it_report_type = self.get_date_string();
 
                     return self

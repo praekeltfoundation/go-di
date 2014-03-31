@@ -19,6 +19,9 @@ di.quiz.answerwin = function() {
             return self
                 .answer(n,content.value)
                 .then(function() {
+                    return self.set_quiz_completion();
+                })
+                .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
@@ -51,7 +54,7 @@ di.quiz.answerwin = function() {
             return app.states.create(self.construct_state_name('gender'));
         });
 
-        app.states.add(self.construct_state_name('gender'),function(name) {
+        self.add_question('gender',function(name) {
             return new ChoiceState(name, {
                 question: $('I am...'),
                 choices: [
@@ -64,7 +67,7 @@ di.quiz.answerwin = function() {
             });
         });
 
-        app.states.add(self.construct_state_name('age'),function(name) {
+        self.add_question('age',function(name) {
             return new PaginatedChoiceState(name, {
                 question: $('How old are you?'),
                 choices: [
@@ -86,7 +89,7 @@ di.quiz.answerwin = function() {
             });
         });
 
-        app.states.add(self.construct_state_name('2009election'),function(name) {
+        self.add_question('2009election',function(name) {
             return new ChoiceState(name, {
                 question: $('Did you vote in the 2009 election?'),
                 choices: [
@@ -102,7 +105,7 @@ di.quiz.answerwin = function() {
             });
         });
 
-        app.states.add(self.construct_state_name('race'),function(name) {
+        self.add_question('race',function(name) {
             return new ChoiceState(name, {
                 question: $('I am...'),
                 choices: [
@@ -111,7 +114,7 @@ di.quiz.answerwin = function() {
                     new Choice('indian_or_asian',$('Indian/Asian')),
                     new Choice('white',$('White')),
                     new Choice('other',$('Other')),
-                    new Choice('skip',$('Skip')),
+                    new Choice('skip',$('Skip'))
                 ],
                 next: function(choice) {
                     return self.next_quiz('race',choice,'check_deliveryclass');
