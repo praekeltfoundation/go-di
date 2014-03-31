@@ -267,7 +267,7 @@ describe("app", function() {
                 return tester
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
-                        assert.deepEqual(metrics['answerwin.quiz.complete'].values, [1]);
+                        assert.deepEqual(metrics['answerwin.total.questions'].values, [1]);
                     }).run();
             });
 
