@@ -132,7 +132,9 @@ di.quiz.answerwin = function() {
                 question: $('Please give us your cellphone number so we can send you your airtime!'),
                 next: function(content) {
                     //save msisdn + set quiz completion to true.
-                    return self.save_msisdn(content,'thankyou');
+                    return self
+                        .save_msisdn(content)
+                        .thenResolve(self.construct_state_name('thankyou'));
                 }
             });
         });
