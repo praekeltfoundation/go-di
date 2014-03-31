@@ -615,7 +615,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has answered a question", function() {
+        describe.only("when the user has answered a question", function() {
             describe("if it was the last question",function() {
                 beforeEach(function() {
                     return tester
@@ -641,6 +641,15 @@ describe("app", function() {
                             assert.deepEqual(metrics['vip.quiz.complete'].values, [1]);
                         }).run();
                 });
+
+                it("should set the 'vip_complete' field of contact",function() {
+                    return tester
+                        .check(function(api) {
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.vip_complete,app.get_date_string());
+                        }).run();
+                });
+
             });
 
             it("should fire a 'questions' metric",function() {
@@ -660,6 +669,23 @@ describe("app", function() {
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
                         assert.deepEqual(metrics['vip.total.questions'].values, [1]);
+                    }).run();
+            });
+
+
+            it("should NOT fire a 'vip.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.equal(_.isUndefined(metrics['vip.quiz.complete']), true);
+                    }).run();
+            });
+
+            it("should NOT set the 'vip_complete' field of contact",function() {
+                return tester
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(_.isUndefined(contact.extra.vip_complete),true);
                     }).run();
             });
 
