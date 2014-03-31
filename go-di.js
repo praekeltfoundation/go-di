@@ -595,18 +595,6 @@ di.quiz.answerwin = function() {
             }
         });
 
-        app.states.add(self.construct_state_name('phonenumber'),function(name) {
-            return new FreeText(name, {
-                question: $('Please give us your cellphone number so we can send you your airtime!'),
-                next: function(content) {
-                    //save msisdn + set quiz completion to true.
-                    return self
-                        .save_msisdn(content)
-                        .thenResolve(self.construct_state_name('thankyou'));
-                }
-            });
-        });
-
         app.states.add(self.construct_state_name('thankyou'),function(name) {
             return new MenuState(name, {
                 question: $('Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!'),
@@ -616,6 +604,21 @@ di.quiz.answerwin = function() {
             });
         });
 
+        self.init = function() {
+            if (!app.is_delivery_class('ussd')) {
+                self.add_question('phonenumber',function(name) {
+                    return new FreeText(name, {
+                        question: $('Please give us your cellphone number so we can send you your airtime!'),
+                        next: function(content) {
+                            //save msisdn + set quiz completion to true.
+                            return self
+                                .save_msisdn(content)
+                                .thenResolve(self.construct_state_name('thankyou'));
+                        }
+                    });
+                });
+            }
+        };
 
     });
     return {
@@ -961,6 +964,7 @@ di.app = function() {
         self.init = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
+            self.quizzes.answerwin.init();
 
             self.im.on('session:new',function() {
                 return Q.all([
