@@ -72,7 +72,7 @@
             }
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
-            "time_range": "1da",
+            "time_range": "1d",
             "name": "Total Reports Sent",
             "target": {
                 "metric_type": "account",
