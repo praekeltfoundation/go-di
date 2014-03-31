@@ -66,9 +66,8 @@ describe("app", function() {
                                 .setup.user.state('states:register')
                                 .input('1')
                                 .input.session_event('close')
-                                .check(function(api) {
-                                    assert_no_smses(api);
-                                }).run();
+                                .check(assert_no_smses)
+                                .run();
                         });
                     });
 
@@ -79,9 +78,7 @@ describe("app", function() {
                                 .setup.user.state('states:register')
                                 .input('1')
                                 .input.session_event('close')
-                                .check(function(api) {
-                                    assert_no_smses(api);
-                                }).run();
+                                .check(assert_no_smses).run();
                         });
                     });
                 });
@@ -103,9 +100,8 @@ describe("app", function() {
                                 .setup.user.state('states:register')
                                 .input('1')
                                 .input.session_event('close')
-                                .check(function(api) {
-                                    assert_no_smses(api);
-                                }).run();
+                                .check(assert_no_smses)
+                                .run();
                         });
                     });
                     describe("when they have already been sent a registration sms",function() {
@@ -115,9 +111,8 @@ describe("app", function() {
                                 .setup.user.state('states:register')
                                 .input('1')
                                 .input.session_event('close')
-                                .check(function(api) {
-                                    assert_no_smses(api);
-                                }).run();
+                                .check(assert_no_smses)
+                                .run();
                         });
                     });
                 });
