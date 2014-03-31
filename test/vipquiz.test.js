@@ -615,7 +615,7 @@ describe("app", function() {
             });
         });
 
-        describe.only("when the user has answered a question", function() {
+        describe("when the user has answered a question", function() {
             describe("if it was the last question",function() {
                 beforeEach(function() {
                     return tester
