@@ -208,6 +208,9 @@ di.quiz = function() {
             return self
                 .answer(n,content.value)
                 .then(function() {
+                    return self.set_quiz_completion();
+                })
+                .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
@@ -223,6 +226,10 @@ di.quiz = function() {
             ].join('_');
             app.contact.extra[contact_field] = value;
             app.contact.extra["it_"+contact_field] = app.get_date_string();
+            return app.im.contacts.save(app.contact);
+        };
+
+        self.set_quiz_completion = function(n,value) {
             if (self.is_complete()) {
                 app.contact.extra[self.name+'_complete'] = app.get_date_string();
             }
@@ -486,6 +493,9 @@ di.quiz.answerwin = function() {
             return self
                 .answer(n,content.value)
                 .then(function() {
+                    return self.set_quiz_completion();
+                })
+                .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
@@ -499,7 +509,7 @@ di.quiz.answerwin = function() {
             return app.states.create(self.construct_state_name('gender'));
         });
 
-        app.states.add(self.construct_state_name('gender'),function(name) {
+        self.add_question('gender',function(name) {
             return new ChoiceState(name, {
                 question: $('I am...'),
                 choices: [
@@ -512,7 +522,7 @@ di.quiz.answerwin = function() {
             });
         });
 
-        app.states.add(self.construct_state_name('age'),function(name) {
+        self.add_question('age',function(name) {
             return new PaginatedChoiceState(name, {
                 question: $('How old are you?'),
                 choices: [
@@ -534,7 +544,7 @@ di.quiz.answerwin = function() {
             });
         });
 
-        app.states.add(self.construct_state_name('2009election'),function(name) {
+        self.add_question('2009election',function(name) {
             return new ChoiceState(name, {
                 question: $('Did you vote in the 2009 election?'),
                 choices: [
@@ -550,7 +560,7 @@ di.quiz.answerwin = function() {
             });
         });
 
-        app.states.add(self.construct_state_name('race'),function(name) {
+        self.add_question('race',function(name) {
             return new ChoiceState(name, {
                 question: $('I am...'),
                 choices: [
@@ -559,7 +569,7 @@ di.quiz.answerwin = function() {
                     new Choice('indian_or_asian',$('Indian/Asian')),
                     new Choice('white',$('White')),
                     new Choice('other',$('Other')),
-                    new Choice('skip',$('Skip')),
+                    new Choice('skip',$('Skip'))
                 ],
                 next: function(choice) {
                     return self.next_quiz('race',choice,'thankyou');
@@ -1223,21 +1233,22 @@ di.app = function() {
 
         self.states.add('states:report',function(name) {
             var report_types = [
-                $('Party going door-to-door'),
-                $('Party intimidating voters'),
-                $('Party distributing food/money/gift'),
-                $('Campaign rally'),
-                $('Campaign violence'),
-                $('Protest/Demonstration')
+                new Choice('Party going door-to-door',$('Party going door-to-door')),
+                new Choice('Party intimidating voters',$('Party intimidating voters')),
+                new Choice('Party distributing food/money/gift',$('Party distributing food/money/gift')),
+                new Choice('Campaign rally',$('Campaign rally')),
+                new Choice('Campaign violence',$('Campaign violence')),
+                new Choice('Protest/Demonstration',$('Protest/Demonstration'))
             ];
             return new ChoiceState(name, {
                 question: $("Choose a report type:"),
-                choices: _.map(report_types,function (description,index) {
-                    return new Choice(index+1,description);
-                }),
+                choices: report_types ,
                 next: function(choice) {
-                    self.contact.extra.report_type = choice.value.toString();
-                    self.contact.extra.report_desc = report_types[choice.value-1];
+                    var category_index = _.findIndex(report_types,function(c) {
+                        return c.value === choice.value;
+                    });
+                    self.contact.extra.report_type = (category_index + 1).toString();
+                    self.contact.extra.report_desc = choice.value;
                     self.contact.extra.it_report_type = self.get_date_string();
 
                     return self
