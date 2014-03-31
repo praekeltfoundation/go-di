@@ -1,6 +1,7 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
+var _ = require("lodash");
 
 describe("app", function() {
     describe("Answer & Win Quiz", function() {
@@ -209,12 +210,35 @@ describe("app", function() {
                         ].join('\n')
                     }).run();
             });
+
+            it("should NOT fire a 'answerwin.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.equal(_.isUndefined(metrics['answerwin.quiz.complete']), true);
+                    }).run();
+            });
+
+            it("should NOT set the 'answerwin_complete' field of contact",function() {
+                return tester
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(_.isUndefined(contact.extra.answerwin_complete),true);
+                    }).run();
+            });
         });
 
         describe("when the user has answered the race question",function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
+                    .setup.user({
+                        answers: {
+                            'states:quiz:answerwin:2009election': '1',
+                            'states:quiz:answerwin:age': '1',
+                            'states:quiz:answerwin:gender': '1'
+                        }
+                    })
                     .setup.user.state('states:quiz:answerwin:race')
                     .input('1');
             });
@@ -236,6 +260,30 @@ describe("app", function() {
                             'Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!',
                             '1. Main Menu'
                         ].join('\n')
+                    }).run();
+            });
+
+            it("should fire a 'answerwin.total.questions' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['answerwin.total.questions'].values, [1]);
+                    }).run();
+            });
+
+            it("should fire a 'answerwin.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['answerwin.quiz.complete'].values, [1]);
+                    }).run();
+            });
+
+            it("should set the 'answerwin_complete' field of contact",function() {
+                return tester
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.answerwin_complete,app.get_date_string());
                     }).run();
             });
         });

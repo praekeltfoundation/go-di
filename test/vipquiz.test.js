@@ -7,6 +7,7 @@ var assert = require('assert');
 var fixtures = require('./fixtures');
 var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
+var _ = require("lodash");
 
 describe("app", function() {
 
@@ -20,7 +21,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-                .setup.char_limit(180);
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -574,6 +575,14 @@ describe("app", function() {
                         assert.equal(0 < question_num && question_num <= 12,true);
                     }).run();
             });
+
+            it("should NOT fire a 'vip.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(_.isUndefined(metrics['vip.quiz.complete']), true);
+                    }).run();
+            });
         });
         describe("when the user has answered the continue question as 'Continue'", function() {
             it("should take them to a random unanswered question",function() {
@@ -632,6 +641,15 @@ describe("app", function() {
                             assert.deepEqual(metrics['vip.quiz.complete'].values, [1]);
                         }).run();
                 });
+
+                it("should set the 'vip_complete' field of contact",function() {
+                    return tester
+                        .check(function(api) {
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.vip_complete,app.get_date_string());
+                        }).run();
+                });
+
             });
 
             it("should fire a 'questions' metric",function() {
@@ -651,6 +669,23 @@ describe("app", function() {
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
                         assert.deepEqual(metrics['vip.total.questions'].values, [1]);
+                    }).run();
+            });
+
+
+            it("should NOT fire a 'vip.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.equal(_.isUndefined(metrics['vip.quiz.complete']), true);
+                    }).run();
+            });
+
+            it("should NOT set the 'vip_complete' field of contact",function() {
+                return tester
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(_.isUndefined(contact.extra.vip_complete),true);
                     }).run();
             });
 

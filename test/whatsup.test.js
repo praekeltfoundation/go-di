@@ -120,6 +120,22 @@ describe("app", function() {
                     }).run();
             });
 
+            it("should NOT fire a 'whatsup.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.equal(_.isUndefined(metrics['whatsup.quiz.complete']), true);
+                    }).run();
+            });
+
+            it("should NOT set the 'whatsup_complete' field of contact",function() {
+                return tester
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(_.isUndefined(contact.extra.whatsup_complete),true);
+                    }).run();
+            });
+
             describe("when the user has already answered a random question",function() {
                 it("should take them to another random whatsup question",function() {
                     return tester
