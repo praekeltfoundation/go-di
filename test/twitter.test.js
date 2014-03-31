@@ -1,12 +1,19 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
-
+var _ = require("lodash");
 describe("app", function() {
     describe("Twitter Quiz test", function() {
 
         var app;
         var tester;
+
+        var assert_no_smses = function(api) {
+            var smses = _.where(api.outbound.store, {
+                endpoint: 'sms'
+            });
+            assert.equal(smses.length,0);
+        };
 
         beforeEach(function() {
             app = new di.app.GoDiApp();
@@ -60,10 +67,7 @@ describe("app", function() {
                                 .input('1')
                                 .input.session_event('close')
                                 .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
+                                    assert_no_smses(api);
                                 }).run();
                         });
                     });
@@ -76,10 +80,7 @@ describe("app", function() {
                                 .input('1')
                                 .input.session_event('close')
                                 .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
+                                    assert_no_smses(api);
                                 }).run();
                         });
                     });
@@ -103,10 +104,7 @@ describe("app", function() {
                                 .input('1')
                                 .input.session_event('close')
                                 .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
+                                    assert_no_smses(api);
                                 }).run();
                         });
                     });
@@ -118,10 +116,7 @@ describe("app", function() {
                                 .input('1')
                                 .input.session_event('close')
                                 .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
+                                    assert_no_smses(api);
                                 }).run();
                         });
                     });
@@ -157,7 +152,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user has provided there cell phone number",function() {
+        describe("when the user has provided their cell phone number",function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("@test")
