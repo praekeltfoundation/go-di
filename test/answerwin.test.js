@@ -1,6 +1,7 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
+var _ = require("lodash");
 
 describe("app", function() {
     describe("Answer & Win Quiz", function() {
@@ -209,6 +210,14 @@ describe("app", function() {
                         ].join('\n')
                     }).run();
             });
+
+            it("should NOT fire a 'answerwin.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.equal(_.isUndefined(metrics['answerwin.quiz.complete']), true);
+                    }).run();
+            });
         });
 
         describe("when the user has answered the race question",function() {
@@ -236,6 +245,14 @@ describe("app", function() {
                             'Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!',
                             '1. Main Menu'
                         ].join('\n')
+                    }).run();
+            });
+
+            it("should fire a 'answerwin.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['answerwin.quiz.complete'].values, [1]);
                     }).run();
             });
         });

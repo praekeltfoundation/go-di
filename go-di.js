@@ -223,6 +223,9 @@ di.quiz = function() {
             ].join('_');
             app.contact.extra[contact_field] = value;
             app.contact.extra["it_"+contact_field] = app.get_date_string();
+            if (self.is_complete()) {
+                app.contact.extra[self.name+'_complete'] = app.get_date_string();
+            }
             return app.im.contacts.save(app.contact);
         };
     });
@@ -1220,17 +1223,17 @@ di.app = function() {
 
         self.states.add('states:report',function(name) {
             var report_types = [
-                'Party going door-to-door',
-                'Party intimidating voters',
-                'Party distributing food/money/gift',
-                'Campaign rally',
-                'Campaign violence',
-                'Protest/Demonstration'
+                $('Party going door-to-door'),
+                $('Party intimidating voters'),
+                $('Party distributing food/money/gift'),
+                $('Campaign rally'),
+                $('Campaign violence'),
+                $('Protest/Demonstration')
             ];
             return new ChoiceState(name, {
                 question: $("Choose a report type:"),
                 choices: _.map(report_types,function (description,index) {
-                    return new Choice(index+1,$(description));
+                    return new Choice(index+1,description);
                 }),
                 next: function(choice) {
                     self.contact.extra.report_type = choice.value.toString();

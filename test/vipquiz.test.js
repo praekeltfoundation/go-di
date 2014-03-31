@@ -7,6 +7,7 @@ var assert = require('assert');
 var fixtures = require('./fixtures');
 var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
+var _ = require("lodash");
 
 describe("app", function() {
 
@@ -20,7 +21,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-                .setup.char_limit(180);
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -572,6 +573,14 @@ describe("app", function() {
                     .check.user.state(function(state){
                         var question_num = get_question_number(state) ;
                         assert.equal(0 < question_num && question_num <= 12,true);
+                    }).run();
+            });
+
+            it("should NOT fire a 'vip.quiz.complete' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(_.isUndefined(metrics['vip.quiz.complete']), true);
                     }).run();
             });
         });
