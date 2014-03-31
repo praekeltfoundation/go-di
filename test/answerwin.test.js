@@ -224,6 +224,13 @@ describe("app", function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("+273123")
+                    .setup.user({
+                        answers: {
+                            'states:quiz:answerwin:2009election': '1',
+                            'states:quiz:answerwin:age': '1',
+                            'states:quiz:answerwin:gender': '1'
+                        }
+                    })
                     .setup.user.state('states:quiz:answerwin:race')
                     .input('1');
             });
