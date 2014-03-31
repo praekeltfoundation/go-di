@@ -15,6 +15,9 @@ di.quiz.answerwin = function() {
             return self
                 .answer(n,content.value)
                 .then(function() {
+                    return self.set_quiz_completion();
+                })
+                .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
