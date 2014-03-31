@@ -13,11 +13,10 @@ describe("app", function() {
 
             tester = new AppTester(app,{
                 api: {
-                    http: {default_encoding: 'json'},
-                    delivery_class: 'twitter'
+                    http: {default_encoding: 'json'}
                 }
             })
-                .setup.char_limit(180);
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();
@@ -28,9 +27,6 @@ describe("app", function() {
             tester
                 .setup.config.app({
                     name: 'test_app',
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
                     delivery_class: 'twitter'
                 })
                 .setup(function(api) {
@@ -42,6 +38,95 @@ describe("app", function() {
                         }
                     });
                 });
+        });
+
+        describe("when a session is terminated", function() {
+            describe("when they are registered",function() {
+                describe("when they have not inputted their location",function() {
+                    describe("when they have already been sent a registration sms",function() {
+                        it("should not sent them an sms",function() {
+                            tester
+                                .setup.user.addr('@test')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        twitter_handle: '@test',
+                                        extra : {
+                                            is_registered: 'true',
+                                            register_sms_sent: 'true'
+                                        }
+                                    });
+                                })
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
+                                    assert.equal(smses.length,0);
+                                }).run();
+                        });
+                    });
+
+                    describe("when they have not been sent a registration sms",function() {
+                        it ("should not be sent an sms",function() {
+                            tester
+                                .setup.user.addr('@test')
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
+                                    assert.equal(smses.length,0);
+                                }).run();
+                        });
+                    });
+                });
+
+                describe("when they have inputted their location",function() {
+                    describe("when they have already been sent a registration sms",function() {
+                        it ("should not send them an sms",function() {
+                            tester
+                                .setup.user.addr('@test')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        twitter_handle: '@test',
+                                        extra : {
+                                            is_registered: 'true',
+                                            register_sms_sent: 'true'
+                                        }
+                                    });
+                                })
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
+                                    assert.equal(smses.length,0);
+                                }).run();
+                        });
+                    });
+                    describe("when they have already been sent a registration sms",function() {
+                        it("should not send them an sms",function() {
+                            tester
+                                .setup.user.addr('@test')
+                                .setup.user.state('states:register')
+                                .input('1')
+                                .input.session_event('close')
+                                .check(function(api) {
+                                    var smses = _.where(api.outbound.store, {
+                                        endpoint: 'sms'
+                                    });
+                                    assert.equal(smses.length,0);
+                                }).run();
+                        });
+                    });
+                });
+            });
         });
 
         describe("when the user has answered the race question",function() {
@@ -72,7 +157,7 @@ describe("app", function() {
             });
         });
 
-        describe.only("when the user has provided there cell phone number",function() {
+        describe("when the user has provided there cell phone number",function() {
             beforeEach(function() {
                 return tester
                     .setup.user.addr("@test")
