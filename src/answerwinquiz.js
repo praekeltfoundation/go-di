@@ -6,6 +6,7 @@ di.quiz.answerwin = function() {
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var MenuState = vumigo.states.MenuState;
     var FreeText = vumigo.states.FreeText;
+    var utils = vumigo.utils;
 
     var AnswerWinQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
@@ -25,9 +26,17 @@ di.quiz.answerwin = function() {
                 });
         };
 
+        self.format_msisdn = function(content) {
+            if (content[0] === '0') {
+                content = content.slice(1);
+            }
+            return utils.format_addr.msisdn(content);
+        };
+
         self.save_msisdn = function(content,next) {
-            app.contact.msisdn = content;
+            app.contact.msisdn = self.format_msisdn(content);
             app.contact.extra.answerwin_completion_time = app.get_date_string();
+
             return app.im.contacts
                 .save(app.contact)
                 .then(function() {
