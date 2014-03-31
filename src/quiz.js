@@ -127,6 +127,9 @@ di.quiz = function() {
             return self
                 .answer(n,content.value)
                 .then(function() {
+                    return self.set_quiz_completion();
+                })
+                .then(function() {
                     return self.incr_quiz_metrics();
                 })
                 .then(function() {
@@ -142,6 +145,10 @@ di.quiz = function() {
             ].join('_');
             app.contact.extra[contact_field] = value;
             app.contact.extra["it_"+contact_field] = app.get_date_string();
+            return app.im.contacts.save(app.contact);
+        };
+
+        self.set_quiz_completion = function(n,value) {
             if (self.is_complete()) {
                 app.contact.extra[self.name+'_complete'] = app.get_date_string();
             }
