@@ -43,7 +43,7 @@
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
             "time_range": "1d",
-            "name": "Total VIP Quizzes Completed",
+            "name": "Total Whatsup Quizzes Completed",
             "target": {
                 "metric_type": "account",
                 "store": "di_test_app",
