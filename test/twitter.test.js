@@ -78,7 +78,8 @@ describe("app", function() {
                                 .setup.user.state('states:register')
                                 .input('1')
                                 .input.session_event('close')
-                                .check(assert_no_smses).run();
+                                .check(assert_no_smses)
+                                .run();
                         });
                     });
                 });
