@@ -134,6 +134,7 @@ di.app = function() {
         self.init = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
+            self.quizzes.answerwin.init();
 
             self.im.on('session:new',function() {
                 return Q.all([
