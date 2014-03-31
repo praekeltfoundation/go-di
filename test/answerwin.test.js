@@ -218,6 +218,14 @@ describe("app", function() {
                         assert.equal(_.isUndefined(metrics['answerwin.quiz.complete']), true);
                     }).run();
             });
+
+            it("should NOT set the 'answerwin_complete' field of contact",function() {
+                return tester
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(_.isUndefined(contact.extra.answerwin_complete),true);
+                    }).run();
+            });
         });
 
         describe("when the user has answered the race question",function() {
@@ -255,11 +263,27 @@ describe("app", function() {
                     }).run();
             });
 
+            it("should fire a 'answerwin.total.questions' metric",function() {
+                return tester
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_app;
+                        assert.deepEqual(metrics['answerwin.quiz.complete'].values, [1]);
+                    }).run();
+            });
+
             it("should fire a 'answerwin.quiz.complete' metric",function() {
                 return tester
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_app;
                         assert.deepEqual(metrics['answerwin.quiz.complete'].values, [1]);
+                    }).run();
+            });
+
+            it("should set the 'answerwin_complete' field of contact",function() {
+                return tester
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.answerwin_complete,app.get_date_string());
                     }).run();
             });
         });
