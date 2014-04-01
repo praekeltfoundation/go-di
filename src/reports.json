@@ -105,7 +105,7 @@
             "type": "diamondash.widgets.graph.GraphWidget",
             "name": "Total Users and Total Registrations per Week",
             "width": 12,
-            "time_range": "1d",
+            "time_range": "14d",
             "bucket_size": "1h",
             "metrics": [
                 {
