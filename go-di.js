@@ -1176,18 +1176,27 @@ di.app = function() {
             });
         });
 
-        self.states.add('states:address',function(name){
+        self.states.add('states:address',function(name,opts){
             var error = $("Oops! Something went wrong! Please try again.");
             var response;
 
-            return new FreeText(name,{
-                question: $([
+            var question = "";
+            if (!opts.retry) {
+                question =  $([
                         "Thanks 4 joining!2 begin we need ur voting ward.",
                         "Reply with ur home address & we'll work it out.",
                         "This will be kept private, only ur voting ward will be stored",
                         "&u will be anonymous."
-                    ].join(" ")
-                ),
+                    ].join(" "));
+            } else {
+                question =  $([
+                    "Oops! You probably need to be more specific on that address.",
+                    "Please try add some more detail"
+                ].join(" "));
+            }
+
+            return new FreeText(name,{
+                question: question,
                 check: function(content) {
                     return self
                         .http.get('http://wards.code4sa.org/',{
@@ -1195,11 +1204,9 @@ di.app = function() {
                                 address: content,
                                 database: 'vd_2014'
                             }
-
                         })
                         .then(function(resp) {
                             response = resp;
-
                             if (typeof resp.data.error  !== 'undefined') {
                                 return error;
                             }
@@ -1209,12 +1216,55 @@ di.app = function() {
                     return {
                         name: 'states:address:verify',
                         creator_opts: {
-                            address_options:response.data
+                            address_options:response.data,
+                            retry: opts.retry
                         }
                     };
                 }
             }) ;
         });
+
+        self.set_ward_data = function(choice, opts) {
+            var index = choice.value-1;
+            self.contact.extra.ward = opts.address_options[index].ward;
+            self.contact.extra.voting_district = opts.address_options[index].voting_district;
+            self.contact.extra.it_ward = self.get_date_string();
+
+            //Set contact group
+            return self
+                .get_group_config()
+                .spread(function(ward_treatment, push_message_group) {
+                    //Set the contact group
+                    self.set_contact_group(
+                        self.contact.extra.ward,
+                        ward_treatment,
+                        push_message_group
+                    );
+
+                    //Save contact.
+                    return self.im.contacts.save(self.contact).then(function() {
+                        return "states:menu";
+                    });
+                });
+        };
+
+        self.handle_unavailable_location = function(choice,opts) {
+            //If already retried then set default to unknown.
+            if (opts.retry) {
+                self.contact.extra.ward = 'unknown';
+                return self.im.contacts.save(self.contact).then(function() {
+                    return "states:menu";
+                });
+
+            } else {
+                return {
+                    name: 'states:address',
+                    creator_opts: {
+                        retry: true
+                    }
+                };
+            }
+        };
 
         self.states.add('states:address:verify',function(name,opts){
             var index = 0;
@@ -1222,6 +1272,9 @@ di.app = function() {
                 index++;
                 return new Choice(index,ward.address.replace(", South Africa",""));
             });
+            choices.push(
+                new Choice("not_available","Not available")
+            );
 
             return new PaginatedChoiceState(name, {
                 question: $('Please select your location from the options below:'),
@@ -1229,31 +1282,16 @@ di.app = function() {
                 characters_per_page: 180,
                 options_per_page: 3,
                 next: function(choice) {
-                    //Set ward data
-                    var index = choice.value-1;
-                    self.contact.extra.ward = opts.address_options[index].ward;
-                    self.contact.extra.voting_district = opts.address_options[index].voting_district;
-                    self.contact.extra.it_ward = self.get_date_string();
-
-                    //Set contact group
-                    return self
-                        .get_group_config()
-                        .spread(function(ward_treatment, push_message_group) {
-                            //Set the contact group
-                            self.set_contact_group(
-                                self.contact.extra.ward,
-                                ward_treatment,
-                                push_message_group
-                            );
-
-                            //Save contact.
-                            return self.im.contacts.save(self.contact).then(function() {
-                                return "states:menu";
-                            });
-                        });
+                    if (choice.value !== "not_available")
+                        return self.set_ward_data(choice,opts);
+                    else {
+                        return self.handle_unavailable_location(choice,opts);
+                    }
                 }
             });
         });
+
+
 
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
