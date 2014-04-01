@@ -134,7 +134,8 @@ describe("app", function() {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.answerwin_question_race,"black_african");
                         assert.equal(contact.extra.it_answerwin_question_race,app.get_date_string());
-                    });
+                    })
+                    .run();
             });
 
             it("should take them to the phone number question",function() {
@@ -161,7 +162,8 @@ describe("app", function() {
                     .check(function(api){
                         var contact = api.contacts.store[0];
                         assert.equal(contact.msisdn,"+27729042520");
-                    });
+                    })
+                    .run();
             });
 
             it("should take them to the thank you question",function() {

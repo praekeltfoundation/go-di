@@ -509,7 +509,7 @@ di.quiz.answerwin = function() {
 
         self.format_msisdn = function(content) {
             if (content[0] === '0') {
-                content = content.slice(1);
+                content = "+27"+content.slice(1);
             }
             return utils.format_addr.msisdn(content);
         };
