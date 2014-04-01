@@ -483,11 +483,15 @@ di.quiz.answerwin = function() {
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var MenuState = vumigo.states.MenuState;
+    var FreeText = vumigo.states.FreeText;
+    var utils = vumigo.utils;
 
     var AnswerWinQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
             name:'answerwin'
         });
+
+        var $ = app.$;
 
         self.next_quiz = function(n,content,next) {
             return self
@@ -503,7 +507,26 @@ di.quiz.answerwin = function() {
                 });
         };
 
-        var $ = app.$;
+        self.format_msisdn = function(content) {
+            if (content[0] === '0') {
+                content = content.slice(1);
+            }
+            return utils.format_addr.msisdn(content);
+        };
+
+        self.save_msisdn = function(content,next) {
+            app.contact.msisdn = self.format_msisdn(content);
+            app.contact.extra.answerwin_completion_time = app.get_date_string();
+
+            return app.im.contacts
+                .save(app.contact)
+                .then(function() {
+                    return self.incr_quiz_metrics();
+                })
+                .then(function() {
+                    return self.construct_state_name(next);
+                });
+        };
 
         app.states.add("states:quiz:answerwin:begin",function(name) {
             return app.states.create(self.construct_state_name('gender'));
@@ -572,9 +595,17 @@ di.quiz.answerwin = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(choice) {
-                    return self.next_quiz('race',choice,'thankyou');
+                    return self.next_quiz('race',choice,'check_deliveryclass');
                 }
             });
+        });
+
+        app.states.add(self.construct_state_name('check_deliveryclass'),function(name) {
+            if (app.is_delivery_class('ussd')) {
+                return app.states.create(self.construct_state_name('thankyou'));
+            } else {
+                return app.states.create(self.construct_state_name('phonenumber'));
+            }
         });
 
         app.states.add(self.construct_state_name('thankyou'),function(name) {
@@ -586,6 +617,21 @@ di.quiz.answerwin = function() {
             });
         });
 
+        self.init = function() {
+            if (!app.is_delivery_class('ussd')) {
+                self.add_question('phonenumber',function(name) {
+                    return new FreeText(name, {
+                        question: $('Please give us your cellphone number so we can send you your airtime!'),
+                        next: function(content) {
+                            //save msisdn + set quiz completion to true.
+                            return self
+                                .save_msisdn(content)
+                                .thenResolve(self.construct_state_name('thankyou'));
+                        }
+                    });
+                });
+            }
+        };
 
     });
     return {
@@ -931,6 +977,7 @@ di.app = function() {
         self.init = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
+            self.quizzes.answerwin.init();
 
             self.im.on('session:new',function() {
                 return Q.all([
