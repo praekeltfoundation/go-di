@@ -3,7 +3,7 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var _ = require("lodash");
 describe("app", function() {
-    describe("Twitter Quiz test", function() {
+    describe.only("Twitter Quiz test", function() {
 
         var app;
         var tester;
@@ -45,6 +45,50 @@ describe("app", function() {
                         }
                     });
                 });
+        });
+
+        describe("when a session is started", function() {
+            describe("when they are not registered",function() {
+                it("should set the user's language to english",function() {
+                    return tester
+                        .setup.user.addr('@test')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                twitter_handle: "@test",
+                                extra : {
+                                    is_registered: 'false'
+                                }
+                            });
+                        })
+                        .start()
+                        .check.user.properties({lang:'en'})
+                        .run();
+                });
+
+                it("should send them to the engagement question",function() {
+                    return tester
+                        .setup.user.addr('@test')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                twitter_handle: "@test",
+                                extra : {
+                                    is_registered: 'false'
+                                }
+                            });
+                        })
+                        .start()
+                        .check.interaction({
+                            state:'states:registration:engagement',
+                            reply:[
+                                "It's election time! Do u think ur vote matters?",
+                                "1. YES every vote matters",
+                                "2. NO but I'll vote anyway",
+                                "3. NO so I'm NOT voting",
+                                "4. I'm NOT REGISTERED to vote",
+                                "5. I'm TOO YOUNG to vote"].join("\n")
+                        }).run();
+                });
+            });
         });
 
         describe("when a session is terminated", function() {
