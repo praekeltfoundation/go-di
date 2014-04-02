@@ -52,6 +52,24 @@ describe("app", function() {
                     });
                 });
         });
+        describe("when the user selects accept and join",function() {
+            beforeEach(function() {
+                tester
+                    .setup.user.addr("@test1")
+                    .setup(function(api) {
+                        api.kv.store['twitter.registered.participants'] = 3;
+                    })
+                    .setup.user.state('states:registration:tandc')
+                    .input('1');
+            });
+
+            it("should increment 'registered.participants' kv store",function() {
+                return tester
+                    .check(function(api) {
+                        assert.equal(api.kv.store['twitter.registered.participants'], 4);
+                    }).run();
+            });
+        });
 
         describe("when a session is terminated", function() {
             describe("when they are registered",function() {
@@ -123,35 +141,6 @@ describe("app", function() {
                         });
                     });
                 });
-            });
-        });
-
-        describe("when the user has answered the race question",function() {
-            beforeEach(function() {
-                return tester
-                    .setup.user.addr("@test")
-                    .setup.user.state('states:quiz:answerwin:race')
-                    .input('1');
-            });
-
-            it("should save their answer to the race question",function() {
-                return tester
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.answerwin_question_race,"black_african");
-                        assert.equal(contact.extra.it_answerwin_question_race,app.get_date_string());
-                    })
-                    .run();
-            });
-
-            it("should take them to the phone number question",function() {
-                return tester
-                    .check.interaction({
-                        state: 'states:quiz:answerwin:phonenumber',
-                        reply: [
-                            'Please give us your cellphone number so we can send you your airtime!'
-                        ].join('\n')
-                    }).run();
             });
         });
 
