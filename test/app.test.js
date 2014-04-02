@@ -270,9 +270,7 @@ describe("app", function() {
                             reply: ['Welcome to Voting is Power! Start by choosing your language:',
                                 '1. English',
                                 '2. Afrikaans',
-                                '3. Zulu',
-                                '4. Xhosa',
-                                '5. Sotho'
+                                '3. Zulu'
                             ].join('\n')
                         })
                         .run();
@@ -289,9 +287,7 @@ describe("app", function() {
                         reply: ['Welcome to Voting is Power! Start by choosing your language:',
                             '1. English',
                             '2. Afrikaans',
-                            '3. Zulu',
-                            '4. Xhosa',
-                            '5. Sotho'
+                            '3. Zulu'
                         ].join('\n')
                     })
                     .run();

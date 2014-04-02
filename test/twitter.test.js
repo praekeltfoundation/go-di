@@ -5,6 +5,7 @@ var _ = require("lodash");
 var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 
+
 describe("app", function() {
     describe("Twitter Quiz test", function() {
 
@@ -68,6 +69,50 @@ describe("app", function() {
                     .check(function(api) {
                         assert.equal(api.kv.store['twitter_test_app.registered.participants'], 4);
                     }).run();
+            });
+        });
+
+        describe("when a session is started", function() {
+            describe("when they are not registered",function() {
+                it("should set the user's language to english",function() {
+                    return tester
+                        .setup.user.addr('@test1')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                twitter_handle: "@test1",
+                                extra : {
+                                    is_registered: 'false'
+                                }
+                            });
+                        })
+                        .start()
+                        .check.user.properties({lang:'en'})
+                        .run();
+                });
+
+                it("should send them to the engagement question",function() {
+                    return tester
+                        .setup.user.addr('@test1')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                twitter_handle: "@test1",
+                                extra : {
+                                    is_registered: 'false'
+                                }
+                            });
+                        })
+                        .start()
+                        .check.interaction({
+                            state:'states:registration:engagement',
+                            reply:[
+                                "It's election time! Do u think ur vote matters?",
+                                "1. YES every vote matters",
+                                "2. NO but I'll vote anyway",
+                                "3. NO so I'm NOT voting",
+                                "4. I'm NOT REGISTERED to vote",
+                                "5. I'm TOO YOUNG to vote"].join("\n")
+                        }).run();
+                });
             });
         });
 
