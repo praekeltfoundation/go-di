@@ -62,7 +62,8 @@ di.ushahidi = function() {
                     "incident_ampm": (date.getHours() < 12 ? 'am': 'pm'),
                     "latitude": place.geometry.location.lat ,
                     "longitude": place.geometry.location.lng ,
-                    "location_name": place.formatted_address
+                    "location_name": place.formatted_address,
+                    "person_first": opts.who
                 }
             });
         };
@@ -1418,7 +1419,8 @@ di.app = function() {
                         category: self.contact.extra.report_type
                     },
                     place: place,
-                    date:  self.get_date()
+                    date:  self.get_date(),
+                    who: self.im.user.addr
                 })
                 .then(function(resp) {
                     return {
