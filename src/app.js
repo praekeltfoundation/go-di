@@ -238,9 +238,7 @@ di.app = function() {
                 choices: [
                     new Choice('en',$('English')),
                     new Choice('af',$('Afrikaans')),
-                    new Choice('zu',$('Zulu')),
-                    new Choice('xh',$('Xhosa')),
-                    new Choice('so',$('Sotho'))
+                    new Choice('zu',$('Zulu'))
                 ],
                 next: function(choice) {
                     return self.im.user.set_lang(choice.value).then(function() {
