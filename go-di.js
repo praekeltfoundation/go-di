@@ -989,7 +989,7 @@ di.app = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
             self.quizzes.answerwin.init();
-            self.store_name = self.im.config.delivery_class;
+            self.store_name = self.im.config.name;
 
             self.im.on('session:new',function() {
                 return Q.all([

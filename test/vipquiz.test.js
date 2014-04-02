@@ -704,7 +704,7 @@ describe("app", function() {
                     .setup.user.state('states:quiz:vip:begin')
                     .input('1')
                     .check(function(api) {
-                        assert.equal(api.kv.store['ussd.vip.total.questions'], 1);
+                        assert.equal(api.kv.store['test_app.vip.total.questions'], 1);
                     }).run();
             });
         });

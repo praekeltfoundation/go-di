@@ -36,7 +36,7 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'test_app',
+                    name: 'twitter_test_app',
                     delivery_class: 'twitter'
                 })
                 .setup(function(api) {
@@ -57,7 +57,7 @@ describe("app", function() {
                 tester
                     .setup.user.addr("@test1")
                     .setup(function(api) {
-                        api.kv.store['twitter.registered.participants'] = 3;
+                        api.kv.store['twitter_test_app.registered.participants'] = 3;
                     })
                     .setup.user.state('states:registration:tandc')
                     .input('1');
@@ -66,7 +66,7 @@ describe("app", function() {
             it("should increment 'registered.participants' kv store",function() {
                 return tester
                     .check(function(api) {
-                        assert.equal(api.kv.store['twitter.registered.participants'], 4);
+                        assert.equal(api.kv.store['twitter_test_app.registered.participants'], 4);
                     }).run();
             });
         });
@@ -141,6 +141,36 @@ describe("app", function() {
                         });
                     });
                 });
+            });
+        });
+
+
+        describe("when the user has answered the race question",function() {
+            beforeEach(function() {
+                    return tester
+                        .setup.user.addr("@test")
+                        .setup.user.state('states:quiz:answerwin:race')
+                        .input('1');
+                });
+
+                it("should save their answer to the race question",function() {
+                    return tester
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.answerwin_question_race,"black_african");
+                            assert.equal(contact.extra.it_answerwin_question_race,app.get_date_string());
+                        })
+                    .run();
+                });
+
+                it("should take them to the phone number question",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:quiz:answerwin:phonenumber',
+                            reply: [
+                                'Please give us your cellphone number so we can send you your airtime!'
+                                ].join('\n')
+                    }).run();
             });
         });
 
