@@ -2,6 +2,9 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var _ = require("lodash");
+var messagestore = require('./messagestore');
+var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
+
 describe("app", function() {
     describe("Twitter Quiz test", function() {
 
@@ -33,10 +36,13 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'test_app',
+                    name: 'twitter_test_app',
                     delivery_class: 'twitter'
                 })
                 .setup(function(api) {
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
                     api.contacts.add( {
                         twitter_handle: "@test",
                         extra : {
@@ -45,6 +51,24 @@ describe("app", function() {
                         }
                     });
                 });
+        });
+        describe("when the user selects accept and join",function() {
+            beforeEach(function() {
+                tester
+                    .setup.user.addr("@test1")
+                    .setup(function(api) {
+                        api.kv.store['twitter_test_app.registered.participants'] = 3;
+                    })
+                    .setup.user.state('states:registration:tandc')
+                    .input('1');
+            });
+
+            it("should increment 'registered.participants' kv store",function() {
+                return tester
+                    .check(function(api) {
+                        assert.equal(api.kv.store['twitter_test_app.registered.participants'], 4);
+                    }).run();
+            });
         });
 
         describe("when a session is terminated", function() {
@@ -120,31 +144,32 @@ describe("app", function() {
             });
         });
 
+
         describe("when the user has answered the race question",function() {
             beforeEach(function() {
-                return tester
-                    .setup.user.addr("@test")
-                    .setup.user.state('states:quiz:answerwin:race')
-                    .input('1');
-            });
+                    return tester
+                        .setup.user.addr("@test")
+                        .setup.user.state('states:quiz:answerwin:race')
+                        .input('1');
+                });
 
-            it("should save their answer to the race question",function() {
-                return tester
-                    .check(function(api){
-                        var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.answerwin_question_race,"black_african");
-                        assert.equal(contact.extra.it_answerwin_question_race,app.get_date_string());
-                    })
+                it("should save their answer to the race question",function() {
+                    return tester
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.answerwin_question_race,"black_african");
+                            assert.equal(contact.extra.it_answerwin_question_race,app.get_date_string());
+                        })
                     .run();
-            });
+                });
 
-            it("should take them to the phone number question",function() {
-                return tester
-                    .check.interaction({
-                        state: 'states:quiz:answerwin:phonenumber',
-                        reply: [
-                            'Please give us your cellphone number so we can send you your airtime!'
-                        ].join('\n')
+                it("should take them to the phone number question",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:quiz:answerwin:phonenumber',
+                            reply: [
+                                'Please give us your cellphone number so we can send you your airtime!'
+                                ].join('\n')
                     }).run();
             });
         });

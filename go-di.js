@@ -989,6 +989,7 @@ di.app = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);
             self.quizzes.answerwin.init();
+            self.store_name = self.im.config.name;
 
             self.im.on('session:new',function() {
                 return Q.all([
@@ -1322,11 +1323,11 @@ di.app = function() {
         });
 
         self.get_kv = function(name) {
-            return self.im.api_request('kv.get', {key: name});
+            return self.im.api_request('kv.get', {key: [self.store_name, name].join('.')});
         };
 
         self.incr_kv = function(name) {
-            return self.im.api_request('kv.incr', {key: name});
+            return self.im.api_request('kv.incr', {key: [self.store_name, name].join('.')});
         };
 
         self.states.add('states:report',function(name) {

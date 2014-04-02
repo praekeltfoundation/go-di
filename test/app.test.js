@@ -393,7 +393,7 @@ describe("app", function() {
                 tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
-                        api.kv.store['registered.participants'] = 3;
+                        api.kv.store['test_app.registered.participants'] = 3;
                     })
                     .setup.user.state('states:registration:tandc')
                     .input('1');
@@ -417,7 +417,7 @@ describe("app", function() {
             it("should increment 'registered.participants' kv store",function() {
                 return tester
                     .check(function(api) {
-                        assert.equal(api.kv.store['registered.participants'], 4);
+                        assert.equal(api.kv.store['test_app.registered.participants'], 4);
                     }).run();
             });
 
@@ -1098,7 +1098,7 @@ describe("app", function() {
                 it("should incr 'total.reports' in kv-store",function() {
                     return tester
                         .check(function(api) {
-                            assert.equal(api.kv.store['total.reports'], 1);
+                            assert.equal(api.kv.store['test_app.total.reports'], 1);
                         }).run();
                 });
             });
@@ -1160,7 +1160,7 @@ describe("app", function() {
                 it("should not incr 'total.reports' in kv-store",function() {
                     return tester
                         .check(function(api) {
-                            assert.equal(_.isUndefined(api.kv.store['total.reports']), true);
+                            assert.equal(_.isUndefined(api.kv.store['test_app.total.reports']), true);
                         }).run();
                 });
             });
@@ -1349,9 +1349,9 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
-                        api.kv.store['registered.participants'] = 3;
-                        api.kv.store['total.questions'] = 4;
-                        api.kv.store['total.reports'] = 5;
+                        api.kv.store['test_app.registered.participants'] = 3;
+                        api.kv.store['test_app.total.questions'] = 4;
+                        api.kv.store['test_app.total.reports'] = 5;
                     })
                     .setup.user.state("states:menu")
                     .input("4")
