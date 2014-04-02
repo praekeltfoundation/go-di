@@ -491,7 +491,7 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:address:verify",
                         reply: [
-                            'Please select your location from the options below:',
+                            "Choose your area:",
                             '1. 21 Conduit Street, Randburg 2188',
                             '2. 21 Conduit Street, Sandton 2191',
                             '3. 21 Conduit Street, Randburg 2194',
@@ -508,7 +508,7 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:address:verify",
                         reply: [
-                            'Please select your location from the options below:',
+                            "Choose your area:",
                             '1. 21 Conduit Street, Randburg 2188',
                             '2. 21 Conduit Street, Sandton 2191',
                             '3. 21 Conduit Street, Randburg 2194',
@@ -560,7 +560,7 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:address:verify",
                             reply: [
-                                'Please select your location from the options below:',
+                                "Choose your area:",
                                 '1. Main Street, Howick',
                                 "2. Main Street, Despatch 6220",
                                 '3. Main Street, Matatiele 4730',
@@ -613,7 +613,7 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:address:verify",
                         reply: [
-                            'Please select your location from the options below:',
+                            "Choose your area:",
                             '1. Main Street, Paarl',
                             "2. Main Street, Lambert's Bay 8130",
                             '3. Main Street, Glencoe',
@@ -624,7 +624,7 @@ describe("app", function() {
             });
         });
 
-        describe.only("when the user is on the 2nd page and selects 'next",function() {
+        describe("when the user is on the 2nd page and selects 'next",function() {
             beforeEach(function() {
                 tester.setup.user.state({
                     name: 'states:address:verify',
@@ -665,10 +665,10 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:address:verify",
                         reply: [
-                            'Please select your location from the options below:',
+                            "Choose your area:",
                             '1. Main Street, Emalahleni',
                             "2. Main Street, Darling 7345",
-                            '3. Not available',
+                            '3. Not my address',
                             "4. Back"
                         ].join("\n")
                     })
@@ -702,10 +702,7 @@ describe("app", function() {
                     .input("1")
                     .check.interaction({
                         state: "states:address",
-                        reply: [
-                            "Oops! You probably need to be more specific on that address.",
-                            "Please try add some more detail"
-                        ].join(" ")
+                        reply: "Please carefully enter your address again: for eg: 12 main street pretoria"
                     })
                     .run();
             });
@@ -995,6 +992,27 @@ describe("app", function() {
                 });
             });
 
+            describe("if they are retrying entering their address",function() {
+                it("should show slightly different 'not_available' option",function() {
+                    return tester
+                        .setup.user.state('states:report:location',{
+                            creator_opts: {
+                                retry: true
+                            }
+                        })
+                        .input("21 conduit street south africa")
+                        .check.interaction({
+                            state: "states:report:verify_location",
+                            reply: [
+                                "Choose your area:",
+                                "1. 21 Conduit Street, Randburg 2188",
+                                "2. 21 Conduit Street, Sandton 2191",
+                                "3. Still not my address"
+                            ].join("\n")
+                        }).run();
+                });
+            });
+
             it("should provide them with a list of locations matching their input",function() {
                 return tester
                     .setup.user.state('states:report:location')
@@ -1002,9 +1020,10 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:report:verify_location",
                         reply: [
-                            "Please select your location from the options below:",
+                            "Choose your area:",
                             "1. 21 Conduit Street, Randburg 2188",
-                            "2. 21 Conduit Street, Sandton 2191"
+                            "2. 21 Conduit Street, Sandton 2191",
+                            "3. Not my address"
                         ].join("\n")
                     }).run();
             });
@@ -1100,6 +1119,134 @@ describe("app", function() {
                 });
             });
 
+            describe("when user selects 'Not my address' from the list",function() {
+                beforeEach(function() {
+                    app.get_date = function() {
+                        var d = new Date(2014,2,16);
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
+                    tester
+                        .setup.user.addr('+273131')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273131',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    report_title: "test",
+                                    report_desc:"Party going door-to-door",
+                                    report_type:"1"
+                                }
+                            });
+                        })
+                        .setup.user.state('states:report:verify_location',{
+                            creator_opts: {
+                                address_options: [
+                                    {
+                                        "formatted_address" : "21 Conduit Street, Randburg 2188, South Africa",
+                                        "geometry" : { "location" : { "lat" : -26.02674,"lng" : 27.97532}}
+                                    },{
+                                        "formatted_address" : "21 Conduit Street, Sandton 2191, South Africa",
+                                        "geometry" : {"location" : {"lat" : -26.0701361,"lng" : 27.9946541} }
+                                    }
+                                ]
+                            }
+                        })
+                        .input("3");
+                });
+
+                it("should not submit a report to ushahidi yet",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.http.requests.length,0);
+                        }).run();
+                });
+
+                it("should take them to the location state with a new question",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:report:location',
+                            reply: [
+                                'Please carefully enter your address again: for eg: 12 main street pretoria'
+                            ].join(" ")
+                        }).run();
+                });
+
+                it("should not incr 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(_.isUndefined(api.kv.store['total.reports']), true);
+                        }).run();
+                });
+            });
+
+            describe("when user selects 'Still not my address' from the list",function() {
+                beforeEach(function() {
+                    app.get_date = function() {
+                        var d = new Date(2014,2,16);
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
+                    tester
+                        .setup.user.addr('+273131')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273131',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    report_title: "test",
+                                    report_desc:"Party going door-to-door",
+                                    report_type:"1"
+                                }
+                            });
+                        })
+                        .setup.user.state('states:report:verify_location',{
+                            creator_opts: {
+                                address_options: [
+                                    {
+                                        "formatted_address" : "21 Conduit Street, Randburg 2188, South Africa",
+                                        "geometry" : { "location" : { "lat" : -26.02674,"lng" : 27.97532}}
+                                    },{
+                                        "formatted_address" : "21 Conduit Street, Sandton 2191, South Africa",
+                                        "geometry" : {"location" : {"lat" : -26.0701361,"lng" : 27.9946541} }
+                                    }
+                                ],
+                                retry: true
+                            }
+                        })
+                        .input("3");
+                });
+
+                it("should submit a report to ushahidi with default report",function() {
+                    return tester
+                        .check(function(api) {
+                            var req = api.http.requests[0];
+                            var url = req.url;
+                            var body = req.body;
+                            var date = encodeURIComponent( app.ushahidi.get_formatted_date(app.get_date()));
+                            assert.equal(url,"https://godi.crowdmap.com/api");
+                            assert.equal(body,[
+                                "task=report",
+                                "incident_title=test" ,
+                                "incident_description=Party%20going%20door-to-door" ,
+                                "incident_category=1" ,
+                                "incident_date="+ date ,
+                                "incident_hour=0" ,
+                                "incident_minute=0" ,
+                                "incident_ampm=am" ,
+                                "latitude=90" ,
+                                "longitude=0" ,
+                                "location_name=unknown"
+                            ].join('&'));
+
+                        }).run();
+                });
+
+
+            });
+
             describe("when the list of matching locations is too long to be displayed",function() {
                 it("should only show 3 and then provide them with the ability to view more locations", function() {
                     return tester
@@ -1108,7 +1255,7 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Please select your location from the options below:",
+                                "Choose your area:",
                                 "1. Main Street, Johannesburg",
                                 "2. Main Street, Johannesburg 2192",
                                 "3. Main Street, Johannesburg South 2190",
