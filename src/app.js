@@ -40,7 +40,7 @@ di.app = function() {
             } else if(self.is_delivery_class("gtalk")) {
                 return self.contact.gtalk_id;
             } else if(self.is_delivery_class("mxit")) {
-                return self.contact.msisdn;
+                return self.contact.mxit_id;
             }
         };
 
