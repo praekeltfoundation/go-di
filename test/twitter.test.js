@@ -58,10 +58,10 @@ describe("app", function() {
             describe("when they are not registered",function() {
                 it("should set the user's language to english",function() {
                     return tester
-                        .setup.user.addr('@test')
+                        .setup.user.addr('@test1')
                         .setup(function(api) {
                             api.contacts.add( {
-                                twitter_handle: "@test",
+                                twitter_handle: "@test1",
                                 extra : {
                                     is_registered: 'false'
                                 }
@@ -74,10 +74,10 @@ describe("app", function() {
 
                 it("should send them to the engagement question",function() {
                     return tester
-                        .setup.user.addr('@test')
+                        .setup.user.addr('@test1')
                         .setup(function(api) {
                             api.contacts.add( {
-                                twitter_handle: "@test",
+                                twitter_handle: "@test1",
                                 extra : {
                                     is_registered: 'false'
                                 }
