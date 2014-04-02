@@ -1279,7 +1279,7 @@ describe("app", function() {
                         reply: [
                             "University of California San Diego requests ur consent to act as a research subject for " +
                                 "improving electoral performance through citizen engagement in SA.",
-                            "1. Prev 2. Next 3. Exit"
+                            ["1. Prev","2. Next","3. Exit"].join('\n')
                         ].join("\n")
                     }).run();
             });
@@ -1296,7 +1296,7 @@ describe("app", function() {
                         reply: [
                             "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology " +
                                 "to improve how elections r monitored by citizen volunteers.",
-                            "1. Prev 2. Next 3. Exit"
+                            [ "1. Prev", "2. Next","3. Exit"].join('\n')
                         ].join("\n")
                     }).run();
             });
@@ -1326,7 +1326,7 @@ describe("app", function() {
                             "The VIP-Ask is a multi-channel political engagement portal.VIP: " +
                                 "Ask will engage South Africans from all walks of life to " +
                                 "report on electoral activities,",
-                            "1. Prev 2. Next 3. Exit"
+                            ["1. Prev","2. Next","3. Exit"].join('\n')
                         ].join("\n")
                     }).run();
             });
@@ -1343,7 +1343,7 @@ describe("app", function() {
                         reply: [
                             "voice their opinions on current issues surrounding the elections, " +
                                 "and report on election processes on voting day.",
-                            "1. Prev 2. Next 3. Exit"
+                            ["1. Prev","2. Next","3. Exit"].join('\n')
                         ].join("\n")
                     }).run();
             });

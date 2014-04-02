@@ -317,7 +317,11 @@ di.app = function() {
                     pages: terms.length,
                     page_text: function(n) {return terms[n];},
                     buttons: {"1": -1, "2": +1, "3": "exit"},
-                    footer_text: $("1. Prev 2. Next 3. Exit"),
+                    footer_text:$([
+                        "1. Prev",
+                        "2. Next",
+                        "3. Exit"
+                    ].join("\n")),
                     next: 'states:registration:tandc'
                 });
             });
@@ -680,7 +684,11 @@ di.app = function() {
                 pages: about.length,
                 page_text: function(n) {return about[n];},
                 buttons: {"1": -1, "2": +1, "3": "exit"},
-                footer_text: $("1. Prev 2. Next 3. Exit"),
+                footer_text: $([
+                    "1. Prev",
+                    "2. Next",
+                    "3. Exit"
+                ].join("\n")),
                 next: 'states:menu'
             });
         });
