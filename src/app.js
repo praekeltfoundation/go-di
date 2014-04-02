@@ -565,7 +565,8 @@ di.app = function() {
                         category: self.contact.extra.report_type
                     },
                     place: place,
-                    date:  self.get_date()
+                    date:  self.get_date(),
+                    who: self.im.user.addr
                 })
                 .then(function(resp) {
                     return {

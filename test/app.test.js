@@ -1084,7 +1084,8 @@ describe("app", function() {
                                 "incident_ampm=am" ,
                                 "latitude=-26.02674" ,
                                 "longitude=27.97532" ,
-                                "location_name=21%20Conduit%20Street%2C%20Randburg%202188%2C%20South%20Africa"
+                                "location_name=21%20Conduit%20Street%2C%20Randburg%202188%2C%20South%20Africa",
+                                "person_first=%2B273131"
                             ].join('&'));
 
                         }).run();
@@ -1238,7 +1239,8 @@ describe("app", function() {
                                 "incident_ampm=am" ,
                                 "latitude=90" ,
                                 "longitude=0" ,
-                                "location_name=unknown"
+                                "location_name=unknown",
+                                "person_first=%2B273131"
                             ].join('&'));
 
                         }).run();
