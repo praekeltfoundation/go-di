@@ -849,7 +849,7 @@ describe("app", function() {
             });
         });
 
-        describe.only("when the user inputs an address that cant be found",function() {
+        describe("when the user inputs an address that cant be found",function() {
             it("should redirect them to the same address page, but show an error message",function() {
                 return tester
                     .setup.user.addr('user_bad_input')
