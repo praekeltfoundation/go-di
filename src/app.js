@@ -338,7 +338,7 @@ di.app = function() {
         });
 
         self.states.add('states:address',function(name,opts){
-            var error = $("Oops! Something went wrong! Please try again.");
+            var error = $('Please carefully enter your address again: for eg: 12 main street pretoria');
             var response;
 
             var question = "";
@@ -350,7 +350,7 @@ di.app = function() {
                         "&u will be anonymous."
                     ].join(" "));
             } else {
-                question =  $("Please carefully enter your address again: for eg: 12 main street pretoria");
+                question = error;
             }
 
             return new FreeText(name,{
@@ -525,10 +525,10 @@ di.app = function() {
 
         self.states.add('states:report:location',function(name,opts) {
             var response;
-            var error =$('An error occured. Please try again');
+            var error = $('Please carefully enter your address again: for eg: 12 main street pretoria');
             var question = (!opts.retry)
                 ? $('Where did this event happen? Please be as specific as possible and give address and city.')
-                : $('Please carefully enter your address again: for eg: 12 main street pretoria');
+                : error;
 
             return new FreeText(name, {
                 question: question,
