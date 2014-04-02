@@ -439,6 +439,41 @@ module.exports = function() {
                     }
                 })
             }
+        },
+        {
+            "request" :{
+                "url": "https://godi.crowdmap.com/api",
+                "method": "POST",
+                "headers": {
+                    "Content-Type": ["x-www-form-urlencoded"]
+                },
+                "body": [
+                    "task=report",
+                    "incident_title=test" ,
+                    "incident_description=Party%20going%20door-to-door" ,
+                    "incident_category=1",
+                    "incident_date=03%2F16%2F2014" ,
+                    "incident_hour=0" ,
+                    "incident_minute=0" ,
+                    "incident_ampm=am" ,
+                    "latitude=90" ,
+                    "longitude=0" ,
+                    "location_name=unknown"
+                ].join('&')
+            },//https://godi.crowdmap.com/api?task=report&incident_title=test&incident_description=description&incident_date=01%2F01%2F2010&incident_hour=8&incident_minute=10&incident_ampm=am&incident_category=1&latitude=-26.0253910197085&longitude=27.9766689802915&location_name=ZeroPoint
+            "response" : {
+                "code": 200,
+                "body": JSON.stringify({ //This is ACTUALLY what a successful response looks like
+                    "payload": {
+                        "domain": "https://godi.crowdmap.com/",
+                        "success": "true"
+                    },
+                    "error": {
+                        "code": "0",
+                        "message": "No Error"
+                    }
+                })
+            }
         }
 
     ];

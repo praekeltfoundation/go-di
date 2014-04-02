@@ -115,7 +115,7 @@ describe("app", function() {
 
                 describe("when they have inputted their location",function() {
                     describe("when they have already been sent a registration sms",function() {
-                        it ("should not sent them an sms",function() {
+                        it ("should not send them an sms",function() {
                             tester
                                 .setup.user.addr('+273123')
                                 .setup(function(api) {
@@ -491,34 +491,33 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:address:verify",
                         reply: [
-                            'Please select your location from the options below:',
+                            "Choose your area:",
                             '1. 21 Conduit Street, Randburg 2188',
                             '2. 21 Conduit Street, Sandton 2191',
-                            '3. 21 Conduit Street, Randburg 2194'
+                            '3. 21 Conduit Street, Randburg 2194',
+                            '4. More'
                         ].join("\n")
                     })
                     .run();
-
             });
 
-            describe("when the list of appropriate electoral wards is too long to fit on one page",function() {
-                it("should display the first page of choices with next buttons",function(){
-                    return tester
-                        .setup.user.state('states:address')
-                        .input('main street')
-                        .check.interaction({
-                            state: "states:address:verify",
-                            reply: [
-                                'Please select your location from the options below:',
-                                '1. Main Street, Paarl',
-                                "2. Main Street, Lambert's Bay 8130",
-                                '3. Main Street, Glencoe',
-                                "4. More"
-                            ].join("\n")
-                        })
-                        .run();
-                });
+            it("should return the list of appropriate electoral wards to the user",function() {
+                return tester
+                    .setup.user.state('states:address')
+                    .input('21 conduit street')
+                    .check.interaction({
+                        state: "states:address:verify",
+                        reply: [
+                            "Choose your area:",
+                            '1. 21 Conduit Street, Randburg 2188',
+                            '2. 21 Conduit Street, Sandton 2191',
+                            '3. 21 Conduit Street, Randburg 2194',
+                            '4. More'
+                        ].join("\n")
+                    })
+                    .run();
             });
+
             describe("when the user has selected to view the second page of electoral options",function() {
                 beforeEach(function() {
                     tester.setup.user.state({
@@ -561,7 +560,7 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:address:verify",
                             reply: [
-                                'Please select your location from the options below:',
+                                "Choose your area:",
                                 '1. Main Street, Howick',
                                 "2. Main Street, Despatch 6220",
                                 '3. Main Street, Matatiele 4730',
@@ -571,57 +570,185 @@ describe("app", function() {
                         })
                         .run();
                 });
+        });
+
+        describe("when the user is on the 2nd page and selects 'back",function() {
+            beforeEach(function() {
+                tester.setup.user.state({
+                    name: 'states:address:verify',
+                    metadata: {page_start: 3},
+                    creator_opts: {
+                        address_options:  [{
+                            "address": "Main Street, Paarl, South Africa",
+                            "ward": "10203019"
+                        }, {
+                            "address": "Main Street, Lambert's Bay 8130, South Africa",
+                            "ward": "10102005"
+                        }, {
+                            "address": "Main Street, Glencoe, South Africa",
+                            "ward": "52401001"
+                        },{
+                            "address": "Main Street, Howick, South Africa",
+                            "ward": "52202009"
+                        },{
+                            "address": "Main Street, Despatch 6220, South Africa",
+                            "ward": "29500060"
+                        },{
+                            "address": "Main Street, Matatiele 4730, South Africa",
+                            "ward": "24401019"
+                        },{
+                            "address": "Main Street, Emalahleni, South Africa",
+                            "ward": "83102017"
+                        },{
+                            "address": "Main Street, Darling 7345, South Africa",
+                            "ward": "10105004"
+                        }]
+                    }
+                });
             });
-            describe("when the user is on the 2nd page and selects 'back",function() {
-                beforeEach(function() {
-                    tester.setup.user.state({
-                        name: 'states:address:verify',
+            it("should go to the first page",function(){
+                return tester
+                    .setup.user.addr('+273123')
+                    .input("5")
+                    .check.interaction({
+                        state: "states:address:verify",
+                        reply: [
+                            "Choose your area:",
+                            '1. Main Street, Paarl',
+                            "2. Main Street, Lambert's Bay 8130",
+                            '3. Main Street, Glencoe',
+                            "4. More"
+                        ].join("\n")
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user is on the 2nd page and selects 'next",function() {
+            beforeEach(function() {
+                tester.setup.user.state({
+                    name: 'states:address:verify',
+                    metadata: {page_start: 6},
+                    creator_opts: {
+                        address_options:  [{
+                            "address": "Main Street, Paarl, South Africa",
+                            "ward": "10203019"
+                        }, {
+                            "address": "Main Street, Lambert's Bay 8130, South Africa",
+                            "ward": "10102005"
+                        }, {
+                            "address": "Main Street, Glencoe, South Africa",
+                            "ward": "52401001"
+                        },{
+                            "address": "Main Street, Howick, South Africa",
+                            "ward": "52202009"
+                        },{
+                            "address": "Main Street, Despatch 6220, South Africa",
+                            "ward": "29500060"
+                        },{
+                            "address": "Main Street, Matatiele 4730, South Africa",
+                            "ward": "24401019"
+                        },{
+                            "address": "Main Street, Emalahleni, South Africa",
+                            "ward": "83102017"
+                        },{
+                            "address": "Main Street, Darling 7345, South Africa",
+                            "ward": "10105004"
+                        }]
+                    }
+                });
+            });
+            it("should go to the 3rd page",function(){
+                return tester
+                    .setup.user.addr('+273123')
+                    .input("5")
+                    .check.interaction({
+                        state: "states:address:verify",
+                        reply: [
+                            "Choose your area:",
+                            '1. Main Street, Emalahleni',
+                            "2. Main Street, Darling 7345",
+                            '3. Not my address',
+                            "4. Back"
+                        ].join("\n")
+                    })
+                    .run();
+            });
+        });
+    });
+
+        describe("if the user chooses 'not available'",function() {
+            it ("should take the user back to the address state and show a different message",function() {
+                return tester
+                    .setup.user.addr('+273123')
+                    .setup.user.state('states:address:verify',{
                         metadata: {page_start: 3},
                         creator_opts: {
-                            address_options:  [{
-                                "address": "Main Street, Paarl, South Africa",
-                                "ward": "10203019"
-                            }, {
-                                "address": "Main Street, Lambert's Bay 8130, South Africa",
-                                "ward": "10102005"
-                            }, {
-                                "address": "Main Street, Glencoe, South Africa",
-                                "ward": "52401001"
+                            address_options: [{
+                                "address": "21 Conduit Street, Randburg 2188, South Africa",
+                                "ward": "79800096",
+                                "voting_district": "32840591"
                             },{
-                                "address": "Main Street, Howick, South Africa",
-                                "ward": "52202009"
+                                "address": "21 Conduit Street, Sandton 2191, South Africa",
+                                "ward": "79800104",
+                                "voting_district": "32840489"
                             },{
-                                "address": "Main Street, Despatch 6220, South Africa",
-                                "ward": "29500060"
-                            },{
-                                "address": "Main Street, Matatiele 4730, South Africa",
-                                "ward": "24401019"
-                            },{
-                                "address": "Main Street, Emalahleni, South Africa",
-                                "ward": "83102017"
-                            },{
-                                "address": "Main Street, Darling 7345, South Africa",
-                                "ward": "10105004"
+                                "address": "21 Conduit Street, Randburg 2194, South Africa",
+                                "ward": "21004003",
+                                "voting_district": "32840445"
                             }]
                         }
-                    });
-                });
-                it("should go to the first page",function(){
-                    return tester
-                        .setup.user.addr('+273123')
-                        .input("5")
-                        .check.interaction({
-                            state: "states:address:verify",
-                            reply: [
-                                'Please select your location from the options below:',
-                                '1. Main Street, Paarl',
-                                "2. Main Street, Lambert's Bay 8130",
-                                '3. Main Street, Glencoe',
-                                "4. More"
-                            ].join("\n")
-                        })
-                        .run();
-                });
+                    })
+                    .input("1")
+                    .check.interaction({
+                        state: "states:address",
+                        reply: "Please carefully enter your address again: for eg: 12 main street pretoria"
+                    })
+                    .run();
+            });
+        });
+
+        describe("if the user chooses 'not available' and has already retried",function() {
+            beforeEach(function() {
+                tester
+                    .setup.user.addr('+273123')
+                    .setup.user.state('states:address:verify',{
+                        metadata: {page_start: 3},
+                        creator_opts: {
+                            address_options: [{
+                                "address": "21 Conduit Street, Randburg 2188, South Africa",
+                                "ward": "79800096",
+                                "voting_district": "32840591"
+                            },{
+                                "address": "21 Conduit Street, Sandton 2191, South Africa",
+                                "ward": "79800104",
+                                "voting_district": "32840489"
+                            },{
+                                "address": "21 Conduit Street, Randburg 2194, South Africa",
+                                "ward": "21004003",
+                                "voting_district": "32840445"
+                            }],
+                            retry: true
+                        }
+                    })
+                    .input("1");
+            });
+
+            it ("should take the user back to main menu",function() {
+                return tester
+                    .check.interaction({
+                        state: "states:menu"
+                    })
+                    .run();
+            });
+
+            it ("should save the ward as 'unknown'",function() {
+                return tester
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.ward,"unknown");
+                    })
+                    .run();
             });
         });
 
@@ -865,6 +992,27 @@ describe("app", function() {
                 });
             });
 
+            describe("if they are retrying entering their address",function() {
+                it("should show slightly different 'not_available' option",function() {
+                    return tester
+                        .setup.user.state('states:report:location',{
+                            creator_opts: {
+                                retry: true
+                            }
+                        })
+                        .input("21 conduit street south africa")
+                        .check.interaction({
+                            state: "states:report:verify_location",
+                            reply: [
+                                "Choose your area:",
+                                "1. 21 Conduit Street, Randburg 2188",
+                                "2. 21 Conduit Street, Sandton 2191",
+                                "3. Still not my address"
+                            ].join("\n")
+                        }).run();
+                });
+            });
+
             it("should provide them with a list of locations matching their input",function() {
                 return tester
                     .setup.user.state('states:report:location')
@@ -872,9 +1020,10 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:report:verify_location",
                         reply: [
-                            "Please select your location from the options below:",
+                            "Choose your area:",
                             "1. 21 Conduit Street, Randburg 2188",
-                            "2. 21 Conduit Street, Sandton 2191"
+                            "2. 21 Conduit Street, Sandton 2191",
+                            "3. Not my address"
                         ].join("\n")
                     }).run();
             });
@@ -970,6 +1119,134 @@ describe("app", function() {
                 });
             });
 
+            describe("when user selects 'Not my address' from the list",function() {
+                beforeEach(function() {
+                    app.get_date = function() {
+                        var d = new Date(2014,2,16);
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
+                    tester
+                        .setup.user.addr('+273131')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273131',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    report_title: "test",
+                                    report_desc:"Party going door-to-door",
+                                    report_type:"1"
+                                }
+                            });
+                        })
+                        .setup.user.state('states:report:verify_location',{
+                            creator_opts: {
+                                address_options: [
+                                    {
+                                        "formatted_address" : "21 Conduit Street, Randburg 2188, South Africa",
+                                        "geometry" : { "location" : { "lat" : -26.02674,"lng" : 27.97532}}
+                                    },{
+                                        "formatted_address" : "21 Conduit Street, Sandton 2191, South Africa",
+                                        "geometry" : {"location" : {"lat" : -26.0701361,"lng" : 27.9946541} }
+                                    }
+                                ]
+                            }
+                        })
+                        .input("3");
+                });
+
+                it("should not submit a report to ushahidi yet",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.http.requests.length,0);
+                        }).run();
+                });
+
+                it("should take them to the location state with a new question",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:report:location',
+                            reply: [
+                                'Please carefully enter your address again: for eg: 12 main street pretoria'
+                            ].join(" ")
+                        }).run();
+                });
+
+                it("should not incr 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(_.isUndefined(api.kv.store['total.reports']), true);
+                        }).run();
+                });
+            });
+
+            describe("when user selects 'Still not my address' from the list",function() {
+                beforeEach(function() {
+                    app.get_date = function() {
+                        var d = new Date(2014,2,16);
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
+                    tester
+                        .setup.user.addr('+273131')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273131',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    report_title: "test",
+                                    report_desc:"Party going door-to-door",
+                                    report_type:"1"
+                                }
+                            });
+                        })
+                        .setup.user.state('states:report:verify_location',{
+                            creator_opts: {
+                                address_options: [
+                                    {
+                                        "formatted_address" : "21 Conduit Street, Randburg 2188, South Africa",
+                                        "geometry" : { "location" : { "lat" : -26.02674,"lng" : 27.97532}}
+                                    },{
+                                        "formatted_address" : "21 Conduit Street, Sandton 2191, South Africa",
+                                        "geometry" : {"location" : {"lat" : -26.0701361,"lng" : 27.9946541} }
+                                    }
+                                ],
+                                retry: true
+                            }
+                        })
+                        .input("3");
+                });
+
+                it("should submit a report to ushahidi with default report",function() {
+                    return tester
+                        .check(function(api) {
+                            var req = api.http.requests[0];
+                            var url = req.url;
+                            var body = req.body;
+                            var date = encodeURIComponent( app.ushahidi.get_formatted_date(app.get_date()));
+                            assert.equal(url,"https://godi.crowdmap.com/api");
+                            assert.equal(body,[
+                                "task=report",
+                                "incident_title=test" ,
+                                "incident_description=Party%20going%20door-to-door" ,
+                                "incident_category=1" ,
+                                "incident_date="+ date ,
+                                "incident_hour=0" ,
+                                "incident_minute=0" ,
+                                "incident_ampm=am" ,
+                                "latitude=90" ,
+                                "longitude=0" ,
+                                "location_name=unknown"
+                            ].join('&'));
+
+                        }).run();
+                });
+
+
+            });
+
             describe("when the list of matching locations is too long to be displayed",function() {
                 it("should only show 3 and then provide them with the ability to view more locations", function() {
                     return tester
@@ -978,7 +1255,7 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Please select your location from the options below:",
+                                "Choose your area:",
                                 "1. Main Street, Johannesburg",
                                 "2. Main Street, Johannesburg 2192",
                                 "3. Main Street, Johannesburg South 2190",
@@ -988,7 +1265,6 @@ describe("app", function() {
                 });
             });
         });
-
 
         describe("when the user selects 'Terms and conditions' from the terms and conditions menu", function() {
             it("should take the user to the first page of the terms",function() {
@@ -1120,4 +1396,5 @@ describe("app", function() {
             });
         });
     });
+
 });

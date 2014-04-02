@@ -12,6 +12,16 @@ di.ushahidi = function() {
         opts = _.defaults(opts || {}, {headers: {}});
         opts.headers['Content-Type'] = ['application/x-www-form-urlencoded'];
 
+        var default_place = {
+            geometry: {
+                location: {
+                    lat: 90,
+                    lng: 0
+                }
+            },
+            formatted_address:"unknown"
+        };
+
         HttpApi.call(self, im, opts);
 
         self.decode_response_body = function(body) {
@@ -36,7 +46,7 @@ di.ushahidi = function() {
         self.post_report = function(url, opts) {
             var task = opts.task;
             var incident = opts.incident;
-            var place = opts.place;
+            var place = opts.place || default_place;
             var date = opts.date;
             return self.post(url, {
                 "data": {
