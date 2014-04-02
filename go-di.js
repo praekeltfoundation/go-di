@@ -1076,9 +1076,20 @@ di.app = function() {
                 });
         };
 
+        self.set_twitter_begin_state = function() {
+            //Sets language to English
+            return self.im.user.set_lang('en').then(function() {
+                return self.states.create('states:registration:engagement');
+            });
+        };
+
         self.states.add('states:start',function(name) {
             if (!self.is_registered()) {
-                return self.states.create('states:register');
+                if (self.is_delivery_class('twitter')) {
+                    return self.set_twitter_begin_state();
+                } else {
+                    return self.states.create('states:register');
+                }
             } else if (!self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');
             } else {
@@ -1092,9 +1103,7 @@ di.app = function() {
                 choices: [
                     new Choice('en',$('English')),
                     new Choice('af',$('Afrikaans')),
-                    new Choice('zu',$('Zulu')),
-                    new Choice('xh',$('Xhosa')),
-                    new Choice('so',$('Sotho'))
+                    new Choice('zu',$('Zulu'))
                 ],
                 next: function(choice) {
                     return self.im.user.set_lang(choice.value).then(function() {
