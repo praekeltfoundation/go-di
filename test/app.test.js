@@ -501,23 +501,6 @@ describe("app", function() {
                     .run();
             });
 
-            it("should return the list of appropriate electoral wards to the user",function() {
-                return tester
-                    .setup.user.state('states:address')
-                    .input('21 conduit street')
-                    .check.interaction({
-                        state: "states:address:verify",
-                        reply: [
-                            "Choose your area:",
-                            '1. 21 Conduit Street, Randburg 2188',
-                            '2. 21 Conduit Street, Sandton 2191',
-                            '3. 21 Conduit Street, Randburg 2194',
-                            '4. More'
-                        ].join("\n")
-                    })
-                    .run();
-            });
-
             describe("when the user has selected to view the second page of electoral options",function() {
                 beforeEach(function() {
                     tester.setup.user.state({
@@ -872,10 +855,10 @@ describe("app", function() {
                     .setup.user.addr('user_bad_input')
                     .setup.user.state('states:address')
                     .input('bad input')
-                    .check.reply(
-                        'Oops! Something went wrong! Please try again.'
-                    )
-                    .check.user.state('states:address')
+                    .check.interaction({
+                        state: 'states:address',
+                        reply: 'Please carefully enter your address again: for eg: 12 main street pretoria'
+                    })
                     .run();
             });
         });
