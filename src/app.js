@@ -428,9 +428,9 @@ di.app = function() {
             });
 
             if (!opts.retry) {
-                choices.push( new Choice("not_available","Not my address"));
+                choices.push( new Choice("not_available",$("Not my address")));
             } else {
-                choices.push(new Choice("not_available","Still not my address"));
+                choices.push(new Choice("not_available",$("Still not my address")));
             }
 
             return new PaginatedChoiceState(name, {
@@ -586,9 +586,9 @@ di.app = function() {
             });
 
             if (!opts.retry) {
-                choices.push( new Choice("not_available","Not my address"));
+                choices.push( new Choice("not_available",$("Not my address")));
             } else {
-                choices.push(new Choice("still_not_available","Still not my address"));
+                choices.push(new Choice("still_not_available",$("Still not my address")));
             }
 
             return new PaginatedChoiceState(name, {
