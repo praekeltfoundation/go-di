@@ -32,6 +32,18 @@ di.app = function() {
             return _.random(begin,end,float);
         };
 
+        self.get_user_addr = function() {
+            if (self.is_delivery_class("ussd")) {
+                return self.contact.msisdn;
+            } else if(self.is_delivery_class("twitter")) {
+                return self.contact.twitter_handle;
+            } else if(self.is_delivery_class("gtalk")) {
+                return self.contact.gtalk_id;
+            } else if(self.is_delivery_class("mxit")) {
+                return self.contact.msisdn;
+            }
+        };
+
         self.week_day_code = ['M','T','W','Th','F','S','Su'];
 
         self.random_standard = function() {
@@ -565,7 +577,8 @@ di.app = function() {
                         category: self.contact.extra.report_type
                     },
                     place: place,
-                    date:  self.get_date()
+                    date:  self.get_date(),
+                    who: self.get_user_addr()
                 })
                 .then(function(resp) {
                     return {
