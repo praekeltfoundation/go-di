@@ -2,6 +2,10 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var _ = require("lodash");
+
+var messagestore = require('./messagestore');
+var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
+
 describe("app", function() {
     describe.only("Twitter Quiz test", function() {
 
@@ -37,6 +41,9 @@ describe("app", function() {
                     delivery_class: 'twitter'
                 })
                 .setup(function(api) {
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
                     api.contacts.add( {
                         twitter_handle: "@test",
                         extra : {
