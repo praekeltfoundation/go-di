@@ -7,7 +7,7 @@ var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 
 describe("app", function() {
-    describe.only("Twitter Quiz test", function() {
+    describe("Twitter Quiz test", function() {
 
         var app;
         var tester;
