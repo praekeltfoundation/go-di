@@ -14,6 +14,16 @@ di.ushahidi = function() {
         opts = _.defaults(opts || {}, {headers: {}});
         opts.headers['Content-Type'] = ['application/x-www-form-urlencoded'];
 
+        var default_place = {
+            geometry: {
+                location: {
+                    lat: 90,
+                    lng: 0
+                }
+            },
+            formatted_address:"unknown"
+        };
+
         HttpApi.call(self, im, opts);
 
         self.decode_response_body = function(body) {
@@ -38,7 +48,7 @@ di.ushahidi = function() {
         self.post_report = function(url, opts) {
             var task = opts.task;
             var incident = opts.incident;
-            var place = opts.place;
+            var place = opts.place || default_place;
             var date = opts.date;
             return self.post(url, {
                 "data": {
@@ -1189,10 +1199,7 @@ di.app = function() {
                         "&u will be anonymous."
                     ].join(" "));
             } else {
-                question =  $([
-                    "Oops! You probably need to be more specific on that address.",
-                    "Please try add some more detail"
-                ].join(" "));
+                question =  $("Please carefully enter your address again: for eg: 12 main street pretoria");
             }
 
             return new FreeText(name,{
@@ -1248,7 +1255,7 @@ di.app = function() {
                 });
         };
 
-        self.handle_unavailable_location = function(choice,opts) {
+        self.handle_unavailable_location = function(choice,opts,location_state) {
             //If already retried then set default to unknown.
             if (opts.retry) {
                 self.contact.extra.ward = 'unknown';
@@ -1272,14 +1279,17 @@ di.app = function() {
                 index++;
                 return new Choice(index,ward.address.replace(", South Africa",""));
             });
-            choices.push(
-                new Choice("not_available","Not available")
-            );
+
+            if (!opts.retry) {
+                choices.push( new Choice("not_available","Not my address"));
+            } else {
+                choices.push(new Choice("not_available","Still not my address"));
+            }
 
             return new PaginatedChoiceState(name, {
-                question: $('Please select your location from the options below:'),
+                question: $('Choose your area:'),
                 choices: choices,
-                characters_per_page: 180,
+                characters_per_page: 140,
                 options_per_page: 3,
                 next: function(choice) {
                     if (choice.value !== "not_available")
@@ -1290,8 +1300,6 @@ di.app = function() {
                 }
             });
         });
-
-
 
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
@@ -1364,11 +1372,15 @@ di.app = function() {
             return (content.toLowerCase().indexOf("south africa") > -1) ? content : [content,"south africa"].join(' ');
         };
 
-        self.states.add('states:report:location',function(name) {
+        self.states.add('states:report:location',function(name,opts) {
             var response;
             var error =$('An error occured. Please try again');
+            var question = (!opts.retry)
+                ? $('Where did this event happen? Please be as specific as possible and give address and city.')
+                : $('Please carefully enter your address again: for eg: 12 main street pretoria');
+
             return new FreeText(name, {
-                question: $('Where did this event happen? Please be as specific as possible and give address and city.'),
+                question: question,
                 check: function(content) {
                     return self
                         .http.get("https://maps.googleapis.com/maps/api/geocode/json",{
@@ -1388,12 +1400,35 @@ di.app = function() {
                     return {
                         name: 'states:report:verify_location',
                         creator_opts: {
-                            address_options:response
+                            address_options:response,
+                            retry: opts.retry
                         }
                     };
                 }
             });
         });
+
+        self.save_and_send_ushahidi = function(place) {
+            return self.ushahidi
+                .post_report(self.im.config.ushahidi_map, {
+                    task: "report",
+                    incident: {
+                        title: self.contact.extra.report_title,
+                        description: self.contact.extra.report_desc,
+                        category: self.contact.extra.report_type
+                    },
+                    place: place,
+                    date:  self.get_date()
+                })
+                .then(function(resp) {
+                    return {
+                        name:'states:report:end',
+                        creator_opts: {
+                            response: resp.data.payload.success
+                        }
+                    };
+                });
+        };
 
         self.states.add('states:report:verify_location',function(name,opts) {
             //Create the choices from the location verification.
@@ -1402,31 +1437,35 @@ di.app = function() {
                 index++;
                 return new Choice(index,address.formatted_address.replace(", South Africa",""));
             });
+
+            if (!opts.retry) {
+                choices.push( new Choice("not_available","Not my address"));
+            } else {
+                choices.push(new Choice("still_not_available","Still not my address"));
+            }
+
             return new PaginatedChoiceState(name, {
-                question: $('Please select your location from the options below:'),
+                question: $("Choose your area:"),
                 choices: choices,
                 characters_per_page: 180,
                 options_per_page: 3,
                 next: function(choice) {
-                    return self.ushahidi
-                        .post_report(self.im.config.ushahidi_map, {
-                            task: "report",
-                            incident: {
-                                title: self.contact.extra.report_title,
-                                description: self.contact.extra.report_desc,
-                                category: self.contact.extra.report_type
-                            },
-                            place: opts.address_options[choice.value-1],
-                            date:  self.get_date()
-                        })
-                        .then(function(resp) {
-                            return {
-                                name:'states:report:end',
-                                creator_opts: {
-                                    response: resp.data.payload.success
-                                }
-                            };
-                        });
+                    //If user chooses not available and they haven't already retried
+                    if (choice.value === 'not_available') {
+                        return {
+                            name: 'states:report:location',
+                            creator_opts: {
+                                retry: true
+                            }
+                        };
+                    } else {
+                        //If choice is still unavailable then set place to null
+                        var place = (choice.value !== "still_not_available")
+                            ? opts.address_options[choice.value-1]
+                            : null;
+
+                        return self.save_and_send_ushahidi(place);
+                    }
                 }
             });
         });
