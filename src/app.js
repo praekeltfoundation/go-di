@@ -519,11 +519,15 @@ di.app = function() {
             return (content.toLowerCase().indexOf("south africa") > -1) ? content : [content,"south africa"].join(' ');
         };
 
-        self.states.add('states:report:location',function(name) {
+        self.states.add('states:report:location',function(name,opts) {
             var response;
             var error =$('An error occured. Please try again');
+            var question = (!opts.retry)
+                ? $('Where did this event happen? Please be as specific as possible and give address and city.')
+                : $('Please carefully enter your address again: for eg: 12 main street pretoria');
+
             return new FreeText(name, {
-                question: $('Where did this event happen? Please be as specific as possible and give address and city.'),
+                question: question,
                 check: function(content) {
                     return self
                         .http.get("https://maps.googleapis.com/maps/api/geocode/json",{
@@ -543,7 +547,8 @@ di.app = function() {
                     return {
                         name: 'states:report:verify_location',
                         creator_opts: {
-                            address_options:response
+                            address_options:response,
+                            retry: opts.retry
                         }
                     };
                 }
@@ -579,6 +584,13 @@ di.app = function() {
                 index++;
                 return new Choice(index,address.formatted_address.replace(", South Africa",""));
             });
+
+            if (!opts.retry) {
+                choices.push( new Choice("not_available","Not my address"));
+            } else {
+                choices.push(new Choice("still_not_available","Still not my address"));
+            }
+
             return new PaginatedChoiceState(name, {
                 question: $("Choose your area:"),
                 choices: choices,
@@ -586,7 +598,7 @@ di.app = function() {
                 options_per_page: 3,
                 next: function(choice) {
                     //If user chooses not available and they haven't already retried
-                    if (choice.value === 'not_available' && !opts.retry) {
+                    if (choice.value === 'not_available') {
                         return {
                             name: 'states:report:location',
                             creator_opts: {
@@ -594,8 +606,8 @@ di.app = function() {
                             }
                         };
                     } else {
-                        //If choice is unavailable then set place to null
-                        var place = (choice.value !== "not_available")
+                        //If choice is still unavailable then set place to null
+                        var place = (choice.value !== "still_not_available")
                             ? opts.address_options[choice.value-1]
                             : null;
 
