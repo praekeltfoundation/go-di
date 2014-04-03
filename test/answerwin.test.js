@@ -86,7 +86,7 @@ describe("app", function() {
                             '3. 20-29',
                             '4. 30-39',
                             '5. 40-49',
-                            '6. More'
+                            '6. 50+'
                         ].join('\n')
                     }).run();
             });
@@ -123,24 +123,6 @@ describe("app", function() {
                             '5. Skip'
                         ].join('\n')
                     }).run();
-            });
-
-            describe("if they select to see more ages ",function() {
-                it("should take them to see older ages ",function() {
-                    return tester
-                        .input("6")
-                        .check.interaction({
-                            state: 'states:quiz:answerwin:age',
-                            reply: [
-                                'How old are you?',
-                                '1. 50-59',
-                                '2. 60-69',
-                                '3. 70-79',
-                                '4. 80+',
-                                '5. Back'
-                            ].join('\n')
-                        }).run();
-                });
             });
         });
 
