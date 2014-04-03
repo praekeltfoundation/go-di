@@ -284,9 +284,9 @@ di.app = function() {
         self.states.add('states:registration:tandc', function(name) {
             return new ChoiceState(name, {
                 question: $("Please accept the terms and conditions to get started."),
-                choices: [ new Choice('accept','Accept & Join'),
-                            new Choice('read','Read t&c'),
-                            new Choice('quit','Quit')],
+                choices: [ new Choice('accept',$('Accept & Join')),
+                            new Choice('read',$('Read t&c')),
+                            new Choice('quit',$('Quit'))],
                 next: function(choice) {
                     return {
                         accept: 'states:registration:accept',

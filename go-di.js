@@ -1132,9 +1132,9 @@ di.app = function() {
         self.states.add('states:registration:tandc', function(name) {
             return new ChoiceState(name, {
                 question: $("Please accept the terms and conditions to get started."),
-                choices: [ new Choice('accept','Accept & Join'),
-                            new Choice('read','Read t&c'),
-                            new Choice('quit','Quit')],
+                choices: [ new Choice('accept',$('Accept & Join')),
+                            new Choice('read',$('Read t&c')),
+                            new Choice('quit',$('Quit'))],
                 next: function(choice) {
                     return {
                         accept: 'states:registration:accept',
@@ -1457,7 +1457,7 @@ di.app = function() {
             return new PaginatedChoiceState(name, {
                 question: $("Choose your area:"),
                 choices: choices,
-                characters_per_page: 180,
+                characters_per_page: 160,
                 options_per_page: 3,
                 next: function(choice) {
                     //If user chooses not available and they haven't already retried
