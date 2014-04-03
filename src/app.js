@@ -366,12 +366,17 @@ di.app = function() {
             return new FreeText(name,{
                 question: question,
                 check: function(content) {
-                    return self
-                        .http.get('http://wards.code4sa.org/',{
-                            params: {
-                                address: content,
-                                database: 'vd_2014'
-                            }
+                    self.contact.extra.raw_user_address = content;
+                    return self.im.contacts
+                        .save(self.contact)
+                        .then(function() {
+                            return self
+                                .http.get('http://wards.code4sa.org/',{
+                                    params: {
+                                        address: content,
+                                        database: 'vd_2014'
+                                    }
+                                });
                         })
                         .then(function(resp) {
                             response = resp;
@@ -552,8 +557,8 @@ di.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    return self
-                        .http.get("https://maps.googleapis.com/maps/api/geocode/json",{
+                    return self.http
+                        .get("https://maps.googleapis.com/maps/api/geocode/json",{
                             params: {
                                 address: self.get_location_str(content),
                                 sensor: "false"

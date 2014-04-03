@@ -480,6 +480,17 @@ describe("app", function() {
                     }).run();
             });
 
+            it("should save their raw address in contacts",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:address')
+                    .input('21 conduit street')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.raw_user_address,"21 conduit street");
+                    }).run();
+            });
+
             it("should return the list of appropriate electoral wards to the user",function() {
                 return tester
                     .setup.user.state('states:address')
