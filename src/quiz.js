@@ -60,7 +60,11 @@ di.quiz = function() {
              * My test cases wont initialize to it otherwise.
              * */
             app.states.add(self.begin,function(name,opts) {
-                return self.create.random(opts);
+                if (self.is_complete()) {
+                    return app.states.create('states:quiz:end');
+                } else {
+                    return self.create.random(opts);
+                }
             });
         };
 

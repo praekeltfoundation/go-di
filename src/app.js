@@ -477,6 +477,15 @@ di.app = function() {
             });
         });
 
+        self.states.add('states:quiz:end',function(name){
+            return new MenuState(name, {
+                question: $('Thanks, u have answered all the questions in this section.'),
+                choices: [
+                    new Choice('states:menu',$('Main Menu'))
+                ]
+            });
+        });
+
         self.get_kv = function(name) {
             return self.im.api_request('kv.get', {key: [self.store_name, name].join('.')});
         };

@@ -193,7 +193,11 @@ describe("app", function() {
                 it("should take them to the end state",function() {
                     return tester
                         .check.interaction({
-                            state:'states:menu'
+                            state:'states:quiz:end',
+                            reply: [
+                                'Thanks, u have answered all the questions in this section.',
+                                '1. Main Menu'
+                            ].join('\n')
                         }).run();
                 });
 
