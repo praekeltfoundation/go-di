@@ -1509,16 +1509,17 @@ di.app = function() {
                 ])
                 .spread(function(registered, questions, reports) {
                     return new EndState(name, {
-                        text: [
-                            'You are 1 of',
-                            registered.value || 0,
-                            'citizens who are active citizen election reporters!',
-                            questions.value || 0,
-                            'questions and',
-                            reports.value || 0,
+                        text: $([
+                            'You are 1 of {{ registered }} citizens who',
+                            'are active citizen election reporters!',
+                            '{{ questions }} questions and {{ reports }}',
                             'election activity posts have been submitted.',
                             'View results at www.url.com'
-                        ].join(' '),
+                        ].join(' ')).context({
+                            registered: registered.value || 0,
+                            questions: questions.value || 0,
+                            reports: reports.value || 0
+                        }),
                         next: 'states:start'
                     });
                 });
