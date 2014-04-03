@@ -492,7 +492,6 @@ di.quiz.answerwin = function() {
     var vumigo = require('vumigo_v02');
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var MenuState = vumigo.states.MenuState;
     var FreeText = vumigo.states.FreeText;
     var utils = vumigo.utils;
@@ -557,7 +556,7 @@ di.quiz.answerwin = function() {
         });
 
         self.add_question('age',function(name) {
-            return new PaginatedChoiceState(name, {
+            return new ChoiceState(name, {
                 question: $('How old are you?'),
                 choices: [
                     new Choice('u14',$('u14')),
@@ -565,13 +564,8 @@ di.quiz.answerwin = function() {
                     new Choice('20-29',$('20-29')),
                     new Choice('30-39',$('30-39')),
                     new Choice('40-49',$('40-49')),
-                    new Choice('50-59',$('50-59')),
-                    new Choice('60-69',$('60-69')),
-                    new Choice('70-79',$('70-79')),
-                    new Choice('80+',$('80+'))
+                    new Choice('50+',$('50+'))
                 ],
-                characters_per_page: 160,
-                options_per_page: 5,
                 next: function(choice) {
                     return self.next_quiz('age',choice,'2009election');
                 }
@@ -1138,9 +1132,9 @@ di.app = function() {
         self.states.add('states:registration:tandc', function(name) {
             return new ChoiceState(name, {
                 question: $("Please accept the terms and conditions to get started."),
-                choices: [ new Choice('accept','Accept & Join'),
-                            new Choice('read','Read t&c'),
-                            new Choice('quit','Quit')],
+                choices: [ new Choice('accept',$('Accept & Join')),
+                            new Choice('read',$('Read t&c')),
+                            new Choice('quit',$('Quit'))],
                 next: function(choice) {
                     return {
                         accept: 'states:registration:accept',
@@ -1463,7 +1457,7 @@ di.app = function() {
             return new PaginatedChoiceState(name, {
                 question: $("Choose your area:"),
                 choices: choices,
-                characters_per_page: 180,
+                characters_per_page: 160,
                 options_per_page: 3,
                 next: function(choice) {
                     //If user chooses not available and they haven't already retried
