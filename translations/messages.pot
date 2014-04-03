@@ -1,0 +1,644 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2014-04-03 11:52:+0200\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#: app.js:174
+msgid ""
+"Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
+"address & we'll work it out. This will be kept private, only ur voting ward "
+"will be stored &u will be anonymous."
+msgstr ""
+
+#: app.js:190
+msgid ""
+"Thanks for volunteering to be a citizen reporter for the 2014 elections! "
+"Get started by answering questions or reporting election activity! Dial "
+"back in to *5555# to begin!"
+msgstr ""
+
+#: app.js:249
+msgid "Welcome to Voting is Power! Start by choosing your language:"
+msgstr ""
+
+#: app.js:251
+msgid "English"
+msgstr ""
+
+#: app.js:252
+msgid "Afrikaans"
+msgstr ""
+
+#: app.js:253
+msgid "Zulu"
+msgstr ""
+
+#: app.js:265
+msgid "It's election time! Do u think ur vote matters?"
+msgstr ""
+
+#: app.js:267
+msgid "YES every vote matters"
+msgstr ""
+
+#: app.js:268
+msgid "NO but I'll vote anyway"
+msgstr ""
+
+#: app.js:269
+msgid "NO so I'm NOT voting"
+msgstr ""
+
+#: app.js:270
+msgid "I'm NOT REGISTERED to vote"
+msgstr ""
+
+#: app.js:271
+msgid "I'm TOO YOUNG to vote"
+msgstr ""
+
+#: app.js:286
+msgid "Please accept the terms and conditions to get started."
+msgstr ""
+
+#: app.js:287
+msgid "Accept & Join"
+msgstr ""
+
+#: app.js:288
+msgid "Read t&c"
+msgstr ""
+
+#: app.js:289
+msgid "Quit"
+msgstr ""
+
+#: app.js:312
+msgid ""
+"University of California San Diego requests ur consent to act as a research "
+"subject for improving electoral performance through citizen engagement in "
+"SA."
+msgstr ""
+
+#: app.js:314
+msgid ""
+"Study provides evaluation on how 2 use marketing &recruitment "
+"strategies,with mobile technology to improve how elections r monitored by "
+"citizen volunteers."
+msgstr ""
+
+#: app.js:316
+msgid ""
+"If u participate,we will ask questions about urself&ur observations of the "
+"elections.U will b anonymous.Ur answers will be kept confidential&won't b "
+"shared."
+msgstr ""
+
+#: app.js:318
+msgid "To view full T&Cs please visit www.yal.mobi/vip."
+msgstr ""
+
+#: app.js:330 app.js:698
+msgid ""
+"1. Prev\n"
+"2. Next\n"
+"3. Exit"
+msgstr ""
+
+#: app.js:344
+msgid ""
+"Thank you for your time. Remember, you can always reconsider becoming a "
+"citizen reporter."
+msgstr ""
+
+#: app.js:351 app.js:538
+msgid "Please carefully enter your address again: for eg: 12 main street pretoria"
+msgstr ""
+
+#: app.js:356
+msgid ""
+"Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address "
+"& we'll work it out. This will be kept private, only ur voting ward will be "
+"stored &u will be anonymous."
+msgstr ""
+
+#: app.js:445 app.js:604
+msgid "Not my address"
+msgstr ""
+
+#: app.js:447 app.js:606
+msgid "Still not my address"
+msgstr ""
+
+#: app.js:451 app.js:610
+msgid "Choose your area:"
+msgstr ""
+
+#: app.js:467
+msgid "Welcome to VIP!"
+msgstr ""
+
+#: app.js:469
+msgid "Answer & win!"
+msgstr ""
+
+#: app.js:470
+msgid "VIP Quiz"
+msgstr ""
+
+#: app.js:471
+msgid "Report an Election Activity"
+msgstr ""
+
+#: app.js:472
+msgid "View VIP results..."
+msgstr ""
+
+#: app.js:473
+msgid "What's up?"
+msgstr ""
+
+#: app.js:474
+msgid "About"
+msgstr ""
+
+#: app.js:475
+msgid "End"
+msgstr ""
+
+#: app.js:490
+msgid "Party going door-to-door"
+msgstr ""
+
+#: app.js:491
+msgid "Party intimidating voters"
+msgstr ""
+
+#: app.js:492
+msgid "Party distributing food/money/gift"
+msgstr ""
+
+#: app.js:493
+msgid "Campaign rally"
+msgstr ""
+
+#: app.js:494
+msgid "Campaign violence"
+msgstr ""
+
+#: app.js:495
+msgid "Protest/Demonstration"
+msgstr ""
+
+#: app.js:498
+msgid "Choose a report type:"
+msgstr ""
+
+#: app.js:519
+msgid "What is the title of your report?"
+msgstr ""
+
+#: app.js:540
+msgid ""
+"Where did this event happen? Please be as specific as possible and give "
+"address and city."
+msgstr ""
+
+#: app.js:643
+msgid ""
+"Thank you for your report! Keep up the reporting & you may have a chance to "
+"be chosen as an official election day reporter where you can earn airtime "
+"or cash for your contribution."
+msgstr ""
+
+#: app.js:664
+msgid ""
+"You are 1 of {{ registered }} citizens who are active citizen election "
+"reporters! {{ questions }} questions and {{ reports }} election activity "
+"posts have been submitted. View results at www.url.com"
+msgstr ""
+
+#: app.js:682
+msgid ""
+"The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will "
+"engage South Africans from all walks of life to report on electoral "
+"activities,"
+msgstr ""
+
+#: app.js:685
+msgid ""
+"voice their opinions on current issues surrounding the elections, and "
+"report on election processes on voting day."
+msgstr ""
+
+#: app.js:687
+msgid ""
+"VIP:Ask is a partnership between academics, Democracy International, Livity "
+"Africa and the Praekelt Foundation"
+msgstr ""
+
+#: app.js:709
+msgid "Bye."
+msgstr ""
+
+#: answerwinquiz.js:58 answerwinquiz.js:104
+msgid "I am..."
+msgstr ""
+
+#: answerwinquiz.js:60
+msgid "Male"
+msgstr ""
+
+#: answerwinquiz.js:61
+msgid "Female"
+msgstr ""
+
+#: answerwinquiz.js:71
+msgid "How old are you?"
+msgstr ""
+
+#: answerwinquiz.js:73
+msgid "u14"
+msgstr ""
+
+#: answerwinquiz.js:74
+msgid "15-19"
+msgstr ""
+
+#: answerwinquiz.js:75
+msgid "20-29"
+msgstr ""
+
+#: answerwinquiz.js:76
+msgid "30-39"
+msgstr ""
+
+#: answerwinquiz.js:77
+msgid "40-49"
+msgstr ""
+
+#: answerwinquiz.js:78
+msgid "50+"
+msgstr ""
+
+#: answerwinquiz.js:88
+msgid "Did you vote in the 2009 election?"
+msgstr ""
+
+#: answerwinquiz.js:90 vipquiz.js:37 vipquiz.js:118 vipquiz.js:217
+msgid "Yes"
+msgstr ""
+
+#: answerwinquiz.js:91
+msgid "No, could not/was not registered"
+msgstr ""
+
+#: answerwinquiz.js:92
+msgid "No, did not want to"
+msgstr ""
+
+#: answerwinquiz.js:93
+msgid "No, other"
+msgstr ""
+
+#: answerwinquiz.js:94 answerwinquiz.js:111 vipquiz.js:25 vipquiz.js:40 vipquiz.js:57 vipquiz.js:77 vipquiz.js:106 vipquiz.js:121 vipquiz.js:137 vipquiz.js:153 vipquiz.js:169 vipquiz.js:185 vipquiz.js:205 vipquiz.js:219 whatsupquiz.js:26 whatsupquiz.js:42 whatsupquiz.js:58 whatsupquiz.js:74 whatsupquiz.js:91 whatsupquiz.js:108 whatsupquiz.js:125 whatsupquiz.js:142 whatsupquiz.js:158 whatsupquiz.js:174
+msgid "Skip"
+msgstr ""
+
+#: answerwinquiz.js:106
+msgid "Black African"
+msgstr ""
+
+#: answerwinquiz.js:107
+msgid "Coloured"
+msgstr ""
+
+#: answerwinquiz.js:108
+msgid "Indian/Asian"
+msgstr ""
+
+#: answerwinquiz.js:109
+msgid "White"
+msgstr ""
+
+#: answerwinquiz.js:110 vipquiz.js:75 vipquiz.js:204
+msgid "Other"
+msgstr ""
+
+#: answerwinquiz.js:129
+msgid ""
+"Thank you for telling VIP a bit more about yourself! Your airtime will be "
+"sent to you shortly!"
+msgstr ""
+
+#: answerwinquiz.js:131 vipquiz.js:90 whatsupquiz.js:187
+msgid "Main Menu"
+msgstr ""
+
+#: answerwinquiz.js:140
+msgid "Please give us your cellphone number so we can send you your airtime!"
+msgstr ""
+
+#: vipquiz.js:20
+msgid "During the past year, have you attended a demonstration or protest?"
+msgstr ""
+
+#: vipquiz.js:22
+msgid "Yes, many"
+msgstr ""
+
+#: vipquiz.js:23
+msgid "Yes, a few"
+msgstr ""
+
+#: vipquiz.js:24 vipquiz.js:38 vipquiz.js:105 vipquiz.js:119 vipquiz.js:218
+msgid "No"
+msgstr ""
+
+#: vipquiz.js:35
+msgid "Are you registered to vote in the upcoming elections?"
+msgstr ""
+
+#: vipquiz.js:39 vipquiz.js:56
+msgid "Unsure"
+msgstr ""
+
+#: vipquiz.js:50
+msgid "How likely is it that you will vote in the upcoming election?"
+msgstr ""
+
+#: vipquiz.js:52
+msgid "Very likely"
+msgstr ""
+
+#: vipquiz.js:53
+msgid "Somewhat likely"
+msgstr ""
+
+#: vipquiz.js:54
+msgid "Somewhat unlikely"
+msgstr ""
+
+#: vipquiz.js:55
+msgid "Very unlikely"
+msgstr ""
+
+#: vipquiz.js:67
+msgid "Which political party do you feel close to?"
+msgstr ""
+
+#: vipquiz.js:69 vipquiz.js:198
+msgid "ANC"
+msgstr ""
+
+#: vipquiz.js:70 vipquiz.js:199
+msgid "Agang"
+msgstr ""
+
+#: vipquiz.js:71 vipquiz.js:200
+msgid "COPE"
+msgstr ""
+
+#: vipquiz.js:72 vipquiz.js:201
+msgid "DA"
+msgstr ""
+
+#: vipquiz.js:73 vipquiz.js:202
+msgid "EFF"
+msgstr ""
+
+#: vipquiz.js:74 vipquiz.js:203
+msgid "IFP"
+msgstr ""
+
+#: vipquiz.js:76
+msgid "I don't feel close to a party"
+msgstr ""
+
+#: vipquiz.js:87
+msgid "Would you like to continue answering questions? There are 12 in total."
+msgstr ""
+
+#: vipquiz.js:89 whatsupquiz.js:186
+msgid "Continue"
+msgstr ""
+
+#: vipquiz.js:101
+msgid "During the past year, has your community had demonstrations or protests?"
+msgstr ""
+
+#: vipquiz.js:103
+msgid "Yes, several times"
+msgstr ""
+
+#: vipquiz.js:104
+msgid "Yes, once or twice"
+msgstr ""
+
+#: vipquiz.js:116
+msgid ""
+"If your community has had demonstrations or protests in the last year, were "
+"they violent?"
+msgstr ""
+
+#: vipquiz.js:120
+msgid "Not applicable"
+msgstr ""
+
+#: vipquiz.js:131
+msgid "How easy is it for your neighbors to find out if you voted?"
+msgstr ""
+
+#: vipquiz.js:133
+msgid "Very easy"
+msgstr ""
+
+#: vipquiz.js:134
+msgid "Somewhat easy"
+msgstr ""
+
+#: vipquiz.js:135
+msgid "Somewhat difficult"
+msgstr ""
+
+#: vipquiz.js:136
+msgid "Very difficult"
+msgstr ""
+
+#: vipquiz.js:147
+msgid "People in my neighborhood look down on those who do not vote:"
+msgstr ""
+
+#: vipquiz.js:149 whatsupquiz.js:154 whatsupquiz.js:170
+msgid "Strongly agree"
+msgstr ""
+
+#: vipquiz.js:150 whatsupquiz.js:155 whatsupquiz.js:171
+msgid "Somewhat agree"
+msgstr ""
+
+#: vipquiz.js:151 whatsupquiz.js:156 whatsupquiz.js:172
+msgid "Somewhat disagree"
+msgstr ""
+
+#: vipquiz.js:152 whatsupquiz.js:157 whatsupquiz.js:173
+msgid "Strongly disagree"
+msgstr ""
+
+#: vipquiz.js:163
+msgid "How do you rate the overall performance of President Zuma?"
+msgstr ""
+
+#: vipquiz.js:165 vipquiz.js:181
+msgid "Excellent"
+msgstr ""
+
+#: vipquiz.js:166 vipquiz.js:182
+msgid "Good"
+msgstr ""
+
+#: vipquiz.js:167 vipquiz.js:183
+msgid "Just Fair"
+msgstr ""
+
+#: vipquiz.js:168 vipquiz.js:184
+msgid "Poor"
+msgstr ""
+
+#: vipquiz.js:179
+msgid "How do you rate the overall performance of your local government councillor?"
+msgstr ""
+
+#: vipquiz.js:195
+msgid "Which party has contacted you the most during this election campaign?"
+msgstr ""
+
+#: vipquiz.js:197
+msgid "None, I have not been contacted"
+msgstr ""
+
+#: vipquiz.js:215
+msgid "During the past two weeks, have you attended a campaign rally?"
+msgstr ""
+
+#: whatsupquiz.js:20
+msgid "How satisfied are you with the way democracy works in South Africa?"
+msgstr ""
+
+#: whatsupquiz.js:22
+msgid "Very satisfied"
+msgstr ""
+
+#: whatsupquiz.js:23
+msgid "Somewhat satisfied"
+msgstr ""
+
+#: whatsupquiz.js:24
+msgid "Dissatisfied"
+msgstr ""
+
+#: whatsupquiz.js:25
+msgid "Very dissatisfied"
+msgstr ""
+
+#: whatsupquiz.js:36
+msgid ""
+"During the past two weeks, how frequently have campaign rallies occurred in "
+"your community?"
+msgstr ""
+
+#: whatsupquiz.js:38 whatsupquiz.js:54 whatsupquiz.js:70
+msgid "Often"
+msgstr ""
+
+#: whatsupquiz.js:39 whatsupquiz.js:55 whatsupquiz.js:71
+msgid "Several times"
+msgstr ""
+
+#: whatsupquiz.js:40 whatsupquiz.js:56 whatsupquiz.js:72 whatsupquiz.js:138
+msgid "Once or twice"
+msgstr ""
+
+#: whatsupquiz.js:41 whatsupquiz.js:57 whatsupquiz.js:73 whatsupquiz.js:137
+msgid "Never"
+msgstr ""
+
+#: whatsupquiz.js:52
+msgid ""
+"During the past two weeks, how frequently have party agents gone door to "
+"door in your community to mobilize voters?"
+msgstr ""
+
+#: whatsupquiz.js:68
+msgid ""
+"During the past two weeks, how frequently have party agents intimidated "
+"voters in your community?"
+msgstr ""
+
+#: whatsupquiz.js:84
+msgid "How much do you trust the ANC?"
+msgstr ""
+
+#: whatsupquiz.js:86 whatsupquiz.js:103 whatsupquiz.js:120
+msgid "A lot"
+msgstr ""
+
+#: whatsupquiz.js:87 whatsupquiz.js:104 whatsupquiz.js:121
+msgid "Some"
+msgstr ""
+
+#: whatsupquiz.js:88 whatsupquiz.js:105 whatsupquiz.js:122
+msgid "Not much"
+msgstr ""
+
+#: whatsupquiz.js:89 whatsupquiz.js:106 whatsupquiz.js:123
+msgid "Not at all"
+msgstr ""
+
+#: whatsupquiz.js:90 whatsupquiz.js:107 whatsupquiz.js:124
+msgid "No opinion"
+msgstr ""
+
+#: whatsupquiz.js:101
+msgid "How much do you trust the Democratic Alliance (DA)?"
+msgstr ""
+
+#: whatsupquiz.js:118
+msgid "How much do you trust the Economic Freedom Fighters (EFF)?"
+msgstr ""
+
+#: whatsupquiz.js:135
+msgid ""
+"During the past year, how often have you or anyone in your family gone "
+"without enough food to eat?"
+msgstr ""
+
+#: whatsupquiz.js:139
+msgid "Sometimes"
+msgstr ""
+
+#: whatsupquiz.js:140
+msgid "Many times"
+msgstr ""
+
+#: whatsupquiz.js:141
+msgid "Always"
+msgstr ""
+
+#: whatsupquiz.js:152
+msgid "In South Africa, it is sometimes necessary to use violence for a just cause:"
+msgstr ""
+
+#: whatsupquiz.js:168
+msgid "Sometimes not voting is the best way to express your political preferences:"
+msgstr ""
+
+#: whatsupquiz.js:184
+msgid "Would you like to continue answering questions? There are 10 in total."
+msgstr ""

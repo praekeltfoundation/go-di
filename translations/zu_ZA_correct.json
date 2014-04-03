@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "USSD Zulu",
         "pot-creation-date": "2014-04-03 11:52:+0200",
-        "po-revision-date": "2014-04-03 13:56+0200",
+        "po-revision-date": "2014-04-03 16:57+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "zu_ZA",
@@ -18,7 +18,7 @@
     ],
     "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
         null,
-        "Sibonga ukuzikhethela kwakho ukuba ngobikayo ezinkethweni zika-2014! Qala ngokuphendula imibuzo noma ngokubika umcimbi wokhetho! Ukuqala, chofoza u-*120*7692# uphendule!"
+        "Sibonga ukuzikhethela kwakho ukuba ngobikayo ezinkethweni zika'14! Qala ngokuphendula imibuzo noma ngokubika umcimbi wokhetho! Ukuqala, chofoza *120*7692# uphendule!"
     ],
     "Welcome to Voting is Power! Start by choosing your language:": [
         null,
@@ -42,7 +42,7 @@
     ],
     "YES every vote matters": [
         null,
-        "YEBO lelo nalelo voti libalulekile"
+        "YEBO!"
     ],
     "NO but I'll vote anyway": [
         null,
@@ -54,7 +54,7 @@
     ],
     "I'm NOT REGISTERED to vote": [
         null,
-        "ANGIKUBHALISELANGA ukuvota"
+        "ANGIKUBHALISELANGA"
     ],
     "I'm TOO YOUNG to vote": [
         null,
@@ -78,23 +78,23 @@
     ],
     "University of California San Diego requests ur consent to act as a research subject for improving electoral performance through citizen engagement in SA.": [
         null,
-        "I-VIP:Voice yiphrojekth yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzw imibuzo igcinwe lingavezw igama"
+        "I-VIP:Voice yiprojekt yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzw imibuzo igcinwe lingavezw igama"
     ],
     "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology to improve how elections r monitored by citizen volunteers.": [
         null,
-        "Ungahoxa, wenqabe ukuphendul imibuzo noma ubambe iqhaza. Ungakhishwa ngaphandle kokwaziswa. Uzokwaziswa ngolwaz olusha ngababamb iqhaza"
+        "Ungahoxa, wenqabe ukuphendul imibuz. Ungakhishw ngaphandle kokwazisw. Uzokwazisw ngolwaz olusha ngababamb iqhaz"
     ],
     "If u participate,we will ask questions about urself&ur observations of the elections.U will b anonymous.Ur answers will be kept confidential&won't b shared.": [
         null,
-        "Uma ubamb iqhaza,sizokubuz imibuzo ngawe nangokubonile ezinkethweni.Alizovezw igama lakho.Izimpendul zakho ziyimfihlo, azizobonisw abanye"
+        "Um ubamb' iqhaza,sizokubuz imibuz'ngwe nangokubonile ezinkethweni.Alizovezw igama lakho.Izimpendul zakho ziyimfihlo, azizobonisw abanye"
     ],
     "To view full T&Cs please visit www.yal.mobi/vip.": [
         null,
-        "Uma uneminye imibuzo nocwaningo thinta C. uGibson kwethi 0118587605100. Ukubona imigomo nemibandela ephelele ngena yal.mobi/vip"
+        "Uma uneminye imibuzo thinta CGibson kwethi 0118587605100. Ukubona imigomo nemibandela ephelele: yal.mobi/vip"
     ],
     "1. Prev\n2. Next\n3. Exit": [
         null,
-        "1.Okungaphambi kwalokhu \n2.Okulandelayo \n3.Phuma"
+        "1.Owedlule \n2.Okulandelayo \n3.Phuma"
     ],
     "Thank you for your time. Remember, you can always reconsider becoming a citizen reporter.": [
         null,
@@ -134,7 +134,7 @@
     ],
     "Report an Election Activity": [
         null,
-        " Bika umcimbi wokhetho"
+        "Bika umcimbi wokhetho"
     ],
     "View VIP results...": [
         null,
@@ -154,19 +154,19 @@
     ],
     "Party going door-to-door": [
         null,
-        "Inhlangano ihamba imizi ngemizi"
+        "Inhlngno hamb' imizi ngemizi"
     ],
     "Party intimidating voters": [
         null,
-        "Inhlangano isabisa abavoti"
+        "Inhlngno sabisa abavoti"
     ],
     "Party distributing food/money/gift": [
         null,
-        "Inhlangano isabalalisa ukudla/imali"
+        "Inhlngno isabalalisa ukudla/imali"
     ],
     "Campaign rally": [
         null,
-        "Irali yomkhankaso"
+        "Irali yomkhankso"
     ],
     "Campaign violence": [
         null,
@@ -178,7 +178,7 @@
     ],
     "Choose a report type:": [
         null,
-        "uhlobo lombiko:"
+        "Khetha"
     ],
     "What is the title of your report?": [
         null,
@@ -190,7 +190,7 @@
     ],
     "Thank you for your report! Keep up the reporting & you may have a chance to be chosen as an official election day reporter where you can earn airtime or cash for your contribution.": [
         null,
-        "Siyabonga! Qhubeka nokubika, ungaba sethubeni lokukhethwa njengozobika ngokusemthethweni ngosuku lokhetho, lapho ungazitholela khona i-airtime noma ukheshi ngosizo lwakho"
+        "Siyabonga! Qhubeka, ungaba sethubeni lokukhethwa njengozobika ngokusemthethweni ngosuku lokhetho, lapho ungazitholela khona i-airtime"
     ],
     "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted. View results at www.url.com": [
         null,
@@ -214,7 +214,7 @@
     ],
     "I am...": [
         null,
-        "Ngingo…"
+        "Ngingoâ€¦"
     ],
     "Male": [
         null,
@@ -302,7 +302,7 @@
     ],
     "Main Menu": [
         null,
-        "Sibonga ukuzethula kabanzi ku-VIP! Uzothunyelelwa i-airtime yakho masinyane!1. IMenyu Enkulu"
+        "IMenyu Enkulu"
     ],
     "Please give us your cellphone number so we can send you your airtime!": [
         null,
@@ -394,7 +394,7 @@
     ],
     "During the past year, has your community had demonstrations or protests?": [
         null,
-        "Uma kuwkuthi umphakathi wangakini waba nayo imibhikisho ngonyaka odlule, yayinodlame yini?"
+        "Uma kukuthi umphakathi wangakini waba nayo imibhikisho ngonyaka odlule, yayinodlame yni?"
     ],
     "Yes, several times": [
         null,
@@ -438,7 +438,7 @@
     ],
     "Strongly agree": [
         null,
-        "Ngivuma kakhulu"
+        "Ngivum' kakhulu"
     ],
     "Somewhat agree": [
         null,
@@ -450,7 +450,7 @@
     ],
     "Strongly disagree": [
         null,
-        "Ngiphika kakhulu"
+        "Ngiphika kakhul"
     ],
     "How do you rate the overall performance of President Zuma?": [
         null,
@@ -494,7 +494,7 @@
     ],
     "Very satisfied": [
         null,
-        "Ngigculiseke kakhulu"
+        "Ngigculiseke kakhlu"
     ],
     "Somewhat satisfied": [
         null,
@@ -510,7 +510,7 @@
     ],
     "During the past two weeks, how frequently have campaign rallies occurred in your community?": [
         null,
-        "Emasontweni amabili edlule abezinhlangano bangene kangakanani imizi ngemizi ngakini benxenxa abavoti?"
+        "Emasontweni 2 edlule abezinhlangano bangene kangakanani imizi ngemizi ngakini benxenxa abavoti?"
     ],
     "Often": [
         null,
@@ -530,11 +530,11 @@
     ],
     "During the past two weeks, how frequently have party agents gone door to door in your community to mobilize voters?": [
         null,
-        "Emasontweni amabili edlule abezinhlangano bangene kangakanani imizi ngemizi ngakini benxenxa abavoti?"
+        "Emasontweni 2 edlule abezinhlangano bangene kangakanani imizi ngemizi ngakini benxenxa abavoti?"
     ],
     "During the past two weeks, how frequently have party agents intimidated voters in your community?": [
         null,
-        "Emasontweni amabili edlule abamele izinhlangano babesabise kangakanani abavoti ngakini?"
+        "Emasontweni 2 edlule abamele izinhlangano babesabise kangakanani abavoti ngakini?"
     ],
     "How much do you trust the ANC?": [
         null,
