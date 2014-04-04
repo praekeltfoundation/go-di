@@ -1,0 +1,8 @@
+{
+    "name": "di_ussd_7692_live_app",
+    "endpoints": {
+        "sms": {"delivery_class": "sms"}
+    },
+    "ushahidi_map": "https://godi.crowdmap.com/api",
+    "kv_group" : "di_ussd_7692_live"
+}
