@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2014-04-03 11:52:+0200\n"
+"POT-Creation-Date: 2014-04-04 04:34:+0200\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -9,339 +9,343 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 
-#: app.js:174
+#: app.js:179
 msgid ""
 "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
 "address & we'll work it out. This will be kept private, only ur voting ward "
 "will be stored &u will be anonymous."
 msgstr ""
 
-#: app.js:190
+#: app.js:195
 msgid ""
 "Thanks for volunteering to be a citizen reporter for the 2014 elections! "
 "Get started by answering questions or reporting election activity! Dial "
 "back in to *5555# to begin!"
 msgstr ""
 
-#: app.js:249
+#: app.js:254
 msgid "Welcome to Voting is Power! Start by choosing your language:"
 msgstr ""
 
-#: app.js:251
+#: app.js:256
 msgid "English"
 msgstr ""
 
-#: app.js:252
+#: app.js:257
 msgid "Afrikaans"
 msgstr ""
 
-#: app.js:253
+#: app.js:258
 msgid "Zulu"
 msgstr ""
 
-#: app.js:265
+#: app.js:270
 msgid "It's election time! Do u think ur vote matters?"
 msgstr ""
 
-#: app.js:267
+#: app.js:272
 msgid "YES every vote matters"
 msgstr ""
 
-#: app.js:268
+#: app.js:273
 msgid "NO but I'll vote anyway"
 msgstr ""
 
-#: app.js:269
+#: app.js:274
 msgid "NO so I'm NOT voting"
 msgstr ""
 
-#: app.js:270
+#: app.js:275
 msgid "I'm NOT REGISTERED to vote"
 msgstr ""
 
-#: app.js:271
+#: app.js:276
 msgid "I'm TOO YOUNG to vote"
 msgstr ""
 
-#: app.js:286
+#: app.js:291
 msgid "Please accept the terms and conditions to get started."
 msgstr ""
 
-#: app.js:287
+#: app.js:292
 msgid "Accept & Join"
 msgstr ""
 
-#: app.js:288
+#: app.js:293
 msgid "Read t&c"
 msgstr ""
 
-#: app.js:289
+#: app.js:294
 msgid "Quit"
 msgstr ""
 
-#: app.js:312
+#: app.js:317
 msgid ""
 "University of California San Diego requests ur consent to act as a research "
 "subject for improving electoral performance through citizen engagement in "
 "SA."
 msgstr ""
 
-#: app.js:314
+#: app.js:319
 msgid ""
 "Study provides evaluation on how 2 use marketing &recruitment "
 "strategies,with mobile technology to improve how elections r monitored by "
 "citizen volunteers."
 msgstr ""
 
-#: app.js:316
+#: app.js:321
 msgid ""
 "If u participate,we will ask questions about urself&ur observations of the "
 "elections.U will b anonymous.Ur answers will be kept confidential&won't b "
 "shared."
 msgstr ""
 
-#: app.js:318
+#: app.js:323
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
 
-#: app.js:330 app.js:698
+#: app.js:335 app.js:725
 msgid ""
 "1. Prev\n"
 "2. Next\n"
 "3. Exit"
 msgstr ""
 
-#: app.js:344
+#: app.js:349
 msgid ""
 "Thank you for your time. Remember, you can always reconsider becoming a "
 "citizen reporter."
 msgstr ""
 
-#: app.js:351 app.js:538
+#: app.js:356 app.js:565
 msgid "Please carefully enter your address again: for eg: 12 main street pretoria"
 msgstr ""
 
-#: app.js:356
+#: app.js:361
 msgid ""
 "Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address "
 "& we'll work it out. This will be kept private, only ur voting ward will be "
 "stored &u will be anonymous."
 msgstr ""
 
-#: app.js:445 app.js:604
+#: app.js:455 app.js:631
 msgid "Not my address"
 msgstr ""
 
-#: app.js:447 app.js:606
+#: app.js:457 app.js:633
 msgid "Still not my address"
 msgstr ""
 
-#: app.js:451 app.js:610
+#: app.js:461 app.js:637
 msgid "Choose your area:"
 msgstr ""
 
-#: app.js:467
+#: app.js:477
 msgid "Welcome to VIP!"
 msgstr ""
 
-#: app.js:469
+#: app.js:479
 msgid "Answer & win!"
 msgstr ""
 
-#: app.js:470
+#: app.js:480
 msgid "VIP Quiz"
 msgstr ""
 
-#: app.js:471
+#: app.js:481
 msgid "Report an Election Activity"
 msgstr ""
 
-#: app.js:472
+#: app.js:482
 msgid "View VIP results..."
 msgstr ""
 
-#: app.js:473
+#: app.js:483
 msgid "What's up?"
 msgstr ""
 
-#: app.js:474
+#: app.js:484
 msgid "About"
 msgstr ""
 
-#: app.js:475
+#: app.js:485
 msgid "End"
 msgstr ""
 
-#: app.js:490
+#: app.js:492
+msgid "Thanks, u have answered all the questions in this section."
+msgstr ""
+
+#: app.js:494 answerwinquiz.js:135 vipquiz.js:90 whatsupquiz.js:187
+msgid "Main Menu"
+msgstr ""
+
+#: app.js:517
 msgid "Party going door-to-door"
 msgstr ""
 
-#: app.js:491
+#: app.js:518
 msgid "Party intimidating voters"
 msgstr ""
 
-#: app.js:492
+#: app.js:519
 msgid "Party distributing food/money/gift"
 msgstr ""
 
-#: app.js:493
+#: app.js:520
 msgid "Campaign rally"
 msgstr ""
 
-#: app.js:494
+#: app.js:521
 msgid "Campaign violence"
 msgstr ""
 
-#: app.js:495
+#: app.js:522
 msgid "Protest/Demonstration"
 msgstr ""
 
-#: app.js:498
+#: app.js:525
 msgid "Choose a report type:"
 msgstr ""
 
-#: app.js:519
+#: app.js:546
 msgid "What is the title of your report?"
 msgstr ""
 
-#: app.js:540
+#: app.js:567
 msgid ""
 "Where did this event happen? Please be as specific as possible and give "
 "address and city."
 msgstr ""
 
-#: app.js:643
+#: app.js:670
 msgid ""
 "Thank you for your report! Keep up the reporting & you may have a chance to "
 "be chosen as an official election day reporter where you can earn airtime "
 "or cash for your contribution."
 msgstr ""
 
-#: app.js:664
+#: app.js:691
 msgid ""
 "You are 1 of {{ registered }} citizens who are active citizen election "
 "reporters! {{ questions }} questions and {{ reports }} election activity "
 "posts have been submitted. View results at www.url.com"
 msgstr ""
 
-#: app.js:682
+#: app.js:709
 msgid ""
 "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will "
 "engage South Africans from all walks of life to report on electoral "
 "activities,"
 msgstr ""
 
-#: app.js:685
+#: app.js:712
 msgid ""
 "voice their opinions on current issues surrounding the elections, and "
 "report on election processes on voting day."
 msgstr ""
 
-#: app.js:687
+#: app.js:714
 msgid ""
 "VIP:Ask is a partnership between academics, Democracy International, Livity "
 "Africa and the Praekelt Foundation"
 msgstr ""
 
-#: app.js:709
+#: app.js:736
 msgid "Bye."
 msgstr ""
 
-#: answerwinquiz.js:58 answerwinquiz.js:104
+#: answerwinquiz.js:62 answerwinquiz.js:108
 msgid "I am..."
 msgstr ""
 
-#: answerwinquiz.js:60
+#: answerwinquiz.js:64
 msgid "Male"
 msgstr ""
 
-#: answerwinquiz.js:61
+#: answerwinquiz.js:65
 msgid "Female"
 msgstr ""
 
-#: answerwinquiz.js:71
+#: answerwinquiz.js:75
 msgid "How old are you?"
 msgstr ""
 
-#: answerwinquiz.js:73
+#: answerwinquiz.js:77
 msgid "u14"
 msgstr ""
 
-#: answerwinquiz.js:74
+#: answerwinquiz.js:78
 msgid "15-19"
 msgstr ""
 
-#: answerwinquiz.js:75
+#: answerwinquiz.js:79
 msgid "20-29"
 msgstr ""
 
-#: answerwinquiz.js:76
+#: answerwinquiz.js:80
 msgid "30-39"
 msgstr ""
 
-#: answerwinquiz.js:77
+#: answerwinquiz.js:81
 msgid "40-49"
 msgstr ""
 
-#: answerwinquiz.js:78
+#: answerwinquiz.js:82
 msgid "50+"
 msgstr ""
 
-#: answerwinquiz.js:88
+#: answerwinquiz.js:92
 msgid "Did you vote in the 2009 election?"
 msgstr ""
 
-#: answerwinquiz.js:90 vipquiz.js:37 vipquiz.js:118 vipquiz.js:217
+#: answerwinquiz.js:94 vipquiz.js:37 vipquiz.js:118 vipquiz.js:217
 msgid "Yes"
 msgstr ""
 
-#: answerwinquiz.js:91
+#: answerwinquiz.js:95
 msgid "No, could not/was not registered"
 msgstr ""
 
-#: answerwinquiz.js:92
+#: answerwinquiz.js:96
 msgid "No, did not want to"
 msgstr ""
 
-#: answerwinquiz.js:93
+#: answerwinquiz.js:97
 msgid "No, other"
 msgstr ""
 
-#: answerwinquiz.js:94 answerwinquiz.js:111 vipquiz.js:25 vipquiz.js:40 vipquiz.js:57 vipquiz.js:77 vipquiz.js:106 vipquiz.js:121 vipquiz.js:137 vipquiz.js:153 vipquiz.js:169 vipquiz.js:185 vipquiz.js:205 vipquiz.js:219 whatsupquiz.js:26 whatsupquiz.js:42 whatsupquiz.js:58 whatsupquiz.js:74 whatsupquiz.js:91 whatsupquiz.js:108 whatsupquiz.js:125 whatsupquiz.js:142 whatsupquiz.js:158 whatsupquiz.js:174
+#: answerwinquiz.js:98 answerwinquiz.js:115 vipquiz.js:25 vipquiz.js:40 vipquiz.js:57 vipquiz.js:77 vipquiz.js:106 vipquiz.js:121 vipquiz.js:137 vipquiz.js:153 vipquiz.js:169 vipquiz.js:185 vipquiz.js:205 vipquiz.js:219 whatsupquiz.js:26 whatsupquiz.js:42 whatsupquiz.js:58 whatsupquiz.js:74 whatsupquiz.js:91 whatsupquiz.js:108 whatsupquiz.js:125 whatsupquiz.js:142 whatsupquiz.js:158 whatsupquiz.js:174
 msgid "Skip"
 msgstr ""
 
-#: answerwinquiz.js:106
+#: answerwinquiz.js:110
 msgid "Black African"
 msgstr ""
 
-#: answerwinquiz.js:107
+#: answerwinquiz.js:111
 msgid "Coloured"
 msgstr ""
 
-#: answerwinquiz.js:108
+#: answerwinquiz.js:112
 msgid "Indian/Asian"
 msgstr ""
 
-#: answerwinquiz.js:109
+#: answerwinquiz.js:113
 msgid "White"
 msgstr ""
 
-#: answerwinquiz.js:110 vipquiz.js:75 vipquiz.js:204
+#: answerwinquiz.js:114 vipquiz.js:75 vipquiz.js:204
 msgid "Other"
 msgstr ""
 
-#: answerwinquiz.js:129
+#: answerwinquiz.js:133
 msgid ""
 "Thank you for telling VIP a bit more about yourself! Your airtime will be "
 "sent to you shortly!"
 msgstr ""
 
-#: answerwinquiz.js:131 vipquiz.js:90 whatsupquiz.js:187
-msgid "Main Menu"
-msgstr ""
-
-#: answerwinquiz.js:140
+#: answerwinquiz.js:144
 msgid "Please give us your cellphone number so we can send you your airtime!"
 msgstr ""
 
