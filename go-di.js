@@ -994,10 +994,15 @@ di.app = function() {
             self.store_name = self.im.config.name;
 
             self.im.on('session:new',function() {
+                //Sets delivery class of contact.
+                if (_.isUndefined(self.contact.extra.delivery_class)) {
+                    self.contact.extra.delivery_class = self.im.config.delivery_class;
+                }
                 return Q.all([
                     self.im.metrics.fire.inc("sum.visits"),
                     self.im.metrics.fire.avg("avg.visits",1),
-                    self.get_unique_users()
+                    self.get_unique_users(),
+                    self.im.contacts.save(self.contact)
                 ]);
             });
 
