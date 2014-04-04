@@ -42,7 +42,8 @@ describe("app", function() {
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
-                    ushahidi_map: 'https://godi.crowdmap.com/api'
+                    ushahidi_map: 'https://godi.crowdmap.com/api',
+                    kv_group: 'tests'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -402,10 +403,12 @@ describe("app", function() {
                     }).run();
             });
 
-            it("should fire a 'registered.participants' metric",function() {
+            it.only("should fire a 'registered.participants' metric",function() {
                 return tester
                     .check(function(api) {
+                        console.log(api.kv.store['test_app.registered.participants']);
                         var metrics = api.metrics.stores.test_app;
+                        console.log(metrics);
                         assert.deepEqual(metrics['registered.participants'].values, [4]);
                     }).run();
             });
@@ -1108,6 +1111,13 @@ describe("app", function() {
                             assert.equal(api.kv.store['test_app.total.reports'], 1);
                         }).run();
                 });
+
+                it("should incr global 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.kv.store['tests.total.reports'], 1);
+                        }).run();
+                });
             });
 
             describe("when user selects 'Not my address' from the list",function() {
@@ -1168,6 +1178,13 @@ describe("app", function() {
                     return tester
                         .check(function(api) {
                             assert.equal(_.isUndefined(api.kv.store['test_app.total.reports']), true);
+                        }).run();
+                });
+
+                it("should not incr group 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(_.isUndefined(api.kv.store['tests.total.reports']), true);
                         }).run();
                 });
             });
@@ -1356,9 +1373,9 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
-                        api.kv.store['test_app.registered.participants'] = 3;
-                        api.kv.store['test_app.total.questions'] = 4;
-                        api.kv.store['test_app.total.reports'] = 5;
+                        api.kv.store['tests.registered.participants'] = 3;
+                        api.kv.store['tests.total.questions'] = 4;
+                        api.kv.store['tests.total.reports'] = 5;
                     })
                     .setup.user.state("states:menu")
                     .input("4")
