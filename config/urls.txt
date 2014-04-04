@@ -1,0 +1,39 @@
+javascript:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/go-di.js
+
+config:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_live_app.config.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_1_live_app.config.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_2_live_app.config.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_3_live_app.config.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_4729_live_app.config.json
+
+push_message_group:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/push_message_group.json
+
+reports:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_live_app.reports.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_1_live_app.reports.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_2_live_app.reports.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_7692_3_live_app.reports.json
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/di_ussd_4729_live_app.reports.json
+
+translation.af:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/translations/af_ZA_correct.json
+
+translation.en:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/translations/en_ZA_correct.json
+
+translation.zu:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/translations/zu_ZA_correct.json
+
+ward_treatment:
+
+  https://raw.githubusercontent.com/praekelt/go-di/develop/config/ward_treatment.json
