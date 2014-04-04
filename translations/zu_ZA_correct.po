@@ -1,0 +1,717 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: USSD Zulu\n"
+"POT-Creation-Date: 2014-04-04 04:34:+0200\n"
+"PO-Revision-Date: 2014-04-04 16:54+0200\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zu_ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app.js:179
+msgid ""
+"Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
+"address & we'll work it out. This will be kept private, only ur voting ward "
+"will be stored &u will be anonymous."
+msgstr ""
+"Siyabonga! Sidinga inombolo ya Ward yakho. Phendula ngekheli lakho lasekhaya "
+"sikusize. Lokhu kuyimfihlo; sigcina iwadi lakho lokuvota kuphela."
+
+#: app.js:195
+msgid ""
+"Thanks for volunteering to be a citizen reporter for the 2014 elections! Get "
+"started by answering questions or reporting election activity! Dial back in "
+"to *5555# to begin!"
+msgstr ""
+"Sibonga ukuzikhethela kwakho ukuba zika-2014! Qala ngokuphendula imibuzo "
+"noma ngokubika umcimbi wokhetho! Ukuqala, chofoza *120*7692#!"
+
+#: app.js:254
+msgid "Welcome to Voting is Power! Start by choosing your language:"
+msgstr "Siyakwamukela ku-Ukuvota Kungamandla! Qala ngokukhetha ulimi lwakho:"
+
+#: app.js:256
+msgid "English"
+msgstr "Isingisi"
+
+#: app.js:257
+msgid "Afrikaans"
+msgstr "isiBhunu"
+
+#: app.js:258
+msgid "Zulu"
+msgstr "isiZulu"
+
+#: app.js:270
+msgid "It's election time! Do u think ur vote matters?"
+msgstr "Yiskhathi sokhetho! Liyasiza yini ivoti lakho?"
+
+#: app.js:272
+msgid "YES every vote matters"
+msgstr "YEBO"
+
+#: app.js:273
+msgid "NO but I'll vote anyway"
+msgstr "CHA kodwa ngizovota"
+
+#: app.js:274
+msgid "NO so I'm NOT voting"
+msgstr "CHA Yingakho ngingavoti"
+
+#: app.js:275
+msgid "I'm NOT REGISTERED to vote"
+msgstr "ANGIKUBHALISELANGA"
+
+#: app.js:276
+msgid "I'm TOO YOUNG to vote"
+msgstr "Ngisemncane angivoti"
+
+#: app.js:291
+msgid "Please accept the terms and conditions to get started."
+msgstr "Yamukela le imigomo nemibandela ekuvumela ukuqala"
+
+#: app.js:292
+msgid "Accept & Join"
+msgstr "Yamukela ujoyine"
+
+#: app.js:293
+msgid "Read t&c"
+msgstr "Funda imigomo nemibandela"
+
+#: app.js:294
+msgid "Quit"
+msgstr "Phuma"
+
+#: app.js:317
+msgid ""
+"University of California San Diego requests ur consent to act as a research "
+"subject for improving electoral performance through citizen engagement in SA."
+msgstr ""
+"I-VIP:Voice yiprojekt yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzwa "
+"imibuzo igcinwe lingavezwa igama"
+
+#: app.js:319
+msgid ""
+"Study provides evaluation on how 2 use marketing &recruitment strategies,"
+"with mobile technology to improve how elections r monitored by citizen "
+"volunteers."
+msgstr ""
+"Ungahoxa noma ubambe iqhaza. Ungakhishwa ngaphandle kokwaziswa. Uzokwaziswa "
+"ngolwaz olusha ngababamb iqhaza"
+
+#: app.js:321
+msgid ""
+"If u participate,we will ask questions about urself&ur observations of the "
+"elections.U will b anonymous.Ur answers will be kept confidential&won't b "
+"shared."
+msgstr ""
+"Uma ubamba iqhaza,sizokubuza imibuzo ngawe nangokubonile ezinkethweni."
+"Alizovezw igama lakho.Izimpendulo zakho ziyimfihlo"
+
+#: app.js:323
+msgid "To view full T&Cs please visit www.yal.mobi/vip."
+msgstr ""
+"Uma uneminye imibuzo thinta CGibson kwethi 0118587605100. Ukubona imigomo "
+"nemibandela ephelele: yal.mobi/vip\t"
+
+#: app.js:335 app.js:725
+msgid ""
+"1. Prev\n"
+"2. Next\n"
+"3. Exit"
+msgstr ""
+"1.Owedlule \n"
+"2.Okulandelayo \n"
+"3.Phuma"
+
+#: app.js:349
+msgid ""
+"Thank you for your time. Remember, you can always reconsider becoming a "
+"citizen reporter."
+msgstr "Siyabonga."
+
+#: app.js:356 app.js:565
+msgid ""
+"Please carefully enter your address again: for eg: 12 main street pretoria"
+msgstr ""
+"Siyacela, phendula ngekheli lakho lasekhaya e.g 12 main street pretoria"
+
+#: app.js:361
+msgid ""
+"Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address "
+"& we'll work it out. This will be kept private, only ur voting ward will be "
+"stored &u will be anonymous."
+msgstr ""
+"Sibonga! Ukuvota uding ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho "
+"lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela\t"
+
+#: app.js:455 app.js:631
+msgid "Not my address"
+msgstr "Asiyilo ikheli lami"
+
+#: app.js:457 app.js:633
+msgid "Still not my address"
+msgstr "Cha, asiyilo ikheli lami"
+
+#: app.js:461 app.js:637
+msgid "Choose your area:"
+msgstr "Khetha indawo yakho"
+
+#: app.js:477
+msgid "Welcome to VIP!"
+msgstr "Siyakwamukela ohlelweni i-VIP!"
+
+#: app.js:479
+msgid "Answer & win!"
+msgstr "Phendula uwine!"
+
+#: app.js:480
+msgid "VIP Quiz"
+msgstr "Imibuzo ye-VIP"
+
+#: app.js:481
+msgid "Report an Election Activity"
+msgstr "Bika umcimbi wokhetho"
+
+#: app.js:482
+msgid "View VIP results..."
+msgstr "Bheka imiphumela ye-VIP.."
+
+#: app.js:483
+msgid "What's up?"
+msgstr "Kwenzenjani?"
+
+#: app.js:484
+msgid "About"
+msgstr "Ngalokhu"
+
+#: app.js:485
+msgid "End"
+msgstr "Qeda"
+
+#: app.js:492
+msgid "Thanks, u have answered all the questions in this section."
+msgstr "Siyabonga! Uphendule imibuzo yonke."
+
+#: app.js:494 answerwinquiz.js:135 vipquiz.js:90 whatsupquiz.js:187
+msgid "Main Menu"
+msgstr "iMenyu Enkulu"
+
+#: app.js:517
+msgid "Party going door-to-door"
+msgstr "Inhlngno hamb' imizi ngemiz"
+
+#: app.js:518
+msgid "Party intimidating voters"
+msgstr "Inhlngno sabisa bavoti"
+
+#: app.js:519
+msgid "Party distributing food/money/gift"
+msgstr "Inhlngno isabalalisa ukudla/imali"
+
+#: app.js:520
+msgid "Campaign rally"
+msgstr "Irali yomkhankso"
+
+#: app.js:521
+msgid "Campaign violence"
+msgstr "Udlame lokukhankas"
+
+#: app.js:522
+msgid "Protest/Demonstration"
+msgstr "Umbhikisho"
+
+#: app.js:525
+msgid "Choose a report type:"
+msgstr "Khetha"
+
+#: app.js:546
+msgid "What is the title of your report?"
+msgstr "Sithini isihloko sombiko wakho?"
+
+#: app.js:567
+msgid ""
+"Where did this event happen? Please be as specific as possible and give "
+"address and city."
+msgstr ""
+"Wenzekephi lo mcimbi? Khomba indawo ngangokusemandleni unikeze ikheli "
+"nedolobha."
+
+#: app.js:670
+msgid ""
+"Thank you for your report! Keep up the reporting & you may have a chance to "
+"be chosen as an official election day reporter where you can earn airtime or "
+"cash for your contribution."
+msgstr ""
+"Siyabonga! Qhubeka, ungaba sethubeni lokukhethwa njengozobika "
+"ngokusemthethweni ngosuku lokhetho, lapho ungazitholela khona i-airtime"
+
+#: app.js:691
+msgid ""
+"You are 1 of {{ registered }} citizens who are active citizen election "
+"reporters! {{ questions }} questions and {{ reports }} election activity "
+"posts have been submitted. View results at www.url.com"
+msgstr ""
+"Ungumhlali o we si {{ registered }} o sebenza ngokubika ezinkethweni! "
+"Imibuzo engu {{ questions }} nemibiki engu {{ reports }} ekethweni isi "
+"thunyelwe. "
+
+#: app.js:709
+msgid ""
+"The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will "
+"engage South Africans from all walks of life to report on electoral "
+"activities,"
+msgstr ""
+"I-VIP:Voice iwuhlelo oluklanyelwe ukubandakanya izakhamuzi zakuleli njengoba "
+"kuyiwa okhethweni"
+
+#: app.js:712
+msgid ""
+"voice their opinions on current issues surrounding the elections, and report "
+"on election processes on voting day."
+msgstr ""
+"Ungabika noma yimuphi umcimbi ophathelene nokhetho ngo-USSD ukusiza "
+"ekwakheni isithombe esiyiqiniso ngokhetho lwango-2014"
+
+#: app.js:714
+msgid ""
+"VIP:Ask is a partnership between academics, Democracy International, Livity "
+"Africa and the Praekelt Foundation"
+msgstr ""
+"I-VIP:Voice yiphrojekth yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzw "
+"imibuzo igcinwe lingavezw igama"
+
+#: app.js:736
+msgid "Bye."
+msgstr "Salakahle."
+
+#: answerwinquiz.js:62 answerwinquiz.js:108
+msgid "I am..."
+msgstr "Ngingo"
+
+#: answerwinquiz.js:64
+msgid "Male"
+msgstr "wesilisa"
+
+#: answerwinquiz.js:65
+msgid "Female"
+msgstr "wesifazane"
+
+#: answerwinquiz.js:75
+msgid "How old are you?"
+msgstr "Uneminyaka emingaki?"
+
+#: answerwinquiz.js:77
+msgid "u14"
+msgstr "ngaphansi kweyi-15"
+
+#: answerwinquiz.js:78
+msgid "15-19"
+msgstr "15-17"
+
+#: answerwinquiz.js:79
+msgid "20-29"
+msgstr "18-29"
+
+#: answerwinquiz.js:80
+msgid "30-39"
+msgstr "30-39"
+
+#: answerwinquiz.js:81
+msgid "40-49"
+msgstr "40-49"
+
+#: answerwinquiz.js:82
+msgid "50+"
+msgstr "50+"
+
+#: answerwinquiz.js:92
+msgid "Did you vote in the 2009 election?"
+msgstr "Wavota yini okhethweni lwango-2009?"
+
+#: answerwinquiz.js:94 vipquiz.js:37 vipquiz.js:118 vipquiz.js:217
+msgid "Yes"
+msgstr "Yebo"
+
+#: answerwinquiz.js:95
+msgid "No, could not/was not registered"
+msgstr "Cha, angikwazanga/ngangingabhalisanga"
+
+#: answerwinquiz.js:96
+msgid "No, did not want to"
+msgstr "Cha, angithandanga"
+
+#: answerwinquiz.js:97
+msgid "No, other"
+msgstr "Cha, okunye"
+
+#: answerwinquiz.js:98 answerwinquiz.js:115 vipquiz.js:25 vipquiz.js:40
+#: vipquiz.js:57 vipquiz.js:77 vipquiz.js:106 vipquiz.js:121 vipquiz.js:137
+#: vipquiz.js:153 vipquiz.js:169 vipquiz.js:185 vipquiz.js:205 vipquiz.js:219
+#: whatsupquiz.js:26 whatsupquiz.js:42 whatsupquiz.js:58 whatsupquiz.js:74
+#: whatsupquiz.js:91 whatsupquiz.js:108 whatsupquiz.js:125 whatsupquiz.js:142
+#: whatsupquiz.js:158 whatsupquiz.js:174
+msgid "Skip"
+msgstr "Eqa"
+
+#: answerwinquiz.js:110
+msgid "Black African"
+msgstr "ngumAfrika oNsundu"
+
+#: answerwinquiz.js:111
+msgid "Coloured"
+msgstr "yiKhaladi"
+
+#: answerwinquiz.js:112
+msgid "Indian/Asian"
+msgstr "ngowomdabu waseNdiya/waseEshiya"
+
+#: answerwinquiz.js:113
+msgid "White"
+msgstr "Mhlophe"
+
+#: answerwinquiz.js:114 vipquiz.js:75 vipquiz.js:204
+msgid "Other"
+msgstr "ngokunye"
+
+#: answerwinquiz.js:133
+msgid ""
+"Thank you for telling VIP a bit more about yourself! Your airtime will be "
+"sent to you shortly!"
+msgstr ""
+"Sibonga ukuzethula kabanzi ku-VIP! Uzothunyelelwa i-airtime yakho masinyane!"
+
+#: answerwinquiz.js:144
+msgid "Please give us your cellphone number so we can send you your airtime!"
+msgstr ""
+"Sicel inombolo yeselula yakho ukuze sikwazi ukukuthumelel i-airtime yakho!"
+
+#: vipquiz.js:20
+msgid "During the past year, have you attended a demonstration or protest?"
+msgstr "Onyakeni odlule, wawuhambela yini umbhikisho?"
+
+#: vipquiz.js:22
+msgid "Yes, many"
+msgstr "Yebo, eminingi"
+
+#: vipquiz.js:23
+msgid "Yes, a few"
+msgstr "Yebo, embalwa"
+
+#: vipquiz.js:24 vipquiz.js:38 vipquiz.js:105 vipquiz.js:119 vipquiz.js:218
+msgid "No"
+msgstr "Cha"
+
+#: vipquiz.js:35
+msgid "Are you registered to vote in the upcoming elections?"
+msgstr "Ukubhalisele yini ukuvota ezinkethweni ezizayo?"
+
+#: vipquiz.js:39 vipquiz.js:56
+msgid "Unsure"
+msgstr "Anginasiqiniseko"
+
+#: vipquiz.js:50
+msgid "How likely is it that you will vote in the upcoming election?"
+msgstr "Maningi kangakanani amathuba okuba uvote okhethweni oluzayo?"
+
+#: vipquiz.js:52
+msgid "Very likely"
+msgstr "Maningi kakhulu"
+
+#: vipquiz.js:53
+msgid "Somewhat likely"
+msgstr "Akhonywana"
+
+#: vipquiz.js:54
+msgid "Somewhat unlikely"
+msgstr "Ayangabazeka kancane"
+
+#: vipquiz.js:55
+msgid "Very unlikely"
+msgstr "Awekho nhlobo"
+
+#: vipquiz.js:67
+msgid "Which political party do you feel close to?"
+msgstr "Iyiphi inhlangano yezepolitiki esenhlziyweni yakho?"
+
+#: vipquiz.js:69 vipquiz.js:198
+msgid "ANC"
+msgstr "ANC"
+
+#: vipquiz.js:70 vipquiz.js:199
+msgid "Agang"
+msgstr "Agang"
+
+#: vipquiz.js:71 vipquiz.js:200
+msgid "COPE"
+msgstr "Cope"
+
+#: vipquiz.js:72 vipquiz.js:201
+msgid "DA"
+msgstr "DA"
+
+#: vipquiz.js:73 vipquiz.js:202
+msgid "EFF"
+msgstr "EFF"
+
+#: vipquiz.js:74 vipquiz.js:203
+msgid "IFP"
+msgstr "IFP"
+
+#: vipquiz.js:76
+msgid "I don't feel close to a party"
+msgstr "Ayikho esenhlziyweni yami"
+
+#: vipquiz.js:87
+msgid "Would you like to continue answering questions? There are 12 in total."
+msgstr "Uyathanda yini ukuqhubeka nokuphendula imibuzo? Iyi-12 isiyonke"
+
+#: vipquiz.js:89 whatsupquiz.js:186
+msgid "Continue"
+msgstr "Qhubeka"
+
+#: vipquiz.js:101
+msgid ""
+"During the past year, has your community had demonstrations or protests?"
+msgstr "Onyakeni odlule, umphakathi wangakini ube nayo yini imibhikisho?"
+
+#: vipquiz.js:103
+msgid "Yes, several times"
+msgstr "Yebo, izikhathi eziningana"
+
+#: vipquiz.js:104
+msgid "Yes, once or twice"
+msgstr "kanye noma kabili"
+
+#: vipquiz.js:116
+msgid ""
+"If your community has had demonstrations or protests in the last year, were "
+"they violent?"
+msgstr ""
+"Uma kuwkuthi umphakathi wangakini waba nayo imibhikisho ngonyaka odlule, "
+"yayinodlame yini?"
+
+#: vipquiz.js:120
+msgid "Not applicable"
+msgstr "Awufanele lo mbuzo"
+
+#: vipquiz.js:131
+msgid "How easy is it for your neighbors to find out if you voted?"
+msgstr "Kulula kangakanani komakhelwane bakho ukwazi ukuthi uvotile? "
+
+#: vipquiz.js:133
+msgid "Very easy"
+msgstr "Kulula kakhulu"
+
+#: vipquiz.js:134
+msgid "Somewhat easy"
+msgstr "Kulula kancane"
+
+#: vipquiz.js:135
+msgid "Somewhat difficult"
+msgstr "Kunzinyana"
+
+#: vipquiz.js:136
+msgid "Very difficult"
+msgstr "Kulukhuni kakhulu"
+
+#: vipquiz.js:147
+msgid "People in my neighborhood look down on those who do not vote:"
+msgstr "Abantu esakhelene nabo bamthatha kancane ongavoti:"
+
+#: vipquiz.js:149 whatsupquiz.js:154 whatsupquiz.js:170
+msgid "Strongly agree"
+msgstr "Ngivum' kakhulu"
+
+#: vipquiz.js:150 whatsupquiz.js:155 whatsupquiz.js:171
+msgid "Somewhat agree"
+msgstr "Ngiyavuma kancane"
+
+#: vipquiz.js:151 whatsupquiz.js:156 whatsupquiz.js:172
+msgid "Somewhat disagree"
+msgstr "Ngiyaphika kancane"
+
+#: vipquiz.js:152 whatsupquiz.js:157 whatsupquiz.js:173
+msgid "Strongly disagree"
+msgstr "Ngiphika kakhul"
+
+#: vipquiz.js:163
+msgid "How do you rate the overall performance of President Zuma?"
+msgstr "Ukuklelisa kanjani ukusebenza kukaMengameli Zuma ngokubanzi?"
+
+#: vipquiz.js:165 vipquiz.js:181
+msgid "Excellent"
+msgstr "Kuhle kakhulu"
+
+#: vipquiz.js:166 vipquiz.js:182
+msgid "Good"
+msgstr "Kuhle"
+
+#: vipquiz.js:167 vipquiz.js:183
+msgid "Just Fair"
+msgstr " Kuyagculisa khona"
+
+#: vipquiz.js:168 vipquiz.js:184
+msgid "Poor"
+msgstr "Akukuhle"
+
+#: vipquiz.js:179
+msgid ""
+"How do you rate the overall performance of your local government councillor?"
+msgstr "Ukuklelisa kanjani ukusebenza kwekhansela lendawo ngokubanzi?"
+
+#: vipquiz.js:195
+msgid "Which party has contacted you the most during this election campaign?"
+msgstr ""
+"Iyiphi inhlangano ekuthinte kaningi kunezinye ngalo mkhankaso wokhetho?"
+
+#: vipquiz.js:197
+msgid "None, I have not been contacted"
+msgstr "Ayikho"
+
+#: vipquiz.js:215
+msgid "During the past two weeks, have you attended a campaign rally?"
+msgstr "Emasontweni 2 edlule, ngabe uwuyihambele yini irali yomkhankaso?\t"
+
+#: whatsupquiz.js:20
+msgid "How satisfied are you with the way democracy works in South Africa?"
+msgstr "Ugculiseke kangakanani yindlela intando yabantu esebenza ngayo kuleli?"
+
+#: whatsupquiz.js:22
+msgid "Very satisfied"
+msgstr "Kakhulu"
+
+#: whatsupquiz.js:23
+msgid "Somewhat satisfied"
+msgstr "Ngigculisekile ngandlela thile"
+
+#: whatsupquiz.js:24
+msgid "Dissatisfied"
+msgstr "Angugculisekile"
+
+#: whatsupquiz.js:25
+msgid "Very dissatisfied"
+msgstr "Angigculisekile neze"
+
+#: whatsupquiz.js:36
+msgid ""
+"During the past two weeks, how frequently have campaign rallies occurred in "
+"your community?"
+msgstr ""
+"Emasontweni 2 edlule abe maningi kangakanani amarali okukhankasela ukhetho "
+"emphakathin wangakini?"
+
+#: whatsupquiz.js:38 whatsupquiz.js:54 whatsupquiz.js:70
+msgid "Often"
+msgstr "Kaningi"
+
+#: whatsupquiz.js:39 whatsupquiz.js:55 whatsupquiz.js:71
+msgid "Several times"
+msgstr "Izikhath ezimbalwa"
+
+#: whatsupquiz.js:40 whatsupquiz.js:56 whatsupquiz.js:72 whatsupquiz.js:138
+msgid "Once or twice"
+msgstr "1 noma 2"
+
+#: whatsupquiz.js:41 whatsupquiz.js:57 whatsupquiz.js:73 whatsupquiz.js:137
+msgid "Never"
+msgstr "Nakanye"
+
+#: whatsupquiz.js:52
+msgid ""
+"During the past two weeks, how frequently have party agents gone door to "
+"door in your community to mobilize voters?"
+msgstr ""
+"Emsontweni 2 edlule abezinhlangno bangene kangakanni imizi ngemiz ngakini "
+"benxenxa abavoti?"
+
+#: whatsupquiz.js:68
+msgid ""
+"During the past two weeks, how frequently have party agents intimidated "
+"voters in your community?"
+msgstr ""
+"Emsontweni 2 edlule abamele izinhlangano babesabise kangakanani abavoti "
+"ngakini?"
+
+#: whatsupquiz.js:84
+msgid "How much do you trust the ANC?"
+msgstr "Uyethemba kangkanani i-ANC?"
+
+#: whatsupquiz.js:86 whatsupquiz.js:103 whatsupquiz.js:120
+msgid "A lot"
+msgstr "Kakhulu"
+
+#: whatsupquiz.js:87 whatsupquiz.js:104 whatsupquiz.js:121
+msgid "Some"
+msgstr "Kakhudlwana"
+
+#: whatsupquiz.js:88 whatsupquiz.js:105 whatsupquiz.js:122
+msgid "Not much"
+msgstr "Hhayi kakhulu"
+
+#: whatsupquiz.js:89 whatsupquiz.js:106 whatsupquiz.js:123
+msgid "Not at all"
+msgstr "Nakancane"
+
+#: whatsupquiz.js:90 whatsupquiz.js:107 whatsupquiz.js:124
+msgid "No opinion"
+msgstr "Anginakuphawula"
+
+#: whatsupquiz.js:101
+msgid "How much do you trust the Democratic Alliance (DA)?"
+msgstr "Uyethemba kangakanani iDemocratic Alliance (DA)?"
+
+#: whatsupquiz.js:118
+msgid "How much do you trust the Economic Freedom Fighters (EFF)?"
+msgstr "Uyethemba kangakanani iEconomic Freedom Fighters (EFF)?"
+
+#: whatsupquiz.js:135
+msgid ""
+"During the past year, how often have you or anyone in your family gone "
+"without enough food to eat?"
+msgstr "Onyakeni odlule, wena nelungu labakini nalala kaningi kangakanani?"
+
+#: whatsupquiz.js:139
+msgid "Sometimes"
+msgstr "Ngesinye isikhath"
+
+#: whatsupquiz.js:140
+msgid "Many times"
+msgstr "Izikhath eziningi"
+
+#: whatsupquiz.js:141
+msgid "Always"
+msgstr "Izikhath zonke"
+
+#: whatsupquiz.js:152
+msgid ""
+"In South Africa, it is sometimes necessary to use violence for a just cause:"
+msgstr "Nesidingo sokusebenzisa udlame ukufeza inhloso ethile:"
+
+#: whatsupquiz.js:168
+msgid ""
+"Sometimes not voting is the best way to express your political preferences:"
+msgstr "Ukungavoti kuye kube yindlela yokuvez ukuzikhethela politiki:"
+
+#: whatsupquiz.js:184
+msgid "Would you like to continue answering questions? There are 10 in total."
+msgstr "Uyathanda yini ukuqhubeka nokuphendula imibuzo? Iyi-10 Isiyonke"
+
+#~ msgid "Xhosa"
+#~ msgstr "Remove options"
+
+#~ msgid "Sotho"
+#~ msgstr "Remove Option"
+
+#~ msgid "50-59"
+#~ msgstr "50+"
+
+#~ msgid "60-69"
+#~ msgstr "remove option"
+
+#~ msgid "70-79"
+#~ msgstr "remove option"
