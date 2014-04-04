@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VIP USSD\n"
 "POT-Creation-Date: 2014-04-03 11:52:+0200\n"
-"PO-Revision-Date: 2014-04-04 09:54+0200\n"
+"PO-Revision-Date: 2014-04-04 16:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_ZA\n"
@@ -117,8 +117,8 @@ msgstr ""
 #: app.js:318
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
-"If u have any questions or research-related problems or questions contact C. "
-"Gibson at 011 858 760 5100. Full T&Cs at www.yal.mobi/vip\t"
+"If u have any questions or research-related problems contact C. Gibson at "
+"011 858 760 5100. Full T&Cs at http://www.yal.mobi/vip"
 
 #: app.js:330 app.js:698
 msgid ""
@@ -245,7 +245,7 @@ msgid ""
 msgstr ""
 "Thank u for ur report! Keep reporting & u may have a chance to be an "
 "official election day reporter where u can earn airtime or cash for ur "
-"contribution"
+"contrib"
 
 #: app.js:664
 msgid ""
@@ -390,7 +390,8 @@ msgstr "Main Menu"
 
 #: answerwinquiz.js:140
 msgid "Please give us your cellphone number so we can send you your airtime!"
-msgstr "Please give us your cellphone number so we can send you your airtime!"
+msgstr ""
+"Please give us your cellphone number so you stand a chance to win airtime!"
 
 #: vipquiz.js:20
 msgid "During the past year, have you attended a demonstration or protest?"
@@ -630,7 +631,7 @@ msgid ""
 "door in your community to mobilize voters?"
 msgstr ""
 "During the past 2 weeks, how often have party agents gone door to door in ur "
-"community 2 mobilize voters?"
+"community ?"
 
 #: whatsupquiz.js:68
 msgid ""
@@ -695,8 +696,7 @@ msgstr "Always"
 #: whatsupquiz.js:152
 msgid ""
 "In South Africa, it is sometimes necessary to use violence for a just cause:"
-msgstr ""
-"In South Africa, it is sometimes necessary to use violence for a just cause:"
+msgstr "In SA, its sometimes necessary 2 use violence 4 a just cause:"
 
 #: whatsupquiz.js:168
 msgid ""
