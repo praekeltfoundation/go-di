@@ -1,0 +1,132 @@
+{
+    "layout": [
+        {
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Registered Participants",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "registered.participants",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total VIP Answered Questions",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "vip.total.questions",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total VIP Quizzes Completed",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "vip.quiz.complete",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Whatsup Answered Questions",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "whatsup.total.questions",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Whatsup Quizzes Completed",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "whatsup.quiz.complete",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Answer and Win Answered Questions",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "answerwin.total.questions",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Answer and Win Quizzes Completed",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "answerwin.quiz.complete",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Total Reports Sent",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "total.reports",
+                "aggregator": "last"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "1d",
+            "name": "Average visits per user",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "avg.visits",
+                "aggregator": "avg"
+            }
+        },{
+            "type": "diamondash.widgets.lvalue.LValueWidget",
+            "time_range": "14d",
+            "name": "Total visits per user",
+            "target": {
+                "metric_type": "account",
+                "store": "di_test_app",
+                "name": "sum.visits",
+                "aggregator": "sum"
+            }
+        },
+        {
+            "type": "diamondash.widgets.graph.GraphWidget",
+            "name": "Total Users and Total Registrations per Week",
+            "width": 12,
+            "time_range": "14d",
+            "bucket_size": "1h",
+            "metrics": [
+                {
+                    "name": "Total Users",
+                    "target": {
+                        "metric_type": "account",
+                        "store": "di_test_app",
+                        "name": "unique.participants",
+                        "aggregator": "last"
+                    }
+                },
+                {
+                    "name": "Total Registrations",
+                    "target": {
+                        "metric_type": "account",
+                        "store": "di_test_app",
+                        "name": "registered.participants",
+                        "aggregator": "last"
+                    }
+                }
+            ]
+        }
+    ]
+}

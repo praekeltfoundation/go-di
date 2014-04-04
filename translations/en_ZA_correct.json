@@ -1,0 +1,603 @@
+{
+    "": {
+        "project-id-version": "VIP USSD",
+        "pot-creation-date": "2014-04-04 04:34:+0200",
+        "po-revision-date": "2014-04-04 17:14+0200",
+        "last-translator": "",
+        "language-team": "LANGUAGE <LL@li.org>",
+        "language": "en_ZA",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "x-generator": "Poedit 1.6.4",
+        "plural-forms": "nplurals=2; plural=(n != 1);"
+    },
+    "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
+        null,
+        "Tnx 4 joining! We need ur voting ward. Type ur home address & we'll work it out. This will is prvt, only ur voting ward will be stored &u will be anonymous."
+    ],
+    "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
+        null,
+        "Tnx 4 volunteering 2 be a citizen reporter for the '14 elections! Start by answering questions or report election activity! Dial back in to*120*7692# begin!"
+    ],
+    "Welcome to Voting is Power! Start by choosing your language:": [
+        null,
+        "Welcome to Voting is Power! Start by choosing your language:"
+    ],
+    "English": [
+        null,
+        "English"
+    ],
+    "Afrikaans": [
+        null,
+        "Afrikaans"
+    ],
+    "Zulu": [
+        null,
+        "isiZulu"
+    ],
+    "It's election time! Do u think ur vote matters?": [
+        null,
+        "It's election time! Do u think ur vote matters?"
+    ],
+    "YES every vote matters": [
+        null,
+        "YES very vote matters"
+    ],
+    "NO but I'll vote anyway": [
+        null,
+        "NO but I'll vote anyway"
+    ],
+    "NO so I'm NOT voting": [
+        null,
+        "NO so I'm NOT voting"
+    ],
+    "I'm NOT REGISTERED to vote": [
+        null,
+        "I'm NOT REGISTRD to vote"
+    ],
+    "I'm TOO YOUNG to vote": [
+        null,
+        "I'm 2 YOUNG to vote"
+    ],
+    "Please accept the terms and conditions to get started.": [
+        null,
+        "Please accept the terms and conditions to get started"
+    ],
+    "Accept & Join": [
+        null,
+        "Accept & Join"
+    ],
+    "Read t&c": [
+        null,
+        "Read t&c"
+    ],
+    "Quit": [
+        null,
+        "Quit"
+    ],
+    "University of California San Diego requests ur consent to act as a research subject for improving electoral performance through citizen engagement in SA.": [
+        null,
+        "VIP:Voice is a research proj by Praekelt Fdn, Democracy Intl & the U of California San Diego. Anonymous questions may be asked & stored"
+    ],
+    "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology to improve how elections r monitored by citizen volunteers.": [
+        null,
+        "U cn withdraw, refuse 2 answer questions or take part. U may be excluded w/out notice. U will be informed of new info that may affect u.1"
+    ],
+    "If u participate,we will ask questions about urself&ur observations of the elections.U will b anonymous.Ur answers will be kept confidential&won't b shared.": [
+        null,
+        "If u participate,we'll ask questions about u & ur obs of the elections.U'll b anonymous.Answers are confidential&won't b shared. 1. Prev 2. Next 3. Exit"
+    ],
+    "To view full T&Cs please visit www.yal.mobi/vip.": [
+        null,
+        "If u have any questions or research-related problems contact C. Gibson at 011 858 760 5100. Full T&Cs at http://www.yal.mobi/vip"
+    ],
+    "1. Prev\n2. Next\n3. Exit": [
+        null,
+        "1. Prev\n2. Next\n3. Exit"
+    ],
+    "Thank you for your time. Remember, you can always reconsider becoming a citizen reporter.": [
+        null,
+        "Thank you for your time. Remember, you can always reconsider becoming a citizen reporter."
+    ],
+    "Please carefully enter your address again: for eg: 12 main street pretoria": [
+        null,
+        "Please carefully enter your address again: for e.g.: 12 main street pretoria"
+    ],
+    "Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
+        null,
+        "Tx 4 joining! We need ur voting ward. Type ur home address & we'll work it out. This is prvt, only ur voting ward will be stored &u will be anonymous"
+    ],
+    "Not my address": [
+        null,
+        "Not my address"
+    ],
+    "Still not my address": [
+        null,
+        "Still not my address"
+    ],
+    "Choose your area:": [
+        null,
+        "Choose your area:"
+    ],
+    "Welcome to VIP!": [
+        null,
+        "Welcome to VIP!"
+    ],
+    "Answer & win!": [
+        null,
+        "Answer & win!"
+    ],
+    "VIP Quiz": [
+        null,
+        "VIP Quiz"
+    ],
+    "Report an Election Activity": [
+        null,
+        "Report an Election Activity"
+    ],
+    "View VIP results...": [
+        null,
+        "View VIP results"
+    ],
+    "What's up?": [
+        null,
+        "What's up?"
+    ],
+    "About": [
+        null,
+        "About"
+    ],
+    "End": [
+        null,
+        "End"
+    ],
+    "Thanks, u have answered all the questions in this section.": [
+        null,
+        "Thanks, u have answered all the questions in this section."
+    ],
+    "Main Menu": [
+        null,
+        "Main Menu"
+    ],
+    "Party going door-to-door": [
+        null,
+        "Party going door-to-door"
+    ],
+    "Party intimidating voters": [
+        null,
+        "Party intimidating voters"
+    ],
+    "Party distributing food/money/gift": [
+        null,
+        "Party distributing food/money"
+    ],
+    "Campaign rally": [
+        null,
+        "Campaign rally"
+    ],
+    "Campaign violence": [
+        null,
+        "Campaign violence"
+    ],
+    "Protest/Demonstration": [
+        null,
+        "Protest/Demonstrtn"
+    ],
+    "Choose a report type:": [
+        null,
+        "Report type:"
+    ],
+    "What is the title of your report?": [
+        null,
+        "What is the title of your report?"
+    ],
+    "Where did this event happen? Please be as specific as possible and give address and city.": [
+        null,
+        "Where did this event happen? Please be as specific as possible and give address and city."
+    ],
+    "Thank you for your report! Keep up the reporting & you may have a chance to be chosen as an official election day reporter where you can earn airtime or cash for your contribution.": [
+        null,
+        "Thank u for ur report! Keep reporting & u may have a chance to be an official election day reporter where u can earn airtime or cash for ur contrib"
+    ],
+    "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted. View results at www.url.com": [
+        null,
+        "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted."
+    ],
+    "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will engage South Africans from all walks of life to report on electoral activities,": [
+        null,
+        "VIP-Ask is a multichannel political engagement portal.VIP: Ask will engage S. Africans from all walks of life to report on electoral activities,"
+    ],
+    "voice their opinions on current issues surrounding the elections, and report on election processes on voting day.": [
+        null,
+        "voice their opinions on current issues surrounding the elections, and report on election processes on voting day."
+    ],
+    "VIP:Ask is a partnership between academics, Democracy International, Livity Africa and the Praekelt Foundation": [
+        null,
+        "VIP:Ask is a partnership between academics, Democracy International, Livity Africa and the Praekelt Foundation"
+    ],
+    "Bye.": [
+        null,
+        "Bye."
+    ],
+    "I am...": [
+        null,
+        "I am..."
+    ],
+    "Male": [
+        null,
+        "Male"
+    ],
+    "Female": [
+        null,
+        "Female"
+    ],
+    "How old are you?": [
+        null,
+        "How old are you?"
+    ],
+    "u14": [
+        null,
+        "u15"
+    ],
+    "15-19": [
+        null,
+        "15-17"
+    ],
+    "20-29": [
+        null,
+        "18-29"
+    ],
+    "30-39": [
+        null,
+        "30-39"
+    ],
+    "40-49": [
+        null,
+        "40-49"
+    ],
+    "50+": [
+        null,
+        "50+"
+    ],
+    "Did you vote in the 2009 election?": [
+        null,
+        "Did you vote in the 2009 election?"
+    ],
+    "Yes": [
+        null,
+        "Yes"
+    ],
+    "No, could not/was not registered": [
+        null,
+        "No, could not/was not registered"
+    ],
+    "No, did not want to": [
+        null,
+        "No, did not want to"
+    ],
+    "No, other": [
+        null,
+        "No, other"
+    ],
+    "Skip": [
+        null,
+        "Skip"
+    ],
+    "Black African": [
+        null,
+        "Black African"
+    ],
+    "Coloured": [
+        null,
+        "Coloured"
+    ],
+    "Indian/Asian": [
+        null,
+        "Indian/Asian"
+    ],
+    "White": [
+        null,
+        "White"
+    ],
+    "Other": [
+        null,
+        "Other"
+    ],
+    "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!": [
+        null,
+        "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!"
+    ],
+    "Please give us your cellphone number so we can send you your airtime!": [
+        null,
+        "Please give us your cellphone number so you stand a chance to win airtime!"
+    ],
+    "During the past year, have you attended a demonstration or protest?": [
+        null,
+        "During the past year, have you attended a demonstration or protest?"
+    ],
+    "Yes, many": [
+        null,
+        "Yes, many"
+    ],
+    "Yes, a few": [
+        null,
+        "Yes, a few"
+    ],
+    "No": [
+        null,
+        "No"
+    ],
+    "Are you registered to vote in the upcoming elections?": [
+        null,
+        "Are you registered to vote in the upcoming elections?"
+    ],
+    "Unsure": [
+        null,
+        "Unsure"
+    ],
+    "How likely is it that you will vote in the upcoming election?": [
+        null,
+        "How likely is it that you will vote in the upcoming election?"
+    ],
+    "Very likely": [
+        null,
+        "Very likely"
+    ],
+    "Somewhat likely": [
+        null,
+        "Somewhat likely"
+    ],
+    "Somewhat unlikely": [
+        null,
+        "Somewhat unlikely"
+    ],
+    "Very unlikely": [
+        null,
+        "Very unlikely"
+    ],
+    "Which political party do you feel close to?": [
+        null,
+        "Which political party do you feel close to?"
+    ],
+    "ANC": [
+        null,
+        "ANC"
+    ],
+    "Agang": [
+        null,
+        "Agang"
+    ],
+    "COPE": [
+        null,
+        "COPE"
+    ],
+    "DA": [
+        null,
+        "DA"
+    ],
+    "EFF": [
+        null,
+        "EFF"
+    ],
+    "IFP": [
+        null,
+        "IFP"
+    ],
+    "I don't feel close to a party": [
+        null,
+        "I don't feel close to a party"
+    ],
+    "Would you like to continue answering questions? There are 12 in total.": [
+        null,
+        "Would you like to continue answering questions? There are 12 in total."
+    ],
+    "Continue": [
+        null,
+        "Continue"
+    ],
+    "During the past year, has your community had demonstrations or protests?": [
+        null,
+        "During the past year, has your community had demonstrations or protests?"
+    ],
+    "Yes, several times": [
+        null,
+        "Yes, several times"
+    ],
+    "Yes, once or twice": [
+        null,
+        "Yes, once or twice"
+    ],
+    "If your community has had demonstrations or protests in the last year, were they violent?": [
+        null,
+        "If your community has had demonstrations or protests in the last year, were they violent?"
+    ],
+    "Not applicable": [
+        null,
+        "Not applicable"
+    ],
+    "How easy is it for your neighbors to find out if you voted?": [
+        null,
+        "How easy is it for your neighbors to find out if you voted?"
+    ],
+    "Very easy": [
+        null,
+        "Very easy"
+    ],
+    "Somewhat easy": [
+        null,
+        "Somewhat easy"
+    ],
+    "Somewhat difficult": [
+        null,
+        "Somewhat difficult"
+    ],
+    "Very difficult": [
+        null,
+        "Very difficult"
+    ],
+    "People in my neighborhood look down on those who do not vote:": [
+        null,
+        "People in my neighborhood look down on those who do not vote:"
+    ],
+    "Strongly agree": [
+        null,
+        "Strongly agree"
+    ],
+    "Somewhat agree": [
+        null,
+        "Somewhat agree"
+    ],
+    "Somewhat disagree": [
+        null,
+        "Somewhat disagree"
+    ],
+    "Strongly disagree": [
+        null,
+        "Strongly disagree"
+    ],
+    "How do you rate the overall performance of President Zuma?": [
+        null,
+        "How do you rate the overall performance of President Zuma?"
+    ],
+    "Excellent": [
+        null,
+        "Excellent"
+    ],
+    "Good": [
+        null,
+        "Good"
+    ],
+    "Just Fair": [
+        null,
+        "Just Fair"
+    ],
+    "Poor": [
+        null,
+        "Poor"
+    ],
+    "How do you rate the overall performance of your local government councillor?": [
+        null,
+        "How do you rate the overall performance of your local government councillor?"
+    ],
+    "Which party has contacted you the most during this election campaign?": [
+        null,
+        "Which party has contacted you the most during this election campaign?"
+    ],
+    "None, I have not been contacted": [
+        null,
+        "None, I have not been contacted"
+    ],
+    "During the past two weeks, have you attended a campaign rally?": [
+        null,
+        "During the past two weeks, have you attended a campaign rally?"
+    ],
+    "How satisfied are you with the way democracy works in South Africa?": [
+        null,
+        "How satisfied are you with the way democracy works in South Africa?"
+    ],
+    "Very satisfied": [
+        null,
+        "Very satisfied"
+    ],
+    "Somewhat satisfied": [
+        null,
+        "Somewhat satisfied"
+    ],
+    "Dissatisfied": [
+        null,
+        "Dissatisfied"
+    ],
+    "Very dissatisfied": [
+        null,
+        "Very dissatisfied"
+    ],
+    "During the past two weeks, how frequently have campaign rallies occurred in your community?": [
+        null,
+        "During the past two weeks, how frequently have campaign rallies occurred in your community?"
+    ],
+    "Often": [
+        null,
+        "Often"
+    ],
+    "Several times": [
+        null,
+        "Several times"
+    ],
+    "Once or twice": [
+        null,
+        "Once or twice"
+    ],
+    "Never": [
+        null,
+        "Never"
+    ],
+    "During the past two weeks, how frequently have party agents gone door to door in your community to mobilize voters?": [
+        null,
+        "During the past 2 weeks, how often have party agents gone door to door in ur community ?"
+    ],
+    "During the past two weeks, how frequently have party agents intimidated voters in your community?": [
+        null,
+        "During the past two weeks, how frequently have party agents intimidated voters in your community?"
+    ],
+    "How much do you trust the ANC?": [
+        null,
+        "How much do you trust the ANC?"
+    ],
+    "A lot": [
+        null,
+        "A lot"
+    ],
+    "Some": [
+        null,
+        "Some"
+    ],
+    "Not much": [
+        null,
+        "Not much"
+    ],
+    "Not at all": [
+        null,
+        "Not at all"
+    ],
+    "No opinion": [
+        null,
+        "No opinion"
+    ],
+    "How much do you trust the Democratic Alliance (DA)?": [
+        null,
+        "How much do you trust the Democratic Alliance (DA)?"
+    ],
+    "How much do you trust the Economic Freedom Fighters (EFF)?": [
+        null,
+        "How much do you trust the Economic Freedom Fighters (EFF)?"
+    ],
+    "During the past year, how often have you or anyone in your family gone without enough food to eat?": [
+        null,
+        "During the past year, how often have u or anyone in ur family gone without enough food to eat?"
+    ],
+    "Sometimes": [
+        null,
+        "Sometimes"
+    ],
+    "Many times": [
+        null,
+        "Many times"
+    ],
+    "Always": [
+        null,
+        "Always"
+    ],
+    "In South Africa, it is sometimes necessary to use violence for a just cause:": [
+        null,
+        "In SA, its sometimes necessary 2 use violence 4 a just cause:"
+    ],
+    "Sometimes not voting is the best way to express your political preferences:": [
+        null,
+        "Sometimes not voting is the best way to express your political preferences:"
+    ],
+    "Would you like to continue answering questions? There are 10 in total.": [
+        null,
+        "Would you like to continue answering questions? There are 10 in total."
+    ]
+}
