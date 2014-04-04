@@ -42,7 +42,8 @@ describe("app", function() {
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
-                    ushahidi_map: 'https://godi.crowdmap.com/api'
+                    ushahidi_map: 'https://godi.crowdmap.com/api',
+                    kv_group: 'tests'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -390,6 +391,7 @@ describe("app", function() {
                     .setup.user.addr("+273123")
                     .setup(function(api) {
                         api.kv.store['test_app.registered.participants'] = 3;
+                        api.kv.store['tests.registered.participants'] = 8;
                     })
                     .setup.user.state('states:registration:tandc')
                     .input('1');
@@ -414,6 +416,13 @@ describe("app", function() {
                 return tester
                     .check(function(api) {
                         assert.equal(api.kv.store['test_app.registered.participants'], 4);
+                    }).run();
+            });
+
+            it("should increment global 'registered.participants' kv store",function() {
+                return tester
+                    .check(function(api) {
+                        assert.equal(api.kv.store['tests.registered.participants'], 9);
                     }).run();
             });
 
@@ -1038,6 +1047,7 @@ describe("app", function() {
                                     report_type:"1"
                                 }
                             });
+                            api.kv.store['tests.total.reports'] = 8;
                         })
                         .setup.user.state('states:report:verify_location',{
                             creator_opts: {
@@ -1108,6 +1118,13 @@ describe("app", function() {
                             assert.equal(api.kv.store['test_app.total.reports'], 1);
                         }).run();
                 });
+
+                it("should incr global 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.kv.store['tests.total.reports'], 9);
+                        }).run();
+                });
             });
 
             describe("when user selects 'Not my address' from the list",function() {
@@ -1130,6 +1147,7 @@ describe("app", function() {
                                     report_type:"1"
                                 }
                             });
+                            api.kv.store['tests.total.reports'] =1;
                         })
                         .setup.user.state('states:report:verify_location',{
                             creator_opts: {
@@ -1168,6 +1186,13 @@ describe("app", function() {
                     return tester
                         .check(function(api) {
                             assert.equal(_.isUndefined(api.kv.store['test_app.total.reports']), true);
+                        }).run();
+                });
+
+                it("should not incr global 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.kv.store['tests.total.reports'], 1);
                         }).run();
                 });
             });
@@ -1356,9 +1381,9 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
-                        api.kv.store['test_app.registered.participants'] = 3;
-                        api.kv.store['test_app.total.questions'] = 4;
-                        api.kv.store['test_app.total.reports'] = 5;
+                        api.kv.store['tests.registered.participants'] = 3;
+                        api.kv.store['tests.total.questions'] = 4;
+                        api.kv.store['tests.total.reports'] = 5;
                     })
                     .setup.user.state("states:menu")
                     .input("4")

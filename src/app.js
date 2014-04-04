@@ -495,8 +495,16 @@ di.app = function() {
             return self.im.api_request('kv.get', {key: [self.store_name, name].join('.')});
         };
 
+        self.get_group_kv = function(name) {
+            return self.im.api_request('kv.get', {key: [self.im.config.kv_group, name].join('.')});
+        };
+
         self.incr_kv = function(name) {
-            return self.im.api_request('kv.incr', {key: [self.store_name, name].join('.')});
+            return self.im
+                .api_request('kv.incr', {key: [self.im.config.kv_group, name].join('.')})
+                .then(function(result) {
+                    return self.im.api_request('kv.incr', {key: [self.store_name, name].join('.')});
+                });
         };
 
         self.states.add('states:report',function(name) {
@@ -669,9 +677,9 @@ di.app = function() {
 
         self.states.add('states:results',function(name) {
                 return Q.all([
-                    self.get_kv('registered.participants'),
-                    self.get_kv('total.questions'),
-                    self.get_kv('total.reports')
+                    self.get_group_kv('registered.participants'),
+                    self.get_group_kv('total.questions'),
+                    self.get_group_kv('total.reports')
                 ])
                 .spread(function(registered, questions, reports) {
                     return new EndState(name, {
