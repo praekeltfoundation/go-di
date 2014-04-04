@@ -211,7 +211,6 @@ di.app = function() {
             return self
                 .incr_kv('registered.participants')
                 .then(function(result) {
-                    console.log(result);
                     return self.im.metrics.fire.last('registered.participants',result.value);
                 });
         };
@@ -501,12 +500,10 @@ di.app = function() {
         };
 
         self.incr_kv = function(name) {
-            console.log(self.store_name);
             return self.im
-                .api_request('kv.incr', {key: [self.store_name, name].join('.')})
+                .api_request('kv.incr', {key: [self.im.config.kv_group, name].join('.')})
                 .then(function(result) {
-                    console.log('kv.incr'+result);
-                    return self.im.api_request('kv.incr', {key: [self.im.config.kv_group, name].join('.')});
+                    return self.im.api_request('kv.incr', {key: [self.store_name, name].join('.')});
                 });
         };
 

@@ -391,6 +391,7 @@ describe("app", function() {
                     .setup.user.addr("+273123")
                     .setup(function(api) {
                         api.kv.store['test_app.registered.participants'] = 3;
+                        api.kv.store['tests.registered.participants'] = 8;
                     })
                     .setup.user.state('states:registration:tandc')
                     .input('1');
@@ -403,12 +404,10 @@ describe("app", function() {
                     }).run();
             });
 
-            it.only("should fire a 'registered.participants' metric",function() {
+            it("should fire a 'registered.participants' metric",function() {
                 return tester
                     .check(function(api) {
-                        console.log(api.kv.store['test_app.registered.participants']);
                         var metrics = api.metrics.stores.test_app;
-                        console.log(metrics);
                         assert.deepEqual(metrics['registered.participants'].values, [4]);
                     }).run();
             });
@@ -417,6 +416,13 @@ describe("app", function() {
                 return tester
                     .check(function(api) {
                         assert.equal(api.kv.store['test_app.registered.participants'], 4);
+                    }).run();
+            });
+
+            it("should increment global 'registered.participants' kv store",function() {
+                return tester
+                    .check(function(api) {
+                        assert.equal(api.kv.store['tests.registered.participants'], 9);
                     }).run();
             });
 
@@ -1041,6 +1047,7 @@ describe("app", function() {
                                     report_type:"1"
                                 }
                             });
+                            api.kv.store['tests.total.reports'] = 8;
                         })
                         .setup.user.state('states:report:verify_location',{
                             creator_opts: {
@@ -1115,7 +1122,7 @@ describe("app", function() {
                 it("should incr global 'total.reports' in kv-store",function() {
                     return tester
                         .check(function(api) {
-                            assert.equal(api.kv.store['tests.total.reports'], 1);
+                            assert.equal(api.kv.store['tests.total.reports'], 9);
                         }).run();
                 });
             });
@@ -1140,6 +1147,7 @@ describe("app", function() {
                                     report_type:"1"
                                 }
                             });
+                            api.kv.store['tests.total.reports'] =1;
                         })
                         .setup.user.state('states:report:verify_location',{
                             creator_opts: {
@@ -1181,10 +1189,10 @@ describe("app", function() {
                         }).run();
                 });
 
-                it("should not incr group 'total.reports' in kv-store",function() {
+                it("should not incr global 'total.reports' in kv-store",function() {
                     return tester
                         .check(function(api) {
-                            assert.equal(_.isUndefined(api.kv.store['tests.total.reports']), true);
+                            assert.equal(api.kv.store['tests.total.reports'], 1);
                         }).run();
                 });
             });
