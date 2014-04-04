@@ -177,6 +177,16 @@ describe("app", function() {
                     }).run();
             });
 
+            it("should save their delivery_class as an extra",function() {
+                return tester
+                    .setup.user.addr('+273123')
+                    .start()
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.delivery_class,'ussd');
+                    });
+            });
+
             it("should fire a 'visits' metric",function() {
                 return tester
                     .start()
