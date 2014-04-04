@@ -152,7 +152,11 @@ di.quiz = function() {
              * My test cases wont initialize to it otherwise.
              * */
             app.states.add(self.begin,function(name,opts) {
-                return self.create.random(opts);
+                if (self.is_complete()) {
+                    return app.states.create('states:quiz:end');
+                } else {
+                    return self.create.random(opts);
+                }
             });
         };
 
@@ -539,7 +543,11 @@ di.quiz.answerwin = function() {
         };
 
         app.states.add("states:quiz:answerwin:begin",function(name) {
-            return app.states.create(self.construct_state_name('gender'));
+            if (!self.is_complete()) {
+                return app.states.create(self.construct_state_name('gender'));
+            } else {
+                return app.states.create('states:quiz:end');
+            }
         });
 
         self.add_question('gender',function(name) {
@@ -986,10 +994,15 @@ di.app = function() {
             self.store_name = self.im.config.name;
 
             self.im.on('session:new',function() {
+                //Sets delivery class of contact.
+                if (_.isUndefined(self.contact.extra.delivery_class)) {
+                    self.contact.extra.delivery_class = self.im.config.delivery_class;
+                }
                 return Q.all([
                     self.im.metrics.fire.inc("sum.visits"),
                     self.im.metrics.fire.avg("avg.visits",1),
-                    self.get_unique_users()
+                    self.get_unique_users(),
+                    self.im.contacts.save(self.contact)
                 ]);
             });
 
@@ -1214,12 +1227,17 @@ di.app = function() {
             return new FreeText(name,{
                 question: question,
                 check: function(content) {
-                    return self
-                        .http.get('http://wards.code4sa.org/',{
-                            params: {
-                                address: content,
-                                database: 'vd_2014'
-                            }
+                    self.contact.extra.raw_user_address = content;
+                    return self.im.contacts
+                        .save(self.contact)
+                        .then(function() {
+                            return self
+                                .http.get('http://wards.code4sa.org/',{
+                                    params: {
+                                        address: content,
+                                        database: 'vd_2014'
+                                    }
+                                });
                         })
                         .then(function(resp) {
                             response = resp;
@@ -1325,12 +1343,29 @@ di.app = function() {
             });
         });
 
+        self.states.add('states:quiz:end',function(name){
+            return new MenuState(name, {
+                question: $('Thanks, u have answered all the questions in this section.'),
+                choices: [
+                    new Choice('states:menu',$('Main Menu'))
+                ]
+            });
+        });
+
         self.get_kv = function(name) {
             return self.im.api_request('kv.get', {key: [self.store_name, name].join('.')});
         };
 
+        self.get_group_kv = function(name) {
+            return self.im.api_request('kv.get', {key: [self.im.config.kv_group, name].join('.')});
+        };
+
         self.incr_kv = function(name) {
-            return self.im.api_request('kv.incr', {key: [self.store_name, name].join('.')});
+            return self.im
+                .api_request('kv.incr', {key: [self.im.config.kv_group, name].join('.')})
+                .then(function(result) {
+                    return self.im.api_request('kv.incr', {key: [self.store_name, name].join('.')});
+                });
         };
 
         self.states.add('states:report',function(name) {
@@ -1391,8 +1426,8 @@ di.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    return self
-                        .http.get("https://maps.googleapis.com/maps/api/geocode/json",{
+                    return self.http
+                        .get("https://maps.googleapis.com/maps/api/geocode/json",{
                             params: {
                                 address: self.get_location_str(content),
                                 sensor: "false"
@@ -1503,9 +1538,9 @@ di.app = function() {
 
         self.states.add('states:results',function(name) {
                 return Q.all([
-                    self.get_kv('registered.participants'),
-                    self.get_kv('total.questions'),
-                    self.get_kv('total.reports')
+                    self.get_group_kv('registered.participants'),
+                    self.get_group_kv('total.questions'),
+                    self.get_group_kv('total.reports')
                 ])
                 .spread(function(registered, questions, reports) {
                     return new EndState(name, {

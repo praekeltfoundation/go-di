@@ -627,10 +627,14 @@ describe("app", function() {
                         .input('1');
                 });
 
-                it("should return them to the main menu",function() {
+                it("should return them to the quiz end function",function() {
                     return tester
                         .check.interaction({
-                            state: 'states:menu'
+                            state: 'states:quiz:end',
+                            reply: [
+                                'Thanks, u have answered all the questions in this section.',
+                                '1. Main Menu'
+                            ].join('\n')
                         }).run();
                 });
 

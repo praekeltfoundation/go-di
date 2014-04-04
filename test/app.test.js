@@ -42,7 +42,8 @@ describe("app", function() {
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
-                    ushahidi_map: 'https://godi.crowdmap.com/api'
+                    ushahidi_map: 'https://godi.crowdmap.com/api',
+                    kv_group: 'tests'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -174,6 +175,16 @@ describe("app", function() {
                         assert.deepEqual(metrics['sum.visits'].values, [1]);
                         assert.deepEqual(metrics['avg.visits'].values, [1]);
                     }).run();
+            });
+
+            it("should save their delivery_class as an extra",function() {
+                return tester
+                    .setup.user.addr('+273123')
+                    .start()
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.delivery_class,'ussd');
+                    });
             });
 
             it("should fire a 'visits' metric",function() {
@@ -390,6 +401,7 @@ describe("app", function() {
                     .setup.user.addr("+273123")
                     .setup(function(api) {
                         api.kv.store['test_app.registered.participants'] = 3;
+                        api.kv.store['tests.registered.participants'] = 8;
                     })
                     .setup.user.state('states:registration:tandc')
                     .input('1');
@@ -414,6 +426,13 @@ describe("app", function() {
                 return tester
                     .check(function(api) {
                         assert.equal(api.kv.store['test_app.registered.participants'], 4);
+                    }).run();
+            });
+
+            it("should increment global 'registered.participants' kv store",function() {
+                return tester
+                    .check(function(api) {
+                        assert.equal(api.kv.store['tests.registered.participants'], 9);
                     }).run();
             });
 
@@ -477,6 +496,17 @@ describe("app", function() {
                         var url = req.url;
                         assert.equal(url,'http://wards.code4sa.org/');
                         assert.equal(req.params.address ,'21 conduit street');
+                    }).run();
+            });
+
+            it("should save their raw address in contacts",function() {
+                return tester
+                    .setup.user.addr("+273123")
+                    .setup.user.state('states:address')
+                    .input('21 conduit street')
+                    .check(function(api){
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.raw_user_address,"21 conduit street");
                     }).run();
             });
 
@@ -1027,6 +1057,7 @@ describe("app", function() {
                                     report_type:"1"
                                 }
                             });
+                            api.kv.store['tests.total.reports'] = 8;
                         })
                         .setup.user.state('states:report:verify_location',{
                             creator_opts: {
@@ -1097,6 +1128,13 @@ describe("app", function() {
                             assert.equal(api.kv.store['test_app.total.reports'], 1);
                         }).run();
                 });
+
+                it("should incr global 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.kv.store['tests.total.reports'], 9);
+                        }).run();
+                });
             });
 
             describe("when user selects 'Not my address' from the list",function() {
@@ -1119,6 +1157,7 @@ describe("app", function() {
                                     report_type:"1"
                                 }
                             });
+                            api.kv.store['tests.total.reports'] =1;
                         })
                         .setup.user.state('states:report:verify_location',{
                             creator_opts: {
@@ -1157,6 +1196,13 @@ describe("app", function() {
                     return tester
                         .check(function(api) {
                             assert.equal(_.isUndefined(api.kv.store['test_app.total.reports']), true);
+                        }).run();
+                });
+
+                it("should not incr global 'total.reports' in kv-store",function() {
+                    return tester
+                        .check(function(api) {
+                            assert.equal(api.kv.store['tests.total.reports'], 1);
                         }).run();
                 });
             });
@@ -1345,9 +1391,9 @@ describe("app", function() {
                 return tester
                     .setup.user.addr("+273123")
                     .setup(function(api) {
-                        api.kv.store['test_app.registered.participants'] = 3;
-                        api.kv.store['test_app.total.questions'] = 4;
-                        api.kv.store['test_app.total.reports'] = 5;
+                        api.kv.store['tests.registered.participants'] = 3;
+                        api.kv.store['tests.total.questions'] = 4;
+                        api.kv.store['tests.total.reports'] = 5;
                     })
                     .setup.user.state("states:menu")
                     .input("4")
