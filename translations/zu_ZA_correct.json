@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "USSD Zulu",
-        "pot-creation-date": "2014-04-03 11:52:+0200",
-        "po-revision-date": "2014-04-04 09:51+0200",
+        "pot-creation-date": "2014-04-04 04:34:+0200",
+        "po-revision-date": "2014-04-04 16:54+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "zu_ZA",
@@ -14,11 +14,11 @@
     },
     "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
         null,
-        "Sibonga! Ukuvota uding ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela. Ngeke siliveze igama lakho."
+        "Siyabonga! Sidinga inombolo ya Ward yakho. Phendula ngekheli lakho lasekhaya sikusize. Lokhu kuyimfihlo; sigcina iwadi lakho lokuvota kuphela."
     ],
     "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
         null,
-        "Sibonga ukuzikhethela kwakho ukuba ngobikayo ezinkethweni zika-2014! Qala ngokuphendula imibuzo noma ngokubika umcimbi wokhetho! Ukuqala, chofoza *120*7692#!"
+        "Sibonga ukuzikhethela kwakho ukuba zika-2014! Qala ngokuphendula imibuzo noma ngokubika umcimbi wokhetho! Ukuqala, chofoza *120*7692#!"
     ],
     "Welcome to Voting is Power! Start by choosing your language:": [
         null,
@@ -78,7 +78,7 @@
     ],
     "University of California San Diego requests ur consent to act as a research subject for improving electoral performance through citizen engagement in SA.": [
         null,
-        "I-VIP:Voice yiprojekt yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzw imibuzo igcinwe lingavezw igama"
+        "I-VIP:Voice yiprojekt yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzwa imibuzo igcinwe lingavezwa igama"
     ],
     "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology to improve how elections r monitored by citizen volunteers.": [
         null,
@@ -152,6 +152,14 @@
         null,
         "Qeda"
     ],
+    "Thanks, u have answered all the questions in this section.": [
+        null,
+        "Siyabonga! Uphendule imibuzo yonke."
+    ],
+    "Main Menu": [
+        null,
+        "iMenyu Enkulu"
+    ],
     "Party going door-to-door": [
         null,
         "Inhlngno hamb' imizi ngemiz"
@@ -194,7 +202,7 @@
     ],
     "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted. View results at www.url.com": [
         null,
-        "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted."
+        "Ungumhlali o we si {{ registered }} o sebenza ngokubika ezinkethweni! Imibuzo engu {{ questions }} nemibiki engu {{ reports }} ekethweni isi thunyelwe. "
     ],
     "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will engage South Africans from all walks of life to report on electoral activities,": [
         null,
@@ -299,10 +307,6 @@
     "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!": [
         null,
         "Sibonga ukuzethula kabanzi ku-VIP! Uzothunyelelwa i-airtime yakho masinyane!"
-    ],
-    "Main Menu": [
-        null,
-        "iMenyu Enkulu"
     ],
     "Please give us your cellphone number so we can send you your airtime!": [
         null,

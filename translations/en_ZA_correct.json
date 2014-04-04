@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "VIP USSD",
-        "pot-creation-date": "2014-04-03 11:52:+0200",
-        "po-revision-date": "2014-04-04 09:54+0200",
+        "pot-creation-date": "2014-04-04 04:34:+0200",
+        "po-revision-date": "2014-04-04 17:14+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "en_ZA",
@@ -82,7 +82,7 @@
     ],
     "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology to improve how elections r monitored by citizen volunteers.": [
         null,
-        "U cn withdraw, refuse 2 answer questions or take part. U may be excluded w/out notice. U will be informed of new info that may affect u."
+        "U cn withdraw, refuse 2 answer questions or take part. U may be excluded w/out notice. U will be informed of new info that may affect u.1"
     ],
     "If u participate,we will ask questions about urself&ur observations of the elections.U will b anonymous.Ur answers will be kept confidential&won't b shared.": [
         null,
@@ -152,6 +152,14 @@
         null,
         "End"
     ],
+    "Thanks, u have answered all the questions in this section.": [
+        null,
+        "Thanks, u have answered all the questions in this section."
+    ],
+    "Main Menu": [
+        null,
+        "Main Menu"
+    ],
     "Party going door-to-door": [
         null,
         "Party going door-to-door"
@@ -190,7 +198,7 @@
     ],
     "Thank you for your report! Keep up the reporting & you may have a chance to be chosen as an official election day reporter where you can earn airtime or cash for your contribution.": [
         null,
-        "Thank u for ur report! Keep reporting & u may have a chance to be an official election day reporter where u can earn airtime or cash for ur contribution"
+        "Thank u for ur report! Keep reporting & u may have a chance to be an official election day reporter where u can earn airtime or cash for ur contrib"
     ],
     "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted. View results at www.url.com": [
         null,
@@ -198,7 +206,7 @@
     ],
     "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will engage South Africans from all walks of life to report on electoral activities,": [
         null,
-        "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will engage South Africans from all walks of life to report on electoral activities,"
+        "VIP-Ask is a multichannel political engagement portal.VIP: Ask will engage S. Africans from all walks of life to report on electoral activities,"
     ],
     "voice their opinions on current issues surrounding the elections, and report on election processes on voting day.": [
         null,
@@ -299,10 +307,6 @@
     "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!": [
         null,
         "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!"
-    ],
-    "Main Menu": [
-        null,
-        "Main Menu"
     ],
     "Please give us your cellphone number so we can send you your airtime!": [
         null,
@@ -530,7 +534,7 @@
     ],
     "During the past two weeks, how frequently have party agents gone door to door in your community to mobilize voters?": [
         null,
-        "During the past 2 weeks, how often have party agents gone door to door in ur community?"
+        "During the past 2 weeks, how often have party agents gone door to door in ur community ?"
     ],
     "During the past two weeks, how frequently have party agents intimidated voters in your community?": [
         null,
