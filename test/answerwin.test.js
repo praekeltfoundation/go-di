@@ -41,8 +41,28 @@ describe("app", function() {
                 });
         });
 
+        var answerwin_states = [
+            'states:quiz:answerwin:gender',
+            'states:quiz:answerwin:age',
+            'states:quiz:answerwin:2009election',
+            'states:quiz:answerwin:race'
+        ];
+
+        /**
+         * Returns a n subset of the questions to be used as the answered questions.
+         * */
+        var get_answered_answerwin_quiz_states = function(n) {
+            var states = answerwin_states.slice(0,n);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
         describe("when the user chooses to do the Answer & Win quiz from the main menu",function() {
-            it("should take them to the gender question of the quiz",function() {
+            describe("if they have not done the quiz before",function() {
+                it("should take them to the gender question of the quiz",function() {
                     return tester
                         .setup.user.addr("+273123")
                         .setup.user.state('states:menu')
@@ -55,6 +75,22 @@ describe("app", function() {
                                 '2. Female'
                             ].join('\n')
                         }).run();
+                });
+            });
+
+            describe("if they have done the quiz before",function() {
+                it("should take them to the end of the quiz state",function() {
+                    return tester
+                        .setup.user.addr("+273123")
+                        .setup.user({
+                            state: 'states:menu',
+                            answers: get_answered_answerwin_quiz_states(4)
+                        })
+                        .input('1')
+                        .check.interaction({
+                            state: 'states:quiz:end'
+                        }).run();
+                });
             });
         });
 

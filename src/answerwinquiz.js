@@ -50,7 +50,11 @@ di.quiz.answerwin = function() {
         };
 
         app.states.add("states:quiz:answerwin:begin",function(name) {
-            return app.states.create(self.construct_state_name('gender'));
+            if (!self.is_complete()) {
+                return app.states.create(self.construct_state_name('gender'));
+            } else {
+                return app.states.create('states:quiz:end');
+            }
         });
 
         self.add_question('gender',function(name) {

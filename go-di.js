@@ -152,7 +152,11 @@ di.quiz = function() {
              * My test cases wont initialize to it otherwise.
              * */
             app.states.add(self.begin,function(name,opts) {
-                return self.create.random(opts);
+                if (self.is_complete()) {
+                    return app.states.create('states:quiz:end');
+                } else {
+                    return self.create.random(opts);
+                }
             });
         };
 
@@ -539,7 +543,11 @@ di.quiz.answerwin = function() {
         };
 
         app.states.add("states:quiz:answerwin:begin",function(name) {
-            return app.states.create(self.construct_state_name('gender'));
+            if (!self.is_complete()) {
+                return app.states.create(self.construct_state_name('gender'));
+            } else {
+                return app.states.create('states:quiz:end');
+            }
         });
 
         self.add_question('gender',function(name) {
@@ -1214,12 +1222,17 @@ di.app = function() {
             return new FreeText(name,{
                 question: question,
                 check: function(content) {
-                    return self
-                        .http.get('http://wards.code4sa.org/',{
-                            params: {
-                                address: content,
-                                database: 'vd_2014'
-                            }
+                    self.contact.extra.raw_user_address = content;
+                    return self.im.contacts
+                        .save(self.contact)
+                        .then(function() {
+                            return self
+                                .http.get('http://wards.code4sa.org/',{
+                                    params: {
+                                        address: content,
+                                        database: 'vd_2014'
+                                    }
+                                });
                         })
                         .then(function(resp) {
                             response = resp;
@@ -1325,6 +1338,15 @@ di.app = function() {
             });
         });
 
+        self.states.add('states:quiz:end',function(name){
+            return new MenuState(name, {
+                question: $('Thanks, u have answered all the questions in this section.'),
+                choices: [
+                    new Choice('states:menu',$('Main Menu'))
+                ]
+            });
+        });
+
         self.get_kv = function(name) {
             return self.im.api_request('kv.get', {key: [self.store_name, name].join('.')});
         };
@@ -1391,8 +1413,8 @@ di.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    return self
-                        .http.get("https://maps.googleapis.com/maps/api/geocode/json",{
+                    return self.http
+                        .get("https://maps.googleapis.com/maps/api/geocode/json",{
                             params: {
                                 address: self.get_location_str(content),
                                 sensor: "false"
