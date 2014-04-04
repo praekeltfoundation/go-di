@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "VIP USSD",
         "pot-creation-date": "2014-04-03 11:52:+0200",
-        "po-revision-date": "2014-04-03 12:19+0200",
+        "po-revision-date": "2014-04-04 09:54+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "en_ZA",
@@ -18,7 +18,7 @@
     ],
     "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
         null,
-        "Tnx 4 volunteering 2 be a citizen reporter for the '14 elections! Start by answering questions or report election activity! Dial back in to*120*7692# 2 begin!"
+        "Tnx 4 volunteering 2 be a citizen reporter for the '14 elections! Start by answering questions or report election activity! Dial back in to*120*7692#Â 2 begin!"
     ],
     "Welcome to Voting is Power! Start by choosing your language:": [
         null,
@@ -102,7 +102,7 @@
     ],
     "Please carefully enter your address again: for eg: 12 main street pretoria": [
         null,
-        "Please carefully enter your address again: for eg: 12 main street pretoria"
+        "Please carefully enter your address again: for e.g.: 12 main street pretoria"
     ],
     "Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
         null,
@@ -138,7 +138,7 @@
     ],
     "View VIP results...": [
         null,
-        "View VIP results..."
+        "View VIP resultsâ€¦"
     ],
     "What's up?": [
         null,
@@ -230,15 +230,15 @@
     ],
     "u14": [
         null,
-        "u14"
+        "u15"
     ],
     "15-19": [
         null,
-        "15-19"
+        "15-17"
     ],
     "20-29": [
         null,
-        "20-29"
+        "18-29"
     ],
     "30-39": [
         null,

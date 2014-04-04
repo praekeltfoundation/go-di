@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: USSD Zulu\n"
 "POT-Creation-Date: 2014-04-03 11:52:+0200\n"
-"PO-Revision-Date: 2014-04-03 16:57+0200\n"
+"PO-Revision-Date: 2014-04-04 09:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zu_ZA\n"
@@ -28,9 +28,9 @@ msgid ""
 "started by answering questions or reporting election activity! Dial back in "
 "to *5555# to begin!"
 msgstr ""
-"Sibonga ukuzikhethela kwakho ukuba ngobikayo ezinkethweni zika'14! Qala "
+"Sibonga ukuzikhethela kwakho ukuba ngobikayo ezinkethweni zika-2014! Qala "
 "ngokuphendula imibuzo noma ngokubika umcimbi wokhetho! Ukuqala, chofoza "
-"*120*7692# uphendule!"
+"*120*7692#!"
 
 #: app.js:249
 msgid "Welcome to Voting is Power! Start by choosing your language:"
@@ -38,7 +38,7 @@ msgstr "Siyakwamukela ku-Ukuvota Kungamandla! Qala ngokukhetha ulimi lwakho:"
 
 #: app.js:251
 msgid "English"
-msgstr "Engels"
+msgstr "Isingisi"
 
 #: app.js:252
 msgid "Afrikaans"
@@ -54,7 +54,7 @@ msgstr "Yiskhathi sokhetho! Liyasiza yini ivoti lakho?"
 
 #: app.js:267
 msgid "YES every vote matters"
-msgstr "YEBO!"
+msgstr "YEBO"
 
 #: app.js:268
 msgid "NO but I'll vote anyway"
@@ -102,8 +102,8 @@ msgid ""
 "with mobile technology to improve how elections r monitored by citizen "
 "volunteers."
 msgstr ""
-"Ungahoxa, wenqabe ukuphendul imibuz. Ungakhishw ngaphandle kokwazisw. "
-"Uzokwazisw ngolwaz olusha ngababamb iqhaz"
+"Ungahoxa noma ubambe iqhaza. Ungakhishwa ngaphandle kokwaziswa. Uzokwaziswa "
+"ngolwaz olusha ngababamb iqhaza"
 
 #: app.js:316
 msgid ""
@@ -111,14 +111,14 @@ msgid ""
 "elections.U will b anonymous.Ur answers will be kept confidential&won't b "
 "shared."
 msgstr ""
-"Um ubamb' iqhaza,sizokubuz imibuz'ngwe nangokubonile ezinkethweni.Alizovezw "
-"igama lakho.Izimpendul zakho ziyimfihlo, azizobonisw abanye"
+"Uma ubamba iqhaza,sizokubuza imibuzo ngawe nangokubonile ezinkethweni."
+"Alizovezw igama lakho.Izimpendulo zakho ziyimfihlo"
 
 #: app.js:318
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
 "Uma uneminye imibuzo thinta CGibson kwethi 0118587605100. Ukubona imigomo "
-"nemibandela ephelele: yal.mobi/vip"
+"nemibandela ephelele: yal.mobi/vip\t"
 
 #: app.js:330 app.js:698
 msgid ""
@@ -149,7 +149,7 @@ msgid ""
 "stored &u will be anonymous."
 msgstr ""
 "Sibonga! Ukuvota uding ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho "
-"lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela."
+"lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela\t"
 
 #: app.js:445 app.js:604
 msgid "Not my address"
@@ -197,11 +197,11 @@ msgstr "Qeda"
 
 #: app.js:490
 msgid "Party going door-to-door"
-msgstr "Inhlngno hamb' imizi ngemizi"
+msgstr "Inhlngno hamb' imizi ngemiz"
 
 #: app.js:491
 msgid "Party intimidating voters"
-msgstr "Inhlngno sabisa abavoti"
+msgstr "Inhlngno sabisa bavoti"
 
 #: app.js:492
 msgid "Party distributing food/money/gift"
@@ -213,7 +213,7 @@ msgstr "Irali yomkhankso"
 
 #: app.js:494
 msgid "Campaign violence"
-msgstr "Udlame lokukhankasa"
+msgstr "Udlame lokukhankas"
 
 #: app.js:495
 msgid "Protest/Demonstration"
@@ -301,15 +301,15 @@ msgstr "Uneminyaka emingaki?"
 
 #: answerwinquiz.js:73
 msgid "u14"
-msgstr "ngaphansi kweyi-14"
+msgstr "ngaphansi kweyi-15"
 
 #: answerwinquiz.js:74
 msgid "15-19"
-msgstr "15-19"
+msgstr "15-17"
 
 #: answerwinquiz.js:75
 msgid "20-29"
-msgstr "20-29"
+msgstr "18-29"
 
 #: answerwinquiz.js:76
 msgid "30-39"
@@ -381,7 +381,7 @@ msgstr ""
 
 #: answerwinquiz.js:131 vipquiz.js:90 whatsupquiz.js:187
 msgid "Main Menu"
-msgstr "IMenyu Enkulu"
+msgstr "iMenyu Enkulu"
 
 #: answerwinquiz.js:140
 msgid "Please give us your cellphone number so we can send you your airtime!"
@@ -475,9 +475,7 @@ msgstr "Qhubeka"
 #: vipquiz.js:101
 msgid ""
 "During the past year, has your community had demonstrations or protests?"
-msgstr ""
-"Uma kukuthi umphakathi wangakini waba nayo imibhikisho ngonyaka odlule, "
-"yayinodlame yni?"
+msgstr "Onyakeni odlule, umphakathi wangakini ube nayo yini imibhikisho?"
 
 #: vipquiz.js:103
 msgid "Yes, several times"
@@ -566,15 +564,16 @@ msgstr "Ukuklelisa kanjani ukusebenza kwekhansela lendawo ngokubanzi?"
 
 #: vipquiz.js:195
 msgid "Which party has contacted you the most during this election campaign?"
-msgstr "Which party has contacted you the most during this election campaign?"
+msgstr ""
+"Iyiphi inhlangano ekuthinte kaningi kunezinye ngalo mkhankaso wokhetho?"
 
 #: vipquiz.js:197
 msgid "None, I have not been contacted"
-msgstr "None, I have not been contacted"
+msgstr "Ayikho"
 
 #: vipquiz.js:215
 msgid "During the past two weeks, have you attended a campaign rally?"
-msgstr "Emasontweni amabili edlule, ngabe uwuyihambele yini irali yomkhankaso?"
+msgstr "Emasontweni 2 edlule, ngabe uwuyihambele yini irali yomkhankaso?\t"
 
 #: whatsupquiz.js:20
 msgid "How satisfied are you with the way democracy works in South Africa?"
@@ -582,7 +581,7 @@ msgstr "Ugculiseke kangakanani yindlela intando yabantu esebenza ngayo kuleli?"
 
 #: whatsupquiz.js:22
 msgid "Very satisfied"
-msgstr "Ngigculiseke kakhlu"
+msgstr "Kakhulu"
 
 #: whatsupquiz.js:23
 msgid "Somewhat satisfied"
@@ -601,8 +600,8 @@ msgid ""
 "During the past two weeks, how frequently have campaign rallies occurred in "
 "your community?"
 msgstr ""
-"Emasontweni 2 edlule abezinhlangano bangene kangakanani imizi ngemizi "
-"ngakini benxenxa abavoti?"
+"Emasontweni 2 edlule abe maningi kangakanani amarali okukhankasela ukhetho "
+"emphakathin wangakini?"
 
 #: whatsupquiz.js:38 whatsupquiz.js:54 whatsupquiz.js:70
 msgid "Often"
@@ -610,11 +609,11 @@ msgstr "Kaningi"
 
 #: whatsupquiz.js:39 whatsupquiz.js:55 whatsupquiz.js:71
 msgid "Several times"
-msgstr "Izikhathi ezimbalwa"
+msgstr "Izikhath ezimbalwa"
 
 #: whatsupquiz.js:40 whatsupquiz.js:56 whatsupquiz.js:72 whatsupquiz.js:138
 msgid "Once or twice"
-msgstr "Kanye noma kabili"
+msgstr "1 noma 2"
 
 #: whatsupquiz.js:41 whatsupquiz.js:57 whatsupquiz.js:73 whatsupquiz.js:137
 msgid "Never"
@@ -625,15 +624,15 @@ msgid ""
 "During the past two weeks, how frequently have party agents gone door to "
 "door in your community to mobilize voters?"
 msgstr ""
-"Emasontweni 2 edlule abezinhlangano bangene kangakanani imizi ngemizi "
-"ngakini benxenxa abavoti?"
+"Emsontweni 2 edlule abezinhlangno bangene kangakanni imizi ngemiz ngakini "
+"benxenxa abavoti?"
 
 #: whatsupquiz.js:68
 msgid ""
 "During the past two weeks, how frequently have party agents intimidated "
 "voters in your community?"
 msgstr ""
-"Emasontweni 2 edlule abamele izinhlangano babesabise kangakanani abavoti "
+"Emsontweni 2 edlule abamele izinhlangano babesabise kangakanani abavoti "
 "ngakini?"
 
 #: whatsupquiz.js:84
@@ -672,31 +671,29 @@ msgstr "Uyethemba kangakanani iEconomic Freedom Fighters (EFF)?"
 msgid ""
 "During the past year, how often have you or anyone in your family gone "
 "without enough food to eat?"
-msgstr ""
-"Onyakeni odlule, wena nelungu labakini nalala kaningi kangakanani ningadlile?"
+msgstr "Onyakeni odlule, wena nelungu labakini nalala kaningi kangakanani?"
 
 #: whatsupquiz.js:139
 msgid "Sometimes"
-msgstr "Ngesinye isikhathi"
+msgstr "Ngesinye isikhath"
 
 #: whatsupquiz.js:140
 msgid "Many times"
-msgstr "Izikhathi eziningi"
+msgstr "Izikhath eziningi"
 
 #: whatsupquiz.js:141
 msgid "Always"
-msgstr "Izikhathi zonke"
+msgstr "Izikhath zonke"
 
 #: whatsupquiz.js:152
 msgid ""
 "In South Africa, it is sometimes necessary to use violence for a just cause:"
-msgstr ""
-"Kuleli zwe kuye kube nesidingo sokusebenzisa udlame ukufeza inhloso ethile:"
+msgstr "Nesidingo sokusebenzisa udlame ukufeza inhloso ethile:"
 
 #: whatsupquiz.js:168
 msgid ""
 "Sometimes not voting is the best way to express your political preferences:"
-msgstr "Ukungavoti kuye kube yindlela yokuveza ukuzikhethela ngokwepolitiki:"
+msgstr "Ukungavoti kuye kube yindlela yokuvez ukuzikhethela politiki:"
 
 #: whatsupquiz.js:184
 msgid "Would you like to continue answering questions? There are 10 in total."
