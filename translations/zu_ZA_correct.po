@@ -147,7 +147,7 @@ msgid ""
 "stored &u will be anonymous."
 msgstr ""
 "Sibonga! Ukuvota uding ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho "
-"lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela\t"
+"lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela"
 
 #: app.js:455 app.js:631
 msgid "Not my address"
