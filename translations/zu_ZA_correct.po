@@ -257,8 +257,7 @@ msgid ""
 "posts have been submitted. View results at www.url.com"
 msgstr ""
 "Ungumhlali o we si {{ registered }} o sebenza ngokubika ezinkethweni! "
-"Imibuzo engu {{ questions }} nemibiki engu {{ reports }} ekethweni isi "
-"thunyelwe. "
+"Izimibiki engu {{ reports }} ekethweni isi thunyelwe."
 
 #: app.js:709
 msgid ""
@@ -383,7 +382,8 @@ msgid ""
 "Thank you for telling VIP a bit more about yourself! Your airtime will be "
 "sent to you shortly!"
 msgstr ""
-"Sibonga ukuzethula kabanzi ku-VIP! Uzothunyelelwa i-airtime yakho masinyane!"
+"Sibonga ukuzethula kabanzi ku-VIP! Uma uyawine, uzothunyelelwa i-airtime"
+"yakho masinyane!"
 
 #: answerwinquiz.js:144
 msgid "Please give us your cellphone number so we can send you your airtime!"
