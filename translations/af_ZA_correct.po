@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Afrikaans\n"
 "POT-Creation-Date: 2014-04-04 04:34:+0200\n"
-"PO-Revision-Date: 2014-04-04 17:16+0200\n"
+"PO-Revision-Date: 2014-04-05 16:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: af_ZA\n"
@@ -18,9 +18,9 @@ msgid ""
 "address & we'll work it out. This will be kept private, only ur voting ward "
 "will be stored &u will be anonymous."
 msgstr ""
-"Dankie! Ons benodig jou stemwyk. Stuur vir ons jou huisadres & ons sal dit "
-"uitwerk. Dit sal privaat gehou word, ons gebruik net d stemwyk - jy bly "
-"anoniem"
+"Dankie dat jy deelneem om verslag te doen oor d '14-verkiesing! Begin vrae "
+"beantwoord of oor verkiesingsaksies verslag te doen! Skakel *120*7692# om te "
+"begin!"
 
 #: app.js:195
 msgid ""
@@ -93,7 +93,7 @@ msgid ""
 "University of California San Diego requests ur consent to act as a research "
 "subject for improving electoral performance through citizen engagement in SA."
 msgstr ""
-"VIP:Voice is n navorsingsprojek deur die Praekelt,  Demokrasie Int en U."
+"VIP:Voice is 'n navorsingsprojek deur die Praekelt,  Demokrasie Int en U."
 "Calif SD. Anonieme vrae kan gevra & gestoor word."
 
 #: app.js:319
@@ -127,8 +127,8 @@ msgid ""
 "3. Exit"
 msgstr ""
 "1. Vorige\n"
-" 2. Volgende\n"
-" 3.Gaan uit"
+"2. Volg\n"
+"3. Onttrek"
 
 #: app.js:349
 msgid ""
@@ -178,7 +178,7 @@ msgstr "VIP-vasvra"
 
 #: app.js:481
 msgid "Report an Election Activity"
-msgstr "Rapporteer verkiesingsaksie"
+msgstr "Rapporteer verkiesingsaksie binne jou gemeenskap"
 
 #: app.js:482
 msgid "View VIP results..."
@@ -250,7 +250,7 @@ msgid ""
 "be chosen as an official election day reporter where you can earn airtime or "
 "cash for your contribution."
 msgstr ""
-"Dankie vir jou verslag! Hou aan om verslag te doen & jy staan dalk n kans "
+"Dankie vir jou verslag! Hou aan om verslag te doen & jy staan dalk 'n kans "
 "om as amptelike stemdagverslaggewer gekies te word en lugtyd of kontant vir "
 "jou bydrae te verdien."
 
@@ -261,8 +261,8 @@ msgid ""
 "posts have been submitted. View results at www.url.com"
 msgstr ""
 "Jy is een van {{ registered  }} burgers wat aktiewe burgerlike "
-"verkiesingsverslaggewers is! {{ questions }} vrae en {{ reports }} "
-"verkiesingsaktiwiteitsverslae is ingedien."
+"verkiesingsverslaggewers is! {{ reports }} verkiesingsaktiwiteitsverslae is "
+"ingedien."
 
 #: app.js:709
 msgid ""
@@ -270,7 +270,7 @@ msgid ""
 "engage South Africans from all walks of life to report on electoral "
 "activities,"
 msgstr ""
-"VIP:Voice is n verkiesingsplatform ontwerp om Suid-Afrikaners betrokke te "
+"VIP:Voice is 'n verkiesingsplatform ontwerp om Suid-Afrikaners betrokke te "
 "laat raak by die aanloop tot die verkiesings"
 
 #: app.js:712
@@ -279,7 +279,7 @@ msgid ""
 "on election processes on voting day."
 msgstr ""
 "Jy kan enige verkiesingsverwante aktiwiteit via USSD rapporteer en help om "
-"n ware prentjie van die 2014-verkiesing te skep.1. Vorige 2.Volgende 3. "
+"'n ware prentjie van die 2014-verkiesing te skep.1. Vorige 2.Volgende 3. "
 "Gaan uit"
 
 #: app.js:714
@@ -287,7 +287,7 @@ msgid ""
 "VIP:Ask is a partnership between academics, Democracy International, Livity "
 "Africa and the Praekelt Foundation"
 msgstr ""
-"VIP:Voice is n vennootskap tussen Livity, Praekelt-stigting, Demokrasie "
+"VIP:Voice is 'n vennootskap tussen Livity, Praekelt-stigting, Demokrasie "
 "Internasionaal, akademici en landsburgers soos jy!"
 
 #: app.js:736
@@ -398,7 +398,7 @@ msgstr "Gee vir ons jou selnommer sodat ons vir jou lugtyd kan stuur!"
 #: vipquiz.js:20
 msgid "During the past year, have you attended a demonstration or protest?"
 msgstr ""
-"Gedurende die laaste jaar, het jy aan n betoging of protesoptog deelgeneem?"
+"Gedurende die laaste jaar, het jy aan 'n betoging of protesoptog deelgeneem?"
 
 #: vipquiz.js:22
 msgid "Yes, many"
@@ -406,7 +406,7 @@ msgstr "Ja, baie"
 
 #: vipquiz.js:23
 msgid "Yes, a few"
-msgstr "Ja n paar"
+msgstr "Ja 'n paar"
 
 #: vipquiz.js:24 vipquiz.js:38 vipquiz.js:105 vipquiz.js:119 vipquiz.js:218
 msgid "No"
@@ -583,7 +583,7 @@ msgstr "Geen het my gekontak nie"
 
 #: vipquiz.js:215
 msgid "During the past two weeks, have you attended a campaign rally?"
-msgstr "Het jy n verkiesingsaamtrek gedurende die laaste twee weke bygewoon?"
+msgstr "Het jy 'n verkiesingsaamtrek gedurende die laaste twee weke bygewoon?"
 
 #: whatsupquiz.js:20
 msgid "How satisfied are you with the way democracy works in South Africa?"
