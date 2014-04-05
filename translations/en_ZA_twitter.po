@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VIP USSD\n"
 "POT-Creation-Date: 2014-04-04 04:34:+0200\n"
-"PO-Revision-Date: 2014-04-05 16:00+0200\n"
+"PO-Revision-Date: 2014-04-05 19:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_ZA\n"
@@ -18,9 +18,8 @@ msgid ""
 "address & we'll work it out. This will be kept private, only ur voting ward "
 "will be stored &u will be anonymous."
 msgstr ""
-"Tnx 4 joining! We need ur voting ward. Type ur home address & we'll work it "
-"out. This will is prvt, only ur voting ward will be stored &u will be "
-"anonymous."
+"Tx 4 joining! We need ur home address to work out ur voting ward. This will "
+"b prvt, only ur voting ward will be stored &u will be anonymous"
 
 #: app.js:195
 msgid ""
@@ -503,7 +502,7 @@ msgstr "Not applicable"
 
 #: vipquiz.js:131
 msgid "How easy is it for your neighbors to find out if you voted?"
-msgstr "How easy is it for your neighbors to find out if you voted?"
+msgstr "How easy is it for your neighbours to find out if you voted?"
 
 #: vipquiz.js:133
 msgid "Very easy"
@@ -523,7 +522,7 @@ msgstr "Very difficult"
 
 #: vipquiz.js:147
 msgid "People in my neighborhood look down on those who do not vote:"
-msgstr "People in my neighborhood look down on those who do not vote:"
+msgstr "People in my neighbourhood look down on those who do not vote"
 
 #: vipquiz.js:149 whatsupquiz.js:154 whatsupquiz.js:170
 msgid "Strongly agree"
@@ -676,7 +675,7 @@ msgid ""
 "During the past year, how often have you or anyone in your family gone "
 "without enough food to eat?"
 msgstr ""
-"In the past year, how often have u/ ur family been without enough food 2 eat?"
+"In the past year, how often have u/ur family been without enough food 2 eat?"
 
 #: whatsupquiz.js:139
 msgid "Sometimes"
