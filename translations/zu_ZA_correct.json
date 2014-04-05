@@ -202,7 +202,7 @@
     ],
     "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted. View results at www.url.com": [
         null,
-        "Ungumhlali o we si {{ registered }} o sebenza ngokubika ezinkethweni! Imibuzo engu {{ questions }} nemibiki engu {{ reports }} ekethweni isi thunyelwe. "
+        "Ungumhlali o we si {{ registered }} o sebenza ngokubika ezinkethweni! Izimibiki engu {{ reports }} ekethweni isi thunyelwe."
     ],
     "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will engage South Africans from all walks of life to report on electoral activities,": [
         null,
@@ -306,7 +306,7 @@
     ],
     "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!": [
         null,
-        "Sibonga ukuzethula kabanzi ku-VIP! Uzothunyelelwa i-airtime yakho masinyane!"
+        "Sibonga ukuzethula kabanzi ku-VIP! Uma uyawine, uzothunyelelwa i-airtimeyakho masinyane!"
     ],
     "Please give us your cellphone number so we can send you your airtime!": [
         null,
