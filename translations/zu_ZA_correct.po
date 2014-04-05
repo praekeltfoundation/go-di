@@ -146,7 +146,7 @@ msgid ""
 "& we'll work it out. This will be kept private, only ur voting ward will be "
 "stored &u will be anonymous."
 msgstr ""
-"Sibonga! Ukuvota uding ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho "
+"Siyabonga! Ukuvota udinga ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho "
 "lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela"
 
 #: app.js:455 app.js:631
