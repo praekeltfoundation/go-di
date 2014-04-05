@@ -93,7 +93,7 @@
         },{
             "type": "diamondash.widgets.lvalue.LValueWidget",
             "time_range": "14d",
-            "name": "Total visits per user",
+            "name": "Total visits",
             "target": {
                 "metric_type": "account",
                 "store": "di_twitter_test_app",
