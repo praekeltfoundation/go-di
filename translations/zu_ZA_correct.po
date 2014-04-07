@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: USSD Zulu\n"
-"POT-Creation-Date: 2014-04-04 04:34:+0200\n"
-"PO-Revision-Date: 2014-04-04 16:54+0200\n"
+"POT-Creation-Date: 2014-04-07 11:49:+0200\n"
+"PO-Revision-Date: 2014-04-07 13:20+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zu_ZA\n"
@@ -12,81 +12,72 @@ msgstr ""
 "X-Generator: Poedit 1.6.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app.js:179
-msgid ""
-"Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
-"address & we'll work it out. This will be kept private, only ur voting ward "
-"will be stored &u will be anonymous."
-msgstr ""
-"Siyabonga! Sidinga inombolo ya Ward yakho. Phendula ngekheli lakho lasekhaya "
-"sikusize. Lokhu kuyimfihlo; sigcina iwadi lakho lokuvota kuphela."
-
-#: app.js:195
+#: app.js:187
 msgid ""
 "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get "
-"started by answering questions or reporting election activity! Dial back in "
-"to *5555# to begin!"
+"started by answering questions or reporting election activity! Dial "
+"{{ USSD_number }} to return to VIP"
 msgstr ""
 "Sibonga ukuzikhethela kwakho ukuba zika-2014! Qala ngokuphendula imibuzo "
-"noma ngokubika umcimbi wokhetho! Ukuqala, chofoza *120*7692#!"
+"noma ngokubika umcimbi wokhetho! Ukuqala, chofoza {{ USSD_number }} !"
 
-#: app.js:254
+#: app.js:257
 msgid "Welcome to Voting is Power! Start by choosing your language:"
 msgstr "Siyakwamukela ku-Ukuvota Kungamandla! Qala ngokukhetha ulimi lwakho:"
 
-#: app.js:256
+#: app.js:259
 msgid "English"
 msgstr "Isingisi"
 
-#: app.js:257
+#: app.js:260
 msgid "Afrikaans"
 msgstr "isiBhunu"
 
-#: app.js:258
+#: app.js:261
 msgid "Zulu"
 msgstr "isiZulu"
 
-#: app.js:270
+#: app.js:273
 msgid "It's election time! Do u think ur vote matters?"
 msgstr "Yiskhathi sokhetho! Liyasiza yini ivoti lakho?"
 
-#: app.js:272
+#: app.js:275
 msgid "YES every vote matters"
 msgstr "YEBO"
 
-#: app.js:273
+#: app.js:276
 msgid "NO but I'll vote anyway"
 msgstr "CHA kodwa ngizovota"
 
-#: app.js:274
+#: app.js:277
 msgid "NO so I'm NOT voting"
 msgstr "CHA Yingakho ngingavoti"
 
-#: app.js:275
+#: app.js:278
 msgid "I'm NOT REGISTERED to vote"
 msgstr "ANGIKUBHALISELANGA"
 
-#: app.js:276
+#: app.js:279
 msgid "I'm TOO YOUNG to vote"
 msgstr "Ngisemncane angivoti"
 
-#: app.js:291
+#: app.js:294
 msgid "Please accept the terms and conditions to get started."
 msgstr "Yamukela le imigomo nemibandela ekuvumela ukuqala"
 
-#: app.js:292
+#: app.js:295
 msgid "Accept & Join"
 msgstr "Yamukela ujoyine"
 
-#: app.js:293
+#: app.js:296
 msgid "Read t&c"
 msgstr "Funda imigomo nemibandela"
 
-#: app.js:294
+#: app.js:297
 msgid "Quit"
 msgstr "Phuma"
 
-#: app.js:317
+#: app.js:320
 msgid ""
 "University of California San Diego requests ur consent to act as a research "
 "subject for improving electoral performance through citizen engagement in SA."
@@ -94,7 +85,7 @@ msgstr ""
 "I-VIP:Voice yiprojekt yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzwa "
 "imibuzo igcinwe lingavezwa igama"
 
-#: app.js:319
+#: app.js:322
 msgid ""
 "Study provides evaluation on how 2 use marketing &recruitment strategies,"
 "with mobile technology to improve how elections r monitored by citizen "
@@ -103,7 +94,7 @@ msgstr ""
 "Ungahoxa noma ubambe iqhaza. Ungakhishwa ngaphandle kokwaziswa. Uzokwaziswa "
 "ngolwaz olusha ngababamb iqhaza"
 
-#: app.js:321
+#: app.js:324
 msgid ""
 "If u participate,we will ask questions about urself&ur observations of the "
 "elections.U will b anonymous.Ur answers will be kept confidential&won't b "
@@ -112,13 +103,13 @@ msgstr ""
 "Uma ubamba iqhaza,sizokubuza imibuzo ngawe nangokubonile ezinkethweni."
 "Alizovezw igama lakho.Izimpendulo zakho ziyimfihlo"
 
-#: app.js:323
+#: app.js:326
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
 "Uma uneminye imibuzo thinta CGibson kwethi 0118587605100. Ukubona imigomo "
 "nemibandela ephelele: yal.mobi/vip"
 
-#: app.js:335 app.js:725
+#: app.js:338 app.js:740
 msgid ""
 "1. Prev\n"
 "2. Next\n"
@@ -128,19 +119,19 @@ msgstr ""
 "2.Okulandelayo \n"
 "3.Phuma"
 
-#: app.js:349
+#: app.js:352
 msgid ""
 "Thank you for your time. Remember, you can always reconsider becoming a "
 "citizen reporter."
 msgstr "Siyabonga."
 
-#: app.js:356 app.js:565
+#: app.js:359 app.js:580
 msgid ""
 "Please carefully enter your address again: for eg: 12 main street pretoria"
 msgstr ""
 "Siyacela, phendula ngekheli lakho lasekhaya e.g 12 main street pretoria"
 
-#: app.js:361
+#: app.js:364
 msgid ""
 "Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address "
 "& we'll work it out. This will be kept private, only ur voting ward will be "
@@ -149,91 +140,91 @@ msgstr ""
 "Siyabonga! Ukuvota udinga ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho "
 "lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela"
 
-#: app.js:455 app.js:631
+#: app.js:458
 msgid "Not my address"
 msgstr "Asiyilo ikheli lami"
 
-#: app.js:457 app.js:633
+#: app.js:460
 msgid "Still not my address"
 msgstr "Cha, asiyilo ikheli lami"
 
-#: app.js:461 app.js:637
+#: app.js:464
 msgid "Choose your area:"
 msgstr "Khetha indawo yakho"
 
-#: app.js:477
-msgid "Welcome to VIP!"
-msgstr "Siyakwamukela ohlelweni i-VIP!"
-
 #: app.js:479
-msgid "Answer & win!"
-msgstr "Phendula uwine!"
-
-#: app.js:480
-msgid "VIP Quiz"
-msgstr "Imibuzo ye-VIP"
-
-#: app.js:481
-msgid "Report an Election Activity"
-msgstr "Bika umcimbi wokhetho"
-
-#: app.js:482
 msgid "View VIP results..."
 msgstr "Bheka imiphumela ye-VIP.."
 
+#: app.js:481
+msgid "Answer & win!"
+msgstr "Phendula uwine!"
+
+#: app.js:482
+msgid "VIP Quiz"
+msgstr "Imibuzo ye-VIP"
+
 #: app.js:483
+msgid "Report an Election Activity"
+msgstr "Bika umcimbi wokhetho"
+
+#: app.js:485
 msgid "What's up?"
 msgstr "Kwenzenjani?"
 
-#: app.js:484
+#: app.js:486
 msgid "About"
 msgstr "Ngalokhu"
 
-#: app.js:485
+#: app.js:487
 msgid "End"
 msgstr "Qeda"
 
-#: app.js:492
+#: app.js:500
+msgid "Welcome to VIP!"
+msgstr "Siyakwamukela ohlelweni i-VIP!"
+
+#: app.js:507
 msgid "Thanks, u have answered all the questions in this section."
 msgstr "Siyabonga! Uphendule imibuzo yonke."
 
-#: app.js:494 answerwinquiz.js:135 vipquiz.js:90 whatsupquiz.js:187
+#: app.js:509 answerwinquiz.js:135 vipquiz.js:90 whatsupquiz.js:187
 msgid "Main Menu"
 msgstr "iMenyu Enkulu"
 
-#: app.js:517
+#: app.js:532
 msgid "Party going door-to-door"
 msgstr "Inhlngno hamb' imizi ngemiz"
 
-#: app.js:518
+#: app.js:533
 msgid "Party intimidating voters"
 msgstr "Inhlngno sabisa bavoti"
 
-#: app.js:519
+#: app.js:534
 msgid "Party distributing food/money/gift"
 msgstr "Inhlngno isabalalisa ukudla/imali"
 
-#: app.js:520
+#: app.js:535
 msgid "Campaign rally"
 msgstr "Irali yomkhankso"
 
-#: app.js:521
+#: app.js:536
 msgid "Campaign violence"
 msgstr "Udlame lokukhankas"
 
-#: app.js:522
+#: app.js:537
 msgid "Protest/Demonstration"
 msgstr "Umbhikisho"
 
-#: app.js:525
+#: app.js:540
 msgid "Choose a report type:"
 msgstr "Khetha"
 
-#: app.js:546
+#: app.js:561
 msgid "What is the title of your report?"
 msgstr "Sithini isihloko sombiko wakho?"
 
-#: app.js:567
+#: app.js:582
 msgid ""
 "Where did this event happen? Please be as specific as possible and give "
 "address and city."
@@ -241,7 +232,19 @@ msgstr ""
 "Wenzekephi lo mcimbi? Khomba indawo ngangokusemandleni unikeze ikheli "
 "nedolobha."
 
-#: app.js:670
+#: app.js:646
+msgid "Not the address"
+msgstr "Asiyilo ikheli"
+
+#: app.js:648
+msgid "Still not the address"
+msgstr "Cha, asiyilo ikheli"
+
+#: app.js:652
+msgid "Please select the  location from the options below"
+msgstr "Ukukhetha indawo"
+
+#: app.js:685
 msgid ""
 "Thank you for your report! Keep up the reporting & you may have a chance to "
 "be chosen as an official election day reporter where you can earn airtime or "
@@ -250,7 +253,7 @@ msgstr ""
 "Siyabonga! Qhubeka, ungaba sethubeni lokukhethwa njengozobika "
 "ngokusemthethweni ngosuku lokhetho, lapho ungazitholela khona i-airtime"
 
-#: app.js:691
+#: app.js:706
 msgid ""
 "You are 1 of {{ registered }} citizens who are active citizen election "
 "reporters! {{ questions }} questions and {{ reports }} election activity "
@@ -259,7 +262,7 @@ msgstr ""
 "Ungumhlali o we si {{ registered }} o sebenza ngokubika ezinkethweni! "
 "Izimibiki engu {{ reports }} ekethweni isi thunyelwe."
 
-#: app.js:709
+#: app.js:724
 msgid ""
 "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will "
 "engage South Africans from all walks of life to report on electoral "
@@ -268,7 +271,7 @@ msgstr ""
 "I-VIP:Voice iwuhlelo oluklanyelwe ukubandakanya izakhamuzi zakuleli njengoba "
 "kuyiwa okhethweni"
 
-#: app.js:712
+#: app.js:727
 msgid ""
 "voice their opinions on current issues surrounding the elections, and report "
 "on election processes on voting day."
@@ -276,7 +279,7 @@ msgstr ""
 "Ungabika noma yimuphi umcimbi ophathelene nokhetho ngo-USSD ukusiza "
 "ekwakheni isithombe esiyiqiniso ngokhetho lwango-2014"
 
-#: app.js:714
+#: app.js:729
 msgid ""
 "VIP:Ask is a partnership between academics, Democracy International, Livity "
 "Africa and the Praekelt Foundation"
@@ -284,7 +287,7 @@ msgstr ""
 "I-VIP:Voice yiphrojekth yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzw "
 "imibuzo igcinwe lingavezw igama"
 
-#: app.js:736
+#: app.js:751
 msgid "Bye."
 msgstr "Salakahle."
 
@@ -382,8 +385,8 @@ msgid ""
 "Thank you for telling VIP a bit more about yourself! Your airtime will be "
 "sent to you shortly!"
 msgstr ""
-"Sibonga ukuzethula kabanzi ku-VIP! Uma uyawine, uzothunyelelwa i-airtime"
-"yakho masinyane!"
+"Sibonga ukuzethula kabanzi ku-VIP! Uma uyawine, uzothunyelelwa i-airtime "
+"yakho masinyane! "
 
 #: answerwinquiz.js:144
 msgid "Please give us your cellphone number so we can send you your airtime!"
@@ -700,6 +703,15 @@ msgstr "Ukungavoti kuye kube yindlela yokuvez ukuzikhethela politiki:"
 #: whatsupquiz.js:184
 msgid "Would you like to continue answering questions? There are 10 in total."
 msgstr "Uyathanda yini ukuqhubeka nokuphendula imibuzo? Iyi-10 Isiyonke"
+
+#~ msgid ""
+#~ "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
+#~ "address & we'll work it out. This will be kept private, only ur voting "
+#~ "ward will be stored &u will be anonymous."
+#~ msgstr ""
+#~ "Sibonga ukuzikhethela kwakho ukuba ngobikayo ezinkethweni zika-2014! Qala "
+#~ "ngokuphendula imibuzo noma ngokubika umcimbi wokhetho! Ukuqala, chofoza "
+#~ "*120*7692# !"
 
 #~ msgid "Xhosa"
 #~ msgstr "Remove options"
