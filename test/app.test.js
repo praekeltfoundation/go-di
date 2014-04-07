@@ -140,7 +140,8 @@ describe("app", function() {
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.delivery_class,'ussd');
-                    });
+                    })
+                    .run();
             });
 
             it("should save their channel as an extra ",function() {
@@ -150,13 +151,13 @@ describe("app", function() {
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.USSD_number,'*120*8864*1321#');
-                    });
+                    })
+                    .run();
             });
 
             describe("if their channel is already defined",function() {
                 it("should not save over their original channel",function() {
                     return tester
-                        .setup.user.addr('+273123')
                         .setup(function(api) {
                             api.contacts.add( {
                                 msisdn: '+273555',
@@ -167,11 +168,13 @@ describe("app", function() {
                                 }
                             });
                         })
+                        .setup.user.addr('+273555')
                         .start()
                         .check(function(api) {
-                            var contact = api.contacts.store[0];
+                            var contact = _.find(api.contacts.store,{msisdn: '+273555'});
                             assert.equal(contact.extra.USSD_number,'*120*not_the_same#');
-                        });
+                        })
+                        .run();
                 });
             });
 
