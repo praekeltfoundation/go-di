@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "VIP USSD",
-        "pot-creation-date": "2014-04-04 04:34:+0200",
-        "po-revision-date": "2014-04-05 18:18+0200",
+        "pot-creation-date": "2014-04-07 11:49:+0200",
+        "po-revision-date": "2014-04-07 13:20+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "en_ZA",
@@ -12,13 +12,9 @@
         "x-generator": "Poedit 1.6.4",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
+    "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial {{ USSD_number }} to return to VIP": [
         null,
-        "Tnx 4 joining! We need ur voting ward. Type ur home address & we'll work it out. This will is prvt, only ur voting ward will be stored &u will be anonymous."
-    ],
-    "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
-        null,
-        "Tnx 4 volunteering 2 be a citizen reporter for the '14 elections! Start by answering questions or report election activity! Dial back in to*120*7692# begin!"
+        "Tnx 4 volunteering 2 be a citizen reporter for the '14 elections! Start by answering questions or report election activity! Dial back in to {{ USSD_number }} begin!"
     ],
     "Welcome to Voting is Power! Start by choosing your language:": [
         null,
@@ -38,19 +34,19 @@
     ],
     "It's election time! Do u think ur vote matters?": [
         null,
-        "It's election time! Do u think ur vote matters?"
+        "Elections! Does ur vote matter?"
     ],
     "YES every vote matters": [
         null,
-        "YES very vote matters"
+        "YES every vote matters"
     ],
     "NO but I'll vote anyway": [
         null,
-        "NO but I'll vote anyway"
+        "NO. I'll vote anyway"
     ],
     "NO so I'm NOT voting": [
         null,
-        "NO so I'm NOT voting"
+        "NO. I'm NOT voting"
     ],
     "I'm NOT REGISTERED to vote": [
         null,
@@ -120,9 +116,9 @@
         null,
         "Choose your area:"
     ],
-    "Welcome to VIP!": [
+    "View VIP results...": [
         null,
-        "Welcome to VIP!"
+        "View VIP results"
     ],
     "Answer & win!": [
         null,
@@ -136,10 +132,6 @@
         null,
         "Report an Election Activity in ur Community"
     ],
-    "View VIP results...": [
-        null,
-        "View VIP results"
-    ],
     "What's up?": [
         null,
         "What's up?"
@@ -151,6 +143,10 @@
     "End": [
         null,
         "End"
+    ],
+    "Welcome to VIP!": [
+        null,
+        "Welcome to VIP!"
     ],
     "Thanks, u have answered all the questions in this section.": [
         null,
@@ -195,6 +191,18 @@
     "Where did this event happen? Please be as specific as possible and give address and city.": [
         null,
         "Where did this event happen? Please be as specific as possible and give address and city."
+    ],
+    "Not the address": [
+        null,
+        "Not the address"
+    ],
+    "Still not the address": [
+        null,
+        "Still not the address"
+    ],
+    "Please select the  location from the options below": [
+        null,
+        "Please select the  location from the options below"
     ],
     "Thank you for your report! Keep up the reporting & you may have a chance to be chosen as an official election day reporter where you can earn airtime or cash for your contribution.": [
         null,
@@ -306,7 +314,7 @@
     ],
     "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!": [
         null,
-        "Thank you for telling VIP a bit more about yourself!  If u are a lucky winner u will be sent your airtime within 24hrs."
+        "Thank you for telling VIPa bit more about yourself! If you are a lucky winner your airtime will be sent to you shortly."
     ],
     "Please give us your cellphone number so we can send you your airtime!": [
         null,
