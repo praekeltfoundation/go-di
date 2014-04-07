@@ -1001,7 +1001,7 @@ di.app = function() {
 
                 //Set the last channel this user accessed
                 if (self.is_delivery_class("ussd")) {
-                    self.contact.extra.channel = self.im.config.channel;
+                    self.contact.extra.USSD_number = self.im.config.channel;
                 }
 
                 //Fire metrics

@@ -195,7 +195,7 @@ describe("app", function() {
                     .start()
                     .check(function(api) {
                         var contact = api.contacts.store[0];
-                        assert.equal(contact.extra.channel,'*120*8864*1321#');
+                        assert.equal(contact.extra.USSD_number,'*120*8864*1321#');
                     });
             });
 
