@@ -187,6 +187,16 @@ describe("app", function() {
                     });
             });
 
+            it("should save their channel as an extra (app name should do)",function() {
+                return tester
+                    .setup.user.addr('+273123')
+                    .start()
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.channel,'test_app');
+                    });
+            });
+
             it("should fire a 'visits' metric",function() {
                 return tester
                     .start()

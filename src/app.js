@@ -142,6 +142,12 @@ di.app = function() {
                 if (_.isUndefined(self.contact.extra.delivery_class)) {
                     self.contact.extra.delivery_class = self.im.config.delivery_class;
                 }
+
+                //Set the last channel this user accessed
+                self.contact.extra.channel = self.im.config.name;
+
+                //Fire metrics
+                //Save contact
                 return Q.all([
                     self.im.metrics.fire.inc("sum.visits"),
                     self.im.metrics.fire.avg("avg.visits",1),
