@@ -153,6 +153,28 @@ describe("app", function() {
                     });
             });
 
+            describe("if their channel is already defined",function() {
+                it("should not save over their original channel",function() {
+                    return tester
+                        .setup.user.addr('+273123')
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273555',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    USSD_number: '*120*not_the_same#'
+                                }
+                            });
+                        })
+                        .start()
+                        .check(function(api) {
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.USSD_number,'*120*not_the_same#');
+                        });
+                });
+            });
+
             it("should fire a 'visits' metric",function() {
                 return tester
                     .start()
@@ -1272,8 +1294,6 @@ describe("app", function() {
 
                         }).run();
                 });
-
-
             });
 
             describe("when the list of matching locations is too long to be displayed",function() {

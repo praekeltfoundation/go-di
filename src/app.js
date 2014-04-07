@@ -144,7 +144,7 @@ di.app = function() {
                 }
 
                 //Set the last channel this user accessed
-                if (self.is_delivery_class("ussd")) {
+                if (self.is_delivery_class("ussd") && _.isUndefined(self.contact.extra.USSD_number)) {
                     self.contact.extra.USSD_number = self.im.config.channel;
                 }
 
