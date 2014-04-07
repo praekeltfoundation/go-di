@@ -998,6 +998,12 @@ di.app = function() {
                 if (_.isUndefined(self.contact.extra.delivery_class)) {
                     self.contact.extra.delivery_class = self.im.config.delivery_class;
                 }
+
+                //Set the last channel this user accessed
+                self.contact.extra.channel = self.im.config.name;
+
+                //Fire metrics
+                //Save contact
                 return Q.all([
                     self.im.metrics.fire.inc("sum.visits"),
                     self.im.metrics.fire.avg("avg.visits",1),
@@ -1019,6 +1025,12 @@ di.app = function() {
                 .then(function(user_contact) {
                    self.contact = user_contact;
                 });
+        };
+
+        self.should_display_results = function() {
+            var now = self.get_date();
+            var config =  new Date(self.im.config.display_results_date);
+            return now >= config;
         };
 
         self.should_send_dialback = function(e) {
@@ -1328,18 +1340,30 @@ di.app = function() {
             });
         });
 
+        self.get_menu_choices = function() {
+            var results =  new Choice('states:results',$('View VIP results...'));
+            var choices = [
+                new Choice('states:quiz:answerwin:begin',$('Answer & win!')),
+                new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
+                new Choice('states:report',$('Report an Election Activity')),
+                results,
+                new Choice(self.quizzes.whatsup.get_next_quiz_state(),$("What's up?")),
+                new Choice('states:about',$('About')),
+                new Choice('states:end',$('End'))
+            ];
+
+            //Dont display 'View results' menu options before specified
+            if (!self.should_display_results()) {
+                choices =  _.without(choices, results);
+            }
+
+            return choices;
+        };
+
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
                 question: $('Welcome to VIP!'),
-                choices:[
-                    new Choice('states:quiz:answerwin:begin',$('Answer & win!')),
-                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
-                    new Choice('states:report',$('Report an Election Activity')),
-                    new Choice('states:results',$('View VIP results...')),
-                    new Choice(self.quizzes.whatsup.get_next_quiz_state(),$("What's up?")),
-                    new Choice('states:about',$('About')),
-                    new Choice('states:end',$('End'))
-                ]
+                choices: self.get_menu_choices()
             });
         });
 

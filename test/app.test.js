@@ -43,7 +43,8 @@ describe("app", function() {
                         "sms": {"delivery_class": "sms"}
                     },
                     ushahidi_map: 'https://godi.crowdmap.com/api',
-                    kv_group: 'tests'
+                    kv_group: 'tests',
+                    display_results_date: '4 April, 2014'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -245,31 +246,67 @@ describe("app", function() {
                 });
 
                 describe('if they have filled in their address before',function() {
-                    it("should take them to the main menu",function() {
-                        return tester
-                            .setup.user.addr('+273456')
-                            .setup(function(api) {
-                                api.contacts.add( {
-                                    msisdn: '+273456',
-                                    extra : {
-                                        is_registered: 'true',
-                                        ward: '1234'
-                                    }
-                                });
-                            }).start()
-                            .check.interaction({
-                                state: 'states:menu',
-                                reply: [
-                                    'Welcome to VIP!',
-                                    '1. Answer & win!',
-                                    '2. VIP Quiz',
-                                    '3. Report an Election Activity',
-                                    '4. View VIP results...',
-                                    "5. What's up?",
-                                    '6. About',
-                                    '7. End'
-                                ].join('\n')
-                            }).run();
+                    describe('if it is before the specified results date',function() {
+                        it("should take them to the main menu without 'results' showing",function() {
+                            app.get_date = function() {
+                                return new Date('3 April, 2014');
+                            };
+                            return tester
+                                .setup.user.addr('+273456')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        msisdn: '+273456',
+                                        extra : {
+                                            is_registered: 'true',
+                                            ward: '1234'
+                                        }
+                                    });
+                                }).start()
+                                .check.interaction({
+                                    state: 'states:menu',
+                                    reply: [
+                                        'Welcome to VIP!',
+                                        '1. Answer & win!',
+                                        '2. VIP Quiz',
+                                        '3. Report an Election Activity',
+                                        "4. What's up?",
+                                        '5. About',
+                                        '6. End'
+                                    ].join('\n')
+                                }).run();
+                        });
+                    });
+
+                    describe('if it is on or after the specified results date',function() {
+                        it("should take them to the main menu with 'results' showing",function() {
+                            app.get_date = function() {
+                                return new Date('4 April, 2014');
+                            };
+                            return tester
+                                .setup.user.addr('+273456')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        msisdn: '+273456',
+                                        extra : {
+                                            is_registered: 'true',
+                                            ward: '1234'
+                                        }
+                                    });
+                                }).start()
+                                .check.interaction({
+                                    state: 'states:menu',
+                                    reply: [
+                                        'Welcome to VIP!',
+                                        '1. Answer & win!',
+                                        '2. VIP Quiz',
+                                        '3. Report an Election Activity',
+                                        '4. View VIP results...',
+                                        "5. What's up?",
+                                        '6. About',
+                                        '7. End'
+                                    ].join('\n')
+                                }).run();
+                        });
                     });
                 });
             });
