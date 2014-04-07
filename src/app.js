@@ -160,10 +160,7 @@ di.app = function() {
 
             self.im.on('session:close', function(e) {
                 if (!self.should_send_dialback(e)) { return; }
-
-                return _.isUndefined(self.contact.extra.ward)
-                    ? self.send_ward_dialback()
-                    : self.send_noward_dialback();
+                return self.send_dialback();
             });
 
             return self.im.contacts
@@ -186,32 +183,24 @@ di.app = function() {
                 && !self.is(self.contact.extra.register_sms_sent);
         };
 
-        self.send_ward_dialback = function() {
-            return self.im.outbound
-                .send_to_user({
-                    endpoint: 'sms',
-                    content: $([
-                        "Hello VIP!2 begin we need ur voting ward.",
-                        "Dial *55555# & give us ur home address & we'll work it out.",
-                        "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                    ].join(' '))
-                })
-                .then(function() {
-                    self.contact.extra.register_sms_sent = 'true';
-                    return self.im.contacts.save(self.contact);
+        self.get_registration_sms = function() {
+            return $([
+                    "Thanks for volunteering to be a citizen reporter for the 2014 elections!",
+                    "Get started by answering questions or reporting election activity!",
+                    "Dial {{ USSD_number }} to return to VIP"
+                ].join(' '))
+                .context({
+                    USSD_number: self.contact.extra.USSD_number
                 });
         };
 
-        self.send_noward_dialback = function() {
+        self.send_dialback = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: $([
-                        'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
-                        'Get started by answering questions or reporting election activity!',
-                        'Dial back in to *5555# to begin!'
-                    ].join(' '))
-                }).then(function() {
+                    content: self.get_registration_sms()
+                })
+                .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
                     return self.im.contacts.save(self.contact);
                 });

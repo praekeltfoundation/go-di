@@ -55,8 +55,7 @@ describe("app", function() {
                     api.contacts.add( {
                         msisdn: '+273123',
                         extra : {
-                            is_registered: 'true',
-                            register_sms_sent: 'true'
+                            is_registered: 'true'
                         }
                     });
                 });
@@ -64,105 +63,60 @@ describe("app", function() {
 
         describe("when a session is terminated", function() {
             describe("when they are registered",function() {
-                describe("when they have not inputted their location",function() {
-                    describe("when they have already been sent a registration sms",function() {
-                        it("should not sent them an sms",function() {
-                            tester
-                                .setup.user.addr('+273123')
-                                .setup(function(api) {
-                                    api.contacts.add( {
-                                        msisdn: '+273123',
-                                        extra : {
-                                            is_registered: 'true',
-                                            register_sms_sent: 'true'
-                                        }
-                                    });
-                                })
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
-                                }).run();
-                        });
+                describe("when they have already been sent a registration sms",function() {
+                    it("should not send them an sms",function() {
+                        return tester
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273444',
+                                    extra : {
+                                        is_registered: 'true',
+                                        register_sms_sent: 'true'
+                                    }
+                                });
+                            })
+                            .setup.user.addr('+273444')
+                            .setup.user.state('states:register')
+                            .input('1')
+                            .input.session_event('close')
+                            .check(function(api) {
+                                var smses = _.where(api.outbound.store, {
+                                    endpoint: 'sms'
+                                });
+                                assert.equal(smses.length,0);
+                            }).run();
                     });
-
-                    describe("when they have not been sent a registration sms",function() {
-                        it ("should send them an sms asking them to input their location next time",function() {
-                            tester
-                                .setup.user.addr('+273123')
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-
-                                    var sms = smses[0];
-                                    assert.equal(smses.length,1);
-                                    assert.equal(sms.content, [
-                                        "Hello VIP!2 begin we need ur voting ward.",
-                                        "Dial *55555# & give us ur home address & we'll work it out.",
-                                        "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                                    ].join(' '));
-                                    assert.equal(sms.to_addr,'+273123');
-                                }).run();
-                        });
-                    });
-
                 });
 
-                describe("when they have inputted their location",function() {
-                    describe("when they have already been sent a registration sms",function() {
-                        it ("should not send them an sms",function() {
-                            tester
-                                .setup.user.addr('+273123')
-                                .setup(function(api) {
-                                    api.contacts.add( {
-                                        msisdn: '+273123',
-                                        extra : {
-                                            is_registered: 'true',
-                                            register_sms_sent: 'true'
-                                        }
-                                    });
-                                })
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
-                                }).run();
-                        });
-                    });
-                    describe("when they have already been sent a registration sms",function() {
-                        it("should send them an sms thanking them for their registration",function() {
-                            tester
-                                .setup.user.addr('+273000')
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-
-                                    var sms = smses[0];
-                                    assert.equal(smses.length,1);
-                                    assert.equal(sms.content,[
-                                        'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
-                                        'Get started by answering questions or reporting election activity!',
-                                        'Dial back in to *5555# to begin!'
-                                    ].join(' '));
-                                    assert.equal(sms.to_addr,'+273000');
-                                }).run();
-                        });
+                describe("when they have not been sent a registration sms",function() {
+                    it("should send them an sms thanking them for their registration",function() {
+                        return tester
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273323',
+                                    extra : {
+                                        is_registered: 'true',
+                                        USSD_number: "*120*8864*1321#"
+                                    }
+                                });
+                            })
+                            .setup.user.addr('+273323')
+                            .setup.user.state('states:register')
+                            .input(1)
+                            .input.session_event('close')
+                            .check(function(api) {
+                                var smses = _.where(api.outbound.store, {
+                                    endpoint: 'sms'
+                                });
+                                var sms = smses[0];
+                                assert.equal(smses.length,1);
+                                assert.equal(sms.content, [
+                                    "Thanks for volunteering to be a citizen reporter for the 2014 elections!",
+                                    "Get started by answering questions or reporting election activity!",
+                                    "Dial *120*8864*1321# to return to VIP"
+                                ].join(' '));
+                                assert.equal(sms.to_addr,'+273323');
+                            }).run();
                     });
                 });
             });
