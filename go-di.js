@@ -1000,7 +1000,9 @@ di.app = function() {
                 }
 
                 //Set the last channel this user accessed
-                self.contact.extra.channel = self.im.config.name;
+                if (self.is_delivery_class("ussd")) {
+                    self.contact.extra.channel = self.im.config.channel;
+                }
 
                 //Fire metrics
                 //Save contact
