@@ -220,7 +220,7 @@ msgid "Still not the address"
 msgstr ""
 
 #: app.js:652
-msgid "Please select the  location from the options below"
+msgid "Please select the location from the options below"
 msgstr ""
 
 #: app.js:685

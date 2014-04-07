@@ -1015,8 +1015,8 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Please select the  location from the options below",
-                                "1. 21 Conduit Street, Randbu...",
+                                "Please select the location from the options below",
+                                "1. 21 Conduit Street, Randbur...",
                                 "2. 21 Conduit Street, Sandton...",
                                 "3. Still not the address"
                             ].join("\n")
@@ -1031,7 +1031,7 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:report:verify_location",
                         reply: [
-                            "Please select the  location from the options below",
+                            "Please select the location from the options below",
                             "1. 21 Conduit Street, Randburg 2188",
                             "2. 21 Conduit Street, Sandton 2191",
                             "3. Not the address"
@@ -1284,9 +1284,9 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Please select the  location from the options below",
+                                "Please select the location from the options below",
                                 "1. Main Street, Johanne...",
-                                "2. Main Street, Johanne...",
+                                "2. Main Street, Johannes...",
                                 "3. Main Street, Johannes...",
                                 "4. More"
                             ].join("\n")

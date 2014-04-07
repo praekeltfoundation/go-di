@@ -1505,7 +1505,7 @@ di.app = function() {
             }
 
             return new PaginatedChoiceState(name, {
-                question: $("Please select the  location from the options below"),
+                question: $("Please select the location from the options below"),
                 choices: choices,
                 characters_per_page: 140,
                 options_per_page: 3,
