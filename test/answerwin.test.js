@@ -28,7 +28,8 @@ describe("app", function() {
                     name: 'test_app',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
-                    }
+                    },
+                    channel: "*120*8864*1321#"
                 })
                 .setup(function(api) {
                     api.contacts.add( {

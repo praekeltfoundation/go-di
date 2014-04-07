@@ -43,7 +43,9 @@ describe("app", function() {
                         "sms": {"delivery_class": "sms"}
                     },
                     ushahidi_map: 'https://godi.crowdmap.com/api',
-                    kv_group: 'tests'
+                    kv_group: 'tests',
+                    channel: "*120*8864*1321#",
+                    display_results_date: '4 April, 2014'
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.
@@ -53,8 +55,7 @@ describe("app", function() {
                     api.contacts.add( {
                         msisdn: '+273123',
                         extra : {
-                            is_registered: 'true',
-                            register_sms_sent: 'true'
+                            is_registered: 'true'
                         }
                     });
                 });
@@ -62,105 +63,60 @@ describe("app", function() {
 
         describe("when a session is terminated", function() {
             describe("when they are registered",function() {
-                describe("when they have not inputted their location",function() {
-                    describe("when they have already been sent a registration sms",function() {
-                        it("should not sent them an sms",function() {
-                            tester
-                                .setup.user.addr('+273123')
-                                .setup(function(api) {
-                                    api.contacts.add( {
-                                        msisdn: '+273123',
-                                        extra : {
-                                            is_registered: 'true',
-                                            register_sms_sent: 'true'
-                                        }
-                                    });
-                                })
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
-                                }).run();
-                        });
+                describe("when they have already been sent a registration sms",function() {
+                    it("should not send them an sms",function() {
+                        return tester
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273444',
+                                    extra : {
+                                        is_registered: 'true',
+                                        register_sms_sent: 'true'
+                                    }
+                                });
+                            })
+                            .setup.user.addr('+273444')
+                            .setup.user.state('states:register')
+                            .input('1')
+                            .input.session_event('close')
+                            .check(function(api) {
+                                var smses = _.where(api.outbound.store, {
+                                    endpoint: 'sms'
+                                });
+                                assert.equal(smses.length,0);
+                            }).run();
                     });
-
-                    describe("when they have not been sent a registration sms",function() {
-                        it ("should send them an sms asking them to input their location next time",function() {
-                            tester
-                                .setup.user.addr('+273123')
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-
-                                    var sms = smses[0];
-                                    assert.equal(smses.length,1);
-                                    assert.equal(sms.content, [
-                                        "Hello VIP!2 begin we need ur voting ward.",
-                                        "Dial *55555# & give us ur home address & we'll work it out.",
-                                        "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                                    ].join(' '));
-                                    assert.equal(sms.to_addr,'+273123');
-                                }).run();
-                        });
-                    });
-
                 });
 
-                describe("when they have inputted their location",function() {
-                    describe("when they have already been sent a registration sms",function() {
-                        it ("should not send them an sms",function() {
-                            tester
-                                .setup.user.addr('+273123')
-                                .setup(function(api) {
-                                    api.contacts.add( {
-                                        msisdn: '+273123',
-                                        extra : {
-                                            is_registered: 'true',
-                                            register_sms_sent: 'true'
-                                        }
-                                    });
-                                })
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-                                    assert.equal(smses.length,0);
-                                }).run();
-                        });
-                    });
-                    describe("when they have already been sent a registration sms",function() {
-                        it("should send them an sms thanking them for their registration",function() {
-                            tester
-                                .setup.user.addr('+273000')
-                                .setup.user.state('states:register')
-                                .input('1')
-                                .input.session_event('close')
-                                .check(function(api) {
-                                    var smses = _.where(api.outbound.store, {
-                                        endpoint: 'sms'
-                                    });
-
-                                    var sms = smses[0];
-                                    assert.equal(smses.length,1);
-                                    assert.equal(sms.content,[
-                                        'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
-                                        'Get started by answering questions or reporting election activity!',
-                                        'Dial back in to *5555# to begin!'
-                                    ].join(' '));
-                                    assert.equal(sms.to_addr,'+273000');
-                                }).run();
-                        });
+                describe("when they have not been sent a registration sms",function() {
+                    it("should send them an sms thanking them for their registration",function() {
+                        return tester
+                            .setup(function(api) {
+                                api.contacts.add( {
+                                    msisdn: '+273323',
+                                    extra : {
+                                        is_registered: 'true',
+                                        USSD_number: "*120*8864*1321#"
+                                    }
+                                });
+                            })
+                            .setup.user.addr('+273323')
+                            .setup.user.state('states:register')
+                            .input(1)
+                            .input.session_event('close')
+                            .check(function(api) {
+                                var smses = _.where(api.outbound.store, {
+                                    endpoint: 'sms'
+                                });
+                                var sms = smses[0];
+                                assert.equal(smses.length,1);
+                                assert.equal(sms.content, [
+                                    "Thanks for volunteering to be a citizen reporter for the 2014 elections!",
+                                    "Get started by answering questions or reporting election activity!",
+                                    "Dial *120*8864*1321# to return to VIP"
+                                ].join(' '));
+                                assert.equal(sms.to_addr,'+273323');
+                            }).run();
                     });
                 });
             });
@@ -184,7 +140,42 @@ describe("app", function() {
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.delivery_class,'ussd');
-                    });
+                    })
+                    .run();
+            });
+
+            it("should save their channel as an extra ",function() {
+                return tester
+                    .setup.user.addr('+273123')
+                    .start()
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.USSD_number,'*120*8864*1321#');
+                    })
+                    .run();
+            });
+
+            describe("if their channel is already defined",function() {
+                it("should not save over their original channel",function() {
+                    return tester
+                        .setup(function(api) {
+                            api.contacts.add( {
+                                msisdn: '+273555',
+                                extra : {
+                                    is_registered: 'true',
+                                    register_sms_sent: 'true',
+                                    USSD_number: '*120*not_the_same#'
+                                }
+                            });
+                        })
+                        .setup.user.addr('+273555')
+                        .start()
+                        .check(function(api) {
+                            var contact = _.find(api.contacts.store,{msisdn: '+273555'});
+                            assert.equal(contact.extra.USSD_number,'*120*not_the_same#');
+                        })
+                        .run();
+                });
             });
 
             it("should fire a 'visits' metric",function() {
@@ -235,31 +226,67 @@ describe("app", function() {
                 });
 
                 describe('if they have filled in their address before',function() {
-                    it("should take them to the main menu",function() {
-                        return tester
-                            .setup.user.addr('+273456')
-                            .setup(function(api) {
-                                api.contacts.add( {
-                                    msisdn: '+273456',
-                                    extra : {
-                                        is_registered: 'true',
-                                        ward: '1234'
-                                    }
-                                });
-                            }).start()
-                            .check.interaction({
-                                state: 'states:menu',
-                                reply: [
-                                    'Welcome to VIP!',
-                                    '1. Answer & win!',
-                                    '2. VIP Quiz',
-                                    '3. Report an Election Activity',
-                                    '4. View VIP results...',
-                                    "5. What's up?",
-                                    '6. About',
-                                    '7. End'
-                                ].join('\n')
-                            }).run();
+                    describe('if it is before the specified results date',function() {
+                        it("should take them to the main menu without 'results' showing",function() {
+                            app.get_date = function() {
+                                return new Date('3 April, 2014');
+                            };
+                            return tester
+                                .setup.user.addr('+273456')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        msisdn: '+273456',
+                                        extra : {
+                                            is_registered: 'true',
+                                            ward: '1234'
+                                        }
+                                    });
+                                }).start()
+                                .check.interaction({
+                                    state: 'states:menu',
+                                    reply: [
+                                        'Welcome to VIP!',
+                                        '1. Answer & win!',
+                                        '2. VIP Quiz',
+                                        '3. Report an Election Activity',
+                                        "4. What's up?",
+                                        '5. About',
+                                        '6. End'
+                                    ].join('\n')
+                                }).run();
+                        });
+                    });
+
+                    describe('if it is on or after the specified results date',function() {
+                        it("should take them to the main menu with 'results' showing",function() {
+                            app.get_date = function() {
+                                return new Date('4 April, 2014');
+                            };
+                            return tester
+                                .setup.user.addr('+273456')
+                                .setup(function(api) {
+                                    api.contacts.add( {
+                                        msisdn: '+273456',
+                                        extra : {
+                                            is_registered: 'true',
+                                            ward: '1234'
+                                        }
+                                    });
+                                }).start()
+                                .check.interaction({
+                                    state: 'states:menu',
+                                    reply: [
+                                        'Welcome to VIP!',
+                                        '1. Answer & win!',
+                                        '2. VIP Quiz',
+                                        '3. Report an Election Activity',
+                                        '4. View VIP results...',
+                                        "5. What's up?",
+                                        '6. About',
+                                        '7. End'
+                                    ].join('\n')
+                                }).run();
+                        });
                     });
                 });
             });
@@ -1013,10 +1040,10 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Choose your area:",
-                                "1. 21 Conduit Street, Randburg 2188",
-                                "2. 21 Conduit Street, Sandton 2191",
-                                "3. Still not my address"
+                                "Please select the location from the options below",
+                                "1. 21 Conduit Street, Randbur...",
+                                "2. 21 Conduit Street, Sandton...",
+                                "3. Still not the address"
                             ].join("\n")
                         }).run();
                 });
@@ -1029,10 +1056,10 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:report:verify_location",
                         reply: [
-                            "Choose your area:",
+                            "Please select the location from the options below",
                             "1. 21 Conduit Street, Randburg 2188",
                             "2. 21 Conduit Street, Sandton 2191",
-                            "3. Not my address"
+                            "3. Not the address"
                         ].join("\n")
                     }).run();
             });
@@ -1270,8 +1297,6 @@ describe("app", function() {
 
                         }).run();
                 });
-
-
             });
 
             describe("when the list of matching locations is too long to be displayed",function() {
@@ -1282,10 +1307,10 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Choose your area:",
-                                "1. Main Street, Johannesburg",
-                                "2. Main Street, Johannesburg 2192",
-                                "3. Main Street, Johannesburg South 2190",
+                                "Please select the location from the options below",
+                                "1. Main Street, Johanne...",
+                                "2. Main Street, Johannes...",
+                                "3. Main Street, Johannes...",
                                 "4. More"
                             ].join("\n")
                         }).run();
