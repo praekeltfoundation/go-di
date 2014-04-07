@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "Afrikaans",
-        "pot-creation-date": "2014-04-04 04:34:+0200",
-        "po-revision-date": "2014-04-05 16:22+0200",
+        "pot-creation-date": "2014-04-07 11:49:+0200",
+        "po-revision-date": "2014-04-07 13:01+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "af_ZA",
@@ -12,13 +12,9 @@
         "x-generator": "Poedit 1.6.4",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
+    "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial {{ USSD_number }} to return to VIP": [
         null,
-        "Dankie dat jy deelneem om verslag te doen oor d '14-verkiesing! Begin vrae beantwoord of oor verkiesingsaksies verslag te doen! Skakel *120*7692# om te begin!"
-    ],
-    "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
-        null,
-        "Dankie dat jy deelneem om verslag te doen oor d '14-verkiesing! Begin vrae beantwoord of oor verkiesingsaksies verslag te doen! Skakel *120*7692# om te begin!"
+        "Dankie dat jy deelneem om verslag te doen oor d '14-verkiesing! Begin vrae beantwoord of oor verkiesingsaksies verslag te doen! Skakel  {{ USSD_number }}  om te begin!"
     ],
     "Welcome to Voting is Power! Start by choosing your language:": [
         null,
@@ -120,9 +116,9 @@
         null,
         "Kies jou area:"
     ],
-    "Welcome to VIP!": [
+    "View VIP results...": [
         null,
-        "Welkom by VIP!"
+        "Sien VIP-uitslae"
     ],
     "Answer & win!": [
         null,
@@ -136,10 +132,6 @@
         null,
         "Rapporteer verkiesingsaksie binne jou gemeenskap"
     ],
-    "View VIP results...": [
-        null,
-        "Sien VIP-uitslae"
-    ],
     "What's up?": [
         null,
         "Wat gaan aan?"
@@ -151,6 +143,10 @@
     "End": [
         null,
         "Eindig"
+    ],
+    "Welcome to VIP!": [
+        null,
+        "Welkom by VIP!"
     ],
     "Thanks, u have answered all the questions in this section.": [
         null,
@@ -196,6 +192,18 @@
         null,
         "Waar het hierdie voorval plaasgevind? Wees asb baie spesifiek en gee adres en stad/dorp."
     ],
+    "Not the address": [
+        null,
+        "Nie die address nie"
+    ],
+    "Still not the address": [
+        null,
+        "Nog nie die address nie"
+    ],
+    "Please select the  location from the options below": [
+        null,
+        "Kies asb een van die opsies:"
+    ],
     "Thank you for your report! Keep up the reporting & you may have a chance to be chosen as an official election day reporter where you can earn airtime or cash for your contribution.": [
         null,
         "Dankie vir jou verslag! Hou aan om verslag te doen & jy staan dalk 'n kans om as amptelike stemdagverslaggewer gekies te word en lugtyd of kontant vir jou bydrae te verdien."
@@ -210,7 +218,7 @@
     ],
     "voice their opinions on current issues surrounding the elections, and report on election processes on voting day.": [
         null,
-        "Jy kan enige verkiesingsverwante aktiwiteit via USSD rapporteer en help om 'n ware prentjie van die 2014-verkiesing te skep.1. Vorige 2.Volgende 3. Gaan uit"
+        "Jy kan enige verkiesingsverwante aktiwiteit via USSD rapporteer en help om 'n ware prentjie van die 2014-verkiesing te skep."
     ],
     "VIP:Ask is a partnership between academics, Democracy International, Livity Africa and the Praekelt Foundation": [
         null,
