@@ -1015,10 +1015,10 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Choose your area:",
-                                "1. 21 Conduit Street, Randburg 2188",
-                                "2. 21 Conduit Street, Sandton 2191",
-                                "3. Still not my address"
+                                "Please select the  location from the options below",
+                                "1. 21 Conduit Street, Randbu...",
+                                "2. 21 Conduit Street, Sandton...",
+                                "3. Still not the address"
                             ].join("\n")
                         }).run();
                 });
@@ -1031,10 +1031,10 @@ describe("app", function() {
                     .check.interaction({
                         state: "states:report:verify_location",
                         reply: [
-                            "Choose your area:",
+                            "Please select the  location from the options below",
                             "1. 21 Conduit Street, Randburg 2188",
                             "2. 21 Conduit Street, Sandton 2191",
-                            "3. Not my address"
+                            "3. Not the address"
                         ].join("\n")
                     }).run();
             });
@@ -1284,10 +1284,10 @@ describe("app", function() {
                         .check.interaction({
                             state: "states:report:verify_location",
                             reply: [
-                                "Choose your area:",
-                                "1. Main Street, Johannesburg",
-                                "2. Main Street, Johannesburg 2192",
-                                "3. Main Street, Johannesburg South 2190",
+                                "Please select the  location from the options below",
+                                "1. Main Street, Johanne...",
+                                "2. Main Street, Johanne...",
+                                "3. Main Street, Johannes...",
                                 "4. More"
                             ].join("\n")
                         }).run();

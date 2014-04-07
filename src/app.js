@@ -643,13 +643,13 @@ di.app = function() {
             });
 
             if (!opts.retry) {
-                choices.push( new Choice("not_available",$("Not my address")));
+                choices.push( new Choice("not_available",$("Not the address")));
             } else {
-                choices.push(new Choice("still_not_available",$("Still not my address")));
+                choices.push(new Choice("still_not_available",$("Still not the address")));
             }
 
             return new PaginatedChoiceState(name, {
-                question: $("Choose your area:"),
+                question: $("Please select the  location from the options below"),
                 choices: choices,
                 characters_per_page: 140,
                 options_per_page: 3,
