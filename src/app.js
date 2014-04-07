@@ -625,12 +625,19 @@ di.app = function() {
                     who: self.im.user.addr
                 })
                 .then(function(resp) {
-                    return {
-                        name:'states:report:end',
-                        creator_opts: {
-                            response: resp.data.payload.success
-                        }
-                    };
+                    return self
+                        .incr_kv('total.reports')
+                        .then(function(results) {
+                            return self.im.metrics.fire.last('total.reports',results.value);
+                        })
+                        .then(function() {
+                            return {
+                                name:'states:report:end',
+                                creator_opts: {
+                                    response: resp.data.payload.success
+                                }
+                            };
+                        });
                 });
         };
 
@@ -675,24 +682,15 @@ di.app = function() {
         });
 
         self.states.add('states:report:end',function(name,opts) {
-            return self
-                .incr_kv('total.reports')
-                .then(function(results) {
-                    return self.im.metrics.fire.last('total.reports',results.value);
-                })
-                .then(function() {
-                    return new EndState(name, {
-                        text: $([
-                            'Thank you for your report! Keep up the reporting',
-                            '& you may have a chance to be chosen as an official',
-                            'election day reporter where you can earn airtime or cash',
-                            'for your contribution.'
-                        ].join(" ")),
-                        next: function() {
-                            return 'states:menu';
-                        }
-                    });
-                });
+            return new EndState(name, {
+                text: $([
+                    'Thank you for your report! Keep up the reporting',
+                    '& you may have a chance to be chosen as an official',
+                    'election day reporter where you can earn airtime or cash',
+                    'for your contribution.'
+                ].join(" ")),
+                next: 'states:menu'
+            });
         });
 
         self.states.add('states:results',function(name) {
