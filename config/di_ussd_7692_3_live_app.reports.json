@@ -98,7 +98,7 @@
                 "metric_type": "account",
                 "store": "di_ussd_7692_3_live_app",
                 "name": "sum.visits",
-                "aggregator": "sum"
+                "aggregator": "last"
             }
         },
         {
