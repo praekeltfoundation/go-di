@@ -537,6 +537,25 @@ describe("app", function() {
                     }).run();
             });
 
+            describe("if this is the 2nd time entering their address",function() {
+                it("it should save the 2nd address in another contact field",function() {
+                    return tester
+                        .setup.user.addr("+273123")
+                        .setup.user.state({
+                            name: 'states:address',
+                            creator_opts: {
+                                retry: true
+                            }
+                        })
+                        .input('21 conduit street')
+                        .check(function(api) {
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.raw_user_address_2,"21 conduit street");
+                        })
+                        .run();
+                });
+            });
+
             it("should return the list of appropriate electoral wards to the user",function() {
                 return tester
                     .setup.user.state('states:address')
@@ -1233,6 +1252,7 @@ describe("app", function() {
                         }).run();
                 });
             });
+
 
             describe("when user selects 'Still not my address' from the list",function() {
                 beforeEach(function() {
