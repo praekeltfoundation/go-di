@@ -1230,7 +1230,13 @@ di.app = function() {
             return new FreeText(name,{
                 question: question,
                 check: function(content) {
-                    self.contact.extra.raw_user_address = content;
+                    //If the user is on second attempt, then save in separate field.
+                    if (!opts.retry) {
+                        self.contact.extra.raw_user_address = content;
+                    } else {
+                        self.contact.extra.raw_user_address_2 = content;
+                    }
+
                     return self.im.contacts
                         .save(self.contact)
                         .then(function() {
