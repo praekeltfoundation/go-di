@@ -6,7 +6,7 @@
             "name": "Total Registered Participants",
             "target": {
                 "metric_type": "account",
-                "store": "di_ussd_7692_live_app ",
+                "store": "di_ussd_7692_live_app",
                 "name": "registered.participants",
                 "aggregator": "last"
             }
