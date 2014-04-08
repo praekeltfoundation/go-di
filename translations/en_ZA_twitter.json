@@ -1,32 +1,36 @@
 {
     "": {
-        "project-id-version": "USSD Zulu",
-        "pot-creation-date": "2014-04-07 11:49:+0200",
-        "po-revision-date": "2014-04-07 13:20+0200",
+        "project-id-version": "VIP USSD",
+        "pot-creation-date": "2014-04-04 04:34:+0200",
+        "po-revision-date": "2014-04-05 19:59+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
-        "language": "zu_ZA",
+        "language": "en_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "x-generator": "Poedit 1.6.4",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial {{ USSD_number }} to return to VIP": [
+    "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
         null,
-        "Sibonga ukuzikhethela kwakho ukuba zika-2014! Qala ngokuphendula imibuzo noma ngokubika umcimbi wokhetho! Ukuqala, chofoza {{ USSD_number }} !"
+        "Tx 4 joining! We need ur home address to work out ur voting ward. This will b prvt, only ur voting ward will be stored &u will be anonymous"
+    ],
+    "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
+        null,
+        "NOT NEEDED FOR   TWITTER"
     ],
     "Welcome to Voting is Power! Start by choosing your language:": [
         null,
-        "Siyakwamukela ku-Ukuvota Kungamandla! Qala ngokukhetha ulimi lwakho:"
+        "Welcome to Voting is Power! Start by choosing your language:"
     ],
     "English": [
         null,
-        "Isingisi"
+        "English"
     ],
     "Afrikaans": [
         null,
-        "isiBhunu"
+        "Afrikaans"
     ],
     "Zulu": [
         null,
@@ -34,219 +38,207 @@
     ],
     "It's election time! Do u think ur vote matters?": [
         null,
-        "Yiskhathi sokhetho! Liyasiza yini ivoti lakho?"
+        "Elections!Does ur vote matter?"
     ],
     "YES every vote matters": [
         null,
-        "YEBO"
+        "YES every vote matters"
     ],
     "NO but I'll vote anyway": [
         null,
-        "CHA kodwa ngizovota"
+        "NO but I'll vote"
     ],
     "NO so I'm NOT voting": [
         null,
-        "CHA Yingakho ngingavoti"
+        "NO so I'm NOT voting"
     ],
     "I'm NOT REGISTERED to vote": [
         null,
-        "ANGIKUBHALISELANGA"
+        "Im NOT REGISTERED"
     ],
     "I'm TOO YOUNG to vote": [
         null,
-        "Ngisemncane angivoti"
+        "Im TOO YOUNG"
     ],
     "Please accept the terms and conditions to get started.": [
         null,
-        "Yamukela le imigomo nemibandela ekuvumela ukuqala"
+        "Please accept the terms and conditions to get started."
     ],
     "Accept & Join": [
         null,
-        "Yamukela ujoyine"
+        "Accept & Join"
     ],
     "Read t&c": [
         null,
-        "Funda imigomo nemibandela"
+        "Read t&c"
     ],
     "Quit": [
         null,
-        "Phuma"
+        "Quit"
     ],
     "University of California San Diego requests ur consent to act as a research subject for improving electoral performance through citizen engagement in SA.": [
         null,
-        "I-VIP:Voice yiprojekt yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzwa imibuzo igcinwe lingavezwa igama"
+        "VIP:Voice: A research project (Praekelt Fdnn, Democracy Intl, UC San Diego) Anon. questions may b asked&stored"
     ],
     "Study provides evaluation on how 2 use marketing &recruitment strategies,with mobile technology to improve how elections r monitored by citizen volunteers.": [
         null,
-        "Ungahoxa noma ubambe iqhaza. Ungakhishwa ngaphandle kokwaziswa. Uzokwaziswa ngolwaz olusha ngababamb iqhaza"
+        "U can withdraw/refuse 2take part.U may b excluded w/out notice. Will inform u of new info that affects participants."
     ],
     "If u participate,we will ask questions about urself&ur observations of the elections.U will b anonymous.Ur answers will be kept confidential&won't b shared.": [
         null,
-        "Uma ubamba iqhaza,sizokubuza imibuzo ngawe nangokubonile ezinkethweni.Alizovezw igama lakho.Izimpendulo zakho ziyimfihlo"
+        "If u join,we'll ask questions about u& election activity.U will b anon. Ur answers will b private &won't b shared"
     ],
     "To view full T&Cs please visit www.yal.mobi/vip.": [
         null,
-        "Uma uneminye imibuzo thinta CGibson kwethi 0118587605100. Ukubona imigomo nemibandela ephelele: yal.mobi/vip"
+        "If u have any questions or research-related problems contact C. Gibson at 011 858 760 5100. Full T&Cs at http://www.yal.mobi/vip"
     ],
     "1. Prev\n2. Next\n3. Exit": [
         null,
-        "1.Owedlule \n2.Okulandelayo \n3.Phuma"
+        "1. Prev\n2. Next\n3. Exit"
     ],
     "Thank you for your time. Remember, you can always reconsider becoming a citizen reporter.": [
         null,
-        "Siyabonga."
+        "Thank you for your time. Remember, you can always reconsider becoming a citizen reporter."
     ],
     "Please carefully enter your address again: for eg: 12 main street pretoria": [
         null,
-        "Siyacela, phendula ngekheli lakho lasekhaya e.g 12 main street pretoria"
+        "Please carefully enter your address again: for e.g.: 12 main street pretoria"
     ],
     "Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
         null,
-        "Siyabonga! Ukuvota udinga ikhadi lewadi lakho lokuvota. Phendula ngekheli lakho lasekhaya sikusize. Lokhu kuyimfihlo; kugcinwa iwadi lakho lokuvota kuphela"
+        "Tx 4 joining! We need ur voting ward. Type ur home address & we'll work it out. This is prvt, only ur voting ward will be stored &u will be anonymous"
     ],
     "Not my address": [
         null,
-        "Asiyilo ikheli lami"
+        "Not my address"
     ],
     "Still not my address": [
         null,
-        "Cha, asiyilo ikheli lami"
+        "Still not my address"
     ],
     "Choose your area:": [
         null,
-        "Khetha indawo yakho"
-    ],
-    "View VIP results...": [
-        null,
-        "Bheka imiphumela ye-VIP.."
-    ],
-    "Answer & win!": [
-        null,
-        "Phendula uwine!"
-    ],
-    "VIP Quiz": [
-        null,
-        "Imibuzo ye-VIP"
-    ],
-    "Report an Election Activity": [
-        null,
-        "Bika umcimbi wokhetho"
-    ],
-    "What's up?": [
-        null,
-        "Kwenzenjani?"
-    ],
-    "About": [
-        null,
-        "Ngalokhu"
-    ],
-    "End": [
-        null,
-        "Qeda"
+        "Choose your area:"
     ],
     "Welcome to VIP!": [
         null,
-        "Siyakwamukela ohlelweni i-VIP!"
+        "Welcome to VIP!"
+    ],
+    "Answer & win!": [
+        null,
+        "Answer & win!"
+    ],
+    "VIP Quiz": [
+        null,
+        "VIP Quiz"
+    ],
+    "Report an Election Activity": [
+        null,
+        "Report an Election Activity in ur Community"
+    ],
+    "View VIP results...": [
+        null,
+        "VIP results"
+    ],
+    "What's up?": [
+        null,
+        "What's up?"
+    ],
+    "About": [
+        null,
+        "About"
+    ],
+    "End": [
+        null,
+        "End"
     ],
     "Thanks, u have answered all the questions in this section.": [
         null,
-        "Siyabonga! Uphendule imibuzo yonke."
+        "Thanks, u have answered all the questions in this section."
     ],
     "Main Menu": [
         null,
-        "iMenyu Enkulu"
+        "Main Menu"
     ],
     "Party going door-to-door": [
         null,
-        "Inhlngno hamb' imizi ngemiz"
+        "Party going door2door"
     ],
     "Party intimidating voters": [
         null,
-        "Inhlngno sabisa bavoti"
+        "Party intimidating voter"
     ],
     "Party distributing food/money/gift": [
         null,
-        "Inhlngno isabalalisa ukudla/imali"
+        "Party distributing food/money"
     ],
     "Campaign rally": [
         null,
-        "Irali yomkhankso"
+        "rally"
     ],
     "Campaign violence": [
         null,
-        "Udlame lokukhankas"
+        "violence"
     ],
     "Protest/Demonstration": [
         null,
-        "Umbhikisho"
+        "Protest/Demonstrtn"
     ],
     "Choose a report type:": [
         null,
-        "Khetha"
+        "Report type:"
     ],
     "What is the title of your report?": [
         null,
-        "Sithini isihloko sombiko wakho?"
+        "What is the title of your report?"
     ],
     "Where did this event happen? Please be as specific as possible and give address and city.": [
         null,
-        "Wenzekephi lo mcimbi? Khomba indawo ngangokusemandleni unikeze ikheli nedolobha."
-    ],
-    "Not the address": [
-        null,
-        "Asiyilo ikheli"
-    ],
-    "Still not the address": [
-        null,
-        "Cha, asiyilo ikheli"
-    ],
-    "Please select the  location from the options below": [
-        null,
-        "Ukukhetha indawo"
+        "Where did this event happen? Please be as specific as possible and give address and city."
     ],
     "Thank you for your report! Keep up the reporting & you may have a chance to be chosen as an official election day reporter where you can earn airtime or cash for your contribution.": [
         null,
-        "Siyabonga! Qhubeka, ungaba sethubeni lokukhethwa njengozobika ngokusemthethweni ngosuku lokhetho, lapho ungazitholela khona i-airtime"
+        "Thx 4 ur report! Keep reporting &u will have a chance 2b chosen as an election day reporter where u can earn airtime /cash for ur effort"
     ],
     "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted. View results at www.url.com": [
         null,
-        "Ungumhlali o we si {{ registered }} o sebenza ngokubika ezinkethweni! Izimibiki engu {{ reports }} ekethweni isi thunyelwe."
+        "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ reports }} election activity posts have been submitted."
     ],
     "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will engage South Africans from all walks of life to report on electoral activities,": [
         null,
-        "I-VIP:Voice iwuhlelo oluklanyelwe ukubandakanya izakhamuzi zakuleli njengoba kuyiwa okhethweni"
+        "VIP-Ask is a multichannel political engagement portal.VIP: Ask will engage S. Africans from all walks of life to report on electoral activities,"
     ],
     "voice their opinions on current issues surrounding the elections, and report on election processes on voting day.": [
         null,
-        "Ungabika noma yimuphi umcimbi ophathelene nokhetho ngo-USSD ukusiza ekwakheni isithombe esiyiqiniso ngokhetho lwango-2014"
+        "voice their opinions on current issues surrounding the elections, and report on election processes on voting day."
     ],
     "VIP:Ask is a partnership between academics, Democracy International, Livity Africa and the Praekelt Foundation": [
         null,
-        "I-VIP:Voice yiphrojekth yocwaningo lwe-Praekelt, Dem Intl ne-UCSD. Kungabuzw imibuzo igcinwe lingavezw igama"
+        "VIP:Voice is a partnership between Livity, Praekelt Foundation, Democracy International, academics& citizens like u!"
     ],
     "Bye.": [
         null,
-        "Salakahle."
+        "Bye."
     ],
     "I am...": [
         null,
-        "Ngingo"
+        "I am..."
     ],
     "Male": [
         null,
-        "wesilisa"
+        "Male"
     ],
     "Female": [
         null,
-        "wesifazane"
+        "Female"
     ],
     "How old are you?": [
         null,
-        "Uneminyaka emingaki?"
+        "How old are you?"
     ],
     "u14": [
         null,
-        "ngaphansi kweyi-15"
+        "u15"
     ],
     "15-19": [
         null,
@@ -270,103 +262,103 @@
     ],
     "Did you vote in the 2009 election?": [
         null,
-        "Wavota yini okhethweni lwango-2009?"
+        "Did you vote in the 2009 election?"
     ],
     "Yes": [
         null,
-        "Yebo"
+        "Yes"
     ],
     "No, could not/was not registered": [
         null,
-        "Cha, angikwazanga/ngangingabhalisanga"
+        "No, could not/was not registered"
     ],
     "No, did not want to": [
         null,
-        "Cha, angithandanga"
+        "No, did not want to"
     ],
     "No, other": [
         null,
-        "Cha, okunye"
+        "No, other"
     ],
     "Skip": [
         null,
-        "Eqa"
+        "Skip"
     ],
     "Black African": [
         null,
-        "ngumAfrika oNsundu"
+        "Black African"
     ],
     "Coloured": [
         null,
-        "yiKhaladi"
+        "Coloured"
     ],
     "Indian/Asian": [
         null,
-        "ngowomdabu waseNdiya/waseEshiya"
+        "Indian/Asian"
     ],
     "White": [
         null,
-        "Mhlophe"
+        "White"
     ],
     "Other": [
         null,
-        "ngokunye"
+        "Other"
     ],
     "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!": [
         null,
-        "Sibonga ukuzethula kabanzi ku-VIP! Uma uyawine, uzothunyelelwa i-airtime yakho masinyane! "
+        "Thank you for telling VIP a bit more about yourself!  If u are a lucky winner u will be sent your airtime within 24hrs."
     ],
     "Please give us your cellphone number so we can send you your airtime!": [
         null,
-        "Sicel inombolo yeselula yakho ukuze sikwazi ukukuthumelel i-airtime yakho!"
+        "Please give us your cellphone number as you stand a chance to win airtime!"
     ],
     "During the past year, have you attended a demonstration or protest?": [
         null,
-        "Onyakeni odlule, wawuhambela yini umbhikisho?"
+        "During the past year, have you attended a demonstration or protest?"
     ],
     "Yes, many": [
         null,
-        "Yebo, eminingi"
+        "Yes, many"
     ],
     "Yes, a few": [
         null,
-        "Yebo, embalwa"
+        "Yes, a few"
     ],
     "No": [
         null,
-        "Cha"
+        "No"
     ],
     "Are you registered to vote in the upcoming elections?": [
         null,
-        "Ukubhalisele yini ukuvota ezinkethweni ezizayo?"
+        "Are you registered to vote in the upcoming elections?"
     ],
     "Unsure": [
         null,
-        "Anginasiqiniseko"
+        "Unsure"
     ],
     "How likely is it that you will vote in the upcoming election?": [
         null,
-        "Maningi kangakanani amathuba okuba uvote okhethweni oluzayo?"
+        "How likely is it that u will vote in the 2014 election?"
     ],
     "Very likely": [
         null,
-        "Maningi kakhulu"
+        "Very likely"
     ],
     "Somewhat likely": [
         null,
-        "Akhonywana"
+        "Somewhat likely"
     ],
     "Somewhat unlikely": [
         null,
-        "Ayangabazeka kancane"
+        "Somewhat unlikely"
     ],
     "Very unlikely": [
         null,
-        "Awekho nhlobo"
+        "Very unlikely"
     ],
     "Which political party do you feel close to?": [
         null,
-        "Iyiphi inhlangano yezepolitiki esenhlziyweni yakho?"
+        "Which political party do you feel close to?"
     ],
     "ANC": [
         null,
@@ -378,7 +370,7 @@
     ],
     "COPE": [
         null,
-        "Cope"
+        "COPE"
     ],
     "DA": [
         null,
@@ -394,218 +386,218 @@
     ],
     "I don't feel close to a party": [
         null,
-        "Ayikho esenhlziyweni yami"
+        "I don't feel close to a party"
     ],
     "Would you like to continue answering questions? There are 12 in total.": [
         null,
-        "Uyathanda yini ukuqhubeka nokuphendula imibuzo? Iyi-12 isiyonke"
+        "Would you like to continue answering questions? There are 12 in total."
     ],
     "Continue": [
         null,
-        "Qhubeka"
+        "Continue"
     ],
     "During the past year, has your community had demonstrations or protests?": [
         null,
-        "Onyakeni odlule, umphakathi wangakini ube nayo yini imibhikisho?"
+        "During the past year, has your community had demonstrations or protests?"
     ],
     "Yes, several times": [
         null,
-        "Yebo, izikhathi eziningana"
+        "Yes, several times"
     ],
     "Yes, once or twice": [
         null,
-        "kanye noma kabili"
+        "Yes, once or twice"
     ],
     "If your community has had demonstrations or protests in the last year, were they violent?": [
         null,
-        "Uma kuwkuthi umphakathi wangakini waba nayo imibhikisho ngonyaka odlule, yayinodlame yini?"
+        "If your community has had demonstrations or protests in the last year, were they violent?"
     ],
     "Not applicable": [
         null,
-        "Awufanele lo mbuzo"
+        "Not applicable"
     ],
     "How easy is it for your neighbors to find out if you voted?": [
         null,
-        "Kulula kangakanani komakhelwane bakho ukwazi ukuthi uvotile? "
+        "How easy is it for your neighbours to find out if you voted?"
     ],
     "Very easy": [
         null,
-        "Kulula kakhulu"
+        "Very easy"
     ],
     "Somewhat easy": [
         null,
-        "Kulula kancane"
+        "Somewhat easy"
     ],
     "Somewhat difficult": [
         null,
-        "Kunzinyana"
+        "Somewhat difficult"
     ],
     "Very difficult": [
         null,
-        "Kulukhuni kakhulu"
+        "Very difficult"
     ],
     "People in my neighborhood look down on those who do not vote:": [
         null,
-        "Abantu esakhelene nabo bamthatha kancane ongavoti:"
+        "People in my neighbourhood look down on those who do not vote"
     ],
     "Strongly agree": [
         null,
-        "Ngivum' kakhulu"
+        "Strongly agree"
     ],
     "Somewhat agree": [
         null,
-        "Ngiyavuma kancane"
+        "Somewhat agree"
     ],
     "Somewhat disagree": [
         null,
-        "Ngiyaphika kancane"
+        "Somewhat disagree"
     ],
     "Strongly disagree": [
         null,
-        "Ngiphika kakhul"
+        "Strongly disagree"
     ],
     "How do you rate the overall performance of President Zuma?": [
         null,
-        "Ukuklelisa kanjani ukusebenza kukaMengameli Zuma ngokubanzi?"
+        "How do you rate the overall performance of President Zuma?"
     ],
     "Excellent": [
         null,
-        "Kuhle kakhulu"
+        "Excellent"
     ],
     "Good": [
         null,
-        "Kuhle"
+        "Good"
     ],
     "Just Fair": [
         null,
-        " Kuyagculisa khona"
+        "Just Fair"
     ],
     "Poor": [
         null,
-        "Akukuhle"
+        "Poor"
     ],
     "How do you rate the overall performance of your local government councillor?": [
         null,
-        "Ukuklelisa kanjani ukusebenza kwekhansela lendawo ngokubanzi?"
+        "How do you rate the overall performance of your local government councillor?"
     ],
     "Which party has contacted you the most during this election campaign?": [
         null,
-        "Iyiphi inhlangano ekuthinte kaningi kunezinye ngalo mkhankaso wokhetho?"
+        "Who has contacted u the most during 2014 election campaign?"
     ],
     "None, I have not been contacted": [
         null,
-        "Ayikho"
+        "None, I have not been contacted"
     ],
     "During the past two weeks, have you attended a campaign rally?": [
         null,
-        "Emasontweni 2 edlule, ngabe uwuyihambele yini irali yomkhankaso?"
+        "During the past two weeks, have you attended a campaign rally?"
     ],
     "How satisfied are you with the way democracy works in South Africa?": [
         null,
-        "Ugculiseke kangakanani yindlela intando yabantu esebenza ngayo kuleli?"
+        "How satisfied are you with the way democracy works in SA?"
     ],
     "Very satisfied": [
         null,
-        "Kakhulu"
+        "Very satisfied"
     ],
     "Somewhat satisfied": [
         null,
-        "Ngigculisekile ngandlela thile"
+        "Somewhat satisfied"
     ],
     "Dissatisfied": [
         null,
-        "Angugculisekile"
+        "Dissatisfied"
     ],
     "Very dissatisfied": [
         null,
-        "Angigculisekile neze"
+        "Very dissatisfied"
     ],
     "During the past two weeks, how frequently have campaign rallies occurred in your community?": [
         null,
-        "Emasontweni 2 edlule abe maningi kangakanani amarali okukhankasela ukhetho emphakathin wangakini?"
+        "During the past 2 weeks, how often have campaign rallies occurred in ur community?"
     ],
     "Often": [
         null,
-        "Kaningi"
+        "Often"
     ],
     "Several times": [
         null,
-        "Izikhath ezimbalwa"
+        "Several times"
     ],
     "Once or twice": [
         null,
-        "1 noma 2"
+        "Once or twice"
     ],
     "Never": [
         null,
-        "Nakanye"
+        "Never"
     ],
     "During the past two weeks, how frequently have party agents gone door to door in your community to mobilize voters?": [
         null,
-        "Emsontweni 2 edlule abezinhlangno bangene kangakanni imizi ngemiz ngakini benxenxa abavoti?"
+        "In the past 2 weeks, how often have party agents intimidated voters in ur community?"
     ],
     "During the past two weeks, how frequently have party agents intimidated voters in your community?": [
         null,
-        "Emsontweni 2 edlule abamele izinhlangano babesabise kangakanani abavoti ngakini?"
+        "During the past two weeks, how frequently have party agents intimidated voters in your community?"
     ],
     "How much do you trust the ANC?": [
         null,
-        "Uyethemba kangkanani i-ANC?"
+        "How much do you trust the ANC?"
     ],
     "A lot": [
         null,
-        "Kakhulu"
+        "A lot"
     ],
     "Some": [
         null,
-        "Kakhudlwana"
+        "Some"
     ],
     "Not much": [
         null,
-        "Hhayi kakhulu"
+        "Not much"
     ],
     "Not at all": [
         null,
-        "Nakancane"
+        "Not at all"
     ],
     "No opinion": [
         null,
-        "Anginakuphawula"
+        "No opinion"
     ],
     "How much do you trust the Democratic Alliance (DA)?": [
         null,
-        "Uyethemba kangakanani iDemocratic Alliance (DA)?"
+        "How much do you trust the Democratic Alliance (DA)?"
     ],
     "How much do you trust the Economic Freedom Fighters (EFF)?": [
         null,
-        "Uyethemba kangakanani iEconomic Freedom Fighters (EFF)?"
+        "How much do you trust the Economic Freedom Fighters (EFF)?"
     ],
     "During the past year, how often have you or anyone in your family gone without enough food to eat?": [
         null,
-        "Onyakeni odlule, wena nelungu labakini nalala kaningi kangakanani?"
+        "In the past year, how often have u/ur family been without enough food 2 eat?"
     ],
     "Sometimes": [
         null,
-        "Ngesinye isikhath"
+        "Sometimes"
     ],
     "Many times": [
         null,
-        "Izikhath eziningi"
+        "Many times"
     ],
     "Always": [
         null,
-        "Izikhath zonke"
+        "Always"
     ],
     "In South Africa, it is sometimes necessary to use violence for a just cause:": [
         null,
-        "Nesidingo sokusebenzisa udlame ukufeza inhloso ethile:"
+        "In SA at times its necessary 2use violence 4 a just cause"
     ],
     "Sometimes not voting is the best way to express your political preferences:": [
         null,
-        "Ukungavoti kuye kube yindlela yokuvez ukuzikhethela politiki:"
+        "Sumtimes not voting is best way to express your politics"
     ],
     "Would you like to continue answering questions? There are 10 in total.": [
         null,
-        "Uyathanda yini ukuqhubeka nokuphendula imibuzo? Iyi-10 Isiyonke"
+        "Would you like to continue answering questions? There are 10 in total."
     ]
 }

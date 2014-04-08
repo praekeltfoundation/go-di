@@ -1,315 +1,308 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Afrikaans\n"
-"POT-Creation-Date: 2014-04-07 11:49:+0200\n"
-"PO-Revision-Date: 2014-04-07 13:01+0200\n"
+"Project-Id-Version: VIP USSD\n"
+"POT-Creation-Date: 2014-04-04 04:34:+0200\n"
+"PO-Revision-Date: 2014-04-05 19:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: af_ZA\n"
+"Language: en_ZA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.6.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app.js:187
+#: app.js:179
+msgid ""
+"Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
+"address & we'll work it out. This will be kept private, only ur voting ward "
+"will be stored &u will be anonymous."
+msgstr ""
+"Tx 4 joining! We need ur home address to work out ur voting ward. This will "
+"b prvt, only ur voting ward will be stored &u will be anonymous"
+
+#: app.js:195
 msgid ""
 "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get "
-"started by answering questions or reporting election activity! Dial "
-"{{ USSD_number }} to return to VIP"
-msgstr ""
-"Dankie dat jy deelneem om verslag te doen oor d '14-verkiesing! Begin vrae "
-"beantwoord of oor verkiesingsaksies verslag te doen! Skakel  "
-"{{ USSD_number }}  om te begin!"
+"started by answering questions or reporting election activity! Dial back in "
+"to *5555# to begin!"
+msgstr "NOT NEEDED FOR   TWITTER"
+
+#: app.js:254
+msgid "Welcome to Voting is Power! Start by choosing your language:"
+msgstr "Welcome to Voting is Power! Start by choosing your language:"
+
+#: app.js:256
+msgid "English"
+msgstr "English"
 
 #: app.js:257
-msgid "Welcome to Voting is Power! Start by choosing your language:"
-msgstr "Welkom by Stem gee Mag!! Kies jou taal:"
-
-#: app.js:259
-msgid "English"
-msgstr "Engels"
-
-#: app.js:260
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
-#: app.js:261
+#: app.js:258
 msgid "Zulu"
-msgstr "Zulu"
+msgstr "isiZulu"
+
+#: app.js:270
+msgid "It's election time! Do u think ur vote matters?"
+msgstr "Elections!Does ur vote matter?"
+
+#: app.js:272
+msgid "YES every vote matters"
+msgstr "YES every vote matters"
 
 #: app.js:273
-msgid "It's election time! Do u think ur vote matters?"
-msgstr "Dis stemtyd! Dink jy jou stem maak saak?"
+msgid "NO but I'll vote anyway"
+msgstr "NO but I'll vote"
+
+#: app.js:274
+msgid "NO so I'm NOT voting"
+msgstr "NO so I'm NOT voting"
 
 #: app.js:275
-msgid "YES every vote matters"
-msgstr "JA elke stem tel"
+msgid "I'm NOT REGISTERED to vote"
+msgstr "Im NOT REGISTERED"
 
 #: app.js:276
-msgid "NO but I'll vote anyway"
-msgstr "NEE maar ek stem nogtans"
-
-#: app.js:277
-msgid "NO so I'm NOT voting"
-msgstr "NEE ek gaan NIE stem nie"
-
-#: app.js:278
-msgid "I'm NOT REGISTERED to vote"
-msgstr "Ek's NIE GEREGISTEREER"
-
-#: app.js:279
 msgid "I'm TOO YOUNG to vote"
-msgstr "Ek's TE JONK"
+msgstr "Im TOO YOUNG"
+
+#: app.js:291
+msgid "Please accept the terms and conditions to get started."
+msgstr "Please accept the terms and conditions to get started."
+
+#: app.js:292
+msgid "Accept & Join"
+msgstr "Accept & Join"
+
+#: app.js:293
+msgid "Read t&c"
+msgstr "Read t&c"
 
 #: app.js:294
-msgid "Please accept the terms and conditions to get started."
-msgstr "Aanvaar asb bepalings & voorwaardes om te begin."
-
-#: app.js:295
-msgid "Accept & Join"
-msgstr "Aanvaar & Sluit aan"
-
-#: app.js:296
-msgid "Read t&c"
-msgstr "Lees B&V"
-
-#: app.js:297
 msgid "Quit"
-msgstr "Onttrek"
+msgstr "Quit"
 
-#: app.js:320
+#: app.js:317
 msgid ""
 "University of California San Diego requests ur consent to act as a research "
 "subject for improving electoral performance through citizen engagement in SA."
 msgstr ""
-"VIP:Voice is 'n navorsingsprojek deur die Praekelt,  Demokrasie Int en U."
-"Calif SD. Anonieme vrae kan gevra & gestoor word."
+"VIP:Voice: A research project (Praekelt Fdnn, Democracy Intl, UC San Diego) "
+"Anon. questions may b asked&stored"
 
-#: app.js:322
+#: app.js:319
 msgid ""
 "Study provides evaluation on how 2 use marketing &recruitment strategies,"
 "with mobile technology to improve how elections r monitored by citizen "
 "volunteers."
 msgstr ""
-"Jy kan onttrek, weier om te antwoord. Jy kan uitgesluit word. Jy sal oor "
-"nuwe inligting in kennis gestel word."
+"U can withdraw/refuse 2take part.U may b excluded w/out notice. Will inform "
+"u of new info that affects participants."
 
-#: app.js:324
+#: app.js:321
 msgid ""
 "If u participate,we will ask questions about urself&ur observations of the "
 "elections.U will b anonymous.Ur answers will be kept confidential&won't b "
 "shared."
 msgstr ""
-"As jy deelneem sal ons vrae oor jouself en jou waarnemings oor die "
-"verkiesing vra. Jy bly anoniem. Antwoorde nie gedeel word nie."
+"If u join,we'll ask questions about u& election activity.U will b anon. Ur "
+"answers will b private &won't b shared"
 
-#: app.js:326
+#: app.js:323
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
-"Vrae of navorsingsverwante probleme het? Kontak CGibson by 011 858 760 5100."
-"Vir volledige B&V's, besoek.yal.mobi/vip ."
+"If u have any questions or research-related problems contact C. Gibson at "
+"011 858 760 5100. Full T&Cs at http://www.yal.mobi/vip"
 
-#: app.js:338 app.js:740
+#: app.js:335 app.js:725
 msgid ""
 "1. Prev\n"
 "2. Next\n"
 "3. Exit"
 msgstr ""
-"1. Vorige\n"
-"2. Volg\n"
-"3. Onttrek"
+"1. Prev\n"
+"2. Next\n"
+"3. Exit"
 
-#: app.js:352
+#: app.js:349
 msgid ""
 "Thank you for your time. Remember, you can always reconsider becoming a "
 "citizen reporter."
-msgstr "Dankie\t"
+msgstr ""
+"Thank you for your time. Remember, you can always reconsider becoming a "
+"citizen reporter."
 
-#: app.js:359 app.js:580
+#: app.js:356 app.js:565
 msgid ""
 "Please carefully enter your address again: for eg: 12 main street pretoria"
 msgstr ""
-"Sleutel asseblief u adres weer noukeurig in bv: 12 main straat pretoria"
+"Please carefully enter your address again: for e.g.: 12 main street pretoria"
 
-#: app.js:364
+#: app.js:361
 msgid ""
 "Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address "
 "& we'll work it out. This will be kept private, only ur voting ward will be "
 "stored &u will be anonymous."
 msgstr ""
-"Dankie! Ons benodig jou stemwyk. Gee Stuur vir ons jou huisadres & ons sal "
-"dit uitwerk. Dit sal privaat gehou word, ons gebruik net d stemwyk - jy bly "
-"anoniem"
+"Tx 4 joining! We need ur voting ward. Type ur home address & we'll work it "
+"out. This is prvt, only ur voting ward will be stored &u will be anonymous"
 
-#: app.js:458
+#: app.js:455 app.js:631
 msgid "Not my address"
-msgstr "Nie my address nie"
+msgstr "Not my address"
 
-#: app.js:460
+#: app.js:457 app.js:633
 msgid "Still not my address"
-msgstr "Nog nie my address nie"
+msgstr "Still not my address"
 
-#: app.js:464
+#: app.js:461 app.js:637
 msgid "Choose your area:"
-msgstr "Kies jou area:"
+msgstr "Choose your area:"
+
+#: app.js:477
+msgid "Welcome to VIP!"
+msgstr "Welcome to VIP!"
 
 #: app.js:479
-msgid "View VIP results..."
-msgstr "Sien VIP-uitslae"
+msgid "Answer & win!"
+msgstr "Answer & win!"
+
+#: app.js:480
+msgid "VIP Quiz"
+msgstr "VIP Quiz"
 
 #: app.js:481
-msgid "Answer & win!"
-msgstr " Antwoord & wen!"
+msgid "Report an Election Activity"
+msgstr "Report an Election Activity in ur Community"
 
 #: app.js:482
-msgid "VIP Quiz"
-msgstr "VIP-vasvra"
+msgid "View VIP results..."
+msgstr "VIP results"
 
 #: app.js:483
-msgid "Report an Election Activity"
-msgstr "Rapporteer verkiesingsaksie binne jou gemeenskap"
+msgid "What's up?"
+msgstr "What's up?"
+
+#: app.js:484
+msgid "About"
+msgstr "About"
 
 #: app.js:485
-msgid "What's up?"
-msgstr "Wat gaan aan?"
-
-#: app.js:486
-msgid "About"
-msgstr "Omtrent"
-
-#: app.js:487
 msgid "End"
-msgstr "Eindig"
+msgstr "End"
 
-#: app.js:500
-msgid "Welcome to VIP!"
-msgstr "Welkom by VIP!"
-
-#: app.js:507
+#: app.js:492
 msgid "Thanks, u have answered all the questions in this section."
-msgstr "Dankie, jy het al die vrae beantwoord."
+msgstr "Thanks, u have answered all the questions in this section."
 
-#: app.js:509 answerwinquiz.js:135 vipquiz.js:90 whatsupquiz.js:187
+#: app.js:494 answerwinquiz.js:135 vipquiz.js:90 whatsupquiz.js:187
 msgid "Main Menu"
-msgstr "Hoof Kieslys"
+msgstr "Main Menu"
 
-#: app.js:532
+#: app.js:517
 msgid "Party going door-to-door"
-msgstr "Party deur tot deur gaan"
+msgstr "Party going door2door"
 
-#: app.js:533
+#: app.js:518
 msgid "Party intimidating voters"
-msgstr "Party kiesers intimideer"
+msgstr "Party intimidating voter"
 
-#: app.js:534
+#: app.js:519
 msgid "Party distributing food/money/gift"
-msgstr "Party kos/geld uitdeel"
+msgstr "Party distributing food/money"
 
-#: app.js:535
+#: app.js:520
 msgid "Campaign rally"
-msgstr "Verkiesingsaamtrek"
+msgstr "rally"
 
-#: app.js:536
+#: app.js:521
 msgid "Campaign violence"
-msgstr "Verkiesinggeweld"
+msgstr "violence"
 
-#: app.js:537
+#: app.js:522
 msgid "Protest/Demonstration"
-msgstr "Protes/Betoging"
+msgstr "Protest/Demonstrtn"
 
-#: app.js:540
+#: app.js:525
 msgid "Choose a report type:"
-msgstr "Wat is jou verslag se titel?"
+msgstr "Report type:"
 
-#: app.js:561
+#: app.js:546
 msgid "What is the title of your report?"
-msgstr "Wat is jou verslag se titel?"
+msgstr "What is the title of your report?"
 
-#: app.js:582
+#: app.js:567
 msgid ""
 "Where did this event happen? Please be as specific as possible and give "
 "address and city."
 msgstr ""
-"Waar het hierdie voorval plaasgevind? Wees asb baie spesifiek en gee adres "
-"en stad/dorp."
+"Where did this event happen? Please be as specific as possible and give "
+"address and city."
 
-#: app.js:646
-msgid "Not the address"
-msgstr "Nie die address nie"
-
-#: app.js:648
-msgid "Still not the address"
-msgstr "Nog nie die address nie"
-
-#: app.js:652
-msgid "Please select the  location from the options below"
-msgstr "Kies asb een van die opsies:"
-
-#: app.js:685
+#: app.js:670
 msgid ""
 "Thank you for your report! Keep up the reporting & you may have a chance to "
 "be chosen as an official election day reporter where you can earn airtime or "
 "cash for your contribution."
 msgstr ""
-"Dankie vir jou verslag! Hou aan om verslag te doen & jy staan dalk 'n kans "
-"om as amptelike stemdagverslaggewer gekies te word en lugtyd of kontant vir "
-"jou bydrae te verdien."
+"Thx 4 ur report! Keep reporting &u will have a chance 2b chosen as an "
+"election day reporter where u can earn airtime /cash for ur effort"
 
-#: app.js:706
+#: app.js:691
 msgid ""
 "You are 1 of {{ registered }} citizens who are active citizen election "
 "reporters! {{ questions }} questions and {{ reports }} election activity "
 "posts have been submitted. View results at www.url.com"
 msgstr ""
-"Jy is een van {{ registered  }} burgers wat aktiewe burgerlike "
-"verkiesingsverslaggewers is! {{ reports }} verkiesingsaktiwiteitsverslae is "
-"ingedien."
+"You are 1 of {{ registered }} citizens who are active citizen election "
+"reporters! {{ reports }} election activity posts have been submitted."
 
-#: app.js:724
+#: app.js:709
 msgid ""
 "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will "
 "engage South Africans from all walks of life to report on electoral "
 "activities,"
 msgstr ""
-"VIP:Voice is 'n verkiesingsplatform ontwerp om Suid-Afrikaners betrokke te "
-"laat raak by die aanloop tot die verkiesings"
+"VIP-Ask is a multichannel political engagement portal.VIP: Ask will engage "
+"S. Africans from all walks of life to report on electoral activities,"
 
-#: app.js:727
+#: app.js:712
 msgid ""
 "voice their opinions on current issues surrounding the elections, and report "
 "on election processes on voting day."
 msgstr ""
-"Jy kan enige verkiesingsverwante aktiwiteit via USSD rapporteer en help om "
-"'n ware prentjie van die 2014-verkiesing te skep."
+"voice their opinions on current issues surrounding the elections, and report "
+"on election processes on voting day."
 
-#: app.js:729
+#: app.js:714
 msgid ""
 "VIP:Ask is a partnership between academics, Democracy International, Livity "
 "Africa and the Praekelt Foundation"
 msgstr ""
-"VIP:Voice is 'n vennootskap tussen Livity, Praekelt-stigting, Demokrasie "
-"Internasionaal, akademici en landsburgers soos jy!"
+"VIP:Voice is a partnership between Livity, Praekelt Foundation, Democracy "
+"International, academics& citizens like u!"
 
-#: app.js:751
+#: app.js:736
 msgid "Bye."
-msgstr "Tot siens"
+msgstr "Bye."
 
 #: answerwinquiz.js:62 answerwinquiz.js:108
 msgid "I am..."
-msgstr "Ek is"
+msgstr "I am..."
 
 #: answerwinquiz.js:64
 msgid "Male"
-msgstr "Manlik"
+msgstr "Male"
 
 #: answerwinquiz.js:65
 msgid "Female"
-msgstr "Vroulik"
+msgstr "Female"
 
 #: answerwinquiz.js:75
 msgid "How old are you?"
-msgstr "Hoe oud is jy?"
+msgstr "How old are you?"
 
 #: answerwinquiz.js:77
 msgid "u14"
@@ -337,23 +330,23 @@ msgstr "50+"
 
 #: answerwinquiz.js:92
 msgid "Did you vote in the 2009 election?"
-msgstr "Het jy in die 2009-verkiesing gestem?"
+msgstr "Did you vote in the 2009 election?"
 
 #: answerwinquiz.js:94 vipquiz.js:37 vipquiz.js:118 vipquiz.js:217
 msgid "Yes"
-msgstr "Ja"
+msgstr "Yes"
 
 #: answerwinquiz.js:95
 msgid "No, could not/was not registered"
-msgstr "Nee, kon/was nie geregistreer"
+msgstr "No, could not/was not registered"
 
 #: answerwinquiz.js:96
 msgid "No, did not want to"
-msgstr "Nee, wou nie"
+msgstr "No, did not want to"
 
 #: answerwinquiz.js:97
 msgid "No, other"
-msgstr "Nee, wou nie"
+msgstr "No, other"
 
 #: answerwinquiz.js:98 answerwinquiz.js:115 vipquiz.js:25 vipquiz.js:40
 #: vipquiz.js:57 vipquiz.js:77 vipquiz.js:106 vipquiz.js:121 vipquiz.js:137
@@ -362,88 +355,88 @@ msgstr "Nee, wou nie"
 #: whatsupquiz.js:91 whatsupquiz.js:108 whatsupquiz.js:125 whatsupquiz.js:142
 #: whatsupquiz.js:158 whatsupquiz.js:174
 msgid "Skip"
-msgstr "Slaan Oor"
+msgstr "Skip"
 
 #: answerwinquiz.js:110
 msgid "Black African"
-msgstr " Swart Afrikaan"
+msgstr "Black African"
 
 #: answerwinquiz.js:111
 msgid "Coloured"
-msgstr "Bruin"
+msgstr "Coloured"
 
 #: answerwinquiz.js:112
 msgid "Indian/Asian"
-msgstr "Indir/Asies"
+msgstr "Indian/Asian"
 
 #: answerwinquiz.js:113
 msgid "White"
-msgstr "Wit"
+msgstr "White"
 
 #: answerwinquiz.js:114 vipquiz.js:75 vipquiz.js:204
 msgid "Other"
-msgstr "Ander"
+msgstr "Other"
 
 #: answerwinquiz.js:133
 msgid ""
 "Thank you for telling VIP a bit more about yourself! Your airtime will be "
 "sent to you shortly!"
 msgstr ""
-"Dankie dat jy vir VIP iets meer oor jouself vertel het. Lugtyd sal binnekort "
-"aan jou gestuur word!"
+"Thank you for telling VIP a bit more about yourself!  If u are a lucky "
+"winner u will be sent your airtime within 24hrs."
 
 #: answerwinquiz.js:144
 msgid "Please give us your cellphone number so we can send you your airtime!"
-msgstr "Gee vir ons jou selnommer sodat ons vir jou lugtyd kan stuur!"
+msgstr ""
+"Please give us your cellphone number as you stand a chance to win airtime!"
 
 #: vipquiz.js:20
 msgid "During the past year, have you attended a demonstration or protest?"
-msgstr ""
-"Gedurende die laaste jaar, het jy aan 'n betoging of protesoptog deelgeneem?"
+msgstr "During the past year, have you attended a demonstration or protest?"
 
 #: vipquiz.js:22
 msgid "Yes, many"
-msgstr "Ja, baie"
+msgstr "Yes, many"
 
 #: vipquiz.js:23
 msgid "Yes, a few"
-msgstr "Ja 'n paar"
+msgstr "Yes, a few"
 
 #: vipquiz.js:24 vipquiz.js:38 vipquiz.js:105 vipquiz.js:119 vipquiz.js:218
 msgid "No"
-msgstr "Nee"
+msgstr "No"
 
 #: vipquiz.js:35
 msgid "Are you registered to vote in the upcoming elections?"
-msgstr "Is jy geregistreer om in die komende verkiesing te stem?"
+msgstr "Are you registered to vote in the upcoming elections?"
 
 #: vipquiz.js:39 vipquiz.js:56
 msgid "Unsure"
-msgstr "Onseker"
+msgstr "Unsure"
 
 #: vipquiz.js:50
 msgid "How likely is it that you will vote in the upcoming election?"
-msgstr "Wat is die kans dat jy in die komende verkiesing sal stem?"
+msgstr "How likely is it that u will vote in the 2014 election?"
 
 #: vipquiz.js:52
 msgid "Very likely"
-msgstr "Beslis"
+msgstr "Very likely"
 
 #: vipquiz.js:53
 msgid "Somewhat likely"
-msgstr "Byna seker"
+msgstr "Somewhat likely"
 
 #: vipquiz.js:54
 msgid "Somewhat unlikely"
-msgstr "Nie groot kans"
+msgstr "Somewhat unlikely"
 
 #: vipquiz.js:55
 msgid "Very unlikely"
-msgstr "Beslis nie"
+msgstr "Very unlikely"
 
 #: vipquiz.js:67
 msgid "Which political party do you feel close to?"
-msgstr "By watter politieke party voel jy tuis?"
+msgstr "Which political party do you feel close to?"
 
 #: vipquiz.js:69 vipquiz.js:198
 msgid "ANC"
@@ -471,253 +464,262 @@ msgstr "IFP"
 
 #: vipquiz.js:76
 msgid "I don't feel close to a party"
-msgstr "Voel nie tuis by een nie"
+msgstr "I don't feel close to a party"
 
 #: vipquiz.js:87
 msgid "Would you like to continue answering questions? There are 12 in total."
-msgstr "Wil jy voortgaan om vrae te beantwoord? Daar is 12 in totaal."
+msgstr "Would you like to continue answering questions? There are 12 in total."
 
 #: vipquiz.js:89 whatsupquiz.js:186
 msgid "Continue"
-msgstr "Gaan voort"
+msgstr "Continue"
 
 #: vipquiz.js:101
 msgid ""
 "During the past year, has your community had demonstrations or protests?"
 msgstr ""
-"Gedurende die laaste jaar, het jou gemeenskap betogings of proteste gehad?"
+"During the past year, has your community had demonstrations or protests?"
 
 #: vipquiz.js:103
 msgid "Yes, several times"
-msgstr "Ja verskeie kere"
+msgstr "Yes, several times"
 
 #: vipquiz.js:104
 msgid "Yes, once or twice"
-msgstr "Ja 1 of 2 keer"
+msgstr "Yes, once or twice"
 
 #: vipquiz.js:116
 msgid ""
 "If your community has had demonstrations or protests in the last year, were "
 "they violent?"
 msgstr ""
-"As jou gemeenskap wel betogings of proteste gehad het, was daar geweld?"
+"If your community has had demonstrations or protests in the last year, were "
+"they violent?"
 
 #: vipquiz.js:120
 msgid "Not applicable"
-msgstr "Nie van toepassing"
+msgstr "Not applicable"
 
 #: vipquiz.js:131
 msgid "How easy is it for your neighbors to find out if you voted?"
-msgstr ""
-" 1.Baie maklik 2.Redelik maklik 3.Ietwat moeilik 4.Baie moeilik 5.Slaan oor"
+msgstr "How easy is it for your neighbours to find out if you voted?"
 
 #: vipquiz.js:133
 msgid "Very easy"
-msgstr "Baie maklik"
+msgstr "Very easy"
 
 #: vipquiz.js:134
 msgid "Somewhat easy"
-msgstr "Redelik maklik"
+msgstr "Somewhat easy"
 
 #: vipquiz.js:135
 msgid "Somewhat difficult"
-msgstr "Ietwat moeilik "
+msgstr "Somewhat difficult"
 
 #: vipquiz.js:136
 msgid "Very difficult"
-msgstr "Baie moeilik"
+msgstr "Very difficult"
 
 #: vipquiz.js:147
 msgid "People in my neighborhood look down on those who do not vote:"
-msgstr "In my gemeenskap sien mense neer op jou as jy nie gaan stem nie:"
+msgstr "People in my neighbourhood look down on those who do not vote"
 
 #: vipquiz.js:149 whatsupquiz.js:154 whatsupquiz.js:170
 msgid "Strongly agree"
-msgstr "Stem sterk saam"
+msgstr "Strongly agree"
 
 #: vipquiz.js:150 whatsupquiz.js:155 whatsupquiz.js:171
 msgid "Somewhat agree"
-msgstr "Stem saam"
+msgstr "Somewhat agree"
 
 #: vipquiz.js:151 whatsupquiz.js:156 whatsupquiz.js:172
 msgid "Somewhat disagree"
-msgstr "Stem nie heeltemal saam"
+msgstr "Somewhat disagree"
 
 #: vipquiz.js:152 whatsupquiz.js:157 whatsupquiz.js:173
 msgid "Strongly disagree"
-msgstr "Stem glad nie saam"
+msgstr "Strongly disagree"
 
 #: vipquiz.js:163
 msgid "How do you rate the overall performance of President Zuma?"
-msgstr "Hoe slaan jy President Zuma se algehele prestasie aan?"
+msgstr "How do you rate the overall performance of President Zuma?"
 
 #: vipquiz.js:165 vipquiz.js:181
 msgid "Excellent"
-msgstr "Uitstekend"
+msgstr "Excellent"
 
 #: vipquiz.js:166 vipquiz.js:182
 msgid "Good"
-msgstr "Goed"
+msgstr "Good"
 
 #: vipquiz.js:167 vipquiz.js:183
 msgid "Just Fair"
-msgstr "Middelmatig"
+msgstr "Just Fair"
 
 #: vipquiz.js:168 vipquiz.js:184
 msgid "Poor"
-msgstr "Swak"
+msgstr "Poor"
 
 #: vipquiz.js:179
 msgid ""
 "How do you rate the overall performance of your local government councillor?"
 msgstr ""
-"Hoe slaan jy die algehele prestasie van jou plaaslike regeringsraadslid aan?"
+"How do you rate the overall performance of your local government councillor?"
 
 #: vipquiz.js:195
 msgid "Which party has contacted you the most during this election campaign?"
-msgstr ""
-"Watter party het jou die meeste gedurende die verkiesingsveldtog gekontak?"
+msgstr "Who has contacted u the most during 2014 election campaign?"
 
 #: vipquiz.js:197
 msgid "None, I have not been contacted"
-msgstr "Geen het my gekontak nie"
+msgstr "None, I have not been contacted"
 
 #: vipquiz.js:215
 msgid "During the past two weeks, have you attended a campaign rally?"
-msgstr "Het jy 'n verkiesingsaamtrek gedurende die laaste twee weke bygewoon?"
+msgstr "During the past two weeks, have you attended a campaign rally?"
 
 #: whatsupquiz.js:20
 msgid "How satisfied are you with the way democracy works in South Africa?"
-msgstr ""
-"Hoe tevrede is jy met die manier waarop demokrasie werk in Suid-Afrika?"
+msgstr "How satisfied are you with the way democracy works in SA?"
 
 #: whatsupquiz.js:22
 msgid "Very satisfied"
-msgstr "Baie tevrede"
+msgstr "Very satisfied"
 
 #: whatsupquiz.js:23
 msgid "Somewhat satisfied"
-msgstr "Ietwat ontevrede"
+msgstr "Somewhat satisfied"
 
 #: whatsupquiz.js:24
 msgid "Dissatisfied"
-msgstr "Ontevrede"
+msgstr "Dissatisfied"
 
 #: whatsupquiz.js:25
 msgid "Very dissatisfied"
-msgstr "Baie ontevrede"
+msgstr "Very dissatisfied"
 
 #: whatsupquiz.js:36
 msgid ""
 "During the past two weeks, how frequently have campaign rallies occurred in "
 "your community?"
 msgstr ""
-"Binne die laaste 2 weke hoe dikwels het daar verkiesingsaamtrekke in j' "
-"gemeenskap plaasgevind?"
+"During the past 2 weeks, how often have campaign rallies occurred in ur "
+"community?"
 
 #: whatsupquiz.js:38 whatsupquiz.js:54 whatsupquiz.js:70
 msgid "Often"
-msgstr "Dikwels"
+msgstr "Often"
 
 #: whatsupquiz.js:39 whatsupquiz.js:55 whatsupquiz.js:71
 msgid "Several times"
-msgstr "Verskeie male"
+msgstr "Several times"
 
 #: whatsupquiz.js:40 whatsupquiz.js:56 whatsupquiz.js:72 whatsupquiz.js:138
 msgid "Once or twice"
-msgstr "1 of 2 maal"
+msgstr "Once or twice"
 
 #: whatsupquiz.js:41 whatsupquiz.js:57 whatsupquiz.js:73 whatsupquiz.js:137
 msgid "Never"
-msgstr "Nooit"
+msgstr "Never"
 
 #: whatsupquiz.js:52
 msgid ""
 "During the past two weeks, how frequently have party agents gone door to "
 "door in your community to mobilize voters?"
 msgstr ""
-"Gedurende die laaste 2 weke, hoe dikwels het partyagente van deur tot deur "
-"in jou gemeenskap gegaan"
+"In the past 2 weeks, how often have party agents intimidated voters in ur "
+"community?"
 
 #: whatsupquiz.js:68
 msgid ""
 "During the past two weeks, how frequently have party agents intimidated "
 "voters in your community?"
 msgstr ""
-"Binne die laaste 2 weke hoe dikwels het daar verkiesingsaamtrekke in j' "
-"gemeenskap plaasgevind?"
+"During the past two weeks, how frequently have party agents intimidated "
+"voters in your community?"
 
 #: whatsupquiz.js:84
 msgid "How much do you trust the ANC?"
-msgstr "Hoeveel vertrou jy die ANC? "
+msgstr "How much do you trust the ANC?"
 
 #: whatsupquiz.js:86 whatsupquiz.js:103 whatsupquiz.js:120
 msgid "A lot"
-msgstr "Baie"
+msgstr "A lot"
 
 #: whatsupquiz.js:87 whatsupquiz.js:104 whatsupquiz.js:121
 msgid "Some"
-msgstr "Biejie"
+msgstr "Some"
 
 #: whatsupquiz.js:88 whatsupquiz.js:105 whatsupquiz.js:122
 msgid "Not much"
-msgstr "Nie veel nie"
+msgstr "Not much"
 
 #: whatsupquiz.js:89 whatsupquiz.js:106 whatsupquiz.js:123
 msgid "Not at all"
-msgstr "Glad nie"
+msgstr "Not at all"
 
 #: whatsupquiz.js:90 whatsupquiz.js:107 whatsupquiz.js:124
 msgid "No opinion"
-msgstr "Geen opinie"
+msgstr "No opinion"
 
 #: whatsupquiz.js:101
 msgid "How much do you trust the Democratic Alliance (DA)?"
-msgstr "Hoeveel vertrou jy die Demokratiese Alliansie (DA)?"
+msgstr "How much do you trust the Democratic Alliance (DA)?"
 
 #: whatsupquiz.js:118
 msgid "How much do you trust the Economic Freedom Fighters (EFF)?"
-msgstr "Hoeveel vertrou jy die Ekonomiese Vryheidvegters (EFF)?"
+msgstr "How much do you trust the Economic Freedom Fighters (EFF)?"
 
 #: whatsupquiz.js:135
 msgid ""
 "During the past year, how often have you or anyone in your family gone "
 "without enough food to eat?"
 msgstr ""
-"Gedurende die laaste jr, h/veel maal het jy of iemand in jou familie nie "
-"genoeg kos gehad?"
+"In the past year, how often have u/ur family been without enough food 2 eat?"
 
 #: whatsupquiz.js:139
 msgid "Sometimes"
-msgstr "Soms "
+msgstr "Sometimes"
 
 #: whatsupquiz.js:140
 msgid "Many times"
-msgstr "Baie maal"
+msgstr "Many times"
 
 #: whatsupquiz.js:141
 msgid "Always"
-msgstr "Altyd"
+msgstr "Always"
 
 #: whatsupquiz.js:152
 msgid ""
 "In South Africa, it is sometimes necessary to use violence for a just cause:"
-msgstr "In SA Is dit soms nodig geweld te gbruik vir n saak waarn jy glo:"
+msgstr "In SA at times its necessary 2use violence 4 a just cause"
 
 #: whatsupquiz.js:168
 msgid ""
 "Sometimes not voting is the best way to express your political preferences:"
-msgstr "Deur nie te stem nie druk jy jou politieke voorkeure d beste uit"
+msgstr "Sumtimes not voting is best way to express your politics"
 
 #: whatsupquiz.js:184
 msgid "Would you like to continue answering questions? There are 10 in total."
-msgstr "Wil jy voortgaan om vrae te beantwoord? Daar is 10 in totaal."
+msgstr "Would you like to continue answering questions? There are 10 in total."
 
-#~ msgid ""
-#~ "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
-#~ "address & we'll work it out. This will be kept private, only ur voting "
-#~ "ward will be stored &u will be anonymous."
-#~ msgstr ""
-#~ "Dankie dat jy deelneem om verslag te doen oor d '14-verkiesing! Begin "
-#~ "vrae beantwoord of oor verkiesingsaksies verslag te doen! Skakel "
-#~ "*120*7692# om te begin!"
+#~ msgid "Xhosa"
+#~ msgstr "Remove Option"
+
+#~ msgid "Sotho"
+#~ msgstr "Remove Option"
+
+#~ msgid "Oops! Something went wrong! Please try again."
+#~ msgstr "Oops! Something went wrong! Please try again."
+
+#~ msgid "An error occured. Please try again"
+#~ msgstr "An error occured. Please try again"
+
+#~ msgid "50-59"
+#~ msgstr "50+"
+
+#~ msgid "60-69"
+#~ msgstr "remove option"
+
+#~ msgid "70-79"
+#~ msgstr "remove option"

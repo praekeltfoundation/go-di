@@ -40,7 +40,8 @@ describe("app", function() {
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
-                    ushahidi_map: 'https://godi.crowdmap.com/api'
+                    ushahidi_map: 'https://godi.crowdmap.com/api',
+                    channel: "*120*8864*1321#"
                 })
                 .setup(function(api) {
                     // Add all of the fixtures.

@@ -142,6 +142,14 @@ di.app = function() {
                 if (_.isUndefined(self.contact.extra.delivery_class)) {
                     self.contact.extra.delivery_class = self.im.config.delivery_class;
                 }
+
+                //Set the last channel this user accessed
+                if (self.is_delivery_class("ussd") && _.isUndefined(self.contact.extra.USSD_number)) {
+                    self.contact.extra.USSD_number = self.im.config.channel;
+                }
+
+                //Fire metrics
+                //Save contact
                 return Q.all([
                     self.im.metrics.fire.inc("sum.visits"),
                     self.im.metrics.fire.avg("avg.visits",1),
@@ -152,10 +160,7 @@ di.app = function() {
 
             self.im.on('session:close', function(e) {
                 if (!self.should_send_dialback(e)) { return; }
-
-                return _.isUndefined(self.contact.extra.ward)
-                    ? self.send_ward_dialback()
-                    : self.send_noward_dialback();
+                return self.send_dialback();
             });
 
             return self.im.contacts
@@ -165,6 +170,12 @@ di.app = function() {
                 });
         };
 
+        self.should_display_results = function() {
+            var now = self.get_date();
+            var config =  new Date(self.im.config.display_results_date);
+            return now >= config;
+        };
+
         self.should_send_dialback = function(e) {
             return e.user_terminated
                 && self.is_delivery_class('ussd')
@@ -172,32 +183,24 @@ di.app = function() {
                 && !self.is(self.contact.extra.register_sms_sent);
         };
 
-        self.send_ward_dialback = function() {
-            return self.im.outbound
-                .send_to_user({
-                    endpoint: 'sms',
-                    content: $([
-                        "Hello VIP!2 begin we need ur voting ward.",
-                        "Dial *55555# & give us ur home address & we'll work it out.",
-                        "This will be kept private, only ur voting ward will be stored &u will be anonymous."
-                    ].join(' '))
-                })
-                .then(function() {
-                    self.contact.extra.register_sms_sent = 'true';
-                    return self.im.contacts.save(self.contact);
+        self.get_registration_sms = function() {
+            return $([
+                    "Thanks for volunteering to be a citizen reporter for the 2014 elections!",
+                    "Get started by answering questions or reporting election activity!",
+                    "Dial {{ USSD_number }} to return to VIP"
+                ].join(' '))
+                .context({
+                    USSD_number: self.contact.extra.USSD_number
                 });
         };
 
-        self.send_noward_dialback = function() {
+        self.send_dialback = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: $([
-                        'Thanks for volunteering to be a citizen reporter for the 2014 elections!',
-                        'Get started by answering questions or reporting election activity!',
-                        'Dial back in to *5555# to begin!'
-                    ].join(' '))
-                }).then(function() {
+                    content: self.get_registration_sms()
+                })
+                .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
                     return self.im.contacts.save(self.contact);
                 });
@@ -371,7 +374,13 @@ di.app = function() {
             return new FreeText(name,{
                 question: question,
                 check: function(content) {
-                    self.contact.extra.raw_user_address = content;
+                    //If the user is on second attempt, then save in separate field.
+                    if (!opts.retry) {
+                        self.contact.extra.raw_user_address = content;
+                    } else {
+                        self.contact.extra.raw_user_address_2 = content;
+                    }
+
                     return self.im.contacts
                         .save(self.contact)
                         .then(function() {
@@ -472,18 +481,30 @@ di.app = function() {
             });
         });
 
+        self.get_menu_choices = function() {
+            var results =  new Choice('states:results',$('View VIP results...'));
+            var choices = [
+                new Choice('states:quiz:answerwin:begin',$('Answer & win!')),
+                new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
+                new Choice('states:report',$('Report an Election Activity')),
+                results,
+                new Choice(self.quizzes.whatsup.get_next_quiz_state(),$("What's up?")),
+                new Choice('states:about',$('About')),
+                new Choice('states:end',$('End'))
+            ];
+
+            //Dont display 'View results' menu options before specified
+            if (!self.should_display_results()) {
+                choices =  _.without(choices, results);
+            }
+
+            return choices;
+        };
+
         self.states.add('states:menu',function(name) {
             return new MenuState(name, {
                 question: $('Welcome to VIP!'),
-                choices:[
-                    new Choice('states:quiz:answerwin:begin',$('Answer & win!')),
-                    new Choice(self.quizzes.vip.get_next_quiz_state(),$('VIP Quiz')),
-                    new Choice('states:report',$('Report an Election Activity')),
-                    new Choice('states:results',$('View VIP results...')),
-                    new Choice(self.quizzes.whatsup.get_next_quiz_state(),$("What's up?")),
-                    new Choice('states:about',$('About')),
-                    new Choice('states:end',$('End'))
-                ]
+                choices: self.get_menu_choices()
             });
         });
 
@@ -610,12 +631,19 @@ di.app = function() {
                     who: self.im.user.addr
                 })
                 .then(function(resp) {
-                    return {
-                        name:'states:report:end',
-                        creator_opts: {
-                            response: resp.data.payload.success
-                        }
-                    };
+                    return self
+                        .incr_kv('total.reports')
+                        .then(function(results) {
+                            return self.im.metrics.fire.last('total.reports',results.value);
+                        })
+                        .then(function() {
+                            return {
+                                name:'states:report:end',
+                                creator_opts: {
+                                    response: resp.data.payload.success
+                                }
+                            };
+                        });
                 });
         };
 
@@ -628,13 +656,13 @@ di.app = function() {
             });
 
             if (!opts.retry) {
-                choices.push( new Choice("not_available",$("Not my address")));
+                choices.push( new Choice("not_available",$("Not the address")));
             } else {
-                choices.push(new Choice("still_not_available",$("Still not my address")));
+                choices.push(new Choice("still_not_available",$("Still not the address")));
             }
 
             return new PaginatedChoiceState(name, {
-                question: $("Choose your area:"),
+                question: $("Please select the location from the options below"),
                 choices: choices,
                 characters_per_page: 140,
                 options_per_page: 3,
@@ -660,24 +688,15 @@ di.app = function() {
         });
 
         self.states.add('states:report:end',function(name,opts) {
-            return self
-                .incr_kv('total.reports')
-                .then(function(results) {
-                    return self.im.metrics.fire.last('total.reports',results.value);
-                })
-                .then(function() {
-                    return new EndState(name, {
-                        text: $([
-                            'Thank you for your report! Keep up the reporting',
-                            '& you may have a chance to be chosen as an official',
-                            'election day reporter where you can earn airtime or cash',
-                            'for your contribution.'
-                        ].join(" ")),
-                        next: function() {
-                            return 'states:menu';
-                        }
-                    });
-                });
+            return new EndState(name, {
+                text: $([
+                    'Thank you for your report! Keep up the reporting',
+                    '& you may have a chance to be chosen as an official',
+                    'election day reporter where you can earn airtime or cash',
+                    'for your contribution.'
+                ].join(" ")),
+                next: 'states:menu'
+            });
         });
 
         self.states.add('states:results',function(name) {
