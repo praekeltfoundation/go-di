@@ -146,8 +146,8 @@ msgid ""
 "& we'll work it out. This will be kept private, only ur voting ward will be "
 "stored &u will be anonymous."
 msgstr ""
-"Tx 4 joining! We need ur voting ward. Type ur home address & we'll work it "
-"out. This is prvt, only ur voting ward will be stored &u will be anonymous"
+" Tx 4 joinin! We need ur voting ward. Type ur home address & we'll work"
+" it out. This is prvt, only ur votin ward is stord. U will b anonymus"
 
 #: app.js:455 app.js:631
 msgid "Not my address"
@@ -692,7 +692,7 @@ msgstr "Always"
 #: whatsupquiz.js:152
 msgid ""
 "In South Africa, it is sometimes necessary to use violence for a just cause:"
-msgstr "In SA at times its necessary 2use violence 4 a just cause"
+msgstr "In SA @ times its necessary 2use violence 4a just cause"
 
 #: whatsupquiz.js:168
 msgid ""
