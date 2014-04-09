@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VIP USSD\n"
 "POT-Creation-Date: 2014-04-04 04:34:+0200\n"
-"PO-Revision-Date: 2014-04-09 13:55+0200\n"
+"PO-Revision-Date: 2014-04-09 15:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_ZA\n"
@@ -19,7 +19,7 @@ msgid ""
 "will be stored &u will be anonymous."
 msgstr ""
 "Tx 4 joining! We need ur home address to work out ur voting ward. This is "
-"prvt, only ur voting ward will be stored &u will be anon."
+"prvt, only ur voting ward will be stored &u will be anon"
 
 #: app.js:195
 msgid ""
@@ -227,7 +227,7 @@ msgstr "Protest/Demonstrtn"
 
 #: app.js:525
 msgid "Choose a report type:"
-msgstr "Report type:"
+msgstr "Report"
 
 #: app.js:546
 msgid "What is the title of your report?"
@@ -265,8 +265,8 @@ msgid ""
 "engage South Africans from all walks of life to report on electoral "
 "activities,"
 msgstr ""
-"VIP-Voice is a multichannel political engagement portal.VIP: Ask will engage "
-"S. Africans to report on electoral activities,"
+"VIP-Voice is a political engagement portal.VIP: Ask will engage S. Africans "
+"to report on electoral activities,"
 
 #: app.js:712
 msgid ""
@@ -420,19 +420,19 @@ msgstr "How likely is it that u will vote in this election?"
 
 #: vipquiz.js:52
 msgid "Very likely"
-msgstr "Very likely"
+msgstr "V. likely"
 
 #: vipquiz.js:53
 msgid "Somewhat likely"
-msgstr "Somewhat likely"
+msgstr "Sumwhat likely"
 
 #: vipquiz.js:54
 msgid "Somewhat unlikely"
-msgstr "Somewhat unlikely"
+msgstr "Sumwhat unlikely"
 
 #: vipquiz.js:55
 msgid "Very unlikely"
-msgstr "Very unlikely"
+msgstr "V. unlikely"
 
 #: vipquiz.js:67
 msgid "Which political party do you feel close to?"
@@ -522,7 +522,7 @@ msgstr "Very difficult"
 
 #: vipquiz.js:147
 msgid "People in my neighborhood look down on those who do not vote:"
-msgstr "Pple in my neighbourhood lk down on those who do not vote"
+msgstr "Pple in my nbrhood lk down on those who do not vote"
 
 #: vipquiz.js:149 whatsupquiz.js:154 whatsupquiz.js:170
 msgid "Strongly agree"
@@ -568,11 +568,11 @@ msgstr ""
 
 #: vipquiz.js:195
 msgid "Which party has contacted you the most during this election campaign?"
-msgstr "Who has contacted u the most during 2014 election campaign?"
+msgstr "Who has contacted u most during election?"
 
 #: vipquiz.js:197
 msgid "None, I have not been contacted"
-msgstr "None, I have not been contacted"
+msgstr "None"
 
 #: vipquiz.js:215
 msgid "During the past two weeks, have you attended a campaign rally?"
@@ -584,11 +584,11 @@ msgstr "How satisfied are you with the way democracy works in SA?"
 
 #: whatsupquiz.js:22
 msgid "Very satisfied"
-msgstr "Very satisfied"
+msgstr "V. satisfied"
 
 #: whatsupquiz.js:23
 msgid "Somewhat satisfied"
-msgstr "Somewhat satisfied"
+msgstr "Sumwhat satisfied"
 
 #: whatsupquiz.js:24
 msgid "Dissatisfied"
@@ -596,14 +596,14 @@ msgstr "Dissatisfied"
 
 #: whatsupquiz.js:25
 msgid "Very dissatisfied"
-msgstr "Very dissatisfied"
+msgstr "V. dissatisfied"
 
 #: whatsupquiz.js:36
 msgid ""
 "During the past two weeks, how frequently have campaign rallies occurred in "
 "your community?"
 msgstr ""
-"During the past 2 weeks, how often have campaign rallies occurred in ur "
+"During past 2 weeks, how often have campaign rallies occurred in ur "
 "community?"
 
 #: whatsupquiz.js:38 whatsupquiz.js:54 whatsupquiz.js:70
@@ -616,7 +616,7 @@ msgstr "Several times"
 
 #: whatsupquiz.js:40 whatsupquiz.js:56 whatsupquiz.js:72 whatsupquiz.js:138
 msgid "Once or twice"
-msgstr "Once or twice"
+msgstr "1 or 2 x"
 
 #: whatsupquiz.js:41 whatsupquiz.js:57 whatsupquiz.js:73 whatsupquiz.js:137
 msgid "Never"
@@ -635,8 +635,8 @@ msgid ""
 "During the past two weeks, how frequently have party agents intimidated "
 "voters in your community?"
 msgstr ""
-"During the past two weeks, how frequently have party agents intimidated "
-"voters in your community?"
+"In the past 2 weeks, how often have party agents intimidated voters in ur "
+"community?"
 
 #: whatsupquiz.js:84
 msgid "How much do you trust the ANC?"
@@ -675,7 +675,7 @@ msgid ""
 "During the past year, how often have you or anyone in your family gone "
 "without enough food to eat?"
 msgstr ""
-"In the past year how often have u/ur family been without enough food 2 eat?"
+"In the past year how often have u/ur family been w/out enough food 2 eat?"
 
 #: whatsupquiz.js:139
 msgid "Sometimes"

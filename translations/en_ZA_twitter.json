@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "VIP USSD",
         "pot-creation-date": "2014-04-04 04:34:+0200",
-        "po-revision-date": "2014-04-09 13:55+0200",
+        "po-revision-date": "2014-04-09 15:25+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "en_ZA",
@@ -14,7 +14,7 @@
     },
     "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
         null,
-        "Tx 4 joining! We need ur home address to work out ur voting ward. This is prvt, only ur voting ward will be stored &u will be anon."
+        "Tx 4 joining! We need ur home address to work out ur voting ward. This is prvt, only ur voting ward will be stored &u will be anon"
     ],
     "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial back in to *5555# to begin!": [
         null,
@@ -186,7 +186,7 @@
     ],
     "Choose a report type:": [
         null,
-        "Report type:"
+        "Report"
     ],
     "What is the title of your report?": [
         null,
@@ -206,7 +206,7 @@
     ],
     "The VIP-Ask is a multi-channel political engagement portal.VIP: Ask will engage South Africans from all walks of life to report on electoral activities,": [
         null,
-        "VIP-Voice is a multichannel political engagement portal.VIP: Ask will engage S. Africans to report on electoral activities,"
+        "VIP-Voice is a political engagement portal.VIP: Ask will engage S. Africans to report on electoral activities,"
     ],
     "voice their opinions on current issues surrounding the elections, and report on election processes on voting day.": [
         null,
@@ -342,19 +342,19 @@
     ],
     "Very likely": [
         null,
-        "Very likely"
+        "V. likely"
     ],
     "Somewhat likely": [
         null,
-        "Somewhat likely"
+        "Sumwhat likely"
     ],
     "Somewhat unlikely": [
         null,
-        "Somewhat unlikely"
+        "Sumwhat unlikely"
     ],
     "Very unlikely": [
         null,
-        "Very unlikely"
+        "V. unlikely"
     ],
     "Which political party do you feel close to?": [
         null,
@@ -438,7 +438,7 @@
     ],
     "People in my neighborhood look down on those who do not vote:": [
         null,
-        "Pple in my neighbourhood lk down on those who do not vote"
+        "Pple in my nbrhood lk down on those who do not vote"
     ],
     "Strongly agree": [
         null,
@@ -482,11 +482,11 @@
     ],
     "Which party has contacted you the most during this election campaign?": [
         null,
-        "Who has contacted u the most during 2014 election campaign?"
+        "Who has contacted u most during election?"
     ],
     "None, I have not been contacted": [
         null,
-        "None, I have not been contacted"
+        "None"
     ],
     "During the past two weeks, have you attended a campaign rally?": [
         null,
@@ -498,11 +498,11 @@
     ],
     "Very satisfied": [
         null,
-        "Very satisfied"
+        "V. satisfied"
     ],
     "Somewhat satisfied": [
         null,
-        "Somewhat satisfied"
+        "Sumwhat satisfied"
     ],
     "Dissatisfied": [
         null,
@@ -510,11 +510,11 @@
     ],
     "Very dissatisfied": [
         null,
-        "Very dissatisfied"
+        "V. dissatisfied"
     ],
     "During the past two weeks, how frequently have campaign rallies occurred in your community?": [
         null,
-        "During the past 2 weeks, how often have campaign rallies occurred in ur community?"
+        "During past 2 weeks, how often have campaign rallies occurred in ur community?"
     ],
     "Often": [
         null,
@@ -526,7 +526,7 @@
     ],
     "Once or twice": [
         null,
-        "Once or twice"
+        "1 or 2 x"
     ],
     "Never": [
         null,
@@ -538,7 +538,7 @@
     ],
     "During the past two weeks, how frequently have party agents intimidated voters in your community?": [
         null,
-        "During the past two weeks, how frequently have party agents intimidated voters in your community?"
+        "In the past 2 weeks, how often have party agents intimidated voters in ur community?"
     ],
     "How much do you trust the ANC?": [
         null,
@@ -574,7 +574,7 @@
     ],
     "During the past year, how often have you or anyone in your family gone without enough food to eat?": [
         null,
-        "In the past year how often have u/ur family been without enough food 2 eat?"
+        "In the past year how often have u/ur family been w/out enough food 2 eat?"
     ],
     "Sometimes": [
         null,
