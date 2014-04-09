@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "Afrikaans",
         "pot-creation-date": "2014-04-07 11:49:+0200",
-        "po-revision-date": "2014-04-07 13:01+0200",
+        "po-revision-date": "2014-04-08 23:27+0200",
         "last-translator": "",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "af_ZA",
@@ -98,7 +98,7 @@
     ],
     "Please carefully enter your address again: for eg: 12 main street pretoria": [
         null,
-        "Sleutel asseblief u adres weer noukeurig in bv: 12 main straat pretoria"
+        "Sleutel asb u address versigtig in, bijvoorbeeld: 12 Main straat Pretoria. Verbruikers wenk: # sleutel vir teks keuze"
     ],
     "Thanks 4 joining!2 begin we need ur voting ward. Reply with ur home address & we'll work it out. This will be kept private, only ur voting ward will be stored &u will be anonymous.": [
         null,
@@ -206,7 +206,7 @@
     ],
     "Thank you for your report! Keep up the reporting & you may have a chance to be chosen as an official election day reporter where you can earn airtime or cash for your contribution.": [
         null,
-        "Dankie vir jou verslag! Hou aan om verslag te doen & jy staan dalk 'n kans om as amptelike stemdagverslaggewer gekies te word en lugtyd of kontant vir jou bydrae te verdien."
+        "Dankie dat jy vir VIP iets meer oor jouself vertel het. Indien U n gelukkige wenner is, sal Lugtyd binnekort aan U gestuur word!"
     ],
     "You are 1 of {{ registered }} citizens who are active citizen election reporters! {{ questions }} questions and {{ reports }} election activity posts have been submitted. View results at www.url.com": [
         null,
@@ -218,7 +218,7 @@
     ],
     "voice their opinions on current issues surrounding the elections, and report on election processes on voting day.": [
         null,
-        "Jy kan enige verkiesingsverwante aktiwiteit via USSD rapporteer en help om 'n ware prentjie van die 2014-verkiesing te skep."
+        "Jy kan enige verkiesingsverwante aktiwiteit via USSD rapporteer en help om 'n ware prentjie van die 2014-verkiesing te skep.Gaan uit"
     ],
     "VIP:Ask is a partnership between academics, Democracy International, Livity Africa and the Praekelt Foundation": [
         null,
@@ -314,7 +314,7 @@
     ],
     "Thank you for telling VIP a bit more about yourself! Your airtime will be sent to you shortly!": [
         null,
-        "Dankie dat jy vir VIP iets meer oor jouself vertel het. Lugtyd sal binnekort aan jou gestuur word!"
+        "Gee vir ons jou selnommer en staan n kans om lugtyd te wen!"
     ],
     "Please give us your cellphone number so we can send you your airtime!": [
         null,
@@ -522,7 +522,7 @@
     ],
     "During the past two weeks, how frequently have campaign rallies occurred in your community?": [
         null,
-        "Binne die laaste 2 weke hoe dikwels het daar verkiesingsaamtrekke in j' gemeenskap plaasgevind?"
+        "Binne die laaste 2 weke hoe gereeld het verkiesingsaamtrekke in U gemeenskap plaasgevind?"
     ],
     "Often": [
         null,
