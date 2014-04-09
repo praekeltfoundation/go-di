@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VIP USSD\n"
 "POT-Creation-Date: 2014-04-04 04:34:+0200\n"
-"PO-Revision-Date: 2014-04-05 19:59+0200\n"
+"PO-Revision-Date: 2014-04-09 13:55+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en_ZA\n"
@@ -18,8 +18,8 @@ msgid ""
 "address & we'll work it out. This will be kept private, only ur voting ward "
 "will be stored &u will be anonymous."
 msgstr ""
-"Tx 4 joining! We need ur home address to work out ur voting ward. This will "
-"b prvt, only ur voting ward will be stored &u will be anonymous"
+"Tx 4 joining! We need ur home address to work out ur voting ward. This is "
+"prvt, only ur voting ward will be stored &u will be anon."
 
 #: app.js:195
 msgid ""
@@ -89,8 +89,8 @@ msgid ""
 "University of California San Diego requests ur consent to act as a research "
 "subject for improving electoral performance through citizen engagement in SA."
 msgstr ""
-"VIP:Voice: A research project (Praekelt Fdnn, Democracy Intl, UC San Diego) "
-"Anon. questions may b asked&stored"
+"VIP:Voice: A research project (Praekelt Fdnn, Democracy Intl, UCSD) Anon. "
+"questions may b asked&stored"
 
 #: app.js:319
 msgid ""
@@ -99,7 +99,7 @@ msgid ""
 "volunteers."
 msgstr ""
 "U can withdraw/refuse 2take part.U may b excluded w/out notice. Will inform "
-"u of new info that affects participants."
+"u of info that affects participants"
 
 #: app.js:321
 msgid ""
@@ -113,8 +113,8 @@ msgstr ""
 #: app.js:323
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
-"If u have any questions or research-related problems contact C. Gibson at "
-"011 858 760 5100. Full T&Cs at http://www.yal.mobi/vip"
+"If u have any research-related problems contact C. Gibson at 011 858 760 "
+"5100. Full T&Cs at http://www.yal.mobi/vip"
 
 #: app.js:335 app.js:725
 msgid ""
@@ -239,7 +239,7 @@ msgid ""
 "address and city."
 msgstr ""
 "Where did this event happen? Please be as specific as possible and give "
-"address and city."
+"address and city"
 
 #: app.js:670
 msgid ""
@@ -265,8 +265,8 @@ msgid ""
 "engage South Africans from all walks of life to report on electoral "
 "activities,"
 msgstr ""
-"VIP-Ask is a multichannel political engagement portal.VIP: Ask will engage "
-"S. Africans from all walks of life to report on electoral activities,"
+"VIP-Voice is a multichannel political engagement portal.VIP: Ask will engage "
+"S. Africans to report on electoral activities,"
 
 #: app.js:712
 msgid ""
@@ -416,7 +416,7 @@ msgstr "Unsure"
 
 #: vipquiz.js:50
 msgid "How likely is it that you will vote in the upcoming election?"
-msgstr "How likely is it that u will vote in the 2014 election?"
+msgstr "How likely is it that u will vote in this election?"
 
 #: vipquiz.js:52
 msgid "Very likely"
@@ -522,7 +522,7 @@ msgstr "Very difficult"
 
 #: vipquiz.js:147
 msgid "People in my neighborhood look down on those who do not vote:"
-msgstr "People in my neighbourhood look down on those who do not vote"
+msgstr "Pple in my neighbourhood lk down on those who do not vote"
 
 #: vipquiz.js:149 whatsupquiz.js:154 whatsupquiz.js:170
 msgid "Strongly agree"
@@ -576,7 +576,7 @@ msgstr "None, I have not been contacted"
 
 #: vipquiz.js:215
 msgid "During the past two weeks, have you attended a campaign rally?"
-msgstr "During the past two weeks, have you attended a campaign rally?"
+msgstr "During the past 2 weeks, have you attended a campaign rally?"
 
 #: whatsupquiz.js:20
 msgid "How satisfied are you with the way democracy works in South Africa?"
@@ -627,8 +627,8 @@ msgid ""
 "During the past two weeks, how frequently have party agents gone door to "
 "door in your community to mobilize voters?"
 msgstr ""
-"In the past 2 weeks, how often have party agents intimidated voters in ur "
-"community?"
+"In past 2 wks how often have party agents gone door2door in ur area 2 "
+"mobilise voters?"
 
 #: whatsupquiz.js:68
 msgid ""
@@ -675,7 +675,7 @@ msgid ""
 "During the past year, how often have you or anyone in your family gone "
 "without enough food to eat?"
 msgstr ""
-"In the past year, how often have u/ur family been without enough food 2 eat?"
+"In the past year how often have u/ur family been without enough food 2 eat?"
 
 #: whatsupquiz.js:139
 msgid "Sometimes"
