@@ -526,19 +526,19 @@ msgstr "Pple in my nbrhood lk down on those who do not vote"
 
 #: vipquiz.js:149 whatsupquiz.js:154 whatsupquiz.js:170
 msgid "Strongly agree"
-msgstr "Strongly agree"
+msgstr "Strong agree"
 
 #: vipquiz.js:150 whatsupquiz.js:155 whatsupquiz.js:171
 msgid "Somewhat agree"
-msgstr "Somewhat agree"
+msgstr "Sumwhat agree"
 
 #: vipquiz.js:151 whatsupquiz.js:156 whatsupquiz.js:172
 msgid "Somewhat disagree"
-msgstr "Somewhat disagree"
+msgstr "Sumwhat disagree"
 
 #: vipquiz.js:152 whatsupquiz.js:157 whatsupquiz.js:173
 msgid "Strongly disagree"
-msgstr "Strongly disagree"
+msgstr "Strong disagree"
 
 #: vipquiz.js:163
 msgid "How do you rate the overall performance of President Zuma?"
@@ -627,7 +627,7 @@ msgid ""
 "During the past two weeks, how frequently have party agents gone door to "
 "door in your community to mobilize voters?"
 msgstr ""
-"In past 2 wks how often have party agents gone door2door in ur area 2 "
+"In past 2 wks how often hav party agents gone door2door in ur area 2 "
 "mobilise voters?"
 
 #: whatsupquiz.js:68
@@ -697,7 +697,7 @@ msgstr "In SA at times its necessary 2use violence 4 a just cause"
 #: whatsupquiz.js:168
 msgid ""
 "Sometimes not voting is the best way to express your political preferences:"
-msgstr "Sumtimes not voting is best way to express your politics"
+msgstr "Sumtimes not voting is best way 2 express ur politics"
 
 #: whatsupquiz.js:184
 msgid "Would you like to continue answering questions? There are 10 in total."
