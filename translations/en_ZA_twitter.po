@@ -113,7 +113,7 @@ msgstr ""
 #: app.js:323
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
-"If u have any research-related problems contact C. Gibson at 011 858 760 "
+"If u have any problems contact C. Gibson at 011 858 760 "
 "5100. Full T&Cs at http://www.yal.mobi/vip"
 
 #: app.js:335 app.js:725
@@ -478,7 +478,7 @@ msgstr "Continue"
 msgid ""
 "During the past year, has your community had demonstrations or protests?"
 msgstr ""
-"In the past year how often have u/ur family been w/out enough food 2 eat?"
+"During the past year, has your community had demonstrations or protests?"
 
 #: vipquiz.js:103
 msgid "Yes, several times"
@@ -697,7 +697,7 @@ msgstr "In SA @ times its necessary 2use violence 4a just cause"
 #: whatsupquiz.js:168
 msgid ""
 "Sometimes not voting is the best way to express your political preferences:"
-msgstr "Sumtimes not voting is best way to xpress your politics"
+msgstr "Sumtimes not voting is best way 2 express ur politics"
 
 #: whatsupquiz.js:184
 msgid "Would you like to continue answering questions? There are 10 in total."
