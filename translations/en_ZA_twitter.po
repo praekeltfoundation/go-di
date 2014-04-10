@@ -114,7 +114,7 @@ msgstr ""
 msgid "To view full T&Cs please visit www.yal.mobi/vip."
 msgstr ""
 "If u have any problems contact C. Gibson at 011 858 760 "
-"5100. Full T&Cs at http://www.yal.mobi/vip"
+"5100."
 
 #: app.js:335 app.js:725
 msgid ""
