@@ -1,0 +1,6 @@
+{
+    "name": "di_mxit_test_app",
+    "ushahidi_map": "https://godi.crowdmap.com/api",
+    "delivery_class": "mxit",
+    "kv_group":"qa"
+}
