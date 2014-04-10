@@ -89,7 +89,7 @@ msgid ""
 "University of California San Diego requests ur consent to act as a research "
 "subject for improving electoral performance through citizen engagement in SA."
 msgstr ""
-"VIP:Voice: A research project (Praekelt Fdnn, Democracy Intl, UCSD) Anon. "
+"VIP:Voice: A research project (Praekelt, Democracy Intl, UCSD) Anon. "
 "questions may b asked&stored"
 
 #: app.js:319
@@ -478,7 +478,7 @@ msgstr "Continue"
 msgid ""
 "During the past year, has your community had demonstrations or protests?"
 msgstr ""
-"During the past year, has your community had demonstrations or protests?"
+"In the past year how often have u/ur family been w/out enough food 2 eat?"
 
 #: vipquiz.js:103
 msgid "Yes, several times"
@@ -697,7 +697,7 @@ msgstr "In SA @ times its necessary 2use violence 4a just cause"
 #: whatsupquiz.js:168
 msgid ""
 "Sometimes not voting is the best way to express your political preferences:"
-msgstr "Sumtimes not voting is best way 2 express ur politics"
+msgstr "Sumtimes not voting is best way to xpress your politics"
 
 #: whatsupquiz.js:184
 msgid "Would you like to continue answering questions? There are 10 in total."
