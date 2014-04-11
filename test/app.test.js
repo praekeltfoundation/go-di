@@ -227,20 +227,29 @@ describe("app", function() {
                     describe("if the bypass_address config has been set",function() {
                        it("should go straight to the menu",function() {
                            return tester
-                               .setup(function(api){
-                                   api.config.bypass_address = 'true';
+                               .setup.config.app({
+                                   name: 'test_app',
+                                   endpoints: {
+                                       "sms": {"delivery_class": "sms"}
+                                   },
+                                   ushahidi_map: 'https://godi.crowdmap.com/api',
+                                   kv_group: 'tests',
+                                   channel: "*120*8864*1321#",
+                                   display_results_date: '4 April, 2014',
+                                   bypass_address: true
                                })
-                               .setup.user.addr('+273123')
                                .setup(function(api) {
                                    api.contacts.add( {
-                                       msisdn: '+273123',
-                                       extra : {
+                                       msisdn: '+273666',
+                                       extra: {
                                            is_registered: 'true'
                                        }
                                    });
-                               }).start()
+                               })
+                               .setup.user.addr('+273666')
+                               .start()
                                .check.interaction({
-                                   states:'states:menu'
+                                   state:'states:menu'
                                })
                                .run();
                        });
@@ -501,25 +510,32 @@ describe("app", function() {
         describe("when the user selects accept and join & if bypass_address flag is on & they do not have a location set",function() {
             it("should take the user to the main menu",function() {
                 return tester
-                    .setup(function(api){
-                        api.config.bypass_address = 'true';
+                    .setup.config.app({
+                        name: 'test_app',
+                        endpoints: {
+                            "sms": {"delivery_class": "sms"}
+                        },
+                        ushahidi_map: 'https://godi.crowdmap.com/api',
+                        kv_group: 'tests',
+                        channel: "*120*8864*1321#",
+                        display_results_date: '4 April, 2014',
+                        bypass_address: true
                     })
-                    .setup.user.addr('+273123')
                     .setup(function(api) {
                         api.contacts.add( {
-                            msisdn: '+273123',
-                            extra : {
-                                is_registered: 'true'
-                            }
+                            msisdn: '+273666'
                         });
                     })
+                    .setup.user.addr('+273666')
                     .setup.user.state('states:registration:tandc')
+                    .input('1')
                     .check.interaction({
-                        states:'states:menu'
+                        state:'states:menu'
                     })
                     .run();
             });
         });
+
         describe("when the user chooses to read the terms and conditions",function() {
             it("should set user registration to false.",function() {
                 return tester
