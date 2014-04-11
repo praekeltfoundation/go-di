@@ -25,8 +25,7 @@ di.push_message = function() {
 
         self.should_send_quiz_push = function(name) {
             return contact.is_registered()
-            && _.isUndefined(contact.extra[name+'_complete'])
-            &&
+            && _.isUndefined(contact.extra[name+'_complete'])l
         };
 
         self.should_send_location_push = function() {
