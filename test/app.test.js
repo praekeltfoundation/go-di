@@ -228,14 +228,6 @@ describe("app", function() {
                        it("should go straight to the menu",function() {
                            return tester
                                .setup.config.app({
-                                   name: 'test_app',
-                                   endpoints: {
-                                       "sms": {"delivery_class": "sms"}
-                                   },
-                                   ushahidi_map: 'https://godi.crowdmap.com/api',
-                                   kv_group: 'tests',
-                                   channel: "*120*8864*1321#",
-                                   display_results_date: '4 April, 2014',
                                    bypass_address: 'true'
                                })
                                .setup.user.addr('+273123')
@@ -503,15 +495,7 @@ describe("app", function() {
             it("should take the user to the main menu",function() {
                 return tester
                     .setup.config.app({
-                        name: 'test_app',
-                        endpoints: {
-                            "sms": {"delivery_class": "sms"}
-                        },
-                        ushahidi_map: 'https://godi.crowdmap.com/api',
-                        kv_group: 'tests',
-                        channel: "*120*8864*1321#",
-                        display_results_date: '4 April, 2014',
-                        bypass_address: true
+                        bypass_address: 'true'
                     })
                     .setup.user.addr('+273123')
                     .setup.user.state('states:registration:tandc')
