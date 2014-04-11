@@ -245,7 +245,8 @@ di.app = function() {
                 } else {
                     return self.states.create('states:register');
                 }
-            } else if (!self.exists(self.contact.extra.ward)) {
+            } else if (!self.is(self.im.config.bypass_address)
+                && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');
             } else {
                 return self.states.create('states:menu');
@@ -310,7 +311,11 @@ di.app = function() {
             return self.register()
                 .then(function(result) {
                     return self.im.contacts.save(self.contact).then(function() {
-                        return self.states.create('states:address');
+                        if (self.is(self.im.config.bypass_address)) {
+                            return self.states.create('states:menu');
+                        } else {
+                            return self.states.create('states:address');
+                        }
                     });
                 });
         });

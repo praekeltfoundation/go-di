@@ -223,6 +223,21 @@ describe("app", function() {
                             })
                             .run();
                     });
+
+                    describe("if the bypass_address config has been set",function() {
+                       it("should go straight to the menu",function() {
+                           return tester
+                               .setup.config.app({
+                                   bypass_address: 'true'
+                               })
+                               .setup.user.addr('+273123')
+                               .start()
+                               .check.interaction({
+                                   state:'states:menu'
+                               })
+                               .run();
+                       });
+                    });
                 });
 
                 describe('if they have filled in their address before',function() {
@@ -433,6 +448,7 @@ describe("app", function() {
                     .setup.user.state('states:registration:tandc')
                     .input('1');
             });
+
             it("should register the user using contacts",function() {
                 return tester
                     .check(function(api) {
@@ -472,6 +488,22 @@ describe("app", function() {
                             "This will be kept private, only ur voting ward will be " +
                             "stored &u will be anonymous."
                     }).run();
+            });
+        });
+
+        describe("when the user selects accept and join & if bypass_address flag is on & they do not have a location set",function() {
+            it("should take the user to the main menu",function() {
+                return tester
+                    .setup.config.app({
+                        bypass_address: 'true'
+                    })
+                    .setup.user.addr('+273123')
+                    .setup.user.state('states:registration:tandc')
+                    .input('1')
+                    .check.interaction({
+                        state:'states:menu'
+                    })
+                    .run();
             });
         });
 
