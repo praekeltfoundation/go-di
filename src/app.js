@@ -95,7 +95,11 @@ di.app = function() {
         };
 
         self.get_date = function() {
-            return new Date();
+            if (_.isUndefined(self.im.config.override_date)) {
+                return new Date();
+            } else {
+                return Date.parse(self.im.config.override_date);
+            }
         };
 
         self.get_date_string = function() {
