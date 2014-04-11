@@ -236,17 +236,9 @@ describe("app", function() {
                                    kv_group: 'tests',
                                    channel: "*120*8864*1321#",
                                    display_results_date: '4 April, 2014',
-                                   bypass_address: true
+                                   bypass_address: 'true'
                                })
-                               .setup(function(api) {
-                                   api.contacts.add( {
-                                       msisdn: '+273666',
-                                       extra: {
-                                           is_registered: 'true'
-                                       }
-                                   });
-                               })
-                               .setup.user.addr('+273666')
+                               .setup.user.addr('+273123')
                                .start()
                                .check.interaction({
                                    state:'states:menu'
@@ -521,12 +513,7 @@ describe("app", function() {
                         display_results_date: '4 April, 2014',
                         bypass_address: true
                     })
-                    .setup(function(api) {
-                        api.contacts.add( {
-                            msisdn: '+273666'
-                        });
-                    })
-                    .setup.user.addr('+273666')
+                    .setup.user.addr('+273123')
                     .setup.user.state('states:registration:tandc')
                     .input('1')
                     .check.interaction({
