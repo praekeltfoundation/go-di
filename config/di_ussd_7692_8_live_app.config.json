@@ -1,6 +1,9 @@
 {
     "name": "di_ussd_7692_8_live_app",
     "ushahidi_map": "https://godi.crowdmap.com/api",
+    "endpoints": {
+        "sms": {"delivery_class": "sms"}
+    },
     "kv_group" : "di_live_app",
     "channel" : "*120*7692*8#",
     "display_results_date": "15 April, 2014",
