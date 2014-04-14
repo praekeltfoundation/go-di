@@ -15,13 +15,12 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
-    var AppStates = vumigo.app.AppStates;
-    var PushAppStates = di.push_check_app_states.PushCheckAppStates;
+    var PushAppStates = di.push_app_states.PushCheckAppStates;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
-        self.AppStates = PushAppStates;
+        self.states = new PushAppStates(self);
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
