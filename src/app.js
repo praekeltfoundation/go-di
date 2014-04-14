@@ -16,30 +16,12 @@ di.app = function() {
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
     var AppStates = vumigo.app.AppStates;
-
-    var DelegateAppStates = AppStates.extend(function(self,app) {
-        AppStates.call(self, app);
-
-        var create = self.create;
-        self.create = function(name, opts) {
-            return im.msg.inbound_push_trigger
-                ? self.app.apps.di.states.create(name, opts)
-                : self.app.apps.push.states.create(name, opts);
-        };
-    });
-
-    var DelegateApp = App.extend(function(self) {
-        App.call(self, {AppStates: DelegateAppStates});
-
-        self.apps = {};
-        self.apps.di = new GoDiApp();
-        self.apps.push = new GoDiPushApp();
-    });
+    var PushAppStates = di.push_check_app_states.PushCheckAppStates;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
-
+        self.AppStates = PushAppStates;
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
