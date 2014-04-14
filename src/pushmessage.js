@@ -22,19 +22,6 @@ di.push_message = function() {
             return self.send_panel_questions();
         };
 
-        self.send_reminder_messages = function() {
-            if (self.should_send_location_push()) {
-                //send location message
-            } else if (self.has_saved_location()) {
-                if (self.should_send_quiz_push('vip')) {
-
-                }
-                if (self.should_send_quiz_push('answerwin')) {
-
-                }
-            }
-        };
-
         self.send_panel_questions = function() {
             //Stores differences since start date in config, since spec is set up that way.
             var start_date = Date.parse(app.im.config.panel_push_start);
@@ -57,8 +44,9 @@ di.push_message = function() {
                 var message_num = app.contact.extra['sms_' + push_num];
                 var message = push_messages.panel_questions[message_num][billing_code];
 
-                //Send the message
-                //Send the message
+                //Send user to the question state
+                //This uses app.states.create
+                //Thus wont work
                 return app.states.create('states:push:question',{
                     creator_opts: {
                        question: message,
@@ -114,7 +102,8 @@ di.push_message = function() {
                     ].join('_');
                     app.contact.extra[contact_field] = content;
                     app.contact.extra['it_'+contact_field] = app.get_date_string();
-                    return app.im.contacts.save(self.contact)
+                    return app.im.contacts
+                        .save(self.contact)
                         .then(function() {
                             return 'states:push:panel:end';
                         });
@@ -123,22 +112,8 @@ di.push_message = function() {
         });
 
         app.states.add('states:push:panel:end',function(name,opts) {
-            //Redirect
-            return new FreeText(name, {
-                question: question,
-                next: function(content) {
-                    var contact_field = [
-                        'push',
-                        type,
-                        push_num
-                    ].join('_');
-                    app.contact.extra[contact_field] = content;
-                    return app.im.contacts.save(self.contact)
-                        .then(function() {
-                            return 'states:end';
-                        });
-                }
-            });
+            //Redirect to old state.
+            return app.states.create('states:end');
         });
 
         self.is_push_time = function(num) {
@@ -159,7 +134,6 @@ di.push_message = function() {
                 }
             }
         };
-
 
         self.is_day_of_week = function(week_day) {
             var day_of_week = app.get_date().getDay();
