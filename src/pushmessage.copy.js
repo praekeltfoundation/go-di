@@ -1,7 +1,7 @@
 /**
  * Created by Jade on 2014/04/11.
  */
-module.exports = function() {
+module.exports = function($) {
     return {
         panel_questions: [
             {
