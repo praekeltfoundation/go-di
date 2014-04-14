@@ -44,10 +44,10 @@ di.push_message = function() {
                 //Which message should be sent for this push group?
                 var message_num = app.contact.extra['sms_' + push_num];
                 var message = push_messages.panel_questions[message_num][billing_code];
+                
                 //Send user to the question state
                 //This uses app.states.create
                 //Thus wont work
-                console.log("before state create");
                 return app.states.create('states:push:question',{
                     creator_opts: {
                        question: message,
