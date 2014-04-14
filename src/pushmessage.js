@@ -14,26 +14,27 @@ di.push_message = function() {
     };
 
     var PushMessageApi = Extendable.extend(function(self, im, app, opts) {
-        var $ = app.$;
         var contact = app.contact;
-        var push_messages = get_push_message_copy();
+        var push_messages = get_push_message_copy(app.$);
 
         self.send_push_message = function() {
             return self.send_panel_questions();
         };
 
         self.send_panel_questions = function() {
+
             //Stores differences since start date in config, since spec is set up that way.
-            var start_date = Date.parse(app.im.config.panel_push_start);
-            var panel_days_diff = self.im.config.panel_messages;
+            var start_date = new Date(app.im.config.panel_push_start);
+            var panel_days_diff = JSON.parse(app.im.config.panel_messages);
 
             //Map the day differences to actual dates
-            self.panel_question_dates = _(panel_days_diff).map(function(diff) {
+            self.panel_question_dates = _.map(panel_days_diff,function(diff) {
                 return start_date.addDays(diff);
             });
 
             //if the contact is in the monitoring group and is it the day of the week then
-            if (app.is(app.contact.monitoring_group) && self.is_day_of_week(app.contact.week_day)) {
+            if (app.is(app.contact.extra.monitoring_group) && self.is_day_of_week(app.contact.extra.week_day)) {
+
                 //Which push message num is to be sent
                 var push_num = self.get_push_num();
 
@@ -43,10 +44,10 @@ di.push_message = function() {
                 //Which message should be sent for this push group?
                 var message_num = app.contact.extra['sms_' + push_num];
                 var message = push_messages.panel_questions[message_num][billing_code];
-
                 //Send user to the question state
                 //This uses app.states.create
                 //Thus wont work
+                console.log("before state create");
                 return app.states.create('states:push:question',{
                     creator_opts: {
                        question: message,
@@ -80,8 +81,12 @@ di.push_message = function() {
                 var message = push_messages.panel_questions[message_num][billing_code];
 
                 //Send the message
-                return app.states.create('states:push:panel:question',{
-
+                return app.states.create('states:push:question',{
+                    creator_opts: {
+                        question: message,
+                        type: 'preelection_thermometer',
+                        push_num: push_num
+                    }
                 });
             }
         };
@@ -128,9 +133,10 @@ di.push_message = function() {
         self.get_push_num = function() {
             //if the first push has not been sent
             for (var i=0; i < self.panel_question_dates.length; i++) {
+
                 if (self.is_push_time(i)) {
-                    app.contact['it_push_'+i] = self.get_date_string();
-                    return i;
+                    app.contact.extra['it_push_'+i] = app.get_date_string();
+                    return (i+1);
                 }
             }
         };
