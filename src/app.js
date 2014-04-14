@@ -15,7 +15,7 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
-    var PushAppStates = di.push_app_states.PushCheckAppStates;
+    var PushAppStates = di.push_message_states.PushCheckAppStates;
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');

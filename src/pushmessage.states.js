@@ -1,4 +1,4 @@
-di.push_app_states = function() {
+di.push_message_states = function() {
     var vumigo = require('vumigo_v02');
     var _ = require('lodash');
     var App = vumigo.App;
