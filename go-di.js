@@ -1252,7 +1252,8 @@ di.app = function() {
                                         database: 'vd_2014',
                                         reject_numbers: "true",
                                         reject_short_words: '2',
-                                        reject_large_main_places: '7000'
+                                        reject_large_main_places: '7000',
+                                        reject_resolution_to_main_place: "7000"
                                     }
                                 });
                         })
