@@ -1249,7 +1249,9 @@ di.app = function() {
                                 .http.get('http://wards.code4sa.org/',{
                                     params: {
                                         address: content,
-                                        database: 'vd_2014'
+                                        database: 'vd_2014',
+                                        reject_short_words: '2',
+                                        reject_large_main_places: '7000'
                                     }
                                 });
                         })
