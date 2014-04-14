@@ -33,7 +33,7 @@ di.app = function() {
             return _.random(begin,end,float);
         };
 
-        self.week_day_code = ['M','T','W','Th','F','S','Su'];
+        self.week_day_code = ['Su','M','T','W','Th','F','S'];
 
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
