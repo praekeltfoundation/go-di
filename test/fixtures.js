@@ -10,6 +10,7 @@ module.exports = function() {
                 "params": {
                     "address": 'bad input',
                     "database": "vd_2014",
+                    "reject_numbers": "2",
                     "reject_short_words": "2",
                     "reject_large_main_places": "7000"
                 }
@@ -28,6 +29,7 @@ module.exports = function() {
                 "params": {
                     "address": 'main street',
                     "database": "vd_2014",
+                    "reject_numbers": "2",
                     "reject_short_words": "2",
                     "reject_large_main_places": "7000"
                 }
@@ -141,6 +143,7 @@ module.exports = function() {
                 "params": {
                     "address": "21 conduit street",
                     "database": "vd_2014",
+                    "reject_numbers": "2",
                     "reject_short_words": "2",
                     "reject_large_main_places": "7000"
                 }
