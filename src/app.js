@@ -15,6 +15,26 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
+    var AppStates = vumigo.app.AppStates;
+
+    var DelegateAppStates = AppStates.extend(function(self,app) {
+        AppStates.call(self, app);
+
+        var create = self.create;
+        self.create = function(name, opts) {
+            return im.msg.inbound_push_trigger
+                ? self.app.apps.di.states.create(name, opts)
+                : self.app.apps.push.states.create(name, opts);
+        };
+    });
+
+    var DelegateApp = App.extend(function(self) {
+        App.call(self, {AppStates: DelegateAppStates});
+
+        self.apps = {};
+        self.apps.di = new GoDiApp();
+        self.apps.push = new GoDiPushApp();
+    });
 
     var GoDiApp = App.extend(function(self) {
         App.call(self, 'states:start');

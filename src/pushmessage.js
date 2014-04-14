@@ -18,8 +18,8 @@ di.push_message = function() {
         var contact = app.contact;
         var push_messages = get_push_message_copy();
 
-        self.send_push_messages = function() {
-            return self.send_reminder_messages();
+        self.send_push_message = function() {
+            return self.send_panel_questions();
         };
 
         self.send_reminder_messages = function() {
@@ -58,7 +58,14 @@ di.push_message = function() {
                 var message = push_messages.panel_questions[message_num][billing_code];
 
                 //Send the message
-                return self.send_sms(message);
+                //Send the message
+                return app.states.create('states:push:question',{
+                    creator_opts: {
+                       question: message,
+                       type: 'panel',
+                       push_num: push_num
+                    }
+                });
             }
         };
 
@@ -85,27 +92,38 @@ di.push_message = function() {
                 var message = push_messages.panel_questions[message_num][billing_code];
 
                 //Send the message
-                return self.send_sms(message);
+                return app.states.create('states:push:panel:question',{
+
+                });
             }
         };
 
-        self.send_sms = function(content) {
-            //send the sms
-            return self.im.outbound
-                .send_to_user({
-                    endpoint: 'sms',
-                    content: content
-                })
-                .then(function() {
-                    return self.im.contacts.save(self.contact);
-                });
-        };
-
-        app.states.add('states:push:panel:question',function(name,opts) {
+        app.states.add('states:push:question',function(name,opts) {
             var question = opts.question;
             var type = opts.type;
             var push_num = opts.push_num;
 
+            return new FreeText(name, {
+                question: question,
+                next: function(content) {
+                    //Handle reply
+                    var contact_field = [
+                        'push',
+                        type,
+                        push_num
+                    ].join('_');
+                    app.contact.extra[contact_field] = content;
+                    app.contact.extra['it_'+contact_field] = app.get_date_string();
+                    return app.im.contacts.save(self.contact)
+                        .then(function() {
+                            return 'states:push:panel:end';
+                        });
+                }
+            });
+        });
+
+        app.states.add('states:push:panel:end',function(name,opts) {
+            //Redirect
             return new FreeText(name, {
                 question: question,
                 next: function(content) {
