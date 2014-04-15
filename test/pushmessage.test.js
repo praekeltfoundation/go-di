@@ -1,6 +1,6 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
-//var assert = require('assert');
+var assert = require('assert');
 var fixtures = require('./fixtures');
 var ward_treatment = require('./ward_treatment');
 var push_message_group = require('./push_message_group');
@@ -80,6 +80,48 @@ describe("app", function() {
                         inbound_push_trigger:true
                     })
                     .check.user.state('states:push:start')
+                    .run();
+            });
+
+            it("should save the user's interaction time for that particular push",function() {
+                return tester
+                    .setup.user.addr('+273123')
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check(function(api) {
+                        var contact = api.contacts.store[0];
+                        assert.equal(contact.extra.it_panel_round_1,app.get_date_string());
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user replies to the push message",function() {
+
+            beforeEach(function() {
+                 tester
+                    .setup.user.addr('+273123')
+                    .setup.user.state('states:push:start')
+                    .input('1')
+            });
+
+            it("should save the interaction time and content",function() {
+               return tester
+                   .check(function(api) {
+                       var contact = api.contacts.store[0];
+                       assert.equal(contact.extra.panel_round_1_reply,'1');
+                       assert.equal(contact.extra.it_panel_round_1_reply,app.get_date_string());
+                   })
+                   .run();
+            });
+
+            it("should send the user to the states:push:endstate",function() {
+                return tester
+                    .check.interaction({
+                        state: 'states:push:end'
+                    })
                     .run();
             });
         });

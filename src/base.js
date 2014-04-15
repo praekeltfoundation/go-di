@@ -68,7 +68,7 @@ di.base = function() {
 
             //Get the new message
             var msg = self.push_api.get_push_msg();
-            var field = self.push_api.get_push_field(msg.type,msg.num);
+            var field = self.push_api.get_push_field(msg.type,msg.push_num);
 
             return self
                 .im.contacts.save(self.contact)
@@ -77,7 +77,7 @@ di.base = function() {
                         question: msg.question,
                         events: {
                             //Needs to be saved when FreeText is served
-                            'state state:enter': function() {
+                            'im state:enter': function() {
                                 self.contact.extra['it_'+field] = self.get_date_string();
                                 return self.im.contacts.save(self.contact);
                             }
