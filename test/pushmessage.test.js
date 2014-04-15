@@ -76,12 +76,10 @@ describe("app", function() {
                 return tester
                     .setup.user.addr('+273123')
                     .input({
-                        content:'',
-                        inbound_push_trigger:'true'
+                        content:null,
+                        inbound_push_trigger:true
                     })
-                    .check.interaction({
-                       state:'states:push:question'
-                    })
+                    .check.user.state('states:push:start')
                     .run();
             });
         });
