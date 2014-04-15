@@ -70,15 +70,20 @@ di.base = function() {
             var msg = self.push_api.get_push_msg();
             var field = self.push_api.get_push_field(msg.type,msg.num);
 
-            //Save contact date
-            self.contact.extra['it_'+field] = self.get_date_string();
-
             return self
                 .im.contacts.save(self.contact)
                 .then(function() {
                     return new FreeText(name, {
                         question: msg.question,
+                        events: {
+                            //Needs to be saved when FreeText is served
+                            'state state:enter': function() {
+                                self.contact.extra['it_'+field] = self.get_date_string();
+                                return self.im.contacts.save(self.contact);
+                            }
+                        },
                         next: function(content) {
+                            //Needs to be saved on reply
                             self.contact.extra[field+'_reply'] = content;
                             self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
                             return self
@@ -90,7 +95,6 @@ di.base = function() {
         });
 
         self.states.add('states:push:end', function(name) {
-            console.log("meow");
             return new EndState(name, {
                 send_reply: false,
                 next: self.start_state_name
