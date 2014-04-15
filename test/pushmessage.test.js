@@ -10,7 +10,7 @@ var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 
 describe("app", function() {
 
-    describe("Push Message app", function() {
+    describe.only("Push Message app", function() {
         var app;
         var tester;
 
@@ -51,6 +51,14 @@ describe("app", function() {
                             sms_3: '1',
                             monitoring_group: 'true',
                             new_week_day: 'T'
+                        }
+                    });
+
+                    //Add a contact
+                    api.contacts.add( {
+                        msisdn: '+273321',
+                        extra : {
+                            is_registered: 'true'
                         }
                     });
                 })
@@ -98,13 +106,115 @@ describe("app", function() {
             });
         });
 
+        describe("when the user does not match when the push message trigger occurs",function() {
+            it("should not do anything for that contact",function() {
+                return tester
+                    .setup(function(api) {
+                        api.contacts.add({
+                            msisdn: '+27321',
+                            extra: {delivery_class: 'sms'}
+                        });
+                    })
+                    .setup.user.addr('+27321')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check.user.state('states:menu')
+                    .check.no_reply()
+                    .run();
+            });
+        });
+
+        describe("when the user's push date is on a thursday",function() {
+            it('should send the user the first push message on the thursday',function() {
+                //check that it is the first push message for that group
+
+            });
+
+            it('should send the user push message number 2 `x` days later',function() {
+
+            });
+
+            it("should save the reply to push message number 2",function() {
+
+            });
+
+            it("should send the user thermometer message number 1 `y` days later",function() {
+
+            });
+
+            it("should save the reply to thermometer message number 1",function() {
+
+            });
+
+            it("should send the user the 3rd push message `w` days later",function() {
+
+            });
+
+            it("should send the user the 2nd thermometer message 'z' days layer",function() {
+
+            });
+
+            describe("if they are in monitoring group 1",function() {
+                it("should send them push message 1 for the first panel push",function(){
+
+                });
+
+                it("should send them push message 2 for the 2nd panel push",function() {
+
+                });
+
+                it("should send them push message 1 for the 3rd panel push",function() {
+
+                });
+            });
+
+            describe("if they have 'incentive' billing code",function() {
+               it("should send them the incentive message for push 1",function() {
+
+               });
+            });
+
+            describe("if they have the 'end_user' billing code",function() {
+               it("should send them the 'end_user' msg for push 1",function() {
+
+               });
+            });
+
+            describe("if they have the 'reverse_billed' billing code",function() {
+                it("should send them the 'reverse_billed' msg for push 1",function() {
+
+                });
+            });
+        });
+
+        describe("when it is the 'whatever' of May after the election",function() {
+           it("should send the 3rd thermometer message",function() {
+
+           });
+        });
+
+        describe("when it is the next push message day after the election",function() {
+           it("should send them the 4th thermometer message",function(){
+
+           });
+        });
+
+        describe("when it is the last push message day after the election",function() {
+           it("should send them the 5th thermometer message",function() {
+
+           });
+        });
+
         describe("when the user replies to the push message",function() {
 
             beforeEach(function() {
                  tester
                     .setup.user.addr('+273123')
                     .setup.user.state('states:push:start')
-                    .input('1')
+                    .input('1');
             });
 
             it("should save the interaction time and content",function() {
@@ -123,6 +233,26 @@ describe("app", function() {
                         state: 'states:push:end'
                     })
                     .run();
+            });
+        });
+
+        describe("when the user is on the states:push:end",function() {
+            it("should start the user at the start state of the next session",function() {
+                return tester
+                    .setup.user.state('states:push:end')
+                    .start()
+                    .check.user.state('states:register')
+                    .run();
+            });
+        });
+
+        describe("when a user has not been allocated a .new_week_day",function() {
+           it("should allocated them 'T','Th' or 'S' for new_week_day",function() {
+
+           });
+
+            it("should send push message 1 based on those days",function(){
+
             });
         });
     });
