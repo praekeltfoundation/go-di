@@ -4,15 +4,13 @@ var AppTester = vumigo.AppTester;
 var fixtures = require('./fixtures');
 var ward_treatment = require('./ward_treatment');
 var push_message_group = require('./push_message_group');
-//var _ = require('lodash');
-
 var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 
 
 describe("app", function() {
 
-    describe.only("Push Message app", function() {
+    describe("Push Message app", function() {
         var app;
         var tester;
 
@@ -48,11 +46,11 @@ describe("app", function() {
                         msisdn: '+273123',
                         extra : {
                             is_registered: 'true',
-                            week_day: 'M',
                             sms_1: '1',
                             sms_2: '2',
                             sms_3: '1',
-                            monitoring_group: 'true'
+                            monitoring_group: 'true',
+                            new_week_day: 'T'
                         }
                     });
                 })
@@ -66,7 +64,9 @@ describe("app", function() {
                     channel: "*120*8864*1321#",
                     display_results_date: '4 April, 2014',
                     panel_messages: '[0, 1, 2]',
+                    thermometer_messages: '[3, 4]',
                     panel_push_start: app.get_date_string(),
+                    push_end_date: app.get_date().addDays(1).toISOString(),
                     billing_code: 'incentive'
                 });
         });
