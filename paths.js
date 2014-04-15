@@ -8,7 +8,7 @@ src.app = [
     'src/whatsupquiz.js',
     'src/pushmessage.js',
     'src/pushmessage.copy.js',
-    'src/pushmessage.states.js',
+    'src/base.js',
     'src/app.js'
 ];
 
