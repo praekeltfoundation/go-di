@@ -1,6 +1,5 @@
 di.base = function() {
     var vumigo = require('vumigo_v02');
-    var _ = require('lodash');
     var App = vumigo.App;
     var AppStates = vumigo.app.AppStates;
     var State = vumigo.states.State;
@@ -14,7 +13,8 @@ di.base = function() {
 
         self.create = function(name,opts) {
             var push_api =  new PushMessageApi(app.im,app);
-            if (!self.app.im.msg.inbound_push_trigger) {
+            console.log("GOT HERE");
+            if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
 
