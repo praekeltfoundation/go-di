@@ -5,7 +5,8 @@ di.base = function() {
     var AppStates = vumigo.app.AppStates;
     var State = vumigo.states.State;
     var FreeText = vumigo.states.FreeText;
-    var PushMessageApi = di.push_message.PushMessageApi;
+    var EndState = vumigo.states.EndState;
+    var PushMessageApi = di.pushmessage.PushMessageApi;
 
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
