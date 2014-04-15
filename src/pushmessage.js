@@ -17,78 +17,119 @@ di.push_message = function() {
         var contact = app.contact;
         var push_messages = get_push_message_copy(app.$);
 
-        self.send_push_message = function() {
-            return self.send_panel_questions();
+        self.new_week_day_code = ['T','Th','S'];
+
+        self.rerandomize_week_day = function() {
+            if (_.isUndefined(app.contact.extra.new_week_day)) {
+                var index = app.random(0,2,false);
+                app.contact.extra.new_week_day =  self.new_week_day_code[index];
+            }
+            return app.im.contacts.save(app.contact);
         };
 
-        self.send_panel_questions = function() {
+        self.get_push_start_date = function() {
 
-            //Stores differences since start date in config, since spec is set up that way.
-            var start_date = new Date(app.im.config.panel_push_start);
-            var panel_days_diff = JSON.parse(app.im.config.panel_messages);
+            //Date deployed - Based on Matthew's comment in push document
+            var push_start_date = new Date(app.im.config.panel_push_start);
+
+            //Get actual week start date
+            var day_index = push_start_date.getDay();
+            var new_week_day_index =  _.indexOf(self.week_day_code,app.contact.extra.new_week_day);
+            var days_till_start = (day_index + 7 - new_week_day_index) % 7;
+            var start_date = push_start_date.addDays(days_till_start);
+            return start_date;
+        };
+
+        self.should_send_push = function() {
+            //If user is not part of monitoring group then return false
+            if (!app.is(app.contact.extra.monitoring_group) || app.get_date() > app.im.config.push_end_date) {
+                return false;
+            }
+
+            //Get start date of push messages for particular user.
+            var start_date = self.get_push_start_date();
+
+            //Stores differences since start date in config.
+            var panel_differences = JSON.parse(app.im.config.panel_messages);
+            var thermometer_differences = JSON.parse(app.im.config.thermometer_messages);
 
             //Map the day differences to actual dates
-            self.panel_question_dates = _.map(panel_days_diff,function(diff) {
+            var panel_dates = _.map(panel_differences,function(diff) {
                 return start_date.addDays(diff);
             });
 
-            //if the contact is in the monitoring group and is it the day of the week then
-            if (app.is(app.contact.extra.monitoring_group) && self.is_day_of_week(app.contact.extra.week_day)) {
-
-                //Which push message num is to be sent
-                var push_num = self.get_push_num();
-
-                //Which USSD incentive is used?
-                var billing_code = app.im.config.billing_code;
-
-                //Which message should be sent for this push group?
-                var message_num = app.contact.extra['sms_' + push_num];
-                var message = push_messages.panel_questions[message_num][billing_code];
-                
-                //Send user to the question state
-                //This uses app.states.create
-                //Thus wont work
-                return app.states.create('states:push:question',{
-                    creator_opts: {
-                       question: message,
-                       type: 'panel',
-                       push_num: push_num
-                    }
-                });
-            }
-        };
-
-        self.send_preelection_thermometer_questions = function() {
-            var start_date = Date.parse(app.im.config.panel_push_start);
-            var thermometer_days_diff = self.im.config.thermometer_messages;
-
             //Map the day differences to actual dates
-            self.thermometer_dates = _(thermometer_days_diff).map(function(diff) {
+            var thermometer_dates = _.map(thermometer_differences,function(diff) {
                 return start_date.addDays(diff);
             });
 
+            self.panel_dates = panel_dates;
+            self.pre_thermometer_dates = thermometer_dates;
 
-            //if the contact is in the monitoring group and is it the day of the week then
-            if (app.is(app.contact.monitoring_group) && self.is_day_of_week(app.contact.week_day)) {
-                //Which push message num is to be sent
-                var push_num = self.get_push_num();
+            //If it is one of the push days;
+            return self.is_push_day('panel',panel_dates,1)
+                || self.is_push_day('panel',panel_dates,2)
+                || self.is_push_day('pre_thermometer',thermometer_dates,1)
+                || self.is_push_day('panel',panel_dates,3)
+                || self.is_push_day('pre_thermometer',thermometer_dates,2);
+        };
 
-                //Which USSD incentive is used?
-                var billing_code = app.im.config.billing_code;
+        self.get_push_message = function() {
+            //Return panel question msg
+            for (var i=0; i < self.panel_dates; i++) {
+                if (self.is_push_day('panel',self.panel_dates,i+1)) {
+                    return self.get_panel_msg(i+1);
+                }
+            };
 
-                //Which message should be sent for this push group?
-                var message_num = app.contact.extra['sms_' + push_num];
-                var message = push_messages.panel_questions[message_num][billing_code];
+            //Return thermometer question msg
+            for (var i=0; i < self.pre_thermometer_dates; i++) {
+                if (self.is_push_day('pre_thermometer',self.pre_thermometer_dates,i+1)) {
+                    return self.get_thermometer_msg(i+1);
+                }
+            };
 
-                //Send the message
-                return app.states.create('states:push:question',{
-                    creator_opts: {
-                        question: message,
-                        type: 'preelection_thermometer',
-                        push_num: push_num
-                    }
-                });
-            }
+            return null;
+        };
+
+        //Gets msg for panel push
+        self.get_panel_msg = function(push_num) {
+            //Which USSD incentive is used?
+            var billing_code = app.im.config.billing_code;
+
+            //Which message should be sent for this push group?
+            var message_num = app.contact.extra['sms_' + push_num];
+            var message = push_messages.panel_questions[message_num][billing_code];
+
+            //Returns correct state
+            return {
+                name: 'states:push:question',
+                creator_opts: {
+                   question: message,
+                   type: 'panel',
+                   push_num: push_num
+                }
+            };
+        };
+
+        //Gets msg for panel push
+        self.get_thermometer_msg = function(push_num) {
+            //Which USSD incentive is used?
+            var billing_code = app.im.config.billing_code;
+
+            //Which message should be sent for this push group?
+            var message_num = push_num-1;
+            var message = push_messages.thermometer_questions[message_num][billing_code];
+
+            //Send the message
+            return {
+                name: 'states:push:question',
+                creator_opts: {
+                    question: message,
+                    type: 'preelection_thermometer',
+                    push_num: push_num
+                }
+            };
         };
 
         app.states.add('states:push:question',function(name,opts) {
@@ -121,24 +162,11 @@ di.push_message = function() {
             return app.states.create('states:end');
         });
 
-        self.is_push_time = function(num) {
-            if (num === 0) {
-                return _.isUndefined(app.contact.it_push_round_1);
-            } else  {
-                return _.isUndefined(app.contact['it_push_round_'+(num+1)])
-                    && self.panel_question_dates[num] > self.get_date();
-            }
-        };
-
-        self.get_push_num = function() {
-            //if the first push has not been sent
-            for (var i=0; i < self.panel_question_dates.length; i++) {
-
-                if (self.is_push_time(i)) {
-                    app.contact.extra['it_push_'+i] = app.get_date_string();
-                    return (i+1);
-                }
-            }
+        self.is_push_day = function(type,dates,num) {
+            return (
+                _.isUndefined(app.contact['it_'+type+'_round_'+num])
+                    && dates[num-1] >= self.get_date()
+                );
         };
 
         self.is_day_of_week = function(week_day) {
