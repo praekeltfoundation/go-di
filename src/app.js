@@ -15,12 +15,12 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
-    var PushMessageStates = di.push_message_states.PushMessageStates;
+    var BaseDiApp = di.base.BaseDiApp;
 
-    var GoDiApp = App.extend(function(self) {
+    var GoDiApp = BaseDiApp.extend(function(self) {
         App.call(self, 'states:start');
         var $ = self.$;
-        self.states = new PushMessageStates(self);
+
         self.quizzes = {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);

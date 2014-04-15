@@ -1,10 +1,9 @@
-di.push_message = function() {
+di.pushmessage = function() {
     var _ = require('lodash');
     var vumigo = require('vumigo_v02');
     var utils = vumigo.utils;
     var Extendable = utils.Extendable;
     var get_push_message_copy = require('./pushmessage.copy');
-    var FreeText = vumigo.states.FreeText;
 
     Date.prototype.addDays = function(days)
     {
@@ -24,7 +23,6 @@ di.push_message = function() {
                 var index = app.random(0,2,false);
                 app.contact.extra.new_week_day =  self.new_week_day_code[index];
             }
-            return app.im.contacts.save(app.contact);
         };
 
         self.get_push_start_date = function() {
@@ -74,7 +72,7 @@ di.push_message = function() {
                 || self.is_push_day('pre_thermometer',thermometer_dates,2);
         };
 
-        self.get_push_message = function() {
+        self.get_push_msg = function() {
             //Return panel question msg
             for (var i=0; i < self.panel_dates; i++) {
                 if (self.is_push_day('panel',self.panel_dates,i+1)) {
@@ -88,11 +86,8 @@ di.push_message = function() {
                     return self.get_thermometer_msg(i+1);
                 }
             };
-
-            return null;
         };
 
-        //Gets msg for panel push
         self.get_panel_msg = function(push_num) {
             //Which USSD incentive is used?
             var billing_code = app.im.config.billing_code;
@@ -101,18 +96,14 @@ di.push_message = function() {
             var message_num = app.contact.extra['sms_' + push_num];
             var message = push_messages.panel_questions[message_num][billing_code];
 
-            //Returns correct state
+            //Returns push message
             return {
-                name: 'states:push:question',
-                creator_opts: {
-                   question: message,
-                   type: 'panel',
-                   push_num: push_num
-                }
+               question: message,
+               type: 'panel',
+               push_num: push_num
             };
         };
 
-        //Gets msg for panel push
         self.get_thermometer_msg = function(push_num) {
             //Which USSD incentive is used?
             var billing_code = app.im.config.billing_code;
@@ -121,46 +112,13 @@ di.push_message = function() {
             var message_num = push_num-1;
             var message = push_messages.thermometer_questions[message_num][billing_code];
 
-            //Send the message
+            //Returns push message
             return {
-                name: 'states:push:question',
-                creator_opts: {
-                    question: message,
-                    type: 'preelection_thermometer',
-                    push_num: push_num
-                }
+                question: message,
+                type: 'preelection_thermometer',
+                push_num: push_num
             };
         };
-
-        app.states.add('states:push:question',function(name,opts) {
-            var question = opts.question;
-            var type = opts.type;
-            var push_num = opts.push_num;
-
-            return new FreeText(name, {
-                question: question,
-                next: function(content) {
-                    //Handle reply
-                    var contact_field = [
-                        'push',
-                        type,
-                        push_num
-                    ].join('_');
-                    app.contact.extra[contact_field] = content;
-                    app.contact.extra['it_'+contact_field] = app.get_date_string();
-                    return app.im.contacts
-                        .save(self.contact)
-                        .then(function() {
-                            return 'states:push:panel:end';
-                        });
-                }
-            });
-        });
-
-        app.states.add('states:push:panel:end',function(name,opts) {
-            //Redirect to old state.
-            return app.states.create('states:end');
-        });
 
         self.is_push_day = function(type,dates,num) {
             return (
@@ -169,33 +127,14 @@ di.push_message = function() {
                 );
         };
 
+        self.get_push_field = function(type,num) {
+            return [type,'round',num].join('_');
+        };
+
         self.is_day_of_week = function(week_day) {
             var day_of_week = app.get_date().getDay();
             return (app.week_day_code[day_of_week] === week_day );
         };
-
-        self.should_send_quiz_push = function(name) {
-            return contact.is_registered()
-            && _.isUndefined(contact.extra[name+'_complete']);
-        };
-
-        self.should_send_location_push = function() {
-            return contact.is_registered()
-                && _.isUndefined(contact.extra.ward)
-                && (self.days_since(contact.extra.it_ward,7)
-                || self.days_since(contact.extra.it_ward,14));
-        };
-
-        self.has_saved_location = function() {
-            return !_.isUndefined(contact.extra.ward);
-        };
-
-        self.days_since = function(date,num_days) {
-            var current_date = app.get_date();
-            var days_diff = Math.floor(( Date.parse(current_date) - Date.parse(num_days) ) / 86400000);
-            return days_diff == num_days;
-        };
-
     });
     return {
         PushMessageApi: PushMessageApi
