@@ -1,8 +1,7 @@
 di.app = function() {
     var vumigo = require('vumigo_v02');
-    var Q = require('q');
     var _ = require('lodash');
-    var App = vumigo.App;
+    var Q = require('q');
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
@@ -18,7 +17,7 @@ di.app = function() {
     var BaseDiApp = di.base.BaseDiApp;
 
     var GoDiApp = BaseDiApp.extend(function(self) {
-        App.call(self, 'states:start');
+        BaseDiApp.call(self, 'states:start');
         var $ = self.$;
 
         self.quizzes = {};
@@ -93,18 +92,6 @@ di.app = function() {
             self.contact.extra.sms_1 = monitoring.sms_1;
             self.contact.extra.sms_2 = monitoring.sms_2;
             self.contact.extra.sms_3 = monitoring.sms_3;
-        };
-
-        self.get_date = function() {
-            if (_.isUndefined(self.im.config.override_date)) {
-                return new Date();
-            } else {
-                return Date.parse(self.im.config.override_date);
-            }
-        };
-
-        self.get_date_string = function() {
-            return self.get_date().toISOString();
         };
 
         self.is_delivery_class = function(delivery_class) {

@@ -13,7 +13,6 @@ di.pushmessage = function() {
     };
 
     var PushMessageApi = Extendable.extend(function(self, im, app, opts) {
-        var contact = app.contact;
         var push_messages = get_push_message_copy(app.$);
 
         self.new_week_day_code = ['T','Th','S'];
@@ -26,23 +25,18 @@ di.pushmessage = function() {
         };
 
         self.get_push_start_date = function() {
-
             //Date deployed - Based on Matthew's comment in push document
             var push_start_date = new Date(app.im.config.panel_push_start);
 
             //Get actual week start date
             var day_index = push_start_date.getDay();
-            var new_week_day_index =  _.indexOf(self.week_day_code,app.contact.extra.new_week_day);
+            var new_week_day_index =  _.indexOf(app.week_day_code,app.contact.extra.new_week_day);
             var days_till_start = (day_index + 7 - new_week_day_index) % 7;
             var start_date = push_start_date.addDays(days_till_start);
             return start_date;
         };
 
-        self.should_send_push = function() {
-            //If user is not part of monitoring group then return false
-            if (!app.is(app.contact.extra.monitoring_group) || app.get_date() > app.im.config.push_end_date) {
-                return false;
-            }
+        self.calculate_push_dates = function() {
 
             //Get start date of push messages for particular user.
             var start_date = self.get_push_start_date();
@@ -52,40 +46,50 @@ di.pushmessage = function() {
             var thermometer_differences = JSON.parse(app.im.config.thermometer_messages);
 
             //Map the day differences to actual dates
-            var panel_dates = _.map(panel_differences,function(diff) {
+            self.panel_dates = _.map(panel_differences,function(diff) {
                 return start_date.addDays(diff);
             });
 
             //Map the day differences to actual dates
-            var thermometer_dates = _.map(thermometer_differences,function(diff) {
+            self.pre_thermometer_dates = _.map(thermometer_differences,function(diff) {
                 return start_date.addDays(diff);
             });
+        };
 
-            self.panel_dates = panel_dates;
-            self.pre_thermometer_dates = thermometer_dates;
+        self.should_push = function() {
+            //If user is not part of monitoring group then return false
+            if (!app.is(app.contact.extra.monitoring_group) || app.get_date() > app.im.config.push_end_date) {
+                return false;
+            }
+
+            //Calculate the push dates
+            self.calculate_push_dates();
 
             //If it is one of the push days;
-            return self.is_push_day('panel',panel_dates,1)
-                || self.is_push_day('panel',panel_dates,2)
-                || self.is_push_day('pre_thermometer',thermometer_dates,1)
-                || self.is_push_day('panel',panel_dates,3)
-                || self.is_push_day('pre_thermometer',thermometer_dates,2);
+            return self.is_push_day('panel',self.panel_dates,1)
+                || self.is_push_day('panel',self.panel_dates,2)
+                || self.is_push_day('pre_thermometer',self.thermometer_dates,1)
+                || self.is_push_day('panel',self.panel_dates,3)
+                || self.is_push_day('pre_thermometer',self.thermometer_dates,2);
         };
 
         self.get_push_msg = function() {
+            //Calculate the push dates
+            self.calculate_push_dates();
+
             //Return panel question msg
-            for (var i=0; i < self.panel_dates; i++) {
+            for (var i=0; i < self.panel_dates.length; i++) {
                 if (self.is_push_day('panel',self.panel_dates,i+1)) {
                     return self.get_panel_msg(i+1);
                 }
-            };
+            }
 
             //Return thermometer question msg
-            for (var i=0; i < self.pre_thermometer_dates; i++) {
+            for (i=0; i < self.pre_thermometer_dates.length; i++) {
                 if (self.is_push_day('pre_thermometer',self.pre_thermometer_dates,i+1)) {
                     return self.get_thermometer_msg(i+1);
                 }
-            };
+            }
         };
 
         self.get_panel_msg = function(push_num) {
@@ -94,7 +98,7 @@ di.pushmessage = function() {
 
             //Which message should be sent for this push group?
             var message_num = app.contact.extra['sms_' + push_num];
-            var message = push_messages.panel_questions[message_num][billing_code];
+            var message = push_messages.panel_questions[message_num-1][billing_code];
 
             //Returns push message
             return {
@@ -123,7 +127,7 @@ di.pushmessage = function() {
         self.is_push_day = function(type,dates,num) {
             return (
                 _.isUndefined(app.contact['it_'+type+'_round_'+num])
-                    && dates[num-1] >= self.get_date()
+                    && dates[num-1] >= app.get_date()
                 );
         };
 

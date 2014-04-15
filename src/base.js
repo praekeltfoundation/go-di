@@ -10,14 +10,12 @@ di.base = function() {
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
         var create =  self.create;
-
         self.create = function(name,opts) {
+
             var push_api =  new PushMessageApi(app.im,app);
-            console.log("GOT HERE");
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
-
             return !push_api.should_push()
                 ? create('states:noop')
                 : create('states:push:start');
@@ -29,7 +27,7 @@ di.base = function() {
 
         // workaround for https://github.com/praekelt/vumi-jssandbox-toolkit/pull/179
         self.states = new DiAppStates(self);
-        self.push_api = new PushMessageApi(self);
+        self.push_api = new PushMessageApi(self.im,self);
 
         self.init = function() {
             return self.im
@@ -37,6 +35,18 @@ di.base = function() {
                 .then(function(user_contact) {
                     self.contact = user_contact;
                 });
+        };
+
+        self.get_date = function() {
+            if (_.isUndefined(self.im.config.override_date)) {
+                return new Date();
+            } else {
+                return Date.parse(self.im.config.override_date);
+            }
+        };
+
+        self.get_date_string = function() {
+            return self.get_date().toISOString();
         };
 
         self.states.add('states:noop', function(name) {
@@ -62,8 +72,8 @@ di.base = function() {
 
             //Make changes to the contact
             self.contact.extra['it_'+field] = self.get_date_string();
-            self.im.contacts
-                .save(self.contact)
+            return self
+                .im.contacts.save(self.contact)
                 .then(function() {
                     return self.states.create('states:push:question',{
                         msg:msg,
@@ -89,13 +99,13 @@ di.base = function() {
         });
 
         self.states.add('states:push:end', function(name) {
+            console.log("meow");
             return new EndState(name, {
                 send_reply: false,
                 next: self.start_state_name
             });
         });
     });
-
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
         BaseDiApp.call(self, 'states:start');
