@@ -62,7 +62,7 @@ di.base = function() {
             });
         });
 
-        self.states.add('states:push:start', function(name) {
+        self.states.add('states:push:start', function(name,opts) {
             //Rerandomize week_day - on client's orders
             self.push_api.rerandomize_week_day();
 
@@ -70,32 +70,23 @@ di.base = function() {
             var msg = self.push_api.get_push_msg();
             var field = self.push_api.get_push_field(msg.type,msg.num);
 
-            //Make changes to the contact
+            //Save contact date
             self.contact.extra['it_'+field] = self.get_date_string();
+
             return self
                 .im.contacts.save(self.contact)
                 .then(function() {
-                    return self.states.create('states:push:question',{
-                        msg:msg,
-                        field:field
+                    return new FreeText(name, {
+                        question: msg.question,
+                        next: function(content) {
+                            self.contact.extra[field+'_reply'] = content;
+                            self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+                            return self
+                                .im.contacts.save(self.contact)
+                                .thenResolve('states:push:end');
+                        }
                     });
                 });
-        });
-
-        self.states.add('states:push:question', function(name,opts) {
-            var msg = opts.msg;
-            var field = opts.field;
-            //Create state
-            return new FreeText(name, {
-                question: msg.question,
-                next: function(content) {
-                    self.contact.extra[field+'_reply'] = content;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
-                    return self
-                        .im.contacts.save(self.contact)
-                        .thenResolve('states:push:end');
-                }
-            });
         });
 
         self.states.add('states:push:end', function(name) {
