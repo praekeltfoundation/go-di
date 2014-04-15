@@ -96,8 +96,20 @@ di.base = function() {
         });
     });
 
+
+    var DiSmsApp = BaseDiApp.extend(function(self) {
+        BaseDiApp.call(self, 'states:start');
+
+        self.states.add('states:start', function(name) {
+            return new EndState(name, {
+                text: 'Nothing for you here'
+            });
+        });
+    });
+
     return {
         DiAppStates : DiAppStates,
-        BaseDiApp : BaseDiApp
+        BaseDiApp : BaseDiApp,
+        DiSmsApp : DiSmsApp
     };
 }();
