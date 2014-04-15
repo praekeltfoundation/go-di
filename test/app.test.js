@@ -852,7 +852,7 @@ describe("app", function() {
                             var contact = api.contacts.store[0];
                             assert.equal(contact.extra.geographical_group,"GH");
                             assert.equal(contact.extra.monitoring_group,"true");
-                            assert.equal(contact.extra.week_day,'M');
+                            assert.equal(contact.extra.week_day,'Su');
                             assert.equal(contact.extra.push_group,'1');
                             assert.equal(contact.extra.sms_1,'1');
                             assert.equal(contact.extra.sms_2,'2');
@@ -906,7 +906,7 @@ describe("app", function() {
                             var contact = api.contacts.store[0];
                             assert.equal(contact.extra.geographical_group,"GS2");
                             assert.equal(contact.extra.monitoring_group,"true");
-                            assert.equal(contact.extra.week_day,'Su');
+                            assert.equal(contact.extra.week_day,'S');
                             assert.equal(contact.extra.push_group,'30');
                         }).run();
                 });
