@@ -1,2 +1,3 @@
 var di = {};
+di.copies = {};
 

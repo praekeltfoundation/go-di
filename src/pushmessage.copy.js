@@ -2,10 +2,10 @@
  * Created by Jade on 2014/04/11.
  */
 di.copies = {};
+
 di.copies.pushmessage = function() {
     var vumigo = require('vumigo_v02');
     var $ = new vumigo.translate.LazyTranslator();
-
     return {
         panel_questions: [
             {

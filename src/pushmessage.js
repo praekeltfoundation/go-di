@@ -14,7 +14,6 @@ di.pushmessage = function() {
 
     var PushMessageApi = Extendable.extend(function(self, im, app, opts) {
         var push_messages = get_push_message_copy();
-
         self.new_week_day_code = ['T','Th','S'];
 
         self.rerandomize_week_day = function() {
@@ -100,6 +99,7 @@ di.pushmessage = function() {
 
             //Which message should be sent for this push group?
             var message_num = app.contact.extra['sms_' + push_num];
+            console.log(message_num-1);
             var message = push_messages.panel_questions[message_num-1][billing_code];
 
             //Returns push message

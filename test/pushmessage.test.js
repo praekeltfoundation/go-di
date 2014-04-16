@@ -10,7 +10,7 @@ var _ = require('lodash');
 
 describe("app", function() {
 
-    describe("Push Message app", function() {
+    describe.only("Push Message app", function() {
         var app;
         var tester;
 
