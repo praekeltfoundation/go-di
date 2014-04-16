@@ -1,4 +1,5 @@
 var di = {};
+di.copies = {};
 
 
 di.ushahidi = function() {
@@ -859,10 +860,10 @@ di.quiz.whatsup = function() {
  * Created by Jade on 2014/04/11.
  */
 di.copies = {};
+
 di.copies.pushmessage = function() {
     var vumigo = require('vumigo_v02');
     var $ = new vumigo.translate.LazyTranslator();
-
     return {
         panel_questions: [
             {
@@ -941,7 +942,6 @@ di.pushmessage = function() {
 
     var PushMessageApi = Extendable.extend(function(self, im, app, opts) {
         var push_messages = get_push_message_copy();
-
         self.new_week_day_code = ['T','Th','S'];
 
         self.rerandomize_week_day = function() {
@@ -968,17 +968,13 @@ di.pushmessage = function() {
             //Get start date of push messages for particular user.
             var start_date = self.get_push_start_date();
 
-            //Stores differences since start date in config.
-            var panel_differences = JSON.parse(app.im.config.panel_messages);
-            var thermometer_differences = JSON.parse(app.im.config.thermometer_messages);
-
             //Map the day differences to actual dates
-            self.panel_dates = _.map(panel_differences,function(diff) {
+            self.panel_dates = _.map(app.im.config.panel_messages,function(diff) {
                 return start_date.addDays(diff);
             });
 
             //Map the day differences to actual dates
-            self.pre_thermometer_dates = _.map(thermometer_differences,function(diff) {
+            self.pre_thermometer_dates = _.map(app.im.config.thermometer_messages,function(diff) {
                 return start_date.addDays(diff);
             });
         };
@@ -1031,6 +1027,7 @@ di.pushmessage = function() {
 
             //Which message should be sent for this push group?
             var message_num = app.contact.extra['sms_' + push_num];
+            console.log(message_num-1);
             var message = push_messages.panel_questions[message_num-1][billing_code];
 
             //Returns push message
@@ -1350,10 +1347,6 @@ di.app = function() {
                 //Sets delivery class of contact.
                 if (_.isUndefined(self.contact.extra.delivery_class)) {
                     self.contact.extra.delivery_class = self.im.config.delivery_class;
-                    self.contact.extra.first_it = self.get_date_string();
-                }
-                if (_.isUndefined(self.contact.first_it)) {
-                    self.contact.extra.first_logged_it = self.get_date_string();
                 }
 
                 //Set the last channel this user accessed
