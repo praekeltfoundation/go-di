@@ -1105,8 +1105,6 @@ di.base = function() {
     var BaseDiApp = App.extend(function(self, start_state_name) {
         App.call(self, start_state_name, {AppStates: DiAppStates});
 
-        // workaround for https://github.com/praekelt/vumi-jssandbox-toolkit/pull/179
-        self.states = new DiAppStates(self);
         self.push_api = new PushMessageApi(self.im,self);
 
         self.init = function() {
@@ -1131,7 +1129,6 @@ di.base = function() {
 
         self.states.add('states:noop', function(name) {
             var state = self.im.user.state.serialize();
-            console.log("here");
             return new State(name, {
                 send_reply: false,
                 events: {
@@ -1202,6 +1199,7 @@ di.base = function() {
         DiSmsApp : DiSmsApp
     };
 }();
+
 di.app = function() {
     var vumigo = require('vumigo_v02');
     var _ = require('lodash');
