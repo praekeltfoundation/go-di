@@ -59,7 +59,9 @@ di.pushmessage = function() {
         self.should_push = function() {
 
             //If user is not part of monitoring group then return false
-            if (!app.is(app.contact.extra.monitoring_group) || app.get_date() > app.im.config.push_end_date) {
+            if ( !app.is(app.im.config.can_push)
+                || !app.is(app.contact.extra.monitoring_group)
+                || app.get_date() > app.im.config.push_end_date) {
                 return false;
             }
 

@@ -51,7 +51,6 @@ di.base = function() {
 
         self.states.add('states:noop', function(name) {
             var state = self.im.user.state.serialize();
-
             return new State(name, {
                 send_reply: false,
                 events: {

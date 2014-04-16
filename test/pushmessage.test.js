@@ -87,8 +87,9 @@ describe("app", function() {
                     panel_messages: '[0, 1, 4]',
                     thermometer_messages: '[2, 3]',
                     panel_push_start: app.get_date_string(),
-                    push_end_date: app.get_date().addDays(1).toISOString(),
-                    billing_code: 'incentive'
+                    push_end_date: app.get_date().addDays(7).toISOString(),
+                    billing_code: 'incentive',
+                    can_push: true
                 });
         });
 
@@ -574,16 +575,42 @@ describe("app", function() {
                     d.setHours(0,0,0,0);
                     return d;
                 };
-                tester
+                return tester
                     .setup.user.addr('+273444')
                     .setup.config.app({
                         panel_messages: '[0, 2, 5]',
                         thermometer_messages: '[3, 4]'
                     })
+                    .setup.user.state('states:menu')
                     .input({
                         content:null,
                         inbound_push_trigger:true
                     })
+                    .check.user.state('states:menu')
+                    .check.no_reply()
+                    .run();
+            });
+        });
+
+        describe("if the push message trigger is to an app without the 'can_push' flag",function() {
+            //Thursday in May after the push_end_date despite being unsent.
+            it("should not send a reply",function() {
+                app.get_date = function() {
+                    var d = new Date('15 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .setup.user.addr('+273123')
+                    .setup.config.app({
+                        can_push: false
+                    })
+                    .setup.user.state('states:menu')
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check.user.state('states:menu')
                     .check.no_reply()
                     .run();
             });
