@@ -143,8 +143,8 @@ describe("app", function() {
             });
         });
 
-        describe("when the user's push date is on a thursday",function() {
-            it('should send the user the first push message on the thursday',function() {
+        describe("when the user's push date is on a tuesday",function() {
+            it('should send the user the first push message on the tuesday',function() {
                 //check that it is the first push message for that group
                 return tester
                     .setup.user.addr('+273123')
@@ -180,7 +180,6 @@ describe("app", function() {
                                     new_week_day: 'T'
                                 }
                             });
-
                         })
                         .setup.user.addr('+27321')
                         .input({
