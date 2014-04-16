@@ -6,11 +6,11 @@ var ward_treatment = require('./ward_treatment');
 var push_message_group = require('./push_message_group');
 var messagestore = require('./messagestore');
 var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
-
+var _ = require('lodash');
 
 describe("app", function() {
 
-    describe.only("Push Message app", function() {
+    describe("Push Message app", function() {
         var app;
         var tester;
 
@@ -23,7 +23,7 @@ describe("app", function() {
             .setup.char_limit(180);
 
             app.get_date = function() {
-                var d = new Date();
+                var d = new Date('15 April, 2014');
                 d.setHours(0,0,0,0);
                 return d;
             };
@@ -61,9 +61,22 @@ describe("app", function() {
                             is_registered: 'true'
                         }
                     });
+
+                    //Add a contact
+                    api.contacts.add( {
+                        msisdn: '+273444',
+                        extra : {
+                            is_registered: 'true',
+                            sms_1: '1',
+                            sms_2: '2',
+                            sms_3: '1',
+                            monitoring_group: 'true',
+                            week_day: 'M'
+                        }
+                    });
                 })
                 .setup.config.app({
-                    name: 'test_app',
+                    name: 'test_push_app',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
@@ -71,8 +84,8 @@ describe("app", function() {
                     kv_group: 'tests',
                     channel: "*120*8864*1321#",
                     display_results_date: '4 April, 2014',
-                    panel_messages: '[0, 1, 2]',
-                    thermometer_messages: '[3, 4]',
+                    panel_messages: '[0, 1, 4]',
+                    thermometer_messages: '[2, 3]',
                     panel_push_start: app.get_date_string(),
                     push_end_date: app.get_date().addDays(1).toISOString(),
                     billing_code: 'incentive'
@@ -80,24 +93,32 @@ describe("app", function() {
         });
 
         describe("when the push message trigger is sent",function() {
-            it("should send the user a question",function() {
-                return tester
+            beforeEach(function() {
+                 tester
                     .setup.user.addr('+273123')
                     .input({
                         content:null,
                         inbound_push_trigger:true
-                    })
+                    });
+            });
+
+            it("should send the user a question",function() {
+                return tester
                     .check.user.state('states:push:start')
+                    .run();
+            });
+
+            it("should fire a 'total.push.sent' metric",function() {
+                return tester
+                    .check(function(api){
+                        var metrics = api.metrics.stores.test_push_app;
+                        assert.deepEqual(metrics['total.push.sent'].values, [1]);
+                    })
                     .run();
             });
 
             it("should save the user's interaction time for that particular push",function() {
                 return tester
-                    .setup.user.addr('+273123')
-                    .input({
-                        content:null,
-                        inbound_push_trigger:true
-                    })
                     .check(function(api) {
                         var contact = api.contacts.store[0];
                         assert.equal(contact.extra.it_panel_round_1,app.get_date_string());
@@ -109,13 +130,7 @@ describe("app", function() {
         describe("when the user does not match when the push message trigger occurs",function() {
             it("should not do anything for that contact",function() {
                 return tester
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+27321',
-                            extra: {delivery_class: 'sms'}
-                        });
-                    })
-                    .setup.user.addr('+27321')
+                    .setup.user.addr('+273321')
                     .setup.user.state('states:menu')
                     .input({
                         content: null,
@@ -130,86 +145,329 @@ describe("app", function() {
         describe("when the user's push date is on a thursday",function() {
             it('should send the user the first push message on the thursday',function() {
                 //check that it is the first push message for that group
-
+                return tester
+                    .setup.user.addr('+273123')
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check.interaction({
+                        state:'states:push:start',
+                        reply:'panel_question_1_incentive'
+                    })
+                    .run();
             });
 
-            it('should send the user push message number 2 `x` days later',function() {
+            describe("when the first push has already been sent",function() {
+                beforeEach(function() {
+                    app.get_date = function() {
+                        var d = new Date('16 April, 2014');
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
+                    tester
+                        .setup(function(api){
+                            api.contacts.add({
+                                msisdn: '+27321',
+                                extra: {
+                                    is_registered: 'true',
+                                    it_panel_round_1: 'some_date',
+                                    sms_1: '1',
+                                    sms_2: '3',
+                                    sms_3: '1',
+                                    monitoring_group: 'true',
+                                    new_week_day: 'T'
+                                }
+                            });
 
+                        })
+                        .setup.user.addr('+27321')
+                        .input({
+                            content:null,
+                            inbound_push_trigger:true
+                        });
+                });
+
+                it('should send the user the 2nd push message `x` days later sending the message specified by sms_2',function() {
+                    return tester
+                        .check.interaction({
+                            state:'states:push:start',
+                            reply:'panel_question_3_incentive'
+                        })
+                        .run();
+                });
+
+                it('should save the interaction time that the message is sent',function() {
+                    return tester
+                        .check(function(api){
+                            var contact = _.find(api.contacts.store,{msisdn:'+27321'});
+                            assert.equal(contact.extra.it_panel_round_2,app.get_date_string());
+                        })
+                        .run();
+                });
             });
 
             it("should save the reply to push message number 2",function() {
+                app.get_date = function() {
+                    var d = new Date('16 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .setup(function(api){
+                        api.contacts.add({
+                            msisdn: '+27321',
+                            extra: {
+                                is_registered: 'true',
+                                it_panel_round_1: 'some_date',
+                                sms_1: '1',
+                                sms_2: '3',
+                                sms_3: '1',
+                                monitoring_group: 'true',
+                                new_week_day: 'T'
+                            }
+                        });
 
+                    })
+                    .setup.user.addr('+27321')
+                    .setup.user.state('states:push:start')
+                    .input('1')
+                    .check(function(api){
+                        var contact = _.find(api.contacts.store,{msisdn:'+27321'});
+                        assert.equal(contact.extra.panel_round_2_reply,'1');
+                        assert.equal(contact.extra.it_panel_round_2_reply,app.get_date_string());
+                    })
+                    .run();
             });
 
             it("should send the user thermometer message number 1 `y` days later",function() {
+                app.get_date = function() {
+                    var d = new Date('17 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .setup(function(api){
+                        api.contacts.add({
+                            msisdn: '+27321',
+                            extra: {
+                                is_registered: 'true',
+                                it_panel_round_1: 'some_date',
+                                it_panel_round_2: 'some_other_date',
+                                sms_1: '1',
+                                sms_2: '3',
+                                sms_3: '1',
+                                monitoring_group: 'true',
+                                new_week_day: 'T'
+                            }
+                        });
 
+                    })
+                    .setup.user.addr('+27321')
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check.interaction({
+                        state:'states:push:start',
+                        reply:'thermometer_question_1_incentive'
+                    })
+                    .run();
             });
 
             it("should save the reply to thermometer message number 1",function() {
 
             });
 
-            it("should send the user the 3rd push message `w` days later",function() {
+            it("should send the user the 3rd push message `w` days later, and it should be push message 1",function() {
+                app.get_date = function() {
+                    var d = new Date('19 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .setup(function(api){
+                        api.contacts.add({
+                            msisdn: '+27321',
+                            extra: {
+                                is_registered: 'true',
+                                it_panel_round_1: 'some_date',
+                                it_panel_round_2: 'some_other_date',
+                                it_pre_thermometer_round_1: 'even_later_date',
+                                it_pre_thermometer_round_2: 'even_later_date',
+                                sms_1: '1',
+                                sms_2: '3',
+                                sms_3: '1',
+                                monitoring_group: 'true',
+                                new_week_day: 'T'
+                            }
+                        });
 
+                    })
+                    .setup.user.addr('+27321')
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check.interaction({
+                        state:'states:push:start',
+                        reply:'panel_question_1_incentive'
+                    })
+                    .run();
             });
 
             it("should send the user the 2nd thermometer message 'z' days layer",function() {
+                app.get_date = function() {
+                    var d = new Date('18 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .setup(function(api){
+                        api.contacts.add({
+                            msisdn: '+27456',
+                            extra: {
+                                is_registered: 'true',
+                                it_panel_round_1: 'some_date',
+                                it_panel_round_2: 'some_other_date',
+                                it_pre_thermometer_round_1: 'even_later_date',
+                                sms_1: '1',
+                                sms_2: '3',
+                                sms_3: '1',
+                                monitoring_group: 'true',
+                                new_week_day: 'T'
+                            }
+                        });
 
-            });
-
-            describe("if they are in monitoring group 1",function() {
-                it("should send them push message 1 for the first panel push",function(){
-
-                });
-
-                it("should send them push message 2 for the 2nd panel push",function() {
-
-                });
-
-                it("should send them push message 1 for the 3rd panel push",function() {
-
-                });
+                    })
+                    .setup.user.addr('+27456')
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check.interaction({
+                        state:'states:push:start',
+                        reply:'thermometer_question_2_incentive'
+                    })
+                    .run();
             });
 
             describe("if they have 'incentive' billing code",function() {
                it("should send them the incentive message for push 1",function() {
+                   app.get_date = function() {
+                       var d = new Date('15 April, 2014');
+                       d.setHours(0,0,0,0);
+                       return d;
+                   };
+                   return tester
+                       .setup.config.app({
+                           billing_code: 'incentive'
+                       })
+                       .setup(function(api){
+                           api.contacts.add({
+                               msisdn: '+27456',
+                               extra: {
+                                   is_registered: 'true',
+                                   sms_1: '1',
+                                   sms_2: '3',
+                                   sms_3: '1',
+                                   monitoring_group: 'true',
+                                   new_week_day: 'T'
+                               }
+                           });
 
+                       })
+                       .setup.user.addr('+27456')
+                       .input({
+                           content:null,
+                           inbound_push_trigger:true
+                       })
+                       .check.interaction({
+                           state:'states:push:start',
+                           reply:'panel_question_1_incentive'
+                       })
+                       .run();
                });
             });
 
             describe("if they have the 'end_user' billing code",function() {
                it("should send them the 'end_user' msg for push 1",function() {
+                   app.get_date = function() {
+                       var d = new Date('15 April, 2014');
+                       d.setHours(0,0,0,0);
+                       return d;
+                   };
+                   return tester
+                       .setup.config.app({
+                           billing_code: 'end_user'
+                       })
+                       .setup(function(api){
+                           api.contacts.add({
+                               msisdn: '+27456',
+                               extra: {
+                                   is_registered: 'true',
+                                   sms_1: '1',
+                                   sms_2: '3',
+                                   sms_3: '1',
+                                   monitoring_group: 'true',
+                                   new_week_day: 'T'
+                               }
+                           });
 
+                       })
+                       .setup.user.addr('+27456')
+                       .input({
+                           content:null,
+                           inbound_push_trigger:true
+                       })
+                       .check.interaction({
+                           state:'states:push:start',
+                           reply:'panel_question_1_end_user'
+                       })
+                       .run();
                });
             });
 
             describe("if they have the 'reverse_billed' billing code",function() {
                 it("should send them the 'reverse_billed' msg for push 1",function() {
+                    app.get_date = function() {
+                        var d = new Date('15 April, 2014');
+                        d.setHours(0,0,0,0);
+                        return d;
+                    };
+                    return tester
+                        .setup.config.app({
+                            billing_code: 'reverse_billed'
+                        })
+                        .setup(function(api){
+                            api.contacts.add({
+                                msisdn: '+27456',
+                                extra: {
+                                    is_registered: 'true',
+                                    sms_1: '1',
+                                    sms_2: '3',
+                                    sms_3: '1',
+                                    monitoring_group: 'true',
+                                    new_week_day: 'T'
+                                }
+                            });
 
+                        })
+                        .setup.user.addr('+27456')
+                        .input({
+                            content:null,
+                            inbound_push_trigger:true
+                        })
+                        .check.interaction({
+                            state:'states:push:start',
+                            reply:'panel_question_1_reverse_billed'
+                        })
+                        .run();
                 });
             });
         });
 
-        describe("when it is the 'whatever' of May after the election",function() {
-           it("should send the 3rd thermometer message",function() {
-
-           });
-        });
-
-        describe("when it is the next push message day after the election",function() {
-           it("should send them the 4th thermometer message",function(){
-
-           });
-        });
-
-        describe("when it is the last push message day after the election",function() {
-           it("should send them the 5th thermometer message",function() {
-
-           });
-        });
-
         describe("when the user replies to the push message",function() {
-
             beforeEach(function() {
                  tester
                     .setup.user.addr('+273123')
@@ -247,12 +505,87 @@ describe("app", function() {
         });
 
         describe("when a user has not been allocated a .new_week_day",function() {
-           it("should allocated them 'T','Th' or 'S' for new_week_day",function() {
+            beforeEach(function() {
+                app.random = function(begin,end,float) {
+                    return 1;
+                };
+                tester
+                    .setup.user.addr('+273444')
+                    .setup.config.app({
+                        panel_messages: '[0, 2, 5]',
+                        thermometer_messages: '[3, 4]'
+                    })
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    });
+            });
+            it("should allocated them 'T','Th' or 'S' for new_week_day",function() {
+               return tester
+                   .check(function(api){
+                       var contact = _.find(api.contacts.store,{msisdn:'+273444'});
+                       assert.equal(contact.extra.new_week_day,'Th');
+                   })
+                   .run();
+            });
 
-           });
+            it("should send push message 1 based on that new_week_day day",function(){
+                app.get_date = function() {
+                    var d = new Date('17 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .check.interaction({
+                        state: 'states:push:start',
+                        reply: 'panel_question_1_incentive'
+                    })
+                    .run();
+            });
 
-            it("should send push message 1 based on those days",function(){
+            it("should not send push message 1 before that day",function(){
+                app.get_date = function() {
+                    var d = new Date('16 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .check.no_reply()
+                    .run();
+            });
 
+            it("should not send push message 1 after that day",function(){
+                app.get_date = function() {
+                    var d = new Date('18 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .check.no_reply()
+                    .run();
+            });
+        });
+
+        describe("if the push message trigger is sent after the push_end_date",function() {
+            //Thursday in May after the push_end_date despite being unsent.
+            it("should not send a reply",function() {
+                app.get_date = function() {
+                    var d = new Date('1 May, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                tester
+                    .setup.user.addr('+273444')
+                    .setup.config.app({
+                        panel_messages: '[0, 2, 5]',
+                        thermometer_messages: '[3, 4]'
+                    })
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check.no_reply()
+                    .run();
             });
         });
     });
