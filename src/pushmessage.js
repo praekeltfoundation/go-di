@@ -3,7 +3,7 @@ di.pushmessage = function() {
     var vumigo = require('vumigo_v02');
     var utils = vumigo.utils;
     var Extendable = utils.Extendable;
-    var get_push_message_copy = require('./pushmessage.copy');
+    var get_push_message_copy = di.copies.pushmessage;
 
     Date.prototype.addDays = function(days)
     {
@@ -13,7 +13,7 @@ di.pushmessage = function() {
     };
 
     var PushMessageApi = Extendable.extend(function(self, im, app, opts) {
-        var push_messages = get_push_message_copy(app.$);
+        var push_messages = get_push_message_copy();
 
         self.new_week_day_code = ['T','Th','S'];
 

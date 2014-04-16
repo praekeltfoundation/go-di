@@ -10,8 +10,19 @@ di.base = function() {
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
         var create =  self.create;
-        self.create = function(name,opts) {
 
+        self.should_push = function() {
+            //Check if delivery class is the same
+            //Check whether user is ussd - if it is, then also check USSD channel.
+            return self.app.contact.extra.delivery_class
+                === self.app.im.config.delivery_class
+            && (!app.is_delivery_class("ussd"))
+                ? true
+                : self.app.contact.extra.USSD_number
+                === self.app.im.config.channel;
+        };
+
+        self.create = function(name,opts) {
             var push_api =  new PushMessageApi(app.im,app);
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
@@ -24,9 +35,6 @@ di.base = function() {
 
     var BaseDiApp = App.extend(function(self, start_state_name) {
         App.call(self, start_state_name, {AppStates: DiAppStates});
-
-        // workaround for https://github.com/praekelt/vumi-jssandbox-toolkit/pull/179
-        self.states = new DiAppStates(self);
         self.push_api = new PushMessageApi(self.im,self);
 
         self.init = function() {

@@ -133,10 +133,6 @@ di.app = function() {
                 //Sets delivery class of contact.
                 if (_.isUndefined(self.contact.extra.delivery_class)) {
                     self.contact.extra.delivery_class = self.im.config.delivery_class;
-                    self.contact.extra.first_it = self.get_date_string();
-                }
-                if (_.isUndefined(self.contact.first_it)) {
-                    self.contact.extra.first_logged_it = self.get_date_string();
                 }
 
                 //Set the last channel this user accessed

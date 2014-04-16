@@ -1,7 +1,11 @@
 /**
  * Created by Jade on 2014/04/11.
  */
-module.exports = function($) {
+di.copies = {};
+di.copies.pushmessage = function() {
+    var vumigo = require('vumigo_v02');
+    var $ = new vumigo.translate.LazyTranslator();
+
     return {
         panel_questions: [
             {
@@ -60,7 +64,7 @@ module.exports = function($) {
                 end_user: $('thermometer_question_5_end_user'),
                 incentive: $('thermometer_question_5_incentive'),
                 reverse_billed: $('thermometer_question_5_reverse_billed')
-            },
+            }
         ]
     };
 };
