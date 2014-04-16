@@ -953,8 +953,13 @@ di.pushmessage = function() {
             //Get actual week start date
             var day_index = push_start_date.getDay();
             var new_week_day_index =  _.indexOf(app.week_day_code,app.contact.extra.new_week_day);
-            var days_till_start = (day_index + 7 - new_week_day_index) % 7;
+            var days_till_start = (new_week_day_index  + 7 - day_index) % 7;
             var start_date = push_start_date.addDays(days_till_start);
+            /*console.log(day_index); //tuesday - 2
+            console.log(new_week_day_index); //monday =
+            console.log(days_till_start); //2
+            console.log(push_start_date);
+            console.log(start_date);*/
             return start_date;
         };
 
@@ -979,10 +984,14 @@ di.pushmessage = function() {
         };
 
         self.should_push = function() {
+
             //If user is not part of monitoring group then return false
             if (!app.is(app.contact.extra.monitoring_group) || app.get_date() > app.im.config.push_end_date) {
                 return false;
             }
+
+            //Rerandomize week day if it has not occured already
+            self.rerandomize_week_day();
 
             //Calculate the push dates
             self.calculate_push_dates();
@@ -990,9 +999,9 @@ di.pushmessage = function() {
             //If it is one of the push days;
             return self.is_push_day('panel',self.panel_dates,1)
                 || self.is_push_day('panel',self.panel_dates,2)
-                || self.is_push_day('pre_thermometer',self.thermometer_dates,1)
+                || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
                 || self.is_push_day('panel',self.panel_dates,3)
-                || self.is_push_day('pre_thermometer',self.thermometer_dates,2);
+                || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2);
         };
 
         self.get_push_msg = function() {
@@ -1046,10 +1055,16 @@ di.pushmessage = function() {
             };
         };
 
+        self.is_date = function(date) {
+            return date.getDate() === app.get_date().getDate()
+            && date.getMonth() === app.get_date().getMonth()
+            && date.getFullYear() === app.get_date().getFullYear();
+        };
+
         self.is_push_day = function(type,dates,num) {
             return (
-                _.isUndefined(app.contact['it_'+type+'_round_'+num])
-                    && dates[num-1] >= app.get_date()
+                _.isUndefined(app.contact.extra['it_'+type+'_round_'+num])
+                    && self.is_date(dates[num-1])
                 );
         };
 
@@ -1131,9 +1146,6 @@ di.base = function() {
         });
 
         self.states.add('states:push:start', function(name,opts) {
-            //Rerandomize week_day - on client's orders
-            self.push_api.rerandomize_week_day();
-
             //Get the new message
             var msg = self.push_api.get_push_msg();
             var field = self.push_api.get_push_field(msg.type,msg.push_num);
@@ -1147,7 +1159,11 @@ di.base = function() {
                             //Needs to be saved when FreeText is served
                             'im state:enter': function() {
                                 self.contact.extra['it_'+field] = self.get_date_string();
-                                return self.im.contacts.save(self.contact);
+                                return self
+                                    .im.contacts.save(self.contact)
+                                    .then(function() {
+                                        return self.im.metrics.fire.inc('total.push.sent');
+                                    });
                             }
                         },
                         next: function(content) {
@@ -1156,6 +1172,9 @@ di.base = function() {
                             self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
                             return self
                                 .im.contacts.save(self.contact)
+                                .then(function() {
+                                    return self.im.metrics.fire.inc('total.push.replies');
+                                })
                                 .thenResolve('states:push:end');
                         }
                     });
