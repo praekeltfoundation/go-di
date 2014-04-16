@@ -188,7 +188,7 @@ describe("app", function() {
                         });
                 });
 
-                it('should send the user the 2nd push message `x` days later sending the message specified by sms_2',function() {
+                it('should send the user the 2nd push message `panel_messages[1]` days later sending the message specified by sms_2',function() {
                     return tester
                         .check.interaction({
                             state:'states:push:start',
@@ -240,7 +240,7 @@ describe("app", function() {
                     .run();
             });
 
-            it("should send the user thermometer message number 1 `y` days later",function() {
+            it("should send the user thermometer message number 1 `thermometer_messages[0]` days later",function() {
                 app.get_date = function() {
                     var d = new Date('17 April, 2014');
                     d.setHours(0,0,0,0);
@@ -309,7 +309,7 @@ describe("app", function() {
                     .run();
             });
 
-            it("should send the user the 3rd push message `w` days later, and it should be push message 1",function() {
+            it("should send the user the 3rd push message `panel_messages[2]` days later, and it should be push message 1",function() {
                 app.get_date = function() {
                     var d = new Date('19 April, 2014');
                     d.setHours(0,0,0,0);
@@ -346,7 +346,7 @@ describe("app", function() {
                     .run();
             });
 
-            it("should send the user the 2nd thermometer message 'z' days layer",function() {
+            it("should send the user the 2nd thermometer message `thermometer_messages[1]` days layer",function() {
                 app.get_date = function() {
                     var d = new Date('18 April, 2014');
                     d.setHours(0,0,0,0);
