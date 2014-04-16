@@ -277,7 +277,37 @@ describe("app", function() {
             });
 
             it("should save the reply to thermometer message number 1",function() {
+                app.get_date = function() {
+                    var d = new Date('17 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .setup(function(api){
+                        api.contacts.add({
+                            msisdn: '+27321',
+                            extra: {
+                                is_registered: 'true',
+                                it_panel_round_1: 'some_date',
+                                it_panel_round_2: 'some_other_date',
+                                sms_1: '1',
+                                sms_2: '3',
+                                sms_3: '1',
+                                monitoring_group: 'true',
+                                new_week_day: 'T'
+                            }
+                        });
 
+                    })
+                    .setup.user.addr('+27321')
+                    .setup.user.state('states:push:start')
+                    .input('1')
+                    .check(function(api){
+                        var contact = _.find(api.contacts.store,{msisdn:'+27321'});
+                        assert.equal(contact.extra.pre_thermometer_round_1_reply,'1');
+                        assert.equal(contact.extra.it_pre_thermometer_round_1_reply,app.get_date_string());
+                    })
+                    .run();
             });
 
             it("should send the user the 3rd push message `w` days later, and it should be push message 1",function() {

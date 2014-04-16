@@ -41,17 +41,13 @@ di.pushmessage = function() {
             //Get start date of push messages for particular user.
             var start_date = self.get_push_start_date();
 
-            //Stores differences since start date in config.
-            var panel_differences = JSON.parse(app.im.config.panel_messages);
-            var thermometer_differences = JSON.parse(app.im.config.thermometer_messages);
-
             //Map the day differences to actual dates
-            self.panel_dates = _.map(panel_differences,function(diff) {
+            self.panel_dates = _.map(app.im.config.panel_messages,function(diff) {
                 return start_date.addDays(diff);
             });
 
             //Map the day differences to actual dates
-            self.pre_thermometer_dates = _.map(thermometer_differences,function(diff) {
+            self.pre_thermometer_dates = _.map(app.im.config.thermometer_messages,function(diff) {
                 return start_date.addDays(diff);
             });
         };
