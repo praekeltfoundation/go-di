@@ -63,9 +63,6 @@ di.base = function() {
         });
 
         self.states.add('states:push:start', function(name,opts) {
-            //Rerandomize week_day - on client's orders
-            self.push_api.rerandomize_week_day();
-
             //Get the new message
             var msg = self.push_api.get_push_msg();
             var field = self.push_api.get_push_field(msg.type,msg.push_num);
@@ -79,7 +76,11 @@ di.base = function() {
                             //Needs to be saved when FreeText is served
                             'im state:enter': function() {
                                 self.contact.extra['it_'+field] = self.get_date_string();
-                                return self.im.contacts.save(self.contact);
+                                return self
+                                    .im.contacts.save(self.contact)
+                                    .then(function() {
+                                        return self.im.metrics.fire.inc('total.push.sent');
+                                    });
                             }
                         },
                         next: function(content) {
@@ -88,6 +89,9 @@ di.base = function() {
                             self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
                             return self
                                 .im.contacts.save(self.contact)
+                                .then(function() {
+                                    return self.im.metrics.fire.inc('total.push.replies');
+                                })
                                 .thenResolve('states:push:end');
                         }
                     });
