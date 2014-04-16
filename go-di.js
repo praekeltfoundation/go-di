@@ -1,5 +1,6 @@
 var di = {};
 
+
 di.ushahidi = function() {
     /**
      * Created by Jade on 2014/03/16.
@@ -857,7 +858,11 @@ di.quiz.whatsup = function() {
 /**
  * Created by Jade on 2014/04/11.
  */
-module.exports = function($) {
+di.copies = {};
+di.copies.pushmessage = function() {
+    var vumigo = require('vumigo_v02');
+    var $ = new vumigo.translate.LazyTranslator();
+
     return {
         panel_questions: [
             {
@@ -916,7 +921,7 @@ module.exports = function($) {
                 end_user: $('thermometer_question_5_end_user'),
                 incentive: $('thermometer_question_5_incentive'),
                 reverse_billed: $('thermometer_question_5_reverse_billed')
-            },
+            }
         ]
     };
 };
@@ -925,7 +930,7 @@ di.pushmessage = function() {
     var vumigo = require('vumigo_v02');
     var utils = vumigo.utils;
     var Extendable = utils.Extendable;
-    var get_push_message_copy = require('./pushmessage.copy');
+    var get_push_message_copy = di.copies.pushmessage;
 
     Date.prototype.addDays = function(days)
     {
@@ -935,7 +940,7 @@ di.pushmessage = function() {
     };
 
     var PushMessageApi = Extendable.extend(function(self, im, app, opts) {
-        var push_messages = get_push_message_copy(app.$);
+        var push_messages = get_push_message_copy();
 
         self.new_week_day_code = ['T','Th','S'];
 
@@ -1090,8 +1095,19 @@ di.base = function() {
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
         var create =  self.create;
-        self.create = function(name,opts) {
 
+        self.should_push = function() {
+            //Check if delivery class is the same
+            //Check whether user is ussd - if it is, then also check USSD channel.
+            return self.app.contact.extra.delivery_class
+                === self.app.im.config.delivery_class
+            && (!app.is_delivery_class("ussd"))
+                ? true
+                : self.app.contact.extra.USSD_number
+                === self.app.im.config.channel;
+        };
+
+        self.create = function(name,opts) {
             var push_api =  new PushMessageApi(app.im,app);
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
@@ -1104,9 +1120,6 @@ di.base = function() {
 
     var BaseDiApp = App.extend(function(self, start_state_name) {
         App.call(self, start_state_name, {AppStates: DiAppStates});
-
-        // workaround for https://github.com/praekelt/vumi-jssandbox-toolkit/pull/179
-        self.states = new DiAppStates(self);
         self.push_api = new PushMessageApi(self.im,self);
 
         self.init = function() {
@@ -1131,7 +1144,6 @@ di.base = function() {
 
         self.states.add('states:noop', function(name) {
             var state = self.im.user.state.serialize();
-            console.log("here");
             return new State(name, {
                 send_reply: false,
                 events: {
