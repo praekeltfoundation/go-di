@@ -64,6 +64,15 @@ describe("app", function() {
 
                     //Add a contact
                     api.contacts.add( {
+                        msisdn: '+273101',
+                        extra : {
+                            is_registered: 'true',
+                            monitoring_group: 'false'
+                        }
+                    });
+
+                    //Add a contact
+                    api.contacts.add( {
                         msisdn: '+273444',
                         extra : {
                             is_registered: 'true',
@@ -132,6 +141,21 @@ describe("app", function() {
             it("should not do anything for that contact",function() {
                 return tester
                     .setup.user.addr('+273321')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check.user.state('states:menu')
+                    .check.no_reply()
+                    .run();
+            });
+        });
+
+        describe("when the user has monitoring_group set to false",function() {
+            it("should not do anything for that contact",function() {
+                return tester
+                    .setup.user.addr('+273101')
                     .setup.user.state('states:menu')
                     .input({
                         content: null,
@@ -622,6 +646,29 @@ describe("app", function() {
         });
 
         describe("if the push message trigger is to an app without the 'can_push' flag",function() {
+            it("should not send a reply",function() {
+                app.get_date = function() {
+                    var d = new Date('15 April, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                return tester
+                    .setup.user.addr('+273123')
+                    .setup.config.app({
+                        can_push: false
+                    })
+                    .setup.user.state('states:menu')
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    })
+                    .check.user.state('states:menu')
+                    .check.no_reply()
+                    .run();
+            });
+        });
+
+        describe("if the user is not part of the moni",function() {
             it("should not send a reply",function() {
                 app.get_date = function() {
                     var d = new Date('15 April, 2014');
