@@ -955,11 +955,6 @@ di.pushmessage = function() {
             var new_week_day_index =  _.indexOf(app.week_day_code,app.contact.extra.new_week_day);
             var days_till_start = (new_week_day_index  + 7 - day_index) % 7;
             var start_date = push_start_date.addDays(days_till_start);
-            /*console.log(day_index); //tuesday - 2
-            console.log(new_week_day_index); //monday =
-            console.log(days_till_start); //2
-            console.log(push_start_date);
-            console.log(start_date);*/
             return start_date;
         };
 
@@ -986,7 +981,9 @@ di.pushmessage = function() {
         self.should_push = function() {
 
             //If user is not part of monitoring group then return false
-            if (!app.is(app.contact.extra.monitoring_group) || app.get_date() > app.im.config.push_end_date) {
+            if ( !app.is(app.im.config.can_push)
+                || !app.is(app.contact.extra.monitoring_group)
+                || app.get_date() > app.im.config.push_end_date) {
                 return false;
             }
 
@@ -1134,7 +1131,7 @@ di.base = function() {
 
         self.states.add('states:noop', function(name) {
             var state = self.im.user.state.serialize();
-
+            console.log("here");
             return new State(name, {
                 send_reply: false,
                 events: {
