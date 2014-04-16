@@ -10,7 +10,7 @@ var _ = require('lodash');
 
 describe("app", function() {
 
-    describe.only("Push Message app", function() {
+    describe("Push Message app", function() {
         var app;
         var tester;
 
@@ -84,8 +84,8 @@ describe("app", function() {
                     kv_group: 'tests',
                     channel: "*120*8864*1321#",
                     display_results_date: '4 April, 2014',
-                    panel_messages: '[0, 1, 4]',
-                    thermometer_messages: '[2, 3]',
+                    panel_messages: [0, 1, 4],
+                    thermometer_messages: [2, 3],
                     panel_push_start: app.get_date_string(),
                     push_end_date: app.get_date().addDays(7).toISOString(),
                     billing_code: 'incentive',
@@ -542,8 +542,8 @@ describe("app", function() {
                 tester
                     .setup.user.addr('+273444')
                     .setup.config.app({
-                        panel_messages: '[0, 2, 5]',
-                        thermometer_messages: '[3, 4]'
+                        panel_messages: [0, 2, 5],
+                        thermometer_messages: [3, 4]
                     })
                     .input({
                         content:null,
@@ -607,8 +607,8 @@ describe("app", function() {
                 return tester
                     .setup.user.addr('+273444')
                     .setup.config.app({
-                        panel_messages: '[0, 2, 5]',
-                        thermometer_messages: '[3, 4]'
+                        panel_messages: [0, 2, 5],
+                        thermometer_messages: [3, 4]
                     })
                     .setup.user.state('states:menu')
                     .input({
@@ -622,7 +622,6 @@ describe("app", function() {
         });
 
         describe("if the push message trigger is to an app without the 'can_push' flag",function() {
-            //Thursday in May after the push_end_date despite being unsent.
             it("should not send a reply",function() {
                 app.get_date = function() {
                     var d = new Date('15 April, 2014');

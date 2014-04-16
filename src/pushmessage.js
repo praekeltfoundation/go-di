@@ -99,7 +99,6 @@ di.pushmessage = function() {
 
             //Which message should be sent for this push group?
             var message_num = app.contact.extra['sms_' + push_num];
-            console.log(message_num-1);
             var message = push_messages.panel_questions[message_num-1][billing_code];
 
             //Returns push message
@@ -121,7 +120,7 @@ di.pushmessage = function() {
             //Returns push message
             return {
                 question: message,
-                type: 'preelection_thermometer',
+                type: 'pre_thermometer',
                 push_num: push_num
             };
         };
