@@ -11,22 +11,12 @@ di.base = function() {
         AppStates.call(self, app);
         var create =  self.create;
 
-        self.should_push = function() {
-            //Check if delivery class is the same
-            //Check whether user is ussd - if it is, then also check USSD channel.
-            return self.app.contact.extra.delivery_class
-                === self.app.im.config.delivery_class
-            && (!app.is_delivery_class("ussd"))
-                ? true
-                : self.app.contact.extra.USSD_number
-                === self.app.im.config.channel;
-        };
 
         self.create = function(name,opts) {
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
-            return !app.push_api.should_push() && !self.should_push()
+            return !app.push_api.should_push()
                 ? create('states:noop')
                 : create('states:push:start');
         };

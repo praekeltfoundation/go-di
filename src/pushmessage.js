@@ -64,6 +64,15 @@ di.pushmessage = function() {
                 return false;
             }
 
+            //Check if delivery class is the same
+            //Check whether user is ussd - if it is, then also check USSD channel.
+            if( app.contact.extra.delivery_class !== app.im.config.delivery_class) {
+                return false;
+            } else if (app.is_delivery_class("ussd")
+                && app.contact.extra.USSD_number !== app.im.config.channel){
+                return false;
+            }
+
             //If it is one of the push days;
             return self.is_push_day('panel',self.panel_dates,1)
                 || self.is_push_day('panel',self.panel_dates,2)

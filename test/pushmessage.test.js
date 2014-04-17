@@ -50,7 +50,9 @@ describe("app", function() {
                             sms_2: '2',
                             sms_3: '1',
                             monitoring_group: 'true',
-                            new_week_day: 'T'
+                            new_week_day: 'T',
+                            delivery_class: 'ussd',
+                            USSD_number: '*120*8864*1321#'
                         }
                     });
 
@@ -58,7 +60,9 @@ describe("app", function() {
                     api.contacts.add( {
                         msisdn: '+273321',
                         extra : {
-                            is_registered: 'true'
+                            is_registered: 'true',
+                            delivery_class: 'ussd',
+                            USSD_number: '*120*8864*1321#'
                         }
                     });
 
@@ -67,7 +71,9 @@ describe("app", function() {
                         msisdn: '+273101',
                         extra : {
                             is_registered: 'true',
-                            monitoring_group: 'false'
+                            monitoring_group: 'false',
+                            delivery_class: 'ussd',
+                            USSD_number: '*120*8864*1321#'
                         }
                     });
 
@@ -80,7 +86,9 @@ describe("app", function() {
                             sms_2: '2',
                             sms_3: '1',
                             monitoring_group: 'true',
-                            week_day: 'M'
+                            week_day: 'M',
+                            delivery_class: 'ussd',
+                            USSD_number: '*120*8864*1321#'
                         }
                     });
                 })
@@ -201,7 +209,9 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*8864*1321#'
                                 }
                             });
                         })
@@ -249,7 +259,9 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*8864*1321#'
                                 }
                             });
 
@@ -296,7 +308,9 @@ describe("app", function() {
                                 sms_2: '3',
                                 sms_3: '1',
                                 monitoring_group: 'true',
-                                new_week_day: 'T'
+                                new_week_day: 'T',
+                                delivery_class: 'ussd',
+                                USSD_number: '*120*8864*1321#'
                             }
                         });
 
@@ -331,7 +345,9 @@ describe("app", function() {
                                 sms_2: '3',
                                 sms_3: '1',
                                 monitoring_group: 'true',
-                                new_week_day: 'T'
+                                new_week_day: 'T',
+                                delivery_class: 'ussd',
+                                USSD_number: '*120*8864*1321#'
                             }
                         });
 
@@ -367,7 +383,9 @@ describe("app", function() {
                                 sms_2: '3',
                                 sms_3: '1',
                                 monitoring_group: 'true',
-                                new_week_day: 'T'
+                                new_week_day: 'T',
+                                delivery_class: 'ussd',
+                                USSD_number: '*120*8864*1321#'
                             }
                         });
 
@@ -403,7 +421,9 @@ describe("app", function() {
                                 sms_2: '3',
                                 sms_3: '1',
                                 monitoring_group: 'true',
-                                new_week_day: 'T'
+                                new_week_day: 'T',
+                                delivery_class: 'ussd',
+                                USSD_number: '*120*8864*1321#'
                             }
                         });
 
@@ -440,7 +460,9 @@ describe("app", function() {
                                    sms_2: '3',
                                    sms_3: '1',
                                    monitoring_group: 'true',
-                                   new_week_day: 'T'
+                                   new_week_day: 'T',
+                                   delivery_class: 'ussd',
+                                   USSD_number: '*120*8864*1321#'
                                }
                            });
 
@@ -478,7 +500,9 @@ describe("app", function() {
                                    sms_2: '3',
                                    sms_3: '1',
                                    monitoring_group: 'true',
-                                   new_week_day: 'T'
+                                   new_week_day: 'T',
+                                   delivery_class: 'ussd',
+                                   USSD_number: '*120*8864*1321#'
                                }
                            });
 
@@ -516,7 +540,9 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*8864*1321#'
                                 }
                             });
 
@@ -706,7 +732,9 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*8864*1321#'
                                 }
                             });
 
@@ -740,7 +768,9 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'Th'
+                                    new_week_day: 'Th',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*8864*1321#'
                                 }
                             });
 
@@ -774,7 +804,9 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'S'
+                                    new_week_day: 'S',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*8864*1321#'
                                 }
                             });
 
@@ -788,6 +820,57 @@ describe("app", function() {
                             state:'states:push:start',
                             reply:'panel_question_1_incentive'
                         })
+                        .run();
+                });
+            });
+
+            describe("when a user is from a different delivery class than the app",function() {
+                it("should not do anything for that contact",function() {
+                    return tester
+                        .setup(function(api){
+                            //Add a contact
+                            api.contacts.add( {
+                                twitter_handle: '@twitter',
+                                extra : {
+                                    is_registered: 'true',
+                                    delivery_class: 'twitter'
+                                }
+                            });
+                        })
+                        .setup.user.addr('@twitter')
+                        .setup.user.state('states:menu')
+                        .input({
+                            content: null,
+                            inbound_push_trigger: true
+                        })
+                        .check.user.state('states:menu')
+                        .check.no_reply()
+                        .run();
+                });
+            });
+
+            describe("when a user is from the same delivery class as a ussd app but a different channe",function() {
+                it("should not do anything for that contact",function() {
+                    return tester
+                        .setup(function(api){
+                            //Add a contact
+                            api.contacts.add( {
+                                msisdn: '+2772',
+                                extra : {
+                                    is_registered: 'true',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*1234#'
+                                }
+                            });
+                        })
+                        .setup.user.addr('+2772')
+                        .setup.user.state('states:menu')
+                        .input({
+                            content: null,
+                            inbound_push_trigger: true
+                        })
+                        .check.user.state('states:menu')
+                        .check.no_reply()
                         .run();
                 });
             });
