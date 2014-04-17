@@ -6,5 +6,6 @@
     "ushahidi_map": "https://godi.crowdmap.com/api",
     "kv_group" : "di_live_app",
     "channel" : "*120*7692*3#",
-    "display_results_date": "15 April, 2014"
+    "display_results_date": "15 April, 2014",
+    "bypass_address": "true"
 }

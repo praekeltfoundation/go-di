@@ -4,5 +4,6 @@
     "kv_group" : "di_live_app",
     "channel" : "vipvoice2014@gmail.com",
     "display_results_date": "15 April, 2014",
-    "delivery_class": "gtalk"
+    "delivery_class": "gtalk",
+    "bypass_address": "true"
 }

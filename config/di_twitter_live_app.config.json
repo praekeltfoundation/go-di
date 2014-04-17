@@ -4,5 +4,6 @@
     "kv_group" : "di_live_app",
     "channel" : "@vipvoice2014",
     "display_results_date": "15 April, 2014",
-    "delivery_class": "twitter"
+    "delivery_class": "twitter",
+    "bypass_address": "true"
 }
