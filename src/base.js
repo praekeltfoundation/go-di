@@ -114,7 +114,7 @@ di.base = function() {
     });
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
-        BaseDiApp.call(self, 'states:start');
+        BaseDiApp.call(self, 'states:noop');
 
         self.states.add('states:start', function(name) {
             return new EndState(name, {
