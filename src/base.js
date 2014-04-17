@@ -23,11 +23,11 @@ di.base = function() {
         };
 
         self.create = function(name,opts) {
-            var push_api =  new PushMessageApi(app.im,app);
+            //var push_api =  new PushMessageApi(app.im,app);
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
-            return !push_api.should_push()
+            return !app.push_api.should_push() && !self.should_push()
                 ? create('states:noop')
                 : create('states:push:start');
         };
@@ -115,12 +115,6 @@ di.base = function() {
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
         BaseDiApp.call(self, 'states:noop');
-
-        self.states.add('states:start', function(name) {
-            return new EndState(name, {
-                text: 'Nothing for you here'
-            });
-        });
     });
 
     return {

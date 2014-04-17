@@ -944,6 +944,10 @@ di.pushmessage = function() {
         var push_messages = get_push_message_copy();
         self.new_week_day_code = ['T','Th','S'];
 
+        app.on('setup', function() {
+            return self.init();
+        });
+
         self.rerandomize_week_day = function() {
             if (_.isUndefined(app.contact.extra.new_week_day)) {
                 var index = app.random(0,2,false);
@@ -989,10 +993,10 @@ di.pushmessage = function() {
             }
 
             //Rerandomize week day if it has not occured already
-            self.rerandomize_week_day();
+            //self.rerandomize_week_day();
 
             //Calculate the push dates
-            self.calculate_push_dates();
+            //self.calculate_push_dates();
 
             //If it is one of the push days;
             return self.is_push_day('panel',self.panel_dates,1)
@@ -1004,7 +1008,7 @@ di.pushmessage = function() {
 
         self.get_push_msg = function() {
             //Calculate the push dates
-            self.calculate_push_dates();
+            //self.calculate_push_dates();
 
             //Return panel question msg
             for (var i=0; i < self.panel_dates.length; i++) {
@@ -1074,6 +1078,11 @@ di.pushmessage = function() {
             var day_of_week = app.get_date().getDay();
             return (app.week_day_code[day_of_week] === week_day );
         };
+
+        self.init = function() {
+            self.rerandomize_week_day();
+            self.calculate_push_dates();
+        };
     });
     return {
         PushMessageApi: PushMessageApi
@@ -1104,11 +1113,11 @@ di.base = function() {
         };
 
         self.create = function(name,opts) {
-            var push_api =  new PushMessageApi(app.im,app);
+            //var push_api =  new PushMessageApi(app.im,app);
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
-            return !push_api.should_push()
+            return !app.push_api.should_push() && !self.should_push()
                 ? create('states:noop')
                 : create('states:push:start');
         };
@@ -1196,12 +1205,6 @@ di.base = function() {
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
         BaseDiApp.call(self, 'states:noop');
-
-        self.states.add('states:start', function(name) {
-            return new EndState(name, {
-                text: 'Nothing for you here'
-            });
-        });
     });
 
     return {
