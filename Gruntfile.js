@@ -29,6 +29,10 @@ module.exports = function (grunt) {
             prd: {
                 src: ['<%= paths.src.prd %>'],
                 dest: '<%= paths.dest.prd %>'
+            },
+            sms: {
+                src: ['<%= paths.src.sms %>'],
+                dest: '<%= paths.dest.sms %>'
             }
         },
 

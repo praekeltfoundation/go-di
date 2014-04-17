@@ -106,7 +106,8 @@ describe("app", function() {
                     panel_push_start: app.get_date_string(),
                     push_end_date: app.get_date().addDays(7).toISOString(),
                     billing_code: 'incentive',
-                    can_push: true
+                    can_push: true,
+                    delivery_class: 'sms'
                 });
         });
 
@@ -833,7 +834,12 @@ describe("app", function() {
                                 twitter_handle: '@twitter',
                                 extra : {
                                     is_registered: 'true',
-                                    delivery_class: 'twitter'
+                                    delivery_class: 'twitter',
+                                    sms_1: '1',
+                                    sms_2: '3',
+                                    sms_3: '1',
+                                    monitoring_group: 'true',
+                                    new_week_day: 'T'
                                 }
                             });
                         })
@@ -859,7 +865,12 @@ describe("app", function() {
                                 extra : {
                                     is_registered: 'true',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*1234#'
+                                    USSD_number: '*120*1234#',
+                                    monitoring_group: 'true',
+                                    sms_1: '1',
+                                    sms_2: '3',
+                                    sms_3: '1',
+                                    new_week_day: 'T'
                                 }
                             });
                         })
@@ -874,6 +885,39 @@ describe("app", function() {
                         .run();
                 });
             });
+
+            describe("when a user is from the same delivery class as a ussd app but a different channe",function() {
+                it("should not do anything for that contact",function() {
+                    return tester
+                        .setup(function(api){
+                            //Add a contact
+                            api.contacts.add( {
+                                msisdn: '+2772',
+                                extra : {
+                                    is_registered: 'true',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*1234#',
+                                    monitoring_group: 'true',
+                                    sms_1: '1',
+                                    sms_2: '3',
+                                    sms_3: '1',
+                                    new_week_day: 'T'
+                                }
+                            });
+                        })
+                        .setup.user.addr('+2772')
+                        .setup.user.state('states:menu')
+                        .input({
+                            content: null,
+                            inbound_push_trigger: true
+                        })
+                        .check.user.state('states:menu')
+                        .check.no_reply()
+                        .run();
+                });
+            });
+
+
         });
 
     });
