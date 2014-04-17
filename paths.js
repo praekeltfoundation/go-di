@@ -18,9 +18,18 @@ src.prd = [
     'src/init.js'
 ]);
 
+src.sms = [
+    'src/index.js'
+].concat(src.app, [
+        'src/init.sms.js'
+    ]);
+
 module.exports = {
     src: src,
-    dest: {prd: 'go-di.js'},
+    dest: {
+        prd: 'go-di.js',
+        sms: 'sms.go-di.js'
+    },
     test: {
         spec: [
             'test/**/*.test.js'
