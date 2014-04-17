@@ -992,12 +992,6 @@ di.pushmessage = function() {
                 return false;
             }
 
-            //Rerandomize week day if it has not occured already
-            //self.rerandomize_week_day();
-
-            //Calculate the push dates
-            //self.calculate_push_dates();
-
             //If it is one of the push days;
             return self.is_push_day('panel',self.panel_dates,1)
                 || self.is_push_day('panel',self.panel_dates,2)
@@ -1007,8 +1001,6 @@ di.pushmessage = function() {
         };
 
         self.get_push_msg = function() {
-            //Calculate the push dates
-            //self.calculate_push_dates();
 
             //Return panel question msg
             for (var i=0; i < self.panel_dates.length; i++) {
@@ -1113,7 +1105,6 @@ di.base = function() {
         };
 
         self.create = function(name,opts) {
-            //var push_api =  new PushMessageApi(app.im,app);
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }

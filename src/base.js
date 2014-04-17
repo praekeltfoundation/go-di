@@ -23,7 +23,6 @@ di.base = function() {
         };
 
         self.create = function(name,opts) {
-            //var push_api =  new PushMessageApi(app.im,app);
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
