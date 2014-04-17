@@ -22,7 +22,8 @@
   "dependencies": {
     "vumigo_v02": "~0.2",
     "q": "~0.9",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "moment": "~2.6.0"
   },
   "devDependencies": {
     "mocha-as-promised": "~2.0.0",

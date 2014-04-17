@@ -1,8 +1,7 @@
 di.app = function() {
     var vumigo = require('vumigo_v02');
-    var Q = require('q');
     var _ = require('lodash');
-    var App = vumigo.App;
+    var Q = require('q');
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
@@ -15,9 +14,10 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
+    var BaseDiApp = di.base.BaseDiApp;
 
-    var GoDiApp = App.extend(function(self) {
-        App.call(self, 'states:start');
+    var GoDiApp = BaseDiApp.extend(function(self) {
+        BaseDiApp.call(self, 'states:start');
         var $ = self.$;
 
         self.quizzes = {};
@@ -32,7 +32,7 @@ di.app = function() {
             return _.random(begin,end,float);
         };
 
-        self.week_day_code = ['M','T','W','Th','F','S','Su'];
+        self.week_day_code = ['Su','M','T','W','Th','F','S'];
 
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
@@ -92,14 +92,6 @@ di.app = function() {
             self.contact.extra.sms_1 = monitoring.sms_1;
             self.contact.extra.sms_2 = monitoring.sms_2;
             self.contact.extra.sms_3 = monitoring.sms_3;
-        };
-
-        self.get_date = function() {
-            return new Date();
-        };
-
-        self.get_date_string = function() {
-            return self.get_date().toISOString();
         };
 
         self.is_delivery_class = function(delivery_class) {
