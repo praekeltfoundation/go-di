@@ -207,12 +207,11 @@ describe("app", function() {
                         return tester
                             .setup.user.addr('+273123')
                             .setup(function(api) {
-                                api.contacts.add( {
-                                    msisdn: '+273123',
-                                    extra : {
-                                        is_registered: 'true'
-                                    }
+                                var contact = _.find(api.contacts.store, {
+                                  msisdn: '+273123'
                                 });
+
+                                contact.extra.is_registered = 'true';
                             }).start()
                             .check.interaction({
                                 states:'states:address',
