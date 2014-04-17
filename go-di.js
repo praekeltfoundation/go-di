@@ -1173,7 +1173,6 @@ di.base = function() {
                         },
                         next: function(content) {
                             //Needs to be saved on reply
-                            console.log(field);
                             self.contact.extra[field+'_reply'] = content;
                             self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
                             return self
@@ -1196,7 +1195,7 @@ di.base = function() {
     });
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
-        BaseDiApp.call(self, 'states:start');
+        BaseDiApp.call(self, 'states:noop');
 
         self.states.add('states:start', function(name) {
             return new EndState(name, {
