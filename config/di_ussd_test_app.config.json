@@ -1,0 +1,19 @@
+{
+    "name": "di_test_app",
+    "endpoints": {
+        "sms": {"delivery_class": "sms"}
+    },
+    "ushahidi_map": "https://godi.crowdmap.com/api",
+    "kv_group" : "qa",
+    "channel" : "*120*8864*1321#",
+    "endpoints": {
+        "sms": {"delivery_class": "sms"}
+    },
+    "bypass_address": "true",
+    "panel_messages": "[0, 1, 4]",
+    "thermometer_messages": "[2, 3]",
+    "panel_push_start": "17 April, 2014",
+    "push_end_date": "18 April, 2014",
+    "billing_code": "incentive",
+    "can_push": "true"
+}
