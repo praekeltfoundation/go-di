@@ -697,9 +697,6 @@ describe("app", function() {
                         return d;
                     };
                     return tester
-                        .setup.config.app({
-                            panel_push_start: '18 April, 2014'
-                        })
                         .setup(function(api){
                             api.contacts.add({
                                 msisdn: '+27456',
@@ -734,9 +731,6 @@ describe("app", function() {
                         return d;
                     };
                     return tester
-                        .setup.config.app({
-                            panel_push_start: '18 April, 2014'
-                        })
                         .setup(function(api){
                             api.contacts.add({
                                 msisdn: '+27456',
@@ -771,9 +765,6 @@ describe("app", function() {
                         return d;
                     };
                     return tester
-                        .setup.config.app({
-                            panel_push_start: '18 April, 2014'
-                        })
                         .setup(function(api){
                             api.contacts.add({
                                 msisdn: '+27456',
