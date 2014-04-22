@@ -27,7 +27,8 @@ describe("app", function() {
                     http: {default_encoding: 'json'}
                 }
             })
-            .setup.char_limit(180);
+            .setup.char_limit(180)
+            .setup.user.lang('en');
 
             app.get_date = function() {
                 var d = new Date();
