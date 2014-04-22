@@ -14,6 +14,7 @@ di.base = function() {
 
 
         self.create = function(name,opts) {
+
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }

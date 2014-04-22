@@ -994,8 +994,7 @@ di.pushmessage = function() {
             //Check if delivery class is the same
             //Check whether user is ussd - if it is, then also check USSD channel.
             if (app.is_delivery_class("sms") || app.is_delivery_class("ussd")) {
-                if (app.contact.extra.delivery_class !== 'ussd'
-                    || app.contact.extra.USSD_number !== app.im.config.channel) {
+                if (app.contact.extra.delivery_class !== 'ussd') {
                     return false;
                 }
             } else if(app.contact.extra.delivery_class !== app.im.config.delivery_class) {
@@ -1107,6 +1106,7 @@ di.base = function() {
 
 
         self.create = function(name,opts) {
+
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
