@@ -26,6 +26,7 @@ describe("app", function() {
             };
 
             tester
+                .setup.user.lang('en')
                 .setup(function(api) {
                     //Add the resources
                     api.resources.add(new DummyMessageStoreResource());
@@ -612,11 +613,20 @@ describe("app", function() {
                         inbound_push_trigger:true
                     });
             });
-            it("should allocated them 'T','Th' or 'S' for new_week_day",function() {
+            it("should allocate them 'T','Th' or 'S' for new_week_day",function() {
                 return tester
                     .check(function(api){
                         var contact = _.find(api.contacts.store,{msisdn:'+273444'});
                         assert.equal(contact.extra.new_week_day,'Th');
+                    })
+                    .run();
+            });
+
+            it("should set their language",function() {
+                return tester
+                    .check(function(api){
+                        var contact = _.find(api.contacts.store,{msisdn:'+273444'});
+                        assert.equal(contact.extra.lang,'en');
                     })
                     .run();
             });
@@ -936,6 +946,7 @@ describe("app", function() {
             };
 
             tester
+                .setup.user.lang('en')
                 .setup(function(api) {
                     //Add the resources
                     api.resources.add(new DummyMessageStoreResource());

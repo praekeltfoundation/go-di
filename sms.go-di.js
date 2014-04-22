@@ -1080,8 +1080,16 @@ di.pushmessage = function() {
             return (app.week_day_code[day_of_week] === week_day );
         };
 
+        self.set_language = function() {
+            if (_.isUndefined(app.contact.extra.lang)) {
+
+                app.contact.extra.lang = app.im.user.lang;
+            }
+        };
+
         self.init = function() {
             self.rerandomize_week_day();
+            self.set_language();
             self.calculate_push_dates();
             return app.im.contacts.save(app.contact);
         };

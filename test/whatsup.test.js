@@ -31,6 +31,7 @@ describe("app", function() {
             };
 
             tester
+                .setup.user.lang('en')
                 .setup(function(api) {
                     api.resources.add(new DummyMessageStoreResource());
                     api.resources.attach(api);
