@@ -1150,7 +1150,7 @@ di.base = function() {
             if (_.isUndefined(self.im.config.override_date)) {
                 return new Date();
             } else {
-                return Date.parse(self.im.config.override_date);
+                return new Date(self.im.config.override_date);
             }
         };
 
