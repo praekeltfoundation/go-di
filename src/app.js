@@ -25,8 +25,6 @@ di.app = function() {
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);
 
-        self.week_day_code = ['Su','M','T','W','Th','F','S'];
-
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
                 return 'GS1';

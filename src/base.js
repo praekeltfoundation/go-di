@@ -35,6 +35,8 @@ di.base = function() {
                 });
         };
 
+        self.week_day_code = ['Su','M','T','W','Th','F','S'];
+
         self.is = function(boolean) {
             //If is is not undefined and boolean is true
             return (!_.isUndefined(boolean) && (boolean==='true' || boolean===true));
