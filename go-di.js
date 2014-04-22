@@ -1147,7 +1147,8 @@ di.base = function() {
                     'im im:shutdown': function() {
                         self.im.user.state.reset(state);
                     }
-                }
+                },
+                next: self.start_state_name
             });
         });
 
@@ -1197,6 +1198,10 @@ di.base = function() {
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
         BaseDiApp.call(self, 'states:noop');
+
+        self.states.add('states:start',function(name){
+            return self.states.create('states:noop');
+        });
     });
 
     return {

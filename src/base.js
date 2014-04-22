@@ -6,6 +6,7 @@ di.base = function() {
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
     var PushMessageApi = di.pushmessage.PushMessageApi;
+    var _ = require('lodash');
 
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
@@ -34,6 +35,22 @@ di.base = function() {
                 });
         };
 
+        self.is = function(boolean) {
+            //If is is not undefined and boolean is true
+            return (!_.isUndefined(boolean) && (boolean==='true' || boolean===true));
+        };
+
+        self.is_delivery_class = function(delivery_class) {
+            return self.im.config.delivery_class == delivery_class;
+        };
+
+        /*
+         * To abstract which random class is being used
+         * */
+        self.random = function(begin,end,float) {
+            return _.random(begin,end,float);
+        };
+
         self.get_date = function() {
             if (_.isUndefined(self.im.config.override_date)) {
                 return new Date();
@@ -54,7 +71,8 @@ di.base = function() {
                     'im im:shutdown': function() {
                         self.im.user.state.reset(state);
                     }
-                }
+                },
+                next: self.start_state_name
             });
         });
 
@@ -104,6 +122,10 @@ di.base = function() {
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
         BaseDiApp.call(self, 'states:noop');
+
+        self.states.add('states:start',function(name){
+            return self.states.create('states:noop');
+        });
     });
 
     return {
