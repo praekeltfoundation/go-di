@@ -984,7 +984,6 @@ di.pushmessage = function() {
         };
 
         self.should_push = function() {
-
             //If user is not part of monitoring group then return false
             if ( !app.is(app.im.config.can_push)
                 || !app.is(app.contact.extra.monitoring_group)
@@ -1085,6 +1084,7 @@ di.pushmessage = function() {
         self.init = function() {
             self.rerandomize_week_day();
             self.calculate_push_dates();
+            return app.im.contacts.save(app.contact);
         };
     });
     return {
@@ -1099,6 +1099,7 @@ di.base = function() {
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
     var PushMessageApi = di.pushmessage.PushMessageApi;
+    var _ = require('lodash');
 
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
@@ -1127,6 +1128,24 @@ di.base = function() {
                 });
         };
 
+        self.week_day_code = ['Su','M','T','W','Th','F','S'];
+
+        self.is = function(boolean) {
+            //If is is not undefined and boolean is true
+            return (!_.isUndefined(boolean) && (boolean==='true' || boolean===true));
+        };
+
+        self.is_delivery_class = function(delivery_class) {
+            return self.im.config.delivery_class == delivery_class;
+        };
+
+        /*
+         * To abstract which random class is being used
+         * */
+        self.random = function(begin,end,float) {
+            return _.random(begin,end,float);
+        };
+
         self.get_date = function() {
             if (_.isUndefined(self.im.config.override_date)) {
                 return new Date();
@@ -1147,7 +1166,8 @@ di.base = function() {
                     'im im:shutdown': function() {
                         self.im.user.state.reset(state);
                     }
-                }
+                },
+                next: self.start_state_name
             });
         });
 
@@ -1197,6 +1217,10 @@ di.base = function() {
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
         BaseDiApp.call(self, 'states:noop');
+
+        self.states.add('states:start',function(name){
+            return self.states.create('states:noop');
+        });
     });
 
     return {
@@ -1232,15 +1256,6 @@ di.app = function() {
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);
-
-        /*
-         * To abstract which random class is being used
-         * */
-        self.random = function(begin,end,float) {
-            return _.random(begin,end,float);
-        };
-
-        self.week_day_code = ['Su','M','T','W','Th','F','S'];
 
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
@@ -1302,18 +1317,9 @@ di.app = function() {
             self.contact.extra.sms_3 = monitoring.sms_3;
         };
 
-        self.is_delivery_class = function(delivery_class) {
-            return self.im.config.delivery_class == delivery_class;
-        };
-
         self.is_registered = function() {
             return (typeof self.contact.extra.is_registered !== 'undefined'
                             && (self.contact.extra.is_registered === "true"));
-        };
-
-        self.is = function(boolean) {
-            //If is is not undefined and boolean is true
-            return (!_.isUndefined(boolean) && (boolean==='true' || boolean===true));
         };
 
         self.exists = function(extra) {

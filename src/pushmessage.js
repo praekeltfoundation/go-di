@@ -56,7 +56,6 @@ di.pushmessage = function() {
         };
 
         self.should_push = function() {
-
             //If user is not part of monitoring group then return false
             if ( !app.is(app.im.config.can_push)
                 || !app.is(app.contact.extra.monitoring_group)
@@ -157,6 +156,7 @@ di.pushmessage = function() {
         self.init = function() {
             self.rerandomize_week_day();
             self.calculate_push_dates();
+            return app.im.contacts.save(app.contact);
         };
     });
     return {

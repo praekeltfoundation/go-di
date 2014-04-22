@@ -25,15 +25,6 @@ di.app = function() {
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);
 
-        /*
-         * To abstract which random class is being used
-         * */
-        self.random = function(begin,end,float) {
-            return _.random(begin,end,float);
-        };
-
-        self.week_day_code = ['Su','M','T','W','Th','F','S'];
-
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
                 return 'GS1';
@@ -94,18 +85,9 @@ di.app = function() {
             self.contact.extra.sms_3 = monitoring.sms_3;
         };
 
-        self.is_delivery_class = function(delivery_class) {
-            return self.im.config.delivery_class == delivery_class;
-        };
-
         self.is_registered = function() {
             return (typeof self.contact.extra.is_registered !== 'undefined'
                             && (self.contact.extra.is_registered === "true"));
-        };
-
-        self.is = function(boolean) {
-            //If is is not undefined and boolean is true
-            return (!_.isUndefined(boolean) && (boolean==='true' || boolean===true));
         };
 
         self.exists = function(extra) {
