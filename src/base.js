@@ -12,7 +12,6 @@ di.base = function() {
         AppStates.call(self, app);
         var create =  self.create;
 
-
         self.create = function(name,opts) {
 
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {

@@ -85,17 +85,18 @@ di.pushmessage = function() {
 
             //Return panel question msg
             for (var i=0; i < self.panel_dates.length; i++) {
-                if (self.is_push_day('panel',self.panel_dates,i+1)) {
+                if (self.is_date(self.panel_dates[i])) {
                     return self.get_panel_msg(i+1);
                 }
             }
 
             //Return thermometer question msg
             for (i=0; i < self.pre_thermometer_dates.length; i++) {
-                if (self.is_push_day('pre_thermometer',self.pre_thermometer_dates,i+1)) {
+                if (self.is_date(self.pre_thermometer_dates[i])) {
                     return self.get_thermometer_msg(i+1);
                 }
             }
+
         };
 
         self.get_panel_msg = function(push_num) {
