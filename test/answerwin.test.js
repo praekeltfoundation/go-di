@@ -15,8 +15,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-            .setup.char_limit(180)
-            .setup.user.lang('en');
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date();

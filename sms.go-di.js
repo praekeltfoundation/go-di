@@ -1082,8 +1082,8 @@ di.pushmessage = function() {
         };
 
         self.set_language = function() {
-            if (_.isUndefined(app.contact.extra.lang)) {
-
+            if (_.isUndefined(app.contact.extra.lang)
+                && !_.isNull(app.im.user.lang)) {
                 app.contact.extra.lang = app.im.user.lang;
             }
         };
