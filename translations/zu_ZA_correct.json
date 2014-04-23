@@ -1,16 +1,16 @@
 {
     "": {
-        "project-id-version": "USSD Zulu",
-        "pot-creation-date": "2014-04-07 11:49:+0200",
-        "po-revision-date": "2014-04-07 13:20+0200",
-        "last-translator": "",
+        "pot-creation-date": "2014-04-16 09:09:+0200",
+        "project-id-version": "VIP Push Messaging",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "zu_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 1.6.4",
-        "plural-forms": "nplurals=2; plural=(n != 1);"
+        "po-revision-date": "2014-04-23 10:15+0200",
+        "plural-forms": "nplurals=2; plural=(n != 1);",
+        "last-translator": "",
+        "x-generator": "Poedit 1.6.4"
     },
     "Thanks for volunteering to be a citizen reporter for the 2014 elections! Get started by answering questions or reporting election activity! Dial {{ USSD_number }} to return to VIP": [
         null,
@@ -607,5 +607,137 @@
     "Would you like to continue answering questions? There are 10 in total.": [
         null,
         "Uyathanda yini ukuqhubeka nokuphendula imibuzo? Iyi-10 Isiyonke"
+    ],
+    "panel_question_1_end_user": [
+        null,
+        "VIP:Voice wants 2 know: have parties gone door-to-door in ur area in the past 2 wks?  Reply 1. Yes. 2. No. SMS cost standard rates"
+    ],
+    "panel_question_1_incentive": [
+        null,
+        "VIP:Voice wants 2 know: hv parties gone door-to-door in ur area in the past 2 wks?  Reply 1. Yes. 2. No. U'll b paid R2 airtime 4 ur response."
+    ],
+    "panel_question_1_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know: have parties gone door-to-door in your area in the past 2 wks? Reply 1. Yes. 2. No. U will b paid for ur response w airtime 4 the SMS."
+    ],
+    "panel_question_2_end_user": [
+        null,
+        "VIP:Voice wants 2 know: have parties intimidated voters in your area in the past 2 weeks? Reply 1. Yes. 2. No. SMSs cost standard rates"
+    ],
+    "panel_question_2_incentive": [
+        null,
+        "VIP:Voice wants 2 know: have parties intimidated voters in your area in the past 2 weeks? Reply 1. Yes. 2. No. U will be paid R2 airtime for ur response."
+    ],
+    "panel_question_2_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know: have parties intimidated voters in yr area in the past 2 weeks? Reply 1. Yes. 2. No.  U will be  compensated with airtime for the SMS."
+    ],
+    "panel_question_3_end_user": [
+        null,
+        "VIP:Voice wants 2 know: have parties distributed food/money in ur area in the past 2 weeks? Reply 1. Yes. 2. No. SMSs cost standard rates"
+    ],
+    "panel_question_3_incentive": [
+        null,
+        "VIP:Voice wants 2 know: have parties distributed food/money in ur area in the past 2 weeks? Reply 1. Yes. 2. No.  U will be paid R2 airtime for ur response."
+    ],
+    "panel_question_3_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know: have parties distributed food/money in ur area in the past 2 weeks? Reply 1. Yes. 2. No.  U will be  compensated w airtime for the SMS."
+    ],
+    "panel_question_4_end_user": [
+        null,
+        "VIP:Voice wants 2 know: any rallies in ur area in the past 2 weeks? Reply 1. Yes. 2. No. SMSs cost standard rates"
+    ],
+    "panel_question_4_incentive": [
+        null,
+        "VIP:Voice wants 2 know: any rallies in ur area in the past 2 weeks? Reply 1. Yes. 2. No.  U will be paid R2 airtime for ur response."
+    ],
+    "panel_question_4_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know: any rallies in ur area in the past 2 weeks? Reply 1. Yes. 2. No.  U will be  compensated for ur response with airtime for the SMS."
+    ],
+    "panel_question_5_end_user": [
+        null,
+        "VIP:Voice wants 2 know: any campaign violence in ur area in past 2 weeks? Reply 1. Yes. 2. No. SMSs cost standard rates"
+    ],
+    "panel_question_5_incentive": [
+        null,
+        "VIP:Voice wants 2 know: any campaign violence in ur area in past 2 weeks? Reply 1. Yes. 2. No.  U will be paid R2 airtime for ur response."
+    ],
+    "panel_question_5_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know: any campaign violence in ur area in past 2 wks? Reply 1. Yes. 2. No.  U will be  compensated for ur response with airtime for the SMS."
+    ],
+    "panel_question_6_end_user": [
+        null,
+        "VIP:Voice wants 2 know: any protests in your area in the past 2 weeks? Reply 1. Yes. 2. No. SMSs cost standard rates"
+    ],
+    "panel_question_6_incentive": [
+        null,
+        "VIP:Voice wants 2 know: any protests in your area in the past 2 weeks? Reply 1. Yes. 2. No.  U will be paid R2 airtime for ur response."
+    ],
+    "panel_question_6_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know: any protests in your area in the past 2 weeks? Reply 1. Yes. 2. No. U will be compensated for with airtime for the SMS."
+    ],
+    "thermometer_question_1_end_user": [
+        null,
+        "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_1_incentive": [
+        null,
+        "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_1_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_2_end_user": [
+        null,
+        "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_2_incentive": [
+        null,
+        "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_2_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_3_end_user": [
+        null,
+        "VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_3_incentive": [
+        null,
+        "VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_3_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+    ],
+    "thermometer_question_4_end_user": [
+        null,
+        "VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-time 2.Yes, part-time 3.No 4.Skip"
+    ],
+    "thermometer_question_4_incentive": [
+        null,
+        "VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-time 2.Yes, part-time 3.No 4.Skip"
+    ],
+    "thermometer_question_4_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-time 2.Yes, part-time 3.No 4.Skip"
+    ],
+    "thermometer_question_5_end_user": [
+        null,
+        "VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed primary 3.Some secondary 4.Grade 12/Std 10"
+    ],
+    "thermometer_question_5_incentive": [
+        null,
+        "VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed primary 3.Some secondary 4.Grade 12/Std 10"
+    ],
+    "thermometer_question_5_reverse_billed": [
+        null,
+        "VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed primary 3.Some secondary 4.Grade 12/Std 10"
     ]
 }

@@ -1,0 +1,216 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2014-04-16 09:09:+0200\n"
+"Project-Id-Version: VIP Push Messaging\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-04-23 10:10+0200\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 1.6.4\n"
+
+#: pushmessage.copy.js:8
+msgid "panel_question_1_end_user"
+msgstr ""
+"VIP:Voice wants 2 know: have parties gone door-to-door in ur area in the "
+"past 2 wks?  Reply 1. Yes. 2. No. SMS cost standard rates"
+
+#: pushmessage.copy.js:9
+msgid "panel_question_1_incentive"
+msgstr ""
+"VIP:Voice wants 2 know: hv parties gone door-to-door in ur area in the past "
+"2 wks?  Reply 1. Yes. 2. No. U'll b paid R2 airtime 4 ur response."
+
+#: pushmessage.copy.js:10
+msgid "panel_question_1_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know: have parties gone door-to-door in your area in the "
+"past 2 wks? Reply 1. Yes. 2. No. U will b paid for ur response w airtime 4 "
+"the SMS."
+
+#: pushmessage.copy.js:13
+msgid "panel_question_2_end_user"
+msgstr ""
+"VIP:Voice wants 2 know: have parties intimidated voters in your area in the "
+"past 2 weeks? Reply 1. Yes. 2. No. SMSs cost standard rates"
+
+#: pushmessage.copy.js:14
+msgid "panel_question_2_incentive"
+msgstr ""
+"VIP:Voice wants 2 know: have parties intimidated voters in your area in the "
+"past 2 weeks? Reply 1. Yes. 2. No. U will be paid R2 airtime for ur response."
+
+#: pushmessage.copy.js:15
+msgid "panel_question_2_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know: have parties intimidated voters in yr area in the "
+"past 2 weeks? Reply 1. Yes. 2. No.  U will be  compensated with airtime for "
+"the SMS."
+
+#: pushmessage.copy.js:18
+msgid "panel_question_3_end_user"
+msgstr ""
+"VIP:Voice wants 2 know: have parties distributed food/money in ur area in "
+"the past 2 weeks? Reply 1. Yes. 2. No. SMSs cost standard rates"
+
+#: pushmessage.copy.js:19
+msgid "panel_question_3_incentive"
+msgstr ""
+"VIP:Voice wants 2 know: have parties distributed food/money in ur area in "
+"the past 2 weeks? Reply 1. Yes. 2. No.  U will be paid R2 airtime for ur "
+"response."
+
+#: pushmessage.copy.js:20
+msgid "panel_question_3_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know: have parties distributed food/money in ur area in "
+"the past 2 weeks? Reply 1. Yes. 2. No.  U will be  compensated w airtime for "
+"the SMS."
+
+#: pushmessage.copy.js:23
+msgid "panel_question_4_end_user"
+msgstr ""
+"VIP:Voice wants 2 know: any rallies in ur area in the past 2 weeks? Reply 1. "
+"Yes. 2. No. SMSs cost standard rates"
+
+#: pushmessage.copy.js:24
+msgid "panel_question_4_incentive"
+msgstr ""
+"VIP:Voice wants 2 know: any rallies in ur area in the past 2 weeks? Reply 1. "
+"Yes. 2. No.  U will be paid R2 airtime for ur response."
+
+#: pushmessage.copy.js:25
+msgid "panel_question_4_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know: any rallies in ur area in the past 2 weeks? Reply 1. "
+"Yes. 2. No.  U will be  compensated for ur response with airtime for the SMS."
+
+#: pushmessage.copy.js:28
+msgid "panel_question_5_end_user"
+msgstr ""
+"VIP:Voice wants 2 know: any campaign violence in ur area in past 2 weeks? "
+"Reply 1. Yes. 2. No. SMSs cost standard rates"
+
+#: pushmessage.copy.js:29
+msgid "panel_question_5_incentive"
+msgstr ""
+"VIP:Voice wants 2 know: any campaign violence in ur area in past 2 weeks? "
+"Reply 1. Yes. 2. No.  U will be paid R2 airtime for ur response."
+
+#: pushmessage.copy.js:30
+msgid "panel_question_5_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know: any campaign violence in ur area in past 2 wks? "
+"Reply 1. Yes. 2. No.  U will be  compensated for ur response with airtime "
+"for the SMS."
+
+#: pushmessage.copy.js:33
+msgid "panel_question_6_end_user"
+msgstr ""
+"VIP:Voice wants 2 know: any protests in your area in the past 2 weeks? Reply "
+"1. Yes. 2. No. SMSs cost standard rates"
+
+#: pushmessage.copy.js:34
+msgid "panel_question_6_incentive"
+msgstr ""
+"VIP:Voice wants 2 know: any protests in your area in the past 2 weeks? Reply "
+"1. Yes. 2. No.  U will be paid R2 airtime for ur response."
+
+#: pushmessage.copy.js:35
+msgid "panel_question_6_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know: any protests in your area in the past 2 weeks? Reply "
+"1. Yes. 2. No. U will be compensated for with airtime for the SMS."
+
+#: pushmessage.copy.js:40
+msgid "thermometer_question_1_end_user"
+msgstr ""
+"VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:41
+msgid "thermometer_question_1_incentive"
+msgstr ""
+"VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:42
+msgid "thermometer_question_1_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:45
+msgid "thermometer_question_2_end_user"
+msgstr ""
+"VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:46
+msgid "thermometer_question_2_incentive"
+msgstr ""
+"VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:47
+msgid "thermometer_question_2_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:50
+msgid "thermometer_question_3_end_user"
+msgstr ""
+"VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2."
+"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:51
+msgid "thermometer_question_3_incentive"
+msgstr ""
+"VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2."
+"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:52
+msgid "thermometer_question_3_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2."
+"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+
+#: pushmessage.copy.js:55
+msgid "thermometer_question_4_end_user"
+msgstr ""
+"VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-"
+"time 2.Yes, part-time 3.No 4.Skip"
+
+#: pushmessage.copy.js:56
+msgid "thermometer_question_4_incentive"
+msgstr ""
+"VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-"
+"time 2.Yes, part-time 3.No 4.Skip"
+
+#: pushmessage.copy.js:57
+msgid "thermometer_question_4_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-"
+"time 2.Yes, part-time 3.No 4.Skip"
+
+#: pushmessage.copy.js:60
+msgid "thermometer_question_5_end_user"
+msgstr ""
+"VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed "
+"primary 3.Some secondary 4.Grade 12/Std 10"
+
+#: pushmessage.copy.js:61
+msgid "thermometer_question_5_incentive"
+msgstr ""
+"VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed "
+"primary 3.Some secondary 4.Grade 12/Std 10"
+
+#: pushmessage.copy.js:62
+msgid "thermometer_question_5_reverse_billed"
+msgstr ""
+"VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed "
+"primary 3.Some secondary 4.Grade 12/Std 10"
