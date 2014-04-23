@@ -260,7 +260,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    it_panel_round_2: 'some_other_time'
                                 }
                             });
 
@@ -346,7 +347,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                it_pre_thermometer_round_1: 'some_other_time'
                             }
                         });
 
@@ -1483,9 +1485,9 @@ describe("app", function() {
         describe("when the user replies to the push message",function() {
             beforeEach(function() {
                  tester
-                    .setup.user.addr('+273123')
-                    .setup.user.state('states:push:start')
-                    .input('1');
+                     .setup.user.addr('+273123')
+                     .setup.user.state('states:push:start')
+                     .input('1');
             });
 
             it("should save the interaction time and content",function() {
@@ -1834,6 +1836,8 @@ describe("app", function() {
                         .run();
                 });
             });
+
+
         });
     });
 });
