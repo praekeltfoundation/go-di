@@ -1013,14 +1013,14 @@ di.pushmessage = function() {
 
             //Return panel question msg
             for (var i=0; i < self.panel_dates.length; i++) {
-                if (self.is_push_day('panel',self.panel_dates,i+1)) {
+                if (self.is_push_day_get('panel',self.panel_dates,i+1)) {
                     return self.get_panel_msg(i+1);
                 }
             }
 
             //Return thermometer question msg
             for (i=0; i < self.pre_thermometer_dates.length; i++) {
-                if (self.is_push_day('pre_thermometer',self.pre_thermometer_dates,i+1)) {
+                if (self.is_push_day_get('pre_thermometer',self.pre_thermometer_dates,i+1)) {
                     return self.get_thermometer_msg(i+1);
                 }
             }
@@ -1071,6 +1071,11 @@ di.pushmessage = function() {
                 );
         };
 
+        self.is_push_day_get = function(type,dates,num) {
+            return  self.is_date(dates[num-1]);
+        };
+
+
         self.get_push_field = function(type,num) {
             return [type,'round',num].join('_');
         };
@@ -1111,7 +1116,6 @@ di.base = function() {
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
         var create =  self.create;
-
 
         self.create = function(name,opts) {
 
