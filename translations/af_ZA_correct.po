@@ -712,7 +712,6 @@ msgstr "Deur nie te stem nie druk jy jou politieke voorkeure d beste uit"
 msgid "Would you like to continue answering questions? There are 10 in total."
 msgstr "Wil jy voortgaan om vrae te beantwoord? Daar is 10 in totaal."
 
-
 #: pushmessage.copy.js:8
 msgid "panel_question_1_end_user"
 msgstr ""
@@ -830,97 +829,92 @@ msgstr ""
 msgid "thermometer_question_1_end_user"
 msgstr ""
 "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
-"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip SMS cost std rates"
 
 #: pushmessage.copy.js:41
 msgid "thermometer_question_1_incentive"
 msgstr ""
 "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
-"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip U'll b paid R2 airtime 4 "
+"response."
 
 #: pushmessage.copy.js:42
 msgid "thermometer_question_1_reverse_billed"
 msgstr ""
 "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
-"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip U'll b paid 4 w airtime 4 "
+"SMS."
 
 #: pushmessage.copy.js:45
 msgid "thermometer_question_2_end_user"
 msgstr ""
 "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
-"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip SMS cost std rates"
 
 #: pushmessage.copy.js:46
 msgid "thermometer_question_2_incentive"
 msgstr ""
 "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
-"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip U'll b paid R2 airtime 4 "
+"response."
 
 #: pushmessage.copy.js:47
 msgid "thermometer_question_2_reverse_billed"
 msgstr ""
 "VIP:Voice wants 2 know if election held 2moro what party would u vote for: 1."
-"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"ANC 2.COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip U'll b paid 4 w airtime 4 "
+"SMS."
 
 #: pushmessage.copy.js:50
 msgid "thermometer_question_3_end_user"
 msgstr ""
 "VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2."
-"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip SMS cost std rates"
 
 #: pushmessage.copy.js:51
 msgid "thermometer_question_3_incentive"
 msgstr ""
 "VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2."
-"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip U'll b paid R2 airtime 4 response."
 
 #: pushmessage.copy.js:52
 msgid "thermometer_question_3_reverse_billed"
 msgstr ""
 "VIP:Voice wants 2 know which party did u vote 4 in the election: 1.ANC 2."
-"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip"
+"COPE 3.DA 4.EFF 5.Other 6.not vote 7.Skip U'll b paid 4 w airtime 4 SMS."
 
 #: pushmessage.copy.js:55
 msgid "thermometer_question_4_end_user"
 msgstr ""
 "VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-"
-"time 2.Yes, part-time 3.No 4.Skip"
+"time 2.Yes, part-time 3.No 4.Skip SMS cost std rates"
 
 #: pushmessage.copy.js:56
 msgid "thermometer_question_4_incentive"
 msgstr ""
 "VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-"
-"time 2.Yes, part-time 3.No 4.Skip"
+"time 2.Yes, part-time 3.No 4.Skip U'll b paid R2 airtime 4 response."
 
 #: pushmessage.copy.js:57
 msgid "thermometer_question_4_reverse_billed"
 msgstr ""
 "VIP:Voice wants 2 know do you have a job that pays cash income? 1.Yes, full-"
-"time 2.Yes, part-time 3.No 4.Skip"
+"time 2.Yes, part-time 3.No 4.Skip U'll b paid 4 w airtime 4 SMS."
 
 #: pushmessage.copy.js:60
 msgid "thermometer_question_5_end_user"
 msgstr ""
 "VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed "
-"primary 3.Some secondary 4.Grade 12/Std 10"
+"primary 3.Some secondary 4.Grade 12/Std 10 SMS cost std rates"
 
 #: pushmessage.copy.js:61
 msgid "thermometer_question_5_incentive"
 msgstr ""
 "VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed "
-"primary 3.Some secondary 4.Grade 12/Std 10"
+"primary 3.Some secondary 4.Grade 12/Std 10 U'll b paid R2 airtime 4 response."
 
 #: pushmessage.copy.js:62
 msgid "thermometer_question_5_reverse_billed"
 msgstr ""
 "VIP:Voice wants 2 know ur education level? 1.None/Some primary 2.Completed "
-"primary 3.Some secondary 4.Grade 12/Std 10"
-
-#~ msgid ""
-#~ "Hello VIP!2 begin we need ur voting ward. Dial *55555# & give us ur home "
-#~ "address & we'll work it out. This will be kept private, only ur voting "
-#~ "ward will be stored &u will be anonymous."
-#~ msgstr ""
-#~ "Dankie dat jy deelneem om verslag te doen oor d '14-verkiesing! Begin "
-#~ "vrae beantwoord of oor verkiesingsaksies verslag te doen! Skakel "
-#~ "*120*7692# om te begin!"
+"primary 3.Some secondary 4.Grade 12/Std 10 U'll b paid 4 w airtime 4 SMS."
