@@ -948,11 +948,31 @@ di.pushmessage = function() {
             return self.init();
         });
 
-        self.rerandomize_week_day = function() {
-            if (_.isUndefined(app.contact.extra.new_week_day)) {
-                var index = app.random(0,2,false);
-                app.contact.extra.new_week_day =  self.new_week_day_code[index];
-            }
+        self.rerandomize = function() {
+
+            return app
+                .get_group_config()
+                .spread(function(ward_treatment, push_message_group) {
+                    if (app.is(app.im.msg.inbound_push_trigger)) {
+                        if (_.isUndefined(app.contact.extra.new_week_day)) {
+                            var index = app.random(0,2,false);
+                            app.contact.extra.new_week_day =  self.new_week_day_code[index];
+                        }
+
+                        if (_.isUndefined(app.contact.extra.ward)
+                            || app.contact.extra.ward === "unknown") {
+
+                            app.contact.extra.monitoring_group = 'true';
+                            app.contact.extra.generated_group = 'true';
+                            var push_group = app.random(1,30);
+                            var per_sms_group = push_message_group[push_group];
+                            app.contact.extra.push_group= push_group.toString();
+                            app.contact.extra.sms_1= per_sms_group.sms_1;
+                            app.contact.extra.sms_2= per_sms_group.sms_2;
+                            app.contact.extra.sms_3= per_sms_group.sms_3;
+                        }
+                    }
+                });
         };
 
         self.get_push_start_date = function() {
@@ -1089,10 +1109,13 @@ di.pushmessage = function() {
         };
 
         self.init = function() {
-            self.rerandomize_week_day();
-            self.set_language();
-            self.calculate_push_dates();
-            return app.im.contacts.save(app.contact);
+            return self
+                .rerandomize()
+                .then(function() {
+                    self.set_language();
+                    self.calculate_push_dates();
+                    return app.im.contacts.save(app.contact);
+                });
         };
     });
     return {
@@ -1108,6 +1131,7 @@ di.base = function() {
     var EndState = vumigo.states.EndState;
     var PushMessageApi = di.pushmessage.PushMessageApi;
     var _ = require('lodash');
+    var Q = require('q');
 
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
@@ -1134,6 +1158,17 @@ di.base = function() {
                 .then(function(user_contact) {
                     self.contact = user_contact;
                 });
+        };
+
+        self.get_group_config = function() {
+            return Q.all([
+                self.im.sandbox_config.get('ward_treatment',{
+                    json:true
+                }),
+                self.im.sandbox_config.get('push_message_group',{
+                    json:true
+                })
+            ]);
         };
 
         self.week_day_code = ['Su','M','T','W','Th','F','S'];
@@ -1332,17 +1367,6 @@ di.app = function() {
 
         self.exists = function(extra) {
             return typeof extra !== 'undefined';
-        };
-
-        self.get_group_config = function() {
-              return Q.all([
-                      self.im.sandbox_config.get('ward_treatment',{
-                          json:true
-                      }),
-                      self.im.sandbox_config.get('push_message_group',{
-                          json:true
-                      })
-                  ]);
         };
 
         self.init = function() {

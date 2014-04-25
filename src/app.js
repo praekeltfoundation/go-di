@@ -94,17 +94,6 @@ di.app = function() {
             return typeof extra !== 'undefined';
         };
 
-        self.get_group_config = function() {
-              return Q.all([
-                      self.im.sandbox_config.get('ward_treatment',{
-                          json:true
-                      }),
-                      self.im.sandbox_config.get('push_message_group',{
-                          json:true
-                      })
-                  ]);
-        };
-
         self.init = function() {
             self.http = new JsonApi(self.im);
             self.ushahidi = new UshahidiApi(self.im);

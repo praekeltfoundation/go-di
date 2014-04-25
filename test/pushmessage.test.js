@@ -50,7 +50,8 @@ describe("app", function() {
                             monitoring_group: 'true',
                             new_week_day: 'T',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
 
@@ -60,7 +61,8 @@ describe("app", function() {
                         extra : {
                             is_registered: 'true',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
 
@@ -71,7 +73,8 @@ describe("app", function() {
                             is_registered: 'true',
                             monitoring_group: 'false',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
 
@@ -86,7 +89,8 @@ describe("app", function() {
                             monitoring_group: 'true',
                             week_day: 'M',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
                 })
@@ -210,7 +214,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -261,7 +266,8 @@ describe("app", function() {
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
                                     USSD_number: '*120*8864*1321#',
-                                    it_panel_round_2: 'some_other_time'
+                                    it_panel_round_2: 'some_other_time',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -310,7 +316,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                ward: "ward_number"
                             }
                         });
 
@@ -348,7 +355,8 @@ describe("app", function() {
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
                                 USSD_number: '*120*8864*1321#',
-                                it_pre_thermometer_round_1: 'some_other_time'
+                                it_pre_thermometer_round_1: 'some_other_time',
+                                ward: "ward_number"
                             }
                         });
 
@@ -386,7 +394,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                ward: "ward_number"
                             }
                         });
 
@@ -424,7 +433,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                ward: "ward_number"
                             }
                         });
 
@@ -463,7 +473,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -503,7 +514,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -543,7 +555,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -744,7 +757,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -780,7 +794,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'Th',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -816,7 +831,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'S',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -848,7 +864,8 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -879,7 +896,8 @@ describe("app", function() {
                                     sms_1: '1',
                                     sms_2: '3',
                                     sms_3: '1',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -910,7 +928,8 @@ describe("app", function() {
                                     sms_1: '1',
                                     sms_2: '3',
                                     sms_3: '1',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -972,7 +991,8 @@ describe("app", function() {
                             monitoring_group: 'true',
                             new_week_day: 'T',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
 
@@ -982,7 +1002,8 @@ describe("app", function() {
                         extra : {
                             is_registered: 'true',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
 
@@ -993,7 +1014,8 @@ describe("app", function() {
                             is_registered: 'true',
                             monitoring_group: 'false',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
 
@@ -1008,7 +1030,8 @@ describe("app", function() {
                             monitoring_group: 'true',
                             week_day: 'M',
                             delivery_class: 'ussd',
-                            USSD_number: '*120*8864*1321#'
+                            USSD_number: '*120*8864*1321#',
+                            ward: "ward_number"
                         }
                     });
                 })
@@ -1132,7 +1155,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -1182,7 +1206,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -1231,7 +1256,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                ward: "ward_number"
                             }
                         });
 
@@ -1268,7 +1294,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                ward: "ward_number"
                             }
                         });
 
@@ -1306,7 +1333,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                ward: "ward_number"
                             }
                         });
 
@@ -1344,7 +1372,8 @@ describe("app", function() {
                                 monitoring_group: 'true',
                                 new_week_day: 'T',
                                 delivery_class: 'ussd',
-                                USSD_number: '*120*8864*1321#'
+                                USSD_number: '*120*8864*1321#',
+                                ward: "ward_number"
                             }
                         });
 
@@ -1383,7 +1412,8 @@ describe("app", function() {
                                    monitoring_group: 'true',
                                    new_week_day: 'T',
                                    delivery_class: 'ussd',
-                                   USSD_number: '*120*8864*1321#'
+                                   USSD_number: '*120*8864*1321#',
+                                   ward: "ward_number"
                                }
                            });
 
@@ -1423,7 +1453,8 @@ describe("app", function() {
                                    monitoring_group: 'true',
                                    new_week_day: 'T',
                                    delivery_class: 'ussd',
-                                   USSD_number: '*120*8864*1321#'
+                                   USSD_number: '*120*8864*1321#',
+                                   ward: "ward_number"
                                }
                            });
 
@@ -1463,7 +1494,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -1655,7 +1687,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'T',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -1691,7 +1724,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'Th',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -1727,7 +1761,8 @@ describe("app", function() {
                                     monitoring_group: 'true',
                                     new_week_day: 'S',
                                     delivery_class: 'ussd',
-                                    USSD_number: '*120*8864*1321#'
+                                    USSD_number: '*120*8864*1321#',
+                                    ward: "ward_number"
                                 }
                             });
 
@@ -1759,7 +1794,8 @@ describe("app", function() {
                                     sms_2: '3',
                                     sms_3: '1',
                                     monitoring_group: 'true',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -1790,7 +1826,8 @@ describe("app", function() {
                                     sms_1: '1',
                                     sms_2: '3',
                                     sms_3: '1',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -1821,7 +1858,8 @@ describe("app", function() {
                                     sms_1: '1',
                                     sms_2: '3',
                                     sms_3: '1',
-                                    new_week_day: 'T'
+                                    new_week_day: 'T',
+                                    ward: "ward_number"
                                 }
                             });
                         })
@@ -1837,6 +1875,44 @@ describe("app", function() {
                 });
             });
 
+            describe("when a contact has not been allocated a ward",function() {
+                beforeEach(function() {
+                    app.random = function(begin,end,float) {
+                        return 1;
+                    };
+                });
+                it("should randomly allocate an sms group",function() {
+                    return tester
+                        .setup(function(api){
+                            //Add a contact
+                            api.contacts.add( {
+                                msisdn: '+2772',
+                                extra : {
+                                    is_registered: 'true',
+                                    delivery_class: 'ussd',
+                                    USSD_number: '*120*1234#'
+                                }
+                            });
+                        })
+                        .setup.user.addr('+2772')
+                        .setup.user.state('states:menu')
+                        .input({
+                            content: null,
+                            inbound_push_trigger: true
+                        })
+                        .check(function(api) {
+                            var contact = _.find(api.contacts.store,{msisdn:'+2772'});
+                            assert.equal(contact.extra.new_week_day,'Th');
+                            assert.equal(contact.extra.monitoring_group,'true');
+                            assert.equal(contact.extra.generated_group,'true');
+                            app.contact.extra.push_group= '1';
+                            app.contact.extra.sms_1= '1';
+                            app.contact.extra.sms_2= '2';
+                            app.contact.extra.sms_3='1';
+                        })
+                        .run();
+                });
+            });
 
         });
     });
