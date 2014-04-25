@@ -7,6 +7,7 @@ di.base = function() {
     var EndState = vumigo.states.EndState;
     var PushMessageApi = di.pushmessage.PushMessageApi;
     var _ = require('lodash');
+    var Q = require('q');
 
     var DiAppStates  = AppStates.extend(function(self,app,opts) {
         AppStates.call(self, app);
@@ -33,6 +34,17 @@ di.base = function() {
                 .then(function(user_contact) {
                     self.contact = user_contact;
                 });
+        };
+
+        self.get_group_config = function() {
+            return Q.all([
+                self.im.sandbox_config.get('ward_treatment',{
+                    json:true
+                }),
+                self.im.sandbox_config.get('push_message_group',{
+                    json:true
+                })
+            ]);
         };
 
         self.week_day_code = ['Su','M','T','W','Th','F','S'];
