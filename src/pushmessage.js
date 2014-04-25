@@ -25,23 +25,24 @@ di.pushmessage = function() {
             return app
                 .get_group_config()
                 .spread(function(ward_treatment, push_message_group) {
-                    if (_.isUndefined(app.contact.extra.new_week_day)) {
-                        var index = app.random(0,2,false);
-                        app.contact.extra.new_week_day =  self.new_week_day_code[index];
-                    }
+                    if (app.is(app.im.msg.inbound_push_trigger)) {
+                        if (_.isUndefined(app.contact.extra.new_week_day)) {
+                            var index = app.random(0,2,false);
+                            app.contact.extra.new_week_day =  self.new_week_day_code[index];
+                        }
 
-                    if ((_.isUndefined(app.contact.extra.ward)
-                        || app.contact.extra.ward === "unknown")
-                        && app.is(app.im.msg.inbound_push_trigger) ) {
+                        if (_.isUndefined(app.contact.extra.ward)
+                            || app.contact.extra.ward === "unknown") {
 
-                        app.contact.extra.monitoring_group = 'true';
-                        app.contact.extra.generated_group = 'true';
-                        var push_group = app.random(1,30);
-                        var per_sms_group = push_message_group[push_group];
-                        app.contact.extra.push_group= push_group.toString();
-                        app.contact.extra.sms_1= per_sms_group.sms_1.toString();
-                        app.contact.extra.sms_2= per_sms_group.sms_2.toString();
-                        app.contact.extra.sms_3= per_sms_group.sms_3.toString();
+                            app.contact.extra.monitoring_group = 'true';
+                            app.contact.extra.generated_group = 'true';
+                            var push_group = app.random(1,30);
+                            var per_sms_group = push_message_group[push_group];
+                            app.contact.extra.push_group= push_group.toString();
+                            app.contact.extra.sms_1= per_sms_group.sms_1.toString();
+                            app.contact.extra.sms_2= per_sms_group.sms_2.toString();
+                            app.contact.extra.sms_3= per_sms_group.sms_3.toString();
+                        }
                     }
                 });
         };
