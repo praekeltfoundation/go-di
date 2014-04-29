@@ -1,10 +1,11 @@
-di.quiz.votingexperience = function() {
+di.quiz.groupc = function() {
     var QuizStates = di.quiz.QuizStates;
     var vumigo = require('vumigo_v02');
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
     var utils = vumigo.utils;
+    var EndState = vumigo.states.EndState;
 
     var GroupCQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
@@ -12,6 +13,35 @@ di.quiz.votingexperience = function() {
             continue_interval: 6
         });
         var $ = app.$;
+
+        //Turn out question to determine if push should proceed
+        self.states.add('states:push:group_c_turnout',function(name) {
+            return new ChoiceState(name, {
+                question: $('VIP wants to know if you voted?'),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No'))
+                ],
+                next: function(choice) {
+                    return self
+                        .answer('did_you_vote',choice.value)
+                        .then(function() {
+                            if (choice.value == 'yes') {
+                                return self.get_next_quiz_state();
+                            } else {
+                                return 'states:push:thanks';
+                            }
+                        });
+                }
+            });
+        });
+
+        self.states.add('states:push:thanks',function(name) {
+            return new EndState(name,{
+                text: $('Thanks for your response'),
+                next: 'states:start'
+            }) ;
+        });
 
         self.add_question('queue_wait',function(name) {
             return new ChoiceState(name, {
@@ -93,6 +123,6 @@ di.quiz.votingexperience = function() {
     });
 
     return {
-        VotingExperienceQuiz: VotingExperienceQuiz
+        GroupCQuiz: GroupCQuiz
     };
 }();

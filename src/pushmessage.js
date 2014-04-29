@@ -5,6 +5,7 @@ di.pushmessage = function() {
     var Extendable = utils.Extendable;
     var get_push_message_copy = di.copies.pushmessage;
     var VotingExperienceQuiz = di.quiz.votingexperience.VotingExperienceQuiz;
+    var GroupCQuiz = di.quiz.groupc.GroupCQuiz;
 
     Date.prototype.addDays = function(days)
     {
@@ -74,7 +75,7 @@ di.pushmessage = function() {
 
             //If part of phase 2 rules
             if (app.is(app.contact.extra.monitoring_group)
-                || app.get_date() <= app.im.config.push_end_date) {
+                && app.get_date() <= app.im.config.push_end_date) {
 
                 return self.is_push_day('panel',self.panel_dates,1)
                     || self.is_push_day('panel',self.panel_dates,2)
@@ -89,20 +90,22 @@ di.pushmessage = function() {
 
         self.quizzes =  {};
         self.quizzes.votingexperience = new VotingExperienceQuiz(app);
+        self.quizzes.groupc = new GroupCQuiz(app);
 
         self.get_push_state = function() {
             //If it is voting day, then push the 'did you vote' question.
             if (self.is_voting_experience_quiz_day()) {
-                return 'states:push:did_you_vote';
+                return 'states:push:voting_turnout';
             } else if (self.is_group_c_quiz_day()) {
-                //return group c quiz.
+                return 'states:push:group_c_turnout';
             } else {
                 return 'states:push:start';
             }
         };
 
+
         self.is_voting_experience_quiz_day = function() {
-            return self.is_push_day('voting_turnout', app.im.config.voting_experience_push_day,1);
+            return self.is_push_day('voting_turnout', app.im.config.voting_turnout_push_day,1);
         };
 
         self.is_group_c_quiz_day = function() {

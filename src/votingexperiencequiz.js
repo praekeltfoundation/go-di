@@ -13,8 +13,8 @@ di.quiz.votingexperience = function() {
         });
         var $ = app.$;
 
-        //Pre-cursor question.
-        self.states.add('states:push:did_you_vote',function(name) {
+        //Turn out question to determine if push should proceed
+        self.states.add('states:push:voting_turnout',function(name) {
             return new ChoiceState(name, {
                 question: $('VIP wants to know if you voted?'),
                 choices: [
@@ -28,11 +28,18 @@ di.quiz.votingexperience = function() {
                             if (choice.value == 'yes') {
                                 return self.get_next_quiz_state();
                             } else {
-                                return 'states:menu';
+                                return 'states:push:thanks';
                             }
                         });
                 }
             });
+        });
+
+        self.states.add('states:push:thanks',function(name) {
+            return new EndState(name,{
+                text: $('Thanks for your response'),
+                next: 'states:start'
+            }) ;
         });
 
         self.add_question('queue_wait',function(name) {
