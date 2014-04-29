@@ -1102,17 +1102,19 @@ di.pushmessage = function() {
         };
 
         self.set_language = function() {
+
+            var promise = app.im.contacts.save(app.contact);
             if (_.isNull(app.im.user.lang)) {
                 app.contact.extra.lang = 'default_en';
-                return app
-                    .im.user.set_lang('en')
-                    .then(function() {
-                        return app.im.contacts.save(app.contact);
-                    });
+
+                 promise = promise.then(function() {
+                    return app.im.user.set_lang('en');
+                });
             } else if (_.isUndefined(app.contact.extra.lang)) {
                 app.contact.extra.lang = app.im.user.lang;
-                return app.im.contacts.save(app.contact);
             }
+
+            return promise;
         };
 
         self.init = function() {
