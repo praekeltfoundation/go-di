@@ -929,9 +929,11 @@ di.copies.pushmessage = function() {
 di.pushmessage = function() {
     var _ = require('lodash');
     var vumigo = require('vumigo_v02');
+    var Q = require('q');
     var utils = vumigo.utils;
     var Extendable = utils.Extendable;
     var get_push_message_copy = di.copies.pushmessage;
+
 
     Date.prototype.addDays = function(days)
     {
@@ -1102,9 +1104,13 @@ di.pushmessage = function() {
         };
 
         self.set_language = function() {
-            if (_.isUndefined(app.contact.extra.lang)
-                && !_.isNull(app.im.user.lang)) {
+            if (_.isNull(app.im.user.lang)) {
+                app.contact.extra.lang = 'default_en';
+                return app.im.user.set_lang('en');
+
+            } else if (_.isUndefined(app.contact.extra.lang)) {
                 app.contact.extra.lang = app.im.user.lang;
+                return Q();
             }
         };
 
@@ -1112,8 +1118,10 @@ di.pushmessage = function() {
             return self
                 .rerandomize()
                 .then(function() {
-                    self.set_language();
                     self.calculate_push_dates();
+                    return self.set_language();
+                })
+                .then(function() {
                     return app.im.contacts.save(app.contact);
                 });
         };

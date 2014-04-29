@@ -637,7 +637,7 @@ describe("app", function() {
                     .run();
             });
 
-            it("should set their language",function() {
+            it("should set their language in the contacts",function() {
                 return tester
                     .check(function(api){
                         var contact = _.find(api.contacts.store,{msisdn:'+273444'});
@@ -679,6 +679,40 @@ describe("app", function() {
                 };
                 return tester
                     .check.no_reply()
+                    .run();
+            });
+        });
+
+        describe("if the user does not have a language set",function() {
+            beforeEach(function() {
+                app.random = function(begin,end,float) {
+                    return 1;
+                };
+                tester
+                    .setup.user.lang(null)
+                    .setup.user.addr('+273444')
+                    .setup.config.app({
+                        panel_messages: [0, 2, 5],
+                        thermometer_messages: [3, 4]
+                    })
+                    .input({
+                        content:null,
+                        inbound_push_trigger:true
+                    });
+            });
+
+            it("should default the language to english",function() {
+                return tester
+                    .check.user.properties({lang: 'en'})
+                    .run();
+            });
+
+            it("should save 'default_en' to the language field in contacts",function() {
+                return tester
+                    .check(function(api){
+                        var contact = _.find(api.contacts.store,{msisdn:'+273444'});
+                        assert.equal(contact.extra.lang,'default_en');
+                    })
                     .run();
             });
         });
