@@ -105,7 +105,9 @@ describe("app", function() {
                     push_end_date: app.get_date().addDays(7).toISOString(),
                     billing_code: 'incentive',
                     can_push: true,
-                    delivery_class: 'sms'
+                    delivery_class: 'sms',
+                    election_quiz_date: app.get_date_string(),
+                    other_quiz_date: app.get_date_string()
                 });
         });
 

@@ -55,6 +55,7 @@ di.quiz = function() {
                 self.name,
                 name
             ].join(':');
+
             /*
              * This needs to be part of the app for testing.
              * My test cases wont initialize to it otherwise.

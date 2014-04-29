@@ -4,6 +4,7 @@ di.pushmessage = function() {
     var utils = vumigo.utils;
     var Extendable = utils.Extendable;
     var get_push_message_copy = di.copies.pushmessage;
+    var VotingExperienceQuiz = di.quiz.votingexperience.VotingExperienceQuiz;
 
     Date.prototype.addDays = function(days)
     {
@@ -56,15 +57,8 @@ di.pushmessage = function() {
         };
 
         self.should_push = function() {
-            //If user is not part of monitoring group then return false
-            if ( !app.is(app.im.config.can_push)
-                || !app.is(app.contact.extra.monitoring_group)
-                || app.get_date() > app.im.config.push_end_date) {
-                return false;
-            }
 
             //Check if delivery class is the same
-            //Check whether user is ussd - if it is, then also check USSD channel.
             if (app.is_delivery_class("sms") || app.is_delivery_class("ussd")) {
                 if (app.contact.extra.delivery_class !== 'ussd') {
                     return false;
@@ -73,12 +67,46 @@ di.pushmessage = function() {
                 return false;
             }
 
-            //If it is one of the push days;
-            return self.is_push_day('panel',self.panel_dates,1)
-                || self.is_push_day('panel',self.panel_dates,2)
-                || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
-                || self.is_push_day('panel',self.panel_dates,3)
-                || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2);
+            //If the app can't push then return false
+            if ( !app.is(app.im.config.can_push)) {
+                return false;
+            }
+
+            //If part of phase 2 rules
+            if (app.is(app.contact.extra.monitoring_group)
+                || app.get_date() <= app.im.config.push_end_date) {
+
+                return self.is_push_day('panel',self.panel_dates,1)
+                    || self.is_push_day('panel',self.panel_dates,2)
+                    || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
+                    || self.is_push_day('panel',self.panel_dates,3)
+                    || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2)
+            } else {
+                return self.is_voting_experience_quiz_day()
+                || self.is_group_c_quiz_day();
+            }
+        };
+
+        self.quizzes =  {};
+        self.quizzes.votingexperience = new VotingExperienceQuiz(app);
+
+        self.get_push_state = function() {
+            //If it is voting day, then push the 'did you vote' question.
+            if (self.is_voting_experience_quiz_day()) {
+                return 'states:push:did_you_vote';
+            } else if (self.is_group_c_quiz_day()) {
+                //return group c quiz.
+            } else {
+                return 'states:push:start';
+            }
+        };
+
+        self.is_voting_experience_quiz_day = function() {
+            return self.is_push_day('voting_turnout', app.im.config.voting_experience_push_day,1);
+        };
+
+        self.is_group_c_quiz_day = function() {
+            return self.is_push_day('group_c', app.im.config.group_c_push_day,1);
         };
 
         self.get_push_msg = function() {
@@ -155,7 +183,6 @@ di.pushmessage = function() {
 
         self.set_language = function() {
             if (_.isUndefined(app.contact.extra.lang)) {
-
                 app.contact.extra.lang = app.im.user.lang;
             }
         };

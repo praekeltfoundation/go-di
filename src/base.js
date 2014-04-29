@@ -19,9 +19,14 @@ di.base = function() {
             }
             return !app.push_api.should_push()
                 ? create('states:noop')
-                : create('states:push:start');
+                : create(app.push_api.get_push_state());
         };
     });
+
+
+
+    //If it is a new quiz - go there
+    //Else continue.
 
     var BaseDiApp = App.extend(function(self, start_state_name) {
         App.call(self, start_state_name, {AppStates: DiAppStates});

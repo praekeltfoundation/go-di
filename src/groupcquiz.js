@@ -6,34 +6,12 @@ di.quiz.votingexperience = function() {
     var MenuState = vumigo.states.MenuState;
     var utils = vumigo.utils;
 
-    var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
+    var GroupCQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
-            name:'votingexperience',
-            continue_interval: 5
+            name:'groupc',
+            continue_interval: 6
         });
         var $ = app.$;
-
-        //Pre-cursor question.
-        self.states.add('states:push:did_you_vote',function(name) {
-            return new ChoiceState(name, {
-                question: $('VIP wants to know if you voted?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No'))
-                ],
-                next: function(choice) {
-                    return self
-                        .answer('did_you_vote',choice.value)
-                        .then(function() {
-                            if (choice.value == 'yes') {
-                                return self.get_next_quiz_state();
-                            } else {
-                                return 'states:menu';
-                            }
-                        });
-                }
-            });
-        });
 
         self.add_question('queue_wait',function(name) {
             return new ChoiceState(name, {
@@ -106,65 +84,9 @@ di.quiz.votingexperience = function() {
             });
         });
 
+        //This may cause problems with the push app.
         self.add_next('end',function(name) {
             return app.states.create("states:menu");
-        });
-
-        self.add_question('environment_report',function(name) {
-            return new ChoiceState(name, {
-                question: $('Please report the environment outside the polling station'),
-                choices: [
-                    new Choice('very_tense',$('Very tense')),
-                    new Choice('somewhat_tense',$('Somewhat tense')),
-                    new Choice('not_tense',$('Not tense')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('environment_report',content);
-                }
-            });
-        });
-
-        self.add_question('violence_observation',function(name) {
-            return new ChoiceState(name, {
-                question: $('Did you observe or hear about any violence in or around the polling station?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('violence_observation',content);
-                }
-            });
-        });
-
-        self.add_question('intimidation_incidents',function(name) {
-            return new ChoiceState(name, {
-                question: $("How easy is it for your neighbors to find out if you voted?"),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz(7,content);
-                }
-            });
-        });
-
-        self.add_question('adequate_privacy',function(name) {
-            return new ChoiceState(name, {
-                question: $("Did the voting station provide adequate privacy to ensure ballot secrecy?"),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('adequate_privacy',content);
-                }
-            });
         });
 
         self.add_begin('begin');
