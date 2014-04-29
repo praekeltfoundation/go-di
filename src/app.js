@@ -20,7 +20,7 @@ di.app = function() {
         BaseDiApp.call(self, 'states:start');
         var $ = self.$;
 
-        self.quizzes =  {};
+        self.quizzes =  self.quizzes || {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);

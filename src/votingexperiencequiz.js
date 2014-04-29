@@ -4,7 +4,6 @@ di.quiz.votingexperience = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
-    var EndState = vumigo.states.EndState;
 
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
@@ -12,58 +11,6 @@ di.quiz.votingexperience = function() {
             continue_interval: 5
         });
         var $ = app.$;
-
-        //Turn out question to determine if push should proceed
-        //Need to refactor.
-        app.states.add('states:push:voting_turnout',function(name) {
-            //Needs to be saved on reply
-            var field = app.push_api.get_push_field('voting_turnout',1);
-            return new ChoiceState(name, {
-                question: $('VIP wants to know if you voted?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No'))
-                ],
-                events: {
-                    //Needs to be saved when FreeText is served
-                    'im state:enter': function() {
-                        app.contact.extra['it_'+field] = app.get_date_string();
-                        return app
-                            .im.contacts.save(app.contact)
-                            .then(function() {
-                                return app.im.metrics.fire.inc('total.push.sent');
-                            });
-                    }
-                },
-                next: function(choice) {
-                    app.contact.extra[field+'_reply'] = choice.value;
-                    app.contact.extra['it_'+field+'_reply'] = app.get_date_string();
-
-                    return app
-                        .im.contacts.save(app.contact)
-                        .then(function() {
-                            return self.answer('did_you_vote',choice.value);
-                        })
-                        .then(function() {
-                            return app.im.metrics.fire.inc('total.push.replies');
-                        })
-                        .then(function() {
-                            if (choice.value == 'yes') {
-                                return self.get_next_quiz_state();
-                            } else {
-                                return 'states:push:voting_turnout:thanks';
-                            }
-                        });
-                }
-            });
-        });
-
-        app.states.add('states:push:voting_turnout:thanks',function(name) {
-            return new EndState(name,{
-                text: $('Thanks for your response'),
-                next: 'states:push:end'
-            }) ;
-        });
 
         self.add_question('queue_wait',function(name) {
             return new ChoiceState(name, {

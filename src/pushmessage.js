@@ -4,8 +4,6 @@ di.pushmessage = function() {
     var utils = vumigo.utils;
     var Extendable = utils.Extendable;
     var get_push_message_copy = di.copies.pushmessage;
-    var VotingExperienceQuiz = di.quiz.votingexperience.VotingExperienceQuiz;
-    var GroupCQuiz = di.quiz.groupc.GroupCQuiz;
 
     Date.prototype.addDays = function(days)
     {
@@ -73,35 +71,34 @@ di.pushmessage = function() {
                 return false;
             }
 
-            //If part of phase 2 rules
             if (app.is(app.contact.extra.monitoring_group)
                 && app.get_date() <= new Date(app.im.config.push_end_date)) {
+                //Phase 2
                 return self.is_push_day('panel',self.panel_dates,1)
                     || self.is_push_day('panel',self.panel_dates,2)
                     || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
                     || self.is_push_day('panel',self.panel_dates,3)
                     || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2);
             } else {
+                //Phase 3
                 return self.is_voting_experience_quiz_day()
                 || self.is_group_c_quiz_day();
             }
         };
 
-        self.quizzes =  {};
-        self.quizzes.votingexperience = new VotingExperienceQuiz(app);
-        self.quizzes.groupc = new GroupCQuiz(app);
-
         self.get_push_state = function() {
-            //If it is voting day, then push the 'did you vote' question.
             if (self.is_voting_experience_quiz_day()) {
                 return 'states:push:voting_turnout';
-            } else if (self.is_group_c_quiz_day()) {
+            } else if (self.is_group_c_quiz_day() && self.in_group_c()) {
                 return 'states:push:group_c_turnout';
             } else {
                 return 'states:push:start';
             }
         };
 
+        self.in_group_c = function() {
+            return true;
+        };
 
         self.is_voting_experience_quiz_day = function() {
             return self.is_push_day('voting_turnout', new Date(app.im.config.voting_turnout_push_day));

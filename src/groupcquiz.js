@@ -12,46 +12,6 @@ di.quiz.groupc = function() {
         });
         var $ = app.$;
 
-        //Turn out question to determine if push should proceed
-        app.states.add('states:push:group_c_turnout',function(name) {
-            return new ChoiceState(name, {
-                question: $('VIP wants to know if you voted?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No'))
-                ],
-                next: function(choice) {
-                    //Needs to be saved on reply
-                    var field = self.push_api.get_push_field('voting_turnout',1);
-                    self.contact.extra[field+'_reply'] = choice.value;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
-
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return self.answer('did_you_vote',choice.value);
-                        })
-                        .then(function() {
-                            return self.im.metrics.fire.inc('total.push.replies');
-                        })
-                        .then(function() {
-                            if (choice.value == 'yes') {
-                                return self.get_next_quiz_state();
-                            } else {
-                                return 'states:push:group_c_turnout:thanks';
-                            }
-                        });
-                }
-            });
-        });
-
-        app.states.add('states:push:group_c_turnout:thanks',function(name) {
-            return new EndState(name,{
-                text: $('Thanks for your response'),
-                next: 'states:push:end'
-            }) ;
-        });
-
         self.add_question('colours',function(name) {
             return new ChoiceState(name, {
                 question: $('What colours were the ballots at your voting station?'),

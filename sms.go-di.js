@@ -863,7 +863,6 @@ di.quiz.votingexperience = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
-    var EndState = vumigo.states.EndState;
 
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
@@ -871,58 +870,6 @@ di.quiz.votingexperience = function() {
             continue_interval: 5
         });
         var $ = app.$;
-
-        //Turn out question to determine if push should proceed
-        //Need to refactor.
-        app.states.add('states:push:voting_turnout',function(name) {
-            //Needs to be saved on reply
-            var field = app.push_api.get_push_field('voting_turnout',1);
-            return new ChoiceState(name, {
-                question: $('VIP wants to know if you voted?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No'))
-                ],
-                events: {
-                    //Needs to be saved when FreeText is served
-                    'im state:enter': function() {
-                        app.contact.extra['it_'+field] = app.get_date_string();
-                        return app
-                            .im.contacts.save(app.contact)
-                            .then(function() {
-                                return app.im.metrics.fire.inc('total.push.sent');
-                            });
-                    }
-                },
-                next: function(choice) {
-                    app.contact.extra[field+'_reply'] = choice.value;
-                    app.contact.extra['it_'+field+'_reply'] = app.get_date_string();
-
-                    return app
-                        .im.contacts.save(app.contact)
-                        .then(function() {
-                            return self.answer('did_you_vote',choice.value);
-                        })
-                        .then(function() {
-                            return app.im.metrics.fire.inc('total.push.replies');
-                        })
-                        .then(function() {
-                            if (choice.value == 'yes') {
-                                return self.get_next_quiz_state();
-                            } else {
-                                return 'states:push:voting_turnout:thanks';
-                            }
-                        });
-                }
-            });
-        });
-
-        app.states.add('states:push:voting_turnout:thanks',function(name) {
-            return new EndState(name,{
-                text: $('Thanks for your response'),
-                next: 'states:push:end'
-            }) ;
-        });
 
         self.add_question('queue_wait',function(name) {
             return new ChoiceState(name, {
@@ -1078,46 +1025,6 @@ di.quiz.groupc = function() {
         });
         var $ = app.$;
 
-        //Turn out question to determine if push should proceed
-        app.states.add('states:push:group_c_turnout',function(name) {
-            return new ChoiceState(name, {
-                question: $('VIP wants to know if you voted?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No'))
-                ],
-                next: function(choice) {
-                    //Needs to be saved on reply
-                    var field = self.push_api.get_push_field('voting_turnout',1);
-                    self.contact.extra[field+'_reply'] = choice.value;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
-
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return self.answer('did_you_vote',choice.value);
-                        })
-                        .then(function() {
-                            return self.im.metrics.fire.inc('total.push.replies');
-                        })
-                        .then(function() {
-                            if (choice.value == 'yes') {
-                                return self.get_next_quiz_state();
-                            } else {
-                                return 'states:push:group_c_turnout:thanks';
-                            }
-                        });
-                }
-            });
-        });
-
-        app.states.add('states:push:group_c_turnout:thanks',function(name) {
-            return new EndState(name,{
-                text: $('Thanks for your response'),
-                next: 'states:push:end'
-            }) ;
-        });
-
         self.add_question('colours',function(name) {
             return new ChoiceState(name, {
                 question: $('What colours were the ballots at your voting station?'),
@@ -1227,8 +1134,6 @@ di.pushmessage = function() {
     var utils = vumigo.utils;
     var Extendable = utils.Extendable;
     var get_push_message_copy = di.copies.pushmessage;
-    var VotingExperienceQuiz = di.quiz.votingexperience.VotingExperienceQuiz;
-    var GroupCQuiz = di.quiz.groupc.GroupCQuiz;
 
     Date.prototype.addDays = function(days)
     {
@@ -1296,35 +1201,34 @@ di.pushmessage = function() {
                 return false;
             }
 
-            //If part of phase 2 rules
             if (app.is(app.contact.extra.monitoring_group)
                 && app.get_date() <= new Date(app.im.config.push_end_date)) {
+                //Phase 2
                 return self.is_push_day('panel',self.panel_dates,1)
                     || self.is_push_day('panel',self.panel_dates,2)
                     || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
                     || self.is_push_day('panel',self.panel_dates,3)
                     || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2);
             } else {
+                //Phase 3
                 return self.is_voting_experience_quiz_day()
                 || self.is_group_c_quiz_day();
             }
         };
 
-        self.quizzes =  {};
-        self.quizzes.votingexperience = new VotingExperienceQuiz(app);
-        self.quizzes.groupc = new GroupCQuiz(app);
-
         self.get_push_state = function() {
-            //If it is voting day, then push the 'did you vote' question.
             if (self.is_voting_experience_quiz_day()) {
                 return 'states:push:voting_turnout';
-            } else if (self.is_group_c_quiz_day()) {
+            } else if (self.is_group_c_quiz_day() && self.in_group_c()) {
                 return 'states:push:group_c_turnout';
             } else {
                 return 'states:push:start';
             }
         };
 
+        self.in_group_c = function() {
+            return true;
+        };
 
         self.is_voting_experience_quiz_day = function() {
             return self.is_push_day('voting_turnout', new Date(app.im.config.voting_turnout_push_day));
@@ -1438,6 +1342,10 @@ di.base = function() {
     var State = vumigo.states.State;
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
+    var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
+    var VotingExperienceQuiz = di.quiz.votingexperience.VotingExperienceQuiz;
+    var GroupCQuiz = di.quiz.groupc.GroupCQuiz;
     var PushMessageApi = di.pushmessage.PushMessageApi;
     var _ = require('lodash');
 
@@ -1458,6 +1366,7 @@ di.base = function() {
 
     var BaseDiApp = App.extend(function(self, start_state_name) {
         App.call(self, start_state_name, {AppStates: DiAppStates});
+        var $ = self.$;
         self.push_api = new PushMessageApi(self.im,self);
 
         self.init = function() {
@@ -1553,6 +1462,73 @@ di.base = function() {
                 next: self.start_state_name
             });
         });
+
+        self.get_event = function(field) {
+            return {
+                //Needs to be saved when FreeText is served
+                'im state:enter': function() {
+                self.contact.extra['it_'+field] = self.get_date_string();
+                return self
+                    .im.contacts.save(self.contact)
+                    .then(function() {
+                        return self.im.metrics.fire.inc('total.push.sent');
+                    });
+                }
+            };
+        };
+
+        self.get_quiz_conversation = function(name,quiz,field) {
+            return new ChoiceState(name, {
+                question: $('VIP wants to know if you voted?'),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No'))
+                ],
+                events: self.get_event(field),
+                next: function(choice) {
+                    self.contact.extra[field+'_reply'] = choice.value;
+                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+
+                    return self
+                        .im.contacts.save(self.contact)
+                        .then(function() {
+                            return quiz.answer('did_you_vote',choice.value);
+                        })
+                        .then(function() {
+                            return self.im.metrics.fire.inc('total.push.replies');
+                        })
+                        .then(function() {
+                            if (choice.value == 'yes') {
+                                return quiz.get_next_quiz_state();
+                            } else {
+                                return 'states:push:thanks';
+                            }
+                        });
+                }
+            });
+        };
+
+        self.quizzes =  {};
+        self.quizzes.votingexperience = new VotingExperienceQuiz(self);
+        self.quizzes.groupc = new GroupCQuiz(self);
+
+        self.states.add('states:push:voting_turnout',function(name) {
+            var field = self.push_api.get_push_field('voting_turnout',1);
+            return self.get_quiz_conversation(name,self.quizzes.votingexperience,field);
+        });
+
+        self.states.add('states:push:groupcquiz',function(name) {
+            var field = self.push_api.get_push_field('group_c_turnout',1);
+            return self.get_quiz_conversation(name,self.quizzes.groupc,field);
+        });
+
+        self.states.add('states:push:thanks',function(name) {
+            return new EndState(name,{
+                text: $('Thanks for your response'),
+                next: 'states:push:end'
+            }) ;
+        });
+
     });
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
@@ -1592,7 +1568,7 @@ di.app = function() {
         BaseDiApp.call(self, 'states:start');
         var $ = self.$;
 
-        self.quizzes =  {};
+        self.quizzes =  self.quizzes || {};
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);

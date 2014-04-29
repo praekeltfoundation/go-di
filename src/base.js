@@ -5,6 +5,10 @@ di.base = function() {
     var State = vumigo.states.State;
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
+    var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
+    var VotingExperienceQuiz = di.quiz.votingexperience.VotingExperienceQuiz;
+    var GroupCQuiz = di.quiz.groupc.GroupCQuiz;
     var PushMessageApi = di.pushmessage.PushMessageApi;
     var _ = require('lodash');
 
@@ -25,6 +29,7 @@ di.base = function() {
 
     var BaseDiApp = App.extend(function(self, start_state_name) {
         App.call(self, start_state_name, {AppStates: DiAppStates});
+        var $ = self.$;
         self.push_api = new PushMessageApi(self.im,self);
 
         self.init = function() {
@@ -120,6 +125,73 @@ di.base = function() {
                 next: self.start_state_name
             });
         });
+
+        self.get_event = function(field) {
+            return {
+                //Needs to be saved when FreeText is served
+                'im state:enter': function() {
+                self.contact.extra['it_'+field] = self.get_date_string();
+                return self
+                    .im.contacts.save(self.contact)
+                    .then(function() {
+                        return self.im.metrics.fire.inc('total.push.sent');
+                    });
+                }
+            };
+        };
+
+        self.get_quiz_conversation = function(name,quiz,field) {
+            return new ChoiceState(name, {
+                question: $('VIP wants to know if you voted?'),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No'))
+                ],
+                events: self.get_event(field),
+                next: function(choice) {
+                    self.contact.extra[field+'_reply'] = choice.value;
+                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+
+                    return self
+                        .im.contacts.save(self.contact)
+                        .then(function() {
+                            return quiz.answer('did_you_vote',choice.value);
+                        })
+                        .then(function() {
+                            return self.im.metrics.fire.inc('total.push.replies');
+                        })
+                        .then(function() {
+                            if (choice.value == 'yes') {
+                                return quiz.get_next_quiz_state();
+                            } else {
+                                return 'states:push:thanks';
+                            }
+                        });
+                }
+            });
+        };
+
+        self.quizzes =  {};
+        self.quizzes.votingexperience = new VotingExperienceQuiz(self);
+        self.quizzes.groupc = new GroupCQuiz(self);
+
+        self.states.add('states:push:voting_turnout',function(name) {
+            var field = self.push_api.get_push_field('voting_turnout',1);
+            return self.get_quiz_conversation(name,self.quizzes.votingexperience,field);
+        });
+
+        self.states.add('states:push:groupcquiz',function(name) {
+            var field = self.push_api.get_push_field('group_c_turnout',1);
+            return self.get_quiz_conversation(name,self.quizzes.groupc,field);
+        });
+
+        self.states.add('states:push:thanks',function(name) {
+            return new EndState(name,{
+                text: $('Thanks for your response'),
+                next: 'states:push:end'
+            }) ;
+        });
+
     });
 
     var DiSmsApp = BaseDiApp.extend(function(self) {
