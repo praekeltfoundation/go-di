@@ -4,6 +4,7 @@ di.quiz.votingexperience = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
+    var EndState = vumigo.states.EndState;
 
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
@@ -13,26 +14,38 @@ di.quiz.votingexperience = function() {
         var $ = app.$;
 
         //Turn out question to determine if push should proceed
+        //Need to refactor.
         app.states.add('states:push:voting_turnout',function(name) {
+            //Needs to be saved on reply
+            var field = app.push_api.get_push_field('voting_turnout',1);
             return new ChoiceState(name, {
                 question: $('VIP wants to know if you voted?'),
                 choices: [
                     new Choice('yes',$('Yes')),
                     new Choice('no',$('No'))
                 ],
+                events: {
+                    //Needs to be saved when FreeText is served
+                    'im state:enter': function() {
+                        app.contact.extra['it_'+field] = app.get_date_string();
+                        return app
+                            .im.contacts.save(app.contact)
+                            .then(function() {
+                                return app.im.metrics.fire.inc('total.push.sent');
+                            });
+                    }
+                },
                 next: function(choice) {
-                    //Needs to be saved on reply
-                    var field = self.push_api.get_push_field('voting_turnout',1);
-                    self.contact.extra[field+'_reply'] = choice.value;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+                    app.contact.extra[field+'_reply'] = choice.value;
+                    app.contact.extra['it_'+field+'_reply'] = app.get_date_string();
 
-                    return self
-                        .im.contacts.save(self.contact)
+                    return app
+                        .im.contacts.save(app.contact)
                         .then(function() {
                             return self.answer('did_you_vote',choice.value);
                         })
                         .then(function() {
-                            return self.im.metrics.fire.inc('total.push.replies');
+                            return app.im.metrics.fire.inc('total.push.replies');
                         })
                         .then(function() {
                             if (choice.value == 'yes') {

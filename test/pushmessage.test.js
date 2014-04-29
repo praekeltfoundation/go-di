@@ -1035,7 +1035,9 @@ describe("app", function() {
                     push_end_date: '6 May, 2014',
                     billing_code: 'incentive',
                     can_push: true,
-                    delivery_class: 'sms'
+                    delivery_class: 'sms',
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014'
                 });
         });
 
@@ -1845,7 +1847,7 @@ describe("app", function() {
                 });
             });
 
-
         });
+
     });
 });

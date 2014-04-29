@@ -23,11 +23,6 @@ di.base = function() {
         };
     });
 
-
-
-    //If it is a new quiz - go there
-    //Else continue.
-
     var BaseDiApp = App.extend(function(self, start_state_name) {
         App.call(self, start_state_name, {AppStates: DiAppStates});
         self.push_api = new PushMessageApi(self.im,self);
