@@ -75,13 +75,12 @@ di.pushmessage = function() {
 
             //If part of phase 2 rules
             if (app.is(app.contact.extra.monitoring_group)
-                && app.get_date() <= app.im.config.push_end_date) {
-
+                && app.get_date() <= new Date(app.im.config.push_end_date)) {
                 return self.is_push_day('panel',self.panel_dates,1)
                     || self.is_push_day('panel',self.panel_dates,2)
                     || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
                     || self.is_push_day('panel',self.panel_dates,3)
-                    || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2)
+                    || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2);
             } else {
                 return self.is_voting_experience_quiz_day()
                 || self.is_group_c_quiz_day();
@@ -105,11 +104,11 @@ di.pushmessage = function() {
 
 
         self.is_voting_experience_quiz_day = function() {
-            return self.is_push_day('voting_turnout', app.im.config.voting_turnout_push_day,1);
+            return self.is_push_day('voting_turnout', new Date(app.im.config.voting_turnout_push_day));
         };
 
         self.is_group_c_quiz_day = function() {
-            return self.is_push_day('group_c', app.im.config.group_c_push_day,1);
+            return self.is_push_day('group_c', new Date(app.im.config.group_c_push_day));
         };
 
         self.get_push_msg = function() {
@@ -169,10 +168,18 @@ di.pushmessage = function() {
         };
 
         self.is_push_day = function(type,dates,num) {
-            return (
-                _.isUndefined(app.contact.extra['it_'+type+'_round_'+num])
-                    && self.is_date(dates[num-1])
-                );
+            if (_.isArray(dates)) {
+                return (
+                    _.isUndefined(app.contact.extra['it_'+type+'_round_'+num])
+                        && self.is_date(dates[num-1])
+                    );
+            } else {
+                return (
+                    _.isUndefined(app.contact.extra['it_'+type+'_round_1'])
+                        && self.is_date(dates)
+                    );
+            }
+
         };
 
         self.get_push_field = function(type,num) {

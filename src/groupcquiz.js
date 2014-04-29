@@ -3,8 +3,6 @@ di.quiz.groupc = function() {
     var vumigo = require('vumigo_v02');
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    var MenuState = vumigo.states.MenuState;
-    var utils = vumigo.utils;
     var EndState = vumigo.states.EndState;
 
     var GroupCQuiz = QuizStates.extend(function(self,app) {
@@ -15,7 +13,7 @@ di.quiz.groupc = function() {
         var $ = app.$;
 
         //Turn out question to determine if push should proceed
-        self.states.add('states:push:group_c_turnout',function(name) {
+        app.states.add('states:push:group_c_turnout',function(name) {
             return new ChoiceState(name, {
                 question: $('VIP wants to know if you voted?'),
                 choices: [
@@ -23,23 +21,34 @@ di.quiz.groupc = function() {
                     new Choice('no',$('No'))
                 ],
                 next: function(choice) {
+                    //Needs to be saved on reply
+                    var field = self.push_api.get_push_field('voting_turnout',1);
+                    self.contact.extra[field+'_reply'] = choice.value;
+                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+
                     return self
-                        .answer('did_you_vote',choice.value)
+                        .im.contacts.save(self.contact)
+                        .then(function() {
+                            return self.answer('did_you_vote',choice.value);
+                        })
+                        .then(function() {
+                            return self.im.metrics.fire.inc('total.push.replies');
+                        })
                         .then(function() {
                             if (choice.value == 'yes') {
                                 return self.get_next_quiz_state();
                             } else {
-                                return 'states:push:thanks';
+                                return 'states:push:group_c_turnout:thanks';
                             }
                         });
                 }
             });
         });
 
-        self.states.add('states:push:thanks',function(name) {
+        app.states.add('states:push:group_c_turnout:thanks',function(name) {
             return new EndState(name,{
                 text: $('Thanks for your response'),
-                next: 'states:start'
+                next: 'states:push:end'
             }) ;
         });
 

@@ -102,12 +102,12 @@ describe("app", function() {
                     panel_messages: [0, 1, 4],
                     thermometer_messages: [2, 3],
                     panel_push_start: app.get_date_string(),
-                    push_end_date: app.get_date().addDays(7).toISOString(),
+                    push_end_date: '6 May, 2014',
                     billing_code: 'incentive',
                     can_push: true,
                     delivery_class: 'sms',
-                    election_quiz_date: app.get_date_string(),
-                    other_quiz_date: app.get_date_string()
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014'
                 });
         });
 
@@ -929,6 +929,12 @@ describe("app", function() {
             });
 
         });
+
+        describe("when it is voting experience quiz day", function() {
+           it("should take the user to the voter turn_out push",function() {
+
+           });
+        });
     });
 
     describe("Push Message app", function() {
@@ -1026,7 +1032,7 @@ describe("app", function() {
                     panel_messages: [0, 1, 4],
                     thermometer_messages: [2, 3],
                     panel_push_start: app.get_date_string(),
-                    push_end_date: app.get_date().addDays(7).toISOString(),
+                    push_end_date: '6 May, 2014',
                     billing_code: 'incentive',
                     can_push: true,
                     delivery_class: 'sms'
