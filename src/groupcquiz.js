@@ -43,80 +43,29 @@ di.quiz.groupc = function() {
             }) ;
         });
 
-        self.add_question('queue_wait',function(name) {
+        self.add_question('colours',function(name) {
             return new ChoiceState(name, {
-                question: $('How long are voters waiting in queue b4 voting?'),
+                question: $('What colours were the ballots at your voting station?'),
                 choices: [
-                    new Choice('less_than_10',$('less than 10min')),
-                    new Choice('10-30_min',$('10-30 min')),
-                    new Choice('30min_1hr',$('30min to 1hr')),
-                    new Choice('more_than_1hr',$('more than 1hr')),
+                    new Choice('white_pink',$('white&pink')),
+                    new Choice('green_yellow',$('green&yellow')),
+                    new Choice('pink_blue',$('pink&blue')),
+                    new Choice('blue_yellow',$('blue&yellow')),
+                    new Choice('none_of_above',$('none of above')),
                     new Choice('skip',$('skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('queue_wait',content);
+                    return self.next_quiz('colours',content);
                 }
-            });
-        });
-
-        self.add_question('station_materials',function(name) {
-            return new ChoiceState(name, {
-                question: $('Did the voting station have all necessary materials and working equipment?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('dont_know',$("Don't know")),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('station_materials',content);
-                }
-            });
-        });
-
-        self.add_question('performance_iec_officials',function(name) {
-            return new ChoiceState(name, {
-                question: $('How would you rate the overall performance of IEC officials at the voting station?'),
-                choices: [
-                    new Choice('excellent',$('Excellent')),
-                    new Choice('good',$('Good')),
-                    new Choice('fair',$('Fair')),
-                    new Choice('poor',$('Poor')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('performance_iec_officials',content);
-                }
-            });
-        });
-
-        self.add_question('party_campaigning_observation',function(name) {
-            return new ChoiceState(name,{
-                question: $('Did you observe party agents campaigning outside of the voting station?'),
-                choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('party_campaigning_observation',content);
-                }
-            });
-        });
-
-        self.add_continue('continue',function(name) {
-            return new MenuState(name,{
-                question: $('Would you like to continue answering questions? There are 12 in total.'),
-                choices: [
-                    new Choice(self.get_next_quiz_state(true),$('Continue')),
-                    new Choice('states:menu',$('Main Menu'))
-                ]
             });
         });
 
         //This may cause problems with the push app.
         self.add_next('end',function(name) {
-            return app.states.create("states:menu");
+            return new EndState(name, {
+                text: $('If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS'),
+                next: "states:menu"
+            });
         });
 
         self.add_begin('begin');
