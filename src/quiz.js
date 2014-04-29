@@ -63,7 +63,6 @@ di.quiz = function() {
              * */
             app.states.add(self.begin,function(name,opts) {
                 if (self.is_complete()) {
-                    console.log(self.next);
                     if (_.isUndefined(self.next)) {
                         return app.states.create('states:quiz:end');
                     } else {

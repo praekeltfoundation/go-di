@@ -9,7 +9,7 @@ var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 var _ = require('lodash');
 
 describe("app", function() {
-    describe.only("Mxit Voting Experience Quiz Push App", function() {
+    describe("Mxit Voting Experience Quiz Push App", function() {
         var app;
         var tester;
 
@@ -256,16 +256,8 @@ describe("app", function() {
         });
 
         var quiz_states = [
-            'states:quiz:votingexperience:adequate_privacy',
-            'states:quiz:votingexperience:intimidation_incidents',
-            'states:quiz:votingexperience:violence_observation',
-            'states:quiz:votingexperience:environment_report',
-            'states:quiz:votingexperience:party_campaigning_observation',
-            'states:quiz:votingexperience:performance_iec_officials',
-            'states:quiz:votingexperience:station_materials',
-            'states:quiz:votingexperience:queue_wait'
+            'states:quiz:groupc:colours'
         ];
-
 
         /**
          * Returns a n subset of the questions to be used as the answered questions.
@@ -280,10 +272,10 @@ describe("app", function() {
         };
 
 
-        describe("when it is the day for the voting turnout quiz",function() {
+        describe("when it is the day for the group c quiz",function() {
             beforeEach(function(){
                 app.get_date = function() {
-                    var d = new Date('7 May, 2014');
+                    var d = new Date('8 May, 2014');
                     d.setHours(0,0,0,0);
                     return d;
                 };
@@ -301,7 +293,8 @@ describe("app", function() {
                         });
                     });
             });
-            it("should start the voting turnout conversation",function() {
+
+            it("should start the group c turnout conversation",function() {
                 return tester
                     .setup.user.addr('+2772')
                     .setup.user.state('states:menu')
@@ -310,7 +303,7 @@ describe("app", function() {
                         inbound_push_trigger: true
                     })
                     .check.interaction({
-                        state:'states:push:voting_turnout',
+                        state:'states:push:group_c_turnout',
                         reply:[
                             'VIP wants to know if you voted?',
                             '1. Yes',
@@ -330,23 +323,23 @@ describe("app", function() {
                     })
                     .check(function(api) {
                         var contact = _.find(api.contacts.store,{msisdn:'+2772'});
-                        assert.equal(contact.extra.it_voting_turnout_round_1,app.get_date_string());
+                        assert.equal(contact.extra.it_group_c_turnout_round_1,app.get_date_string());
                     })
                     .run();
             });
 
-            describe("when the user replies to the voting turnout conversation with 'Yes'",function() {
+            describe("when the user replies to the group c conversation with 'Yes'",function() {
                 beforeEach(function() {
                     tester
                         .setup.user.addr('+2772')
-                        .setup.user.state('states:push:voting_turnout')
+                        .setup.user.state('states:push:group_c_turnout')
                         .input('1');
                 });
 
-                it("should start the voting turnout quiz",function() {
+                it("should start the group c quiz",function() {
                     return tester
                         .check.user(function(user) {
-                            assert.equal(user.state.name.indexOf('states:quiz:votingexperience')>= 0, true);
+                            assert.equal(user.state.name.indexOf('states:quiz:groupc')>= 0, true);
                         })
                         .run();
                 });
@@ -355,7 +348,7 @@ describe("app", function() {
                     return tester
                         .check(function(api) {
                             var contact = _.find(api.contacts.store,{msisdn:'+2772'});
-                            assert.equal(contact.extra.voting_turnout_round_1_reply,'yes');
+                            assert.equal(contact.extra.group_c_turnout_round_1_reply,'yes');
                         })
                         .run();
                 });
@@ -365,7 +358,7 @@ describe("app", function() {
                 it("should serve the user a random quiz question",function() {
                     return tester
                         .setup.user.addr('+2772')
-                        .setup.user.state('states:push:voting_turnout')
+                        .setup.user.state('states:push:group_c_turnout')
                         .input('2')
                         .check.interaction({
                             state: 'states:push:thanks'
@@ -375,20 +368,20 @@ describe("app", function() {
             });
 
             describe("when the user finishes the quiz",function() {
-                it("should take the user to the end of the quiz",function() {
+                it.only("should take the user to the end of the quiz",function() {
                     return tester
                         .setup.user.addr('+2772')
                         .setup.user({
-                            state: 'states:quiz:votingexperience:begin',
-                            answers: get_answered_quiz_states(8)
+                            state: 'states:quiz:groupc:begin',
+                            answers: get_answered_quiz_states(1)
                         })
                         .check.interaction({
-                            state:'states:quiz:end'
+                            state: 'states:quiz:groupc:end',
+                            reply: 'If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS'
                         })
                         .run();
                 });
             });
-
 
         });
     });

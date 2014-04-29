@@ -180,7 +180,7 @@ di.base = function() {
             return self.get_quiz_conversation(name,self.quizzes.votingexperience,field);
         });
 
-        self.states.add('states:push:groupcquiz',function(name) {
+        self.states.add('states:push:group_c_turnout',function(name) {
             var field = self.push_api.get_push_field('group_c_turnout',1);
             return self.get_quiz_conversation(name,self.quizzes.groupc,field);
         });
