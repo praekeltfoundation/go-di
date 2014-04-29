@@ -8,6 +8,7 @@ di.quiz = function() {
 
         self.continue_interval = opts.continue_interval;
         self.name = opts.name;
+        self.next = opts.next;
         self.questions = [];
 
         self.is_complete = function() {
@@ -62,7 +63,12 @@ di.quiz = function() {
              * */
             app.states.add(self.begin,function(name,opts) {
                 if (self.is_complete()) {
-                    return app.states.create('states:quiz:end');
+                    console.log(self.next);
+                    if (_.isUndefined(self.next)) {
+                        return app.states.create('states:quiz:end');
+                    } else {
+                        return app.states.create(self.next);
+                    }
                 } else {
                     return self.create.random(opts);
                 }

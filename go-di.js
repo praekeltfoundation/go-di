@@ -102,6 +102,7 @@ di.quiz = function() {
 
         self.continue_interval = opts.continue_interval;
         self.name = opts.name;
+        self.next = opts.next;
         self.questions = [];
 
         self.is_complete = function() {
@@ -156,7 +157,12 @@ di.quiz = function() {
              * */
             app.states.add(self.begin,function(name,opts) {
                 if (self.is_complete()) {
-                    return app.states.create('states:quiz:end');
+                    console.log(self.next);
+                    if (_.isUndefined(self.next)) {
+                        return app.states.create('states:quiz:end');
+                    } else {
+                        return app.states.create(self.next);
+                    }
                 } else {
                     return self.create.random(opts);
                 }
@@ -352,10 +358,6 @@ di.quiz.vip = function() {
                     new Choice('states:menu',$('Main Menu'))
                 ]
             });
-        });
-
-        self.add_next('end',function(name) {
-            return app.states.create("states:menu");
         });
 
         self.add_question('question5',function(name) {
@@ -845,10 +847,6 @@ di.quiz.whatsup = function() {
             });
         });
 
-        self.add_next('end',function(name) {
-            return app.states.create("states:menu");
-        });
-
         self.add_begin('begin');
     });
 
@@ -867,7 +865,8 @@ di.quiz.votingexperience = function() {
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
             name:'votingexperience',
-            continue_interval: 5
+            continue_interval: 5,
+            next: 'push:states:end'
         });
         var $ = app.$;
 

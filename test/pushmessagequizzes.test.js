@@ -176,7 +176,7 @@ describe("app", function() {
                         .setup.user.state('states:push:voting_turnout')
                         .input('2')
                         .check.interaction({
-                            state: 'states:push:voting_turnout:thanks'
+                            state: 'states:push:thanks'
                         })
                         .run();
                 });
@@ -191,7 +191,7 @@ describe("app", function() {
                             answers: get_answered_quiz_states(8)
                         })
                         .check.interaction({
-                            state:'states:quiz:end'
+                            state:'states:menu'
                         })
                         .run();
                 });
@@ -201,7 +201,7 @@ describe("app", function() {
         });
     });
 
-    describe.only("Mxit Group C Quiz Push App", function() {
+    describe("Mxit Group C Quiz Push App", function() {
         var app;
         var tester;
 

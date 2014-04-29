@@ -189,10 +189,6 @@ di.quiz.whatsup = function() {
             });
         });
 
-        self.add_next('end',function(name) {
-            return app.states.create("states:menu");
-        });
-
         self.add_begin('begin');
     });
 
