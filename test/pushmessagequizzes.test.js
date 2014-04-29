@@ -368,7 +368,7 @@ describe("app", function() {
             });
 
             describe("when the user finishes the quiz",function() {
-                it.only("should take the user to the end of the quiz",function() {
+                it("should take the user to the end of the quiz",function() {
                     return tester
                         .setup.user.addr('+2772')
                         .setup.user({
