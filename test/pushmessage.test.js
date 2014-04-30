@@ -929,12 +929,6 @@ describe("app", function() {
             });
 
         });
-
-        describe("when it is voting experience quiz day", function() {
-           it("should take the user to the voter turn_out push",function() {
-
-           });
-        });
     });
 
     describe("Push Message app", function() {
