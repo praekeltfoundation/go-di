@@ -158,7 +158,7 @@ describe("app", function() {
             });
 
             describe("when the user replies to the voting turnout conversation with 'No'",function() {
-                it("should serve the user a random quiz question",function() {
+                it("should thank the user",function() {
                     return tester
                         .setup.user.addr('m123')
                         .setup.user.state('states:push:voting_turnout')

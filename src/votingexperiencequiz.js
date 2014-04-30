@@ -126,7 +126,7 @@ di.quiz.votingexperience = function() {
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz(7,content);
+                    return self.next_quiz('intimidation_incidents',content);
                 }
             });
         });
