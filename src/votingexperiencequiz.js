@@ -9,7 +9,7 @@ di.quiz.votingexperience = function() {
         QuizStates.call(self,app,{
             name:'votingexperience',
             continue_interval: 5,
-            next: 'push:states:end'
+            next: 'states:push:end'
         });
         var $ = app.$;
 

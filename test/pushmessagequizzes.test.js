@@ -255,23 +255,6 @@ describe("app", function() {
                 });
         });
 
-        var quiz_states = [
-            'states:quiz:groupc:colours'
-        ];
-
-        /**
-         * Returns a n subset of the questions to be used as the answered questions.
-         * */
-        var get_answered_quiz_states = function(n) {
-            var states = quiz_states.slice(0,n);
-            var answers = {};
-            _.forEach(states,function(value) {
-                answers[value] = '1';
-            });
-            return answers;
-        };
-
-
         describe("when it is the day for the group c quiz",function() {
             beforeEach(function(){
                 app.get_date = function() {
@@ -367,17 +350,30 @@ describe("app", function() {
                 });
             });
 
-            describe("when the user finishes the quiz",function() {
-                it("should take the user to the end of the quiz",function() {
-                    return tester
+            describe("when the user answers the colours question",function() {
+                beforeEach(function() {
+                    tester
                         .setup.user.addr('+2772')
                         .setup.user({
-                            state: 'states:quiz:groupc:begin',
-                            answers: get_answered_quiz_states(1)
+                            state: 'states:quiz:groupc:begin'
                         })
+                        .input('1');
+                });
+
+                it("should take the user to the end of the quiz",function() {
+                    return tester
                         .check.interaction({
                             state: 'states:quiz:groupc:end',
                             reply: 'If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS'
+                        })
+                        .run();
+                });
+
+                it("should save the answer to the quiz",function() {
+                    return tester
+                        .check(function(api){
+                            var contact = _.find(api.contacts.store,{msisdn:'+2772'});
+                            assert.equal(contact.extra.groupc_question_colours,'white_pink');
                         })
                         .run();
                 });

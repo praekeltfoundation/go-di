@@ -33,7 +33,7 @@ di.quiz.groupc = function() {
         self.add_next('end',function(name) {
             return new EndState(name, {
                 text: $('If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS'),
-                next: "states:menu"
+                next:  'states:push:end'
             });
         });
 
