@@ -1466,18 +1466,13 @@ di.base = function() {
             });
         });
 
-        self.get_event = function(field) {
-            return {
-                //Needs to be saved when FreeText is served
-                'im state:enter': function() {
-                self.contact.extra['it_'+field] = self.get_date_string();
-                return self
-                    .im.contacts.save(self.contact)
-                    .then(function() {
-                        return self.im.metrics.fire.inc('total.push.sent');
-                    });
-                }
-            };
+        self.save_push_trigger_fields = function(field) {
+            self.contact.extra['it_'+field] = self.get_date_string();
+            return self
+                .im.contacts.save(self.contact)
+                .then(function() {
+                    return self.im.metrics.fire.inc('total.push.sent');
+                });
         };
 
         self.get_quiz_conversation = function(name,quiz,field) {
@@ -1487,7 +1482,11 @@ di.base = function() {
                     new Choice('yes',$('Yes')),
                     new Choice('no',$('No'))
                 ],
-                events: self.get_event(field),
+                events: {
+                    'im state:enter': function() {
+                        return self.save_push_trigger_fields(field);
+                    }
+                },
                 next: function(choice) {
                     self.contact.extra[field+'_reply'] = choice.value;
                     self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
