@@ -8,6 +8,7 @@ di.quiz = function() {
 
         self.continue_interval = opts.continue_interval;
         self.name = opts.name;
+        self.next = opts.next;
         self.questions = [];
 
         self.is_complete = function() {
@@ -55,13 +56,18 @@ di.quiz = function() {
                 self.name,
                 name
             ].join(':');
+
             /*
              * This needs to be part of the app for testing.
              * My test cases wont initialize to it otherwise.
              * */
             app.states.add(self.begin,function(name,opts) {
                 if (self.is_complete()) {
-                    return app.states.create('states:quiz:end');
+                    if (_.isUndefined(self.next)) {
+                        return app.states.create('states:quiz:end');
+                    } else {
+                        return app.states.create(self.next);
+                    }
                 } else {
                     return self.create.random(opts);
                 }

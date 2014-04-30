@@ -92,10 +92,6 @@ di.quiz.vip = function() {
             });
         });
 
-        self.add_next('end',function(name) {
-            return app.states.create("states:menu");
-        });
-
         self.add_question('question5',function(name) {
             return new ChoiceState(name, {
                 question: $('During the past year, has your community had demonstrations or protests?'),

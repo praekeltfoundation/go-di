@@ -106,10 +106,12 @@ describe("app", function() {
                     panel_messages: [0, 1, 4],
                     thermometer_messages: [2, 3],
                     panel_push_start: app.get_date_string(),
-                    push_end_date: app.get_date().addDays(7).toISOString(),
+                    push_end_date: '6 May, 2014',
                     billing_code: 'incentive',
                     can_push: true,
-                    delivery_class: 'sms'
+                    delivery_class: 'sms',
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014'
                 });
         });
 
@@ -1081,10 +1083,12 @@ describe("app", function() {
                     panel_messages: [0, 1, 4],
                     thermometer_messages: [2, 3],
                     panel_push_start: app.get_date_string(),
-                    push_end_date: app.get_date().addDays(7).toISOString(),
+                    push_end_date: '6 May, 2014',
                     billing_code: 'incentive',
                     can_push: true,
-                    delivery_class: 'sms'
+                    delivery_class: 'sms',
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014'
                 });
         });
 
@@ -1947,7 +1951,7 @@ describe("app", function() {
                         .run();
                 });
             });
-
         });
+
     });
 });

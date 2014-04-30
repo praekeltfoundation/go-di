@@ -78,15 +78,8 @@ di.pushmessage = function() {
         };
 
         self.should_push = function() {
-            //If user is not part of monitoring group then return false
-            if ( !app.is(app.im.config.can_push)
-                || !app.is(app.contact.extra.monitoring_group)
-                || app.get_date() > app.im.config.push_end_date) {
-                return false;
-            }
 
             //Check if delivery class is the same
-            //Check whether user is ussd - if it is, then also check USSD channel.
             if (app.is_delivery_class("sms") || app.is_delivery_class("ussd")) {
                 if (app.contact.extra.delivery_class !== 'ussd') {
                     return false;
@@ -95,12 +88,52 @@ di.pushmessage = function() {
                 return false;
             }
 
-            //If it is one of the push days;
-            return self.is_push_day('panel',self.panel_dates,1)
-                || self.is_push_day('panel',self.panel_dates,2)
-                || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
-                || self.is_push_day('panel',self.panel_dates,3)
-                || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2);
+            //If the app can't push then return false
+            if ( !app.is(app.im.config.can_push)) {
+                return false;
+            }
+
+            if (app.is(app.contact.extra.monitoring_group)
+                && app.get_date() <= new Date(app.im.config.push_end_date)) {
+                //Phase 2
+                return self.is_push_day('panel',self.panel_dates,1)
+                    || self.is_push_day('panel',self.panel_dates,2)
+                    || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,1)
+                    || self.is_push_day('panel',self.panel_dates,3)
+                    || self.is_push_day('pre_thermometer',self.pre_thermometer_dates,2);
+            } else {
+                //Phase 3
+                return self.is_voting_experience_quiz_day()
+                || self.should_receive_group_c_quiz();
+            }
+        };
+
+        self.should_receive_group_c_quiz = function() {
+            return self.is_group_c_quiz_day() && self.in_group_c();
+        };
+
+        self.get_push_state = function() {
+            if (self.is_voting_experience_quiz_day()) {
+                return 'states:push:voting_turnout';
+            } else if (self.should_receive_group_c_quiz()) {
+                return 'states:push:group_c_turnout';
+            } else {
+                return 'states:push:start';
+            }
+        };
+
+        self.in_group_c = function() {
+            return app.contact.extra.C1 ==='yes'
+                || app.contact.extra.C2 ==='yes'
+                || app.contact.extra.C3 ==='yes' ;
+        };
+
+        self.is_voting_experience_quiz_day = function() {
+            return self.is_push_day('voting_turnout', new Date(app.im.config.voting_turnout_push_day));
+        };
+
+        self.is_group_c_quiz_day = function() {
+            return self.is_push_day('group_c', new Date(app.im.config.group_c_push_day));
         };
 
         self.get_push_msg = function() {
@@ -160,10 +193,17 @@ di.pushmessage = function() {
         };
 
         self.is_push_day = function(type,dates,num) {
-            return (
-                _.isUndefined(app.contact.extra['it_'+type+'_round_'+num])
-                    && self.is_date(dates[num-1])
-                );
+            if (_.isArray(dates)) {
+                return (
+                    _.isUndefined(app.contact.extra['it_'+type+'_round_'+num])
+                        && self.is_date(dates[num-1])
+                    );
+            } else {
+                return (
+                    _.isUndefined(app.contact.extra['it_'+type+'_round_1'])
+                        && self.is_date(dates)
+                    );
+            }
         };
 
         self.get_push_field = function(type,num) {
@@ -179,7 +219,6 @@ di.pushmessage = function() {
             if (_.isNull(app.im.user.lang)) {
                 app.contact.extra.lang = 'default_en';
                 return app.im.user.set_lang('en');
-
             } else if (_.isUndefined(app.contact.extra.lang)) {
                 app.contact.extra.lang = app.im.user.lang;
                 return Q();
