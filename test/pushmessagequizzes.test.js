@@ -63,7 +63,6 @@ describe("app", function() {
             'states:quiz:votingexperience:queue_wait'
         ];
 
-
         /**
          * Returns a n subset of the questions to be used as the answered questions.
          * */
@@ -92,7 +91,8 @@ describe("app", function() {
                             extra : {
                                 is_registered: 'true',
                                 delivery_class: 'mxit',
-                                new_week_day: 'T'
+                                new_week_day: 'T',
+                                C0: 'yes'
                             }
                         });
                     });
@@ -248,7 +248,7 @@ describe("app", function() {
                                 is_registered: 'true',
                                 delivery_class: 'mxit',
                                 new_week_day: 'T',
-                                group: 'C1'
+                                C1: 'yes'
                             }
                         });
                     });
@@ -373,7 +373,7 @@ describe("app", function() {
                                 is_registered: 'true',
                                 delivery_class: 'mxit',
                                 new_week_day: 'T',
-                                group: 'B'
+                                B: 'yes'
                             }
                         });
                     });

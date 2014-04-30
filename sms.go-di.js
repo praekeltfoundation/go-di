@@ -1210,14 +1210,18 @@ di.pushmessage = function() {
             } else {
                 //Phase 3
                 return self.is_voting_experience_quiz_day()
-                || self.is_group_c_quiz_day();
+                || self.should_receive_group_c_quiz();
             }
+        };
+
+        self.should_receive_group_c_quiz = function() {
+            return self.is_group_c_quiz_day() && self.in_group_c();
         };
 
         self.get_push_state = function() {
             if (self.is_voting_experience_quiz_day()) {
                 return 'states:push:voting_turnout';
-            } else if (self.is_group_c_quiz_day() && self.in_group_c()) {
+            } else if (self.should_receive_group_c_quiz()) {
                 return 'states:push:group_c_turnout';
             } else {
                 return 'states:push:start';
@@ -1225,7 +1229,9 @@ di.pushmessage = function() {
         };
 
         self.in_group_c = function() {
-            return _.contains(app.contact.extra.group,'C');
+            return app.contact.extra.C1 ==='yes'
+                || app.contact.extra.C2 ==='yes'
+                || app.contact.extra.C3 ==='yes' ;
         };
 
         self.is_voting_experience_quiz_day = function() {
