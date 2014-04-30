@@ -189,7 +189,7 @@ describe("app", function() {
         });
     });
 
-    describe.only("Mxit Group C Quiz Push App", function() {
+    describe("Mxit Group C Quiz Push App", function() {
         var app;
         var tester;
 
