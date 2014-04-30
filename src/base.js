@@ -191,7 +191,6 @@ di.base = function() {
                 next: 'states:push:end'
             }) ;
         });
-
     });
 
     var DiSmsApp = BaseDiApp.extend(function(self) {

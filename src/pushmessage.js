@@ -97,7 +97,7 @@ di.pushmessage = function() {
         };
 
         self.in_group_c = function() {
-            return true;
+            return _.contains(app.contact.extra.group,'C');
         };
 
         self.is_voting_experience_quiz_day = function() {
@@ -176,7 +176,6 @@ di.pushmessage = function() {
                         && self.is_date(dates)
                     );
             }
-
         };
 
         self.get_push_field = function(type,num) {
