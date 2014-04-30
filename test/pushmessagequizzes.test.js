@@ -380,7 +380,8 @@ describe("app", function() {
             });
 
             it("should not send them to the group c push conversation",function() {
-                tester
+                return tester
+                    .setup.user.state('states:menu')
                     .setup.user.addr('m321')
                     .input({
                         content: null,

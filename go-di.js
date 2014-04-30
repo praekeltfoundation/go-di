@@ -975,7 +975,7 @@ di.quiz.votingexperience = function() {
 
         self.add_question('intimidation_incidents',function(name) {
             return new ChoiceState(name, {
-                question: $("How easy is it for your neighbors to find out if you voted?"),
+                question: $("Did you observe or hear about any incidents of intimidation in or around the polling station?"),
                 choices: [
                     new Choice('yes',$('Yes')),
                     new Choice('no',$('No')),
