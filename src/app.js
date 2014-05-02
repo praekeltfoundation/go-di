@@ -122,8 +122,11 @@ di.app = function() {
             });
 
             self.im.on('session:close', function(e) {
-                if (!self.should_send_dialback(e)) { return; }
-                return self.send_dialback();
+                if (self.should_send_dialback(e)) {
+                    return self.send_dialback();
+                } else if(self.should_send_quiz_dialback(e,'votingexperience')) {
+                    return self.send_quiz_dialback();
+                }
             });
 
             return self.im.contacts
@@ -146,6 +149,14 @@ di.app = function() {
                 && !self.is(self.contact.extra.register_sms_sent);
         };
 
+        self.should_send_quiz_dialback = function(e,quiz) {
+            return e.user_terminated
+                && self.is_delivery_class('ussd')
+                && self.is_registered()
+                && _.contains(self.im.user.state.name,quiz)
+                && !_.contains(self.im.user.state.name,'end');
+        };
+
         self.get_registration_sms = function() {
             return $([
                     "Thanks for volunteering to be a citizen reporter for the 2014 elections!",
@@ -162,6 +173,22 @@ di.app = function() {
                 .send_to_user({
                     endpoint: 'sms',
                     content: self.get_registration_sms()
+                })
+                .then(function() {
+                    self.contact.extra.register_sms_sent = 'true';
+                    return self.im.contacts.save(self.contact);
+                });
+        };
+
+        self.send_quiz_dialback = function() {
+            return self.im.outbound
+                .send_to_user({
+                    endpoint: 'sms',
+                    content: $([
+                        "Hi VIP! Make sure ur voice is heard.",
+                        "Please dial back in to *120*4729*1# to complete ur election experience questions!",
+                        "It's FREE. VIP: Voice!"
+                    ].join(' '))
                 })
                 .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
@@ -208,13 +235,27 @@ di.app = function() {
                 } else {
                     return self.states.create('states:register');
                 }
+            } else if (self.is_ussd_quiz_channel("votingexperience")) {
+                return self.states.create(self.quizzes.votingexperience.begin);
+            } else if (self.is_ussd_quiz_channel("groupc")){
+                if (self.push_api.in_group_c()) {
+                     return self.states.create(self.quizzes.groupc.begin);
+                } else {
+                    return self.states.create('states:noop');
+                }
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');
-            } else {
+
+            }  else {
                 return self.states.create('states:menu');
             }
         });
+
+        self.is_ussd_quiz_channel = function(quiz) {
+            return self.is_delivery_class('ussd')
+            && self.im.config.quiz === quiz;
+        };
 
         self.states.add('states:register', function(name) {
             return new ChoiceState(name, {

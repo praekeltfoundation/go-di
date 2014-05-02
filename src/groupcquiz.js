@@ -29,9 +29,20 @@ di.quiz.groupc = function() {
             });
         });
 
+        app.states.add('states:quiz:groupc:prompt',function(name) {
+            return new EndState(name,{
+                text: $([
+                    'Join thousands of other South Africans and report about ur voting experience!',
+                    'Dial *120*4729*2# to have ur voice count.'
+                ].join(' ')),
+                next: 'states:push:end'
+            });
+        });
+
         self.add_next('end',function(name) {
             return new EndState(name, {
-                text: $('If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS.Send to vipvoice2014@gmail.com'),
+                text: $('If your phone has a camera, pls mms us a photo of your inked finger to show your vote! ' +
+                    'U will be sent airtime for ur MMS.Send to vipvoice2014@gmail.com'),
                 next:  'states:push:end'
             });
         });
