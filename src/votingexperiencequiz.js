@@ -101,7 +101,8 @@ di.quiz.votingexperience = function() {
                 return new EndState(name,{
                     text: $([
                         "VIP: Voice thanks you for contributing to a free & fair election!"
-                    ].join(' '))
+                    ].join(' ')),
+                    next: 'states:start'
                 });
             }
         });

@@ -962,9 +962,7 @@ di.quiz.votingexperience = function() {
                     text: $([
                         "VIP: Voice thanks you for contributing to a free & fair election!"
                     ].join(' ')),
-                    next: function() {
-                        return 'states:noop';
-                    }
+                    next: 'states:start'
                 });
             }
         });
