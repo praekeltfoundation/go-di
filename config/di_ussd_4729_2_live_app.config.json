@@ -1,0 +1,12 @@
+{
+    "name": "di_ussd_4729_live_app",
+    "endpoints": {
+        "sms": {"delivery_class": "sms"}
+    },
+    "ushahidi_map": "https://godi.crowdmap.com/api",
+    "kv_group" : "di_live_app",
+    "channel" : "*120*4729*2#",
+    "display_results_date": "15 April, 2014",
+    "bypass_address": "true",
+    "quiz": "groupc"
+}
