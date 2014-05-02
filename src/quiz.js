@@ -164,6 +164,10 @@ di.quiz = function() {
             }
             return app.im.contacts.save(app.contact);
         };
+
+        self.get_prompt_state = function() {
+            return self.construct_state_name('prompt');
+        };
     });
 
     return {

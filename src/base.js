@@ -18,7 +18,6 @@ di.base = function() {
         var create =  self.create;
 
         self.create = function(name,opts) {
-
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
@@ -172,14 +171,23 @@ di.base = function() {
                             return self.im.metrics.fire.inc('total.push.replies');
                         })
                         .then(function() {
-                            if (choice.value == 'yes') {
-                                return quiz.get_next_quiz_state();
-                            } else {
-                                return 'states:push:thanks';
-                            }
+                            return self.get_next_quiz_conversation_state(quiz,choice.value);
                         });
                 }
             });
+        };
+
+
+        self.get_next_quiz_conversation_state = function(quiz,choice) {
+            if (choice === 'yes') {
+                if (self.im.config.delivery_class === 'sms') {
+                    return quiz.get_prompt_state();
+                } else if (self.im.config.delivery_class === 'mxit') {
+                    return quiz.get_next_quiz_state();
+                }
+            } else {
+                return 'states:push:thanks';
+            }
         };
 
         self.quizzes =  {};

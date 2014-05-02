@@ -15,5 +15,6 @@
     "panel_push_start": "17 April, 2014",
     "push_end_date": "18 April, 2014",
     "billing_code": "incentive",
-    "can_push": "true"
+    "can_push": "true",
+    "quiz":"votingexperience"
 }
