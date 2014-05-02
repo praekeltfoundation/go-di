@@ -867,6 +867,7 @@ describe("app", function() {
                         msisdn: '+2772',
                         extra : {
                             is_registered: 'true',
+                            register_sms_sent: 'true',
                             delivery_class: 'ussd',
                             new_week_day: 'T',
                             C0: 'yes'
@@ -927,7 +928,7 @@ describe("app", function() {
         describe("when the user finishes the quiz",function() {
             it("should thank the user",function() {
                 return tester
-                    .setup.user.addr('m123')
+                    .setup.user.addr('+2772')
                     .setup.user({
                         state: 'states:quiz:votingexperience:begin',
                         answers: get_answered_quiz_states(7)
@@ -935,6 +936,46 @@ describe("app", function() {
                     .input('1')
                     .check.interaction({
                         state:'states:quiz:votingexperience:end'
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user times out but has not completed the quiz",function() {
+            it("should send them a reminder prompt message",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user({
+                        state: 'states:quiz:votingexperience:begin',
+                        answers: get_answered_quiz_states(6)
+                    })
+                    .input.session_event('close')
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        var sms = smses[0];
+                        assert.equal(smses.length,1);
+                        assert.equal(sms.to_addr,'+2772');
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user times out but has completed the quiz and is on the thank you screen",function() {
+            it("should not send them a reminder prompt message",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user({
+                        state: 'states:quiz:votingexperience:begin',
+                        answers: get_answered_quiz_states(8)
+                    })
+                    .input.session_event('close')
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        assert.equal(smses.length,0);
                     })
                     .run();
             });

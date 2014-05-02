@@ -122,8 +122,11 @@ di.app = function() {
             });
 
             self.im.on('session:close', function(e) {
-                if (!self.should_send_dialback(e)) { return; }
-                return self.send_dialback();
+                if (self.should_send_dialback(e)) {
+                    return self.send_dialback();
+                } else if(self.should_send_quiz_dialback(e,'votingexperience')) {
+                    return self.send_quiz_dialback();
+                }
             });
 
             return self.im.contacts
@@ -146,6 +149,14 @@ di.app = function() {
                 && !self.is(self.contact.extra.register_sms_sent);
         };
 
+        self.should_send_quiz_dialback = function(e,quiz) {
+            return e.user_terminated
+                && self.is_delivery_class('ussd')
+                && self.is_registered()
+                && _.contains(self.im.user.state.name,quiz)
+                && !_.contains(self.im.user.state.name,'end');
+        };
+
         self.get_registration_sms = function() {
             return $([
                     "Thanks for volunteering to be a citizen reporter for the 2014 elections!",
@@ -162,6 +173,18 @@ di.app = function() {
                 .send_to_user({
                     endpoint: 'sms',
                     content: self.get_registration_sms()
+                })
+                .then(function() {
+                    self.contact.extra.register_sms_sent = 'true';
+                    return self.im.contacts.save(self.contact);
+                });
+        };
+
+        self.send_quiz_dialback = function() {
+            return self.im.outbound
+                .send_to_user({
+                    endpoint: 'sms',
+                    content: 'unknown'
                 })
                 .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
