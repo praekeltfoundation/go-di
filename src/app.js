@@ -184,7 +184,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: 'unknown'
+                    content: $([
+                        "Hi VIP! Make sure ur voice is heard.",
+                        "Please dial back in to *120*4729*1# to complete ur election experience questions!",
+                        "It's FREE. VIP: Voice!"
+                    ].join(' '))
                 })
                 .then(function() {
                     self.contact.extra.register_sms_sent = 'true';

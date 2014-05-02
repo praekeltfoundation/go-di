@@ -157,7 +157,7 @@ describe("app", function() {
             });
 
 
-            describe.only("when the user replies to the voting turnout conversation with 'No'",function() {
+            describe("when the user replies to the voting turnout conversation with 'No'",function() {
                 beforeEach(function() {
                     tester
                         .setup.user.addr('m123')
@@ -173,7 +173,7 @@ describe("app", function() {
                         .run();
                 });
 
-                it.only("should save the reply to the push round",function() {
+                it("should save the reply to the push round",function() {
                     return tester
                         .check(function(api) {
                             var contact = _.find(api.contacts.store,{mxit_id:'m123'});
@@ -182,8 +182,6 @@ describe("app", function() {
                         .run();
                 });
             });
-
-
 
             describe("when the user finishes the quiz",function() {
                 it("should take the user to the main menu",function() {
@@ -970,6 +968,11 @@ describe("app", function() {
                         });
                         var sms = smses[0];
                         assert.equal(smses.length,1);
+                        assert.equal(sms.content, [
+                            "Hi VIP! Make sure ur voice is heard.",
+                            "Please dial back in to *120*4729*1# to complete ur election experience questions!",
+                            "It's FREE. VIP: Voice!"
+                        ].join(' '));
                         assert.equal(sms.to_addr,'+2772');
                     })
                     .run();
