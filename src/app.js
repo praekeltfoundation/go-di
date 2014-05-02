@@ -14,6 +14,7 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
+    var EndlineSurveyQuiz = di.quiz.endlinesurvey.EndlineSurveyQuiz;
     var BaseDiApp = di.base.BaseDiApp;
 
     var GoDiApp = BaseDiApp.extend(function(self) {
@@ -24,6 +25,7 @@ di.app = function() {
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);
+        self.quizzes.endlinesurvey = new EndlineSurveyQuiz(self);
 
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
@@ -243,6 +245,8 @@ di.app = function() {
                 } else {
                     return self.states.create('states:noop');
                 }
+            } else if (self.is_ussd_quiz_channel("endlinesurvey")) {
+                return self.states.create(self.quizzes.endlinesurvey.begin);
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');

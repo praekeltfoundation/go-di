@@ -703,6 +703,254 @@ describe("app", function() {
         });
     });
 
+    describe("Mxit Endline Survey Quiz Push App", function() {
+        var app;
+        var tester;
+
+        beforeEach(function() {
+            app = new di.app.GoDiApp();
+
+            tester = new AppTester(app,{
+                api: {http: {default_encoding: 'json'}}
+            })
+                .setup.char_limit(180);
+
+            app.get_date = function() {
+                var d = new Date('15 April, 2014');
+                d.setHours(0,0,0,0);
+                return d;
+            };
+
+            tester
+                .setup.user.lang('en')
+                .setup(function(api) {
+                    //Add the resources
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
+                    //Add the configs
+                    api.config.store.ward_treatment = ward_treatment();
+                    api.config.store.push_message_group = push_message_group();
+                })
+                .setup.config.app({
+                    name: 'test_push_app',
+                    panel_messages: [0, 1, 4],
+                    thermometer_messages: [2, 3],
+                    panel_push_start: app.get_date_string(),
+                    push_end_date: '6 May, 2014',
+                    billing_code: 'incentive',
+                    can_push: true,
+                    delivery_class: 'mxit',
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014',
+                    endline_survey_push_day: '9 May, 2014'
+                });
+        });
+
+        function setup_question_test(state_name) {
+            app.quizzes.groupc.random_quiz_name = function(n) {
+                return state_name;
+            };
+            tester
+                .setup.user.state('states:quiz:endlinesurvey:begin')
+                .setup.user.addr("m123");
+        }
+
+        describe("when it is the day for the endline survey quiz ",function() {
+            beforeEach(function(){
+                app.get_date = function() {
+                    var d = new Date('9 May, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                tester
+                    .setup(function(api){
+                        //Add a contact
+                        api.contacts.add( {
+                            mxit_id: 'm123',
+                            extra : {
+                                is_registered: 'true',
+                                delivery_class: 'mxit',
+                                new_week_day: 'T',
+                                C1: 'yes'
+                            }
+                        });
+                    });
+            });
+
+            it("should start the endline turnout conversation",function() {
+                return tester
+                    .setup.user.addr('m123')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check.interaction({
+                        state:'states:push:group_c_turnout',
+                        reply:[
+                            'VIP wants to know if you voted?',
+                            '1. Yes',
+                            '2. No'
+                        ].join('\n')
+                    })
+                    .run();
+            });
+
+            it("should save the push round details",function() {
+                return tester
+                    .setup.user.addr('m123')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check(function(api) {
+                        var contact = _.find(api.contacts.store,{mxit_id:'m123'});
+                        assert.equal(contact.extra.it_endlinesurvey_turnout_round_1,app.get_date_string());
+                    })
+                    .run();
+            });
+
+            describe("when the user replies to the group c conversation with 'Yes'",function() {
+                beforeEach(function() {
+                    tester
+                        .setup.user.addr('m123')
+                        .setup.user.state('states:push:endlinesurvey_turnout')
+                        .input('1');
+                });
+
+                it("should start the group c quiz",function() {
+                    return tester
+                        .check.user(function(user) {
+                            assert.equal(user.state.name.indexOf('states:quiz:endlinesurvey')>= 0, true);
+                        })
+                        .run();
+                });
+
+                it("should save the reply to the push round",function() {
+                    return tester
+                        .check(function(api) {
+                            var contact = _.find(api.contacts.store,{mxit_id:'m123'});
+                            assert.equal(contact.extra.endlinesurvey_turnout_round_1_reply,'yes');
+                        })
+                        .run();
+                });
+            });
+
+            describe("when the user replies to the endline survey conversation with 'No'",function() {
+                it("take them to the push:thanks page",function() {
+                    return tester
+                        .setup.user.addr('m123')
+                        .setup.user.state('states:push:endlinesurvey_turnout')
+                        .input('2')
+                        .check.interaction({
+                            state: 'states:push:thanks'
+                        })
+                        .run();
+                });
+            });
+
+            describe("when 'colours' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:colours');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:colours',
+                            reply: [
+                                "What colours were the ballots at your voting station?",
+                                "1. white&pink" ,
+                                "2. green&yellow" ,
+                                "3. pink&blue" ,
+                                "4. blue&yellow" ,
+                                "5. none of above" ,
+                                "6. skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_colours,"white_pink");
+                            assert.equal(contact.extra.it_endlinesurvey_question_colours,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when the user answers the colours question",function() {
+                beforeEach(function() {
+                    tester
+                        .setup.user.addr('m123')
+                        .setup.user({
+                            state: 'states:quiz:endlinesurvey:begin'
+                        })
+                        .input('1');
+                });
+
+                it("should take the user to the end of the quiz",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:end',
+                            reply: 'If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS.Send to vipvoice2014@gmail.com'
+                        })
+                        .run();
+                });
+
+                it("should save the answer to the quiz",function() {
+                    return tester
+                        .check(function(api){
+                            var contact = _.find(api.contacts.store,{mxit_id:'m123'});
+                            assert.equal(contact.extra.endlinesurvey_question_colours,'white_pink');
+                        })
+                        .run();
+                });
+            });
+
+        });
+        describe("when the it is the day for the group c quiz but the user does not belong to group c",function() {
+            beforeEach(function(){
+                app.get_date = function() {
+                    var d = new Date('8 May, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                tester
+                    .setup(function(api){
+                        //Add a contact
+                        api.contacts.add( {
+                            mxit_id: 'm321',
+                            extra : {
+                                is_registered: 'true',
+                                delivery_class: 'mxit',
+                                new_week_day: 'T',
+                                B: 'yes'
+                            }
+                        });
+                    });
+            });
+
+            it("should not send them to the group c push conversation",function() {
+                return tester
+                    .setup.user.state('states:menu')
+                    .setup.user.addr('m321')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check.user.state('states:menu')
+                    .check.no_reply()
+                    .run();
+            });
+        });
+    });
+
     describe("SMS Voting Experience Conversation App",function() {
         var app;
         var tester;

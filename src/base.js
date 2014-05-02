@@ -177,6 +177,36 @@ di.base = function() {
             });
         };
 
+        self.get_endline_survey_conversation = function(name,field) {
+            return new ChoiceState(name, {
+                question: self.get_endline_survey_msg(self.im.config.delivery_class),
+                choices: [
+                    new Choice('yes',$('Yes')),
+                    new Choice('no',$('No'))
+                ],
+                events: {
+                    'im state:enter': function() {
+                        return self.save_push_trigger_fields(field);
+                    }
+                },
+                next: function(choice) {
+                    self.contact.extra[field+'_reply'] = choice.value;
+                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+
+                    return self
+                        .im.contacts.save(self.contact)
+                        .then(function() {
+                            return self.quizzes.endlinesurvey.answer('reply_to_begin',choice.value);
+                        })
+                        .then(function() {
+                            return self.im.metrics.fire.inc('total.push.replies');
+                        })
+                        .then(function() {
+                            return self.get_next_quiz_conversation_state('endlinesurvey',choice.value);
+                        });
+                }
+            });
+        };
 
         self.get_next_quiz_conversation_state = function(quiz,choice) {
             if (choice === 'yes') {

@@ -8,7 +8,7 @@ di.quiz.endlinesurvey = function() {
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
 
-    var WhatsupQuiz = QuizStates.extend(function(self,app) {
+    var EndlineSurveyQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
             name:'endlinesurvey',
             continue_interval: 6
@@ -96,6 +96,6 @@ di.quiz.endlinesurvey = function() {
     });
 
     return {
-        WhatsupQuiz: WhatsupQuiz
+        EndlineSurveyQuiz: EndlineSurveyQuiz
     };
 }();
