@@ -208,13 +208,27 @@ di.app = function() {
                 } else {
                     return self.states.create('states:register');
                 }
+            } else if (self.is_ussd_quiz_channel("votingexperience")) {
+                return self.states.create(self.quizzes.votingexperience.begin);
+            } else if (self.is_ussd_quiz_channel("groupc")){
+                if (self.push_api.in_group_c()) {
+                     return self.states.create(self.quizzes.groupc.begin);
+                } else {
+                    return self.states.create('states:noop');
+                }
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');
-            } else {
+
+            }  else {
                 return self.states.create('states:menu');
             }
         });
+
+        self.is_ussd_quiz_channel = function(quiz,channel) {
+            return self.is_delivery_class('ussd')
+            && self.im.config.quiz === quiz;
+        };
 
         self.states.add('states:register', function(name) {
             return new ChoiceState(name, {
