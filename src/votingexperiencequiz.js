@@ -4,12 +4,12 @@ di.quiz.votingexperience = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
+    var EndState = vumigo.states.EndState;
 
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
             name:'votingexperience',
-            continue_interval: 5,
-            next: 'states:push:end'
+            continue_interval: 5
         });
         var $ = app.$;
 
@@ -26,6 +26,16 @@ di.quiz.votingexperience = function() {
                 next: function(content) {
                     return self.next_quiz('queue_wait',content);
                 }
+            });
+        });
+
+        app.states.add('states:quiz:votingexperience:prompt',function(name) {
+            return new EndState(name,{
+                text: $([
+                        "Join thousands of other South Africans and tell us about your experience on election day!",
+                        "Dial *120*4729*1# It's free to dial!"
+                    ].join(' ')),
+                next: 'states:push:end'
             });
         });
 
@@ -85,7 +95,18 @@ di.quiz.votingexperience = function() {
         });
 
         self.add_next('end',function(name) {
-            return app.states.create("states:menu");
+            if (app.im.config.delivery_class !== 'ussd') {
+                return app.states.create('states:menu');
+            } else {
+                return new EndState(name,{
+                    text: $([
+                        "Thank you"
+                    ].join(' ')),
+                    next: function() {
+                        return 'states:noop';
+                    }
+                });
+            }
         });
 
         self.add_question('environment_report',function(name) {
