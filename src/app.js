@@ -252,7 +252,7 @@ di.app = function() {
             }
         });
 
-        self.is_ussd_quiz_channel = function(quiz,channel) {
+        self.is_ussd_quiz_channel = function(quiz) {
             return self.is_delivery_class('ussd')
             && self.im.config.quiz === quiz;
         };

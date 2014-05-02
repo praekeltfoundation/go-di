@@ -947,7 +947,8 @@ describe("app", function() {
                     })
                     .input('1')
                     .check.interaction({
-                        state:'states:quiz:votingexperience:end'
+                        state:'states:quiz:votingexperience:end',
+                        reply: "VIP: Voice thanks you for contributing to a free & fair election!"
                     })
                     .run();
             });

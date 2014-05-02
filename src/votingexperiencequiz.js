@@ -100,7 +100,7 @@ di.quiz.votingexperience = function() {
             } else {
                 return new EndState(name,{
                     text: $([
-                        "Thank you"
+                        "VIP: Voice thanks you for contributing to a free & fair election!"
                     ].join(' ')),
                     next: function() {
                         return 'states:noop';
