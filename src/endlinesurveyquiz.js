@@ -17,12 +17,12 @@ di.quiz.endlinesurvey = function() {
 
         self.add_question('satisfied_democracy',function(name) {
             return new ChoiceState(name, {
-                question: $("How satisfied are you with the way democracy works in South Africa?"),
+                question: $("How do you feel about democracy in SA?"),
                 choices: [
-                    new Choice('very_satisfied',$('Very satisfied')),
-                    new Choice('somewhat_satisfied',$('Somewhat satisfied')),
-                    new Choice('dissatisfied',$('Dissatisfied')),
-                    new Choice('very_dissatisfied',$('Very dissatisfied')),
+                    new Choice('very_satisfied',$('Vry satisfied')),
+                    new Choice('somewhat_satisfied',$('Smewht satisfied')),
+                    new Choice('dissatisfied',$(' Smewht Disatisfied')),
+                    new Choice('very_dissatisfied',$('Vry disatisfied')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
@@ -31,152 +31,55 @@ di.quiz.endlinesurvey = function() {
             });
         });
 
-        self.add_question('frequency_campaign_rallies',function(name) {
+        self.add_question('fair_outcome',function(name) {
             return new ChoiceState(name, {
-                question: $("During the past two weeks, how frequently have campaign rallies occurred in your community?"),
-                choices: [
-                    new Choice('often',$('Often')),
-                    new Choice('several_times',$('Several times')),
-                    new Choice('once_or_twice',$('Once or twice')),
-                    new Choice('never',$('Never')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('frequency_campaign_rallies',content);
-                }
-            });
-        });
-
-        self.add_question('frequency_party_agents',function(name) {
-            return new ChoiceState(name, {
-                question: $("During the past two weeks, how frequently have party agents gone door to door in your community to mobilize voters?"),
-                choices: [
-                    new Choice('often',$('Often')),
-                    new Choice('several_times',$('Several times')),
-                    new Choice('once_or_twice',$('Once or twice')),
-                    new Choice('never',$('Never')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('frequency_party_agents',content);
-                }
-            });
-        });
-
-        self.add_question('frequency_intimidation',function(name) {
-            return new ChoiceState(name, {
-                question: $("During the past two weeks, how frequently have party agents intimidated voters in your community?"),
-                choices: [
-                    new Choice('often',$('Often')),
-                    new Choice('serveral_times',$('Several times')),
-                    new Choice('once_or_twice',$('Once or twice')),
-                    new Choice('never',$('Never')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('frequency_intimidation',content);
-                }
-            });
-        });
-
-        self.add_question('trust_anc',function(name) {
-            return new ChoiceState(name, {
-                question: $("How much do you trust the ANC?"),
-                choices: [
-                    new Choice('a_lot',$('A lot')),
-                    new Choice('some',$('Some')),
-                    new Choice('not_much',$('Not much')),
-                    new Choice('not_at_all',$('Not at all')),
-                    new Choice('no_opinion',$('No opinion')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('trust_anc',content);
-                }
-            });
-        });
-
-        self.add_question('trust_da',function(name) {
-            return new ChoiceState(name, {
-                question: $("How much do you trust the Democratic Alliance (DA)?"),
-                choices: [
-                    new Choice('a_lot',$('A lot')),
-                    new Choice('some',$('Some')),
-                    new Choice('not_much',$('Not much')),
-                    new Choice('not_at_all',$('Not at all')),
-                    new Choice('no_opinion',$('No opinion')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('trust_da',content);
-                }
-            });
-        });
-
-        self.add_question('trust_eff',function(name) {
-            return new ChoiceState(name, {
-                question: $("How much do you trust the Economic Freedom Fighters (EFF)?"),
-                choices: [
-                    new Choice('a_lot',$('A lot')),
-                    new Choice('some',$('Some')),
-                    new Choice('not_much',$('Not much')),
-                    new Choice('not_at_all',$('Not at all')),
-                    new Choice('no_opinion',$('No opinion')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('trust_eff',content);
-                }
-            });
-        });
-
-        self.add_question('food_to_eat',function(name) {
-            return new ChoiceState(name, {
-                question: $("During the past year, how often have you or anyone in your family gone without enough food to eat?"),
-                choices: [
-                    new Choice('never',$('Never')),
-                    new Choice('once_or_twice',$('Once or twice')),
-                    new Choice('sometimes',$('Sometimes')),
-                    new Choice('many_times',$('Many times')),
-                    new Choice('always',$('Always')),
-                    new Choice('skip',$('Skip'))
-                ],
-                next: function(content) {
-                    return self.next_quiz('food_to_eat',content);
-                }
-            });
-        });
-
-        self.add_question('violence_for_just_cause',function(name) {
-            return new ChoiceState(name, {
-                question: $("In South Africa, it is sometimes necessary to use violence for a just cause:"),
+                question: $("Do u think the outcome of the election was free and fair?"),
                 choices: [
                     new Choice('strongly_agree',$('Strongly agree')),
-                    new Choice('somewhat_agree',$('Somewhat agree')),
-                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('somewhat_agree',$('Somewht agree')),
+                    new Choice('somewhat_disagree',$('Somewht disagree')),
                     new Choice('strongly_disagree',$('Strongly disagree')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('violence_for_just_cause',content);
+                    return self.next_quiz('fair_outcome',content);
                 }
             });
         });
 
-        self.add_question('not_voting',function(name) {
+        self.add_question('happy_with_results',function(name) {
             return new ChoiceState(name, {
-                question: $("Sometimes not voting is the best way to express your political preferences:"),
+                question: $("Are u happy with the election results?"),
                 choices: [
                     new Choice('strongly_agree',$('Strongly agree')),
-                    new Choice('somewhat_agree',$('Somewhat agree')),
-                    new Choice('somewhat_disagree',$('Somewhat disagree')),
+                    new Choice('somewhat_agree',$('Somewht agree')),
+                    new Choice('somewhat_disagree',$('Somewht disagree')),
                     new Choice('strongly_disagree',$('Strongly disagree')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
-                    return self.next_quiz('not_voting',content);
+                    return self.next_quiz('happy_with_results',content);
                 }
             });
+        });
+
+        self.add_question('life_quality',function(name) {
+            return new ChoiceState(name, {
+                question: $("In the next 5 years, do u think life for people like u will be better, worse, or stay the same?"),
+                choices: [
+                    new Choice('better',$('Better')),
+                    new Choice('worse',$('Worse')),
+                    new Choice('stay_same',$('Stay same')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('life_quality',content);
+                }
+            });
+        });
+
+        self.add_next('end',function(name) {
+
         });
 
         self.add_continue('continue',function(name) {
