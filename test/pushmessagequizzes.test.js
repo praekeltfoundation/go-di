@@ -156,14 +156,28 @@ describe("app", function() {
                 });
             });
 
-            describe("when the user replies to the voting turnout conversation with 'No'",function() {
-                it("should thank the user",function() {
-                    return tester
+
+            describe.only("when the user replies to the voting turnout conversation with 'No'",function() {
+                beforeEach(function() {
+                    tester
                         .setup.user.addr('m123')
                         .setup.user.state('states:push:voting_turnout')
-                        .input('2')
+                        .input('2');
+                });
+
+                it("should thank the user",function() {
+                    return tester
                         .check.interaction({
                             state: 'states:push:thanks'
+                        })
+                        .run();
+                });
+
+                it.only("should save the reply to the push round",function() {
+                    return tester
+                        .check(function(api) {
+                            var contact = _.find(api.contacts.store,{mxit_id:'m123'});
+                            assert.equal(contact.extra.voting_turnout_round_1_reply,'no');
                         })
                         .run();
                 });
