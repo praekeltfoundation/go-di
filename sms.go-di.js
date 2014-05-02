@@ -960,7 +960,7 @@ di.quiz.votingexperience = function() {
             } else {
                 return new EndState(name,{
                     text: $([
-                        "Thank you"
+                        "VIP: Voice thanks you for contributing to a free & fair election!"
                     ].join(' ')),
                     next: function() {
                         return 'states:noop';
@@ -1819,7 +1819,11 @@ di.app = function() {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
-                    content: 'unknown'
+                    content: $([
+                        "Hi VIP! Make sure ur voice is heard.",
+                        "Please dial back in to *120*4729*1# to complete ur election experience questions!",
+                        "It's FREE. VIP: Voice!"
+                    ].join(' '))
                 })
                 .then(function() {
                     self.contact.extra.register_sms_sent = 'true';
@@ -1883,7 +1887,7 @@ di.app = function() {
             }
         });
 
-        self.is_ussd_quiz_channel = function(quiz,channel) {
+        self.is_ussd_quiz_channel = function(quiz) {
             return self.is_delivery_class('ussd')
             && self.im.config.quiz === quiz;
         };
