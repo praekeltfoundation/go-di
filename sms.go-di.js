@@ -258,6 +258,10 @@ di.quiz = function() {
             }
             return app.im.contacts.save(app.contact);
         };
+
+        self.get_prompt_state = function() {
+            return self.construct_state_name('prompt');
+        };
     });
 
     return {
@@ -860,12 +864,12 @@ di.quiz.votingexperience = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
+    var EndState = vumigo.states.EndState;
 
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
             name:'votingexperience',
-            continue_interval: 5,
-            next: 'states:push:end'
+            continue_interval: 5
         });
         var $ = app.$;
 
@@ -882,6 +886,16 @@ di.quiz.votingexperience = function() {
                 next: function(content) {
                     return self.next_quiz('queue_wait',content);
                 }
+            });
+        });
+
+        app.states.add('states:quiz:votingexperience:prompt',function(name) {
+            return new EndState(name,{
+                text: $([
+                        "Join thousands of other South Africans and tell us about your experience on election day!",
+                        "Dial *120*4729*1# It's free to dial!"
+                    ].join(' ')),
+                next: 'states:push:end'
             });
         });
 
@@ -941,7 +955,18 @@ di.quiz.votingexperience = function() {
         });
 
         self.add_next('end',function(name) {
-            return app.states.create("states:menu");
+            if (app.im.config.delivery_class !== 'ussd') {
+                return app.states.create('states:menu');
+            } else {
+                return new EndState(name,{
+                    text: $([
+                        "Thank you"
+                    ].join(' ')),
+                    next: function() {
+                        return 'states:noop';
+                    }
+                });
+            }
         });
 
         self.add_question('environment_report',function(name) {
@@ -1040,9 +1065,20 @@ di.quiz.groupc = function() {
             });
         });
 
+        app.states.add('states:quiz:groupc:prompt',function(name) {
+            return new EndState(name,{
+                text: $([
+                    'Join thousands of other South Africans and report about ur voting experience!',
+                    'Dial *120*4729*2# to have ur voice count.'
+                ].join(' ')),
+                next: 'states:push:end'
+            });
+        });
+
         self.add_next('end',function(name) {
             return new EndState(name, {
-                text: $('If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS.Send to vipvoice2014@gmail.com'),
+                text: $('If your phone has a camera, pls mms us a photo of your inked finger to show your vote! ' +
+                    'U will be sent airtime for ur MMS.Send to vipvoice2014@gmail.com'),
                 next:  'states:push:end'
             });
         });
@@ -1250,9 +1286,9 @@ di.pushmessage = function() {
         };
 
         self.in_group_c = function() {
-            return app.contact.extra.C1 ==='yes'
-                || app.contact.extra.C2 ==='yes'
-                || app.contact.extra.C3 ==='yes' ;
+            return app.contact.extra.C0 ==='yes'
+                || app.contact.extra.C1 ==='yes'
+                || app.contact.extra.C2 ==='yes' ;
         };
 
         self.is_voting_experience_quiz_day = function() {
@@ -1388,7 +1424,6 @@ di.base = function() {
         var create =  self.create;
 
         self.create = function(name,opts) {
-
             if (!app.is(self.app.im.msg.inbound_push_trigger)) {
                 return create(name, opts);
             }
@@ -1542,14 +1577,23 @@ di.base = function() {
                             return self.im.metrics.fire.inc('total.push.replies');
                         })
                         .then(function() {
-                            if (choice.value == 'yes') {
-                                return quiz.get_next_quiz_state();
-                            } else {
-                                return 'states:push:thanks';
-                            }
+                            return self.get_next_quiz_conversation_state(quiz,choice.value);
                         });
                 }
             });
+        };
+
+
+        self.get_next_quiz_conversation_state = function(quiz,choice) {
+            if (choice === 'yes') {
+                if (self.im.config.delivery_class === 'sms') {
+                    return quiz.get_prompt_state();
+                } else if (self.im.config.delivery_class === 'mxit') {
+                    return quiz.get_next_quiz_state();
+                }
+            } else {
+                return 'states:push:thanks';
+            }
         };
 
         self.quizzes =  {};
@@ -1799,13 +1843,27 @@ di.app = function() {
                 } else {
                     return self.states.create('states:register');
                 }
+            } else if (self.is_ussd_quiz_channel("votingexperience")) {
+                return self.states.create(self.quizzes.votingexperience.begin);
+            } else if (self.is_ussd_quiz_channel("groupc")){
+                if (self.push_api.in_group_c()) {
+                     return self.states.create(self.quizzes.groupc.begin);
+                } else {
+                    return self.states.create('states:noop');
+                }
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');
-            } else {
+
+            }  else {
                 return self.states.create('states:menu');
             }
         });
+
+        self.is_ussd_quiz_channel = function(quiz,channel) {
+            return self.is_delivery_class('ussd')
+            && self.im.config.quiz === quiz;
+        };
 
         self.states.add('states:register', function(name) {
             return new ChoiceState(name, {
