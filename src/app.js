@@ -130,7 +130,6 @@ di.app = function() {
                 } else if(self.should_send_quiz_dialback(e,'votingexperience')) {
                     return self.send_quiz_dialback('votingexperience');
                 } else if(self.should_send_quiz_dialback(e,'endlinesurvey')) {
-                    console.log("here");
                     return self.send_quiz_dialback('endlinesurvey');
                 }
             });
@@ -160,8 +159,8 @@ di.app = function() {
                 && self.is_delivery_class('ussd')
                 && self.is_registered()
                 && _.contains(self.im.user.state.name,quiz)
-                && !self.is(self.contact.extra[quiz+'_sms_sent'])
-                && !_.contains(self.im.user.state.name,'end');
+                && !_.contains(self.im.user.state.name,quiz+':end')
+                && !self.is(self.contact.extra[quiz+'_sms_sent']);
         };
 
         self.get_registration_sms = function() {
