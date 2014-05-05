@@ -124,10 +124,14 @@ di.app = function() {
             });
 
             self.im.on('session:close', function(e) {
+
                 if (self.should_send_dialback(e)) {
                     return self.send_dialback();
                 } else if(self.should_send_quiz_dialback(e,'votingexperience')) {
-                    return self.send_quiz_dialback();
+                    return self.send_quiz_dialback('votingexperience');
+                } else if(self.should_send_quiz_dialback(e,'endlinesurvey')) {
+                    console.log("here");
+                    return self.send_quiz_dialback('endlinesurvey');
                 }
             });
 
@@ -156,6 +160,7 @@ di.app = function() {
                 && self.is_delivery_class('ussd')
                 && self.is_registered()
                 && _.contains(self.im.user.state.name,quiz)
+                && !self.is(self.contact.extra[quiz+'_sms_sent'])
                 && !_.contains(self.im.user.state.name,'end');
         };
 
@@ -182,18 +187,21 @@ di.app = function() {
                 });
         };
 
-        self.send_quiz_dialback = function() {
+        self.send_quiz_dialback = function(quiz) {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
                     content: $([
                         "Hi VIP! Make sure ur voice is heard.",
-                        "Please dial back in to *120*4729*1# to complete ur election experience questions!",
+                        "Please dial back in to {{ USSD_number }} to complete ur election experience questions!",
                         "It's FREE. VIP: Voice!"
                     ].join(' '))
+                    .context({
+                        USSD_number: self.im.config.channel
+                    })
                 })
                 .then(function() {
-                    self.contact.extra.register_sms_sent = 'true';
+                    self.contact.extra[quiz +'_sms_sent'] = 'true';
                     return self.im.contacts.save(self.contact);
                 });
         };
