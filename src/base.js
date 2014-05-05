@@ -216,7 +216,7 @@ di.base = function() {
             return new EndState(name, {
                 text: [
                     "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
-                    "Answr a few qstns & stand chance 2 WIN artime! Dial *120*4792*3# for FREE."
+                    "Answr a few qstns & stand chance 2 WIN artime! Dial *120*4729*3# for FREE."
                 ].join(' '),
                 events: {
                     'im state:enter': function() {
