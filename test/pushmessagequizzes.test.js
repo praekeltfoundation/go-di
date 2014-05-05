@@ -1027,7 +1027,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-                .setup.char_limit(180);
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date('15 April, 2014');
@@ -1608,36 +1608,15 @@ describe("app", function() {
                         });
                     });
             });
-            it("should prompt the user to dial in",function() {
+            it("should do nothing ",function() {
                 return tester
                     .setup.user.addr('+2772')
-                    .setup.user.state('states:menu')
+                    .setup.user.state('states:noop')
                     .input({
                         content: null,
                         inbound_push_trigger: true
                     })
-                    .check.interaction({
-                        state:'states:push:endlinesurvey:prompt',
-                        reply:[
-                            "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
-                            "Answr a few qstns & stand chance 2 WIN artime! Dial *120*4729*3# for FREE."
-                        ].join('\n')
-                    })
-                    .run();
-            });
-
-            it("should save the push round details",function() {
-                return tester
-                    .setup.user.addr('+2772')
-                    .setup.user.state('states:menu')
-                    .input({
-                        content: null,
-                        inbound_push_trigger: true
-                    })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store,{msisdn:'+2772'});
-                        assert.equal(contact.extra.it_endlinesurvey_round_1,app.get_date_string());
-                    })
+                    .check.no_reply()
                     .run();
             });
         });

@@ -105,8 +105,12 @@ di.pushmessage = function() {
                 //Phase 3
                 return self.is_voting_experience_quiz_day()
                 || self.should_receive_group_c_quiz()
-                || self.is_endline_survey_quiz_day();
+                || self.should_receive_endline_survey_quiz();
             }
+        };
+
+        self.should_receive_endline_survey_quiz = function() {
+            return self.is_endline_survey_quiz_day() && app.im.config.delivery_class !== 'sms';
         };
 
         self.should_receive_group_c_quiz = function() {
@@ -118,7 +122,7 @@ di.pushmessage = function() {
                 return 'states:push:voting_turnout';
             } else if (self.should_receive_group_c_quiz()) {
                 return 'states:push:group_c_turnout';
-            } else if (self.is_endline_survey_quiz_day()) {
+            } else if (self.should_receive_endline_survey_quiz()) {
                 return 'states:push:endlinesurvey:prompt';
             } else {
                 return 'states:push:start';
