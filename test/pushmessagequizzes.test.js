@@ -794,7 +794,7 @@ describe("app", function() {
                     });
             });
 
-            it.skip("should start the endline conversation",function() {
+            it("should start the endline conversation",function() {
                 return tester
                     .setup.user.addr('m123')
                     .setup.user.state('states:menu')
@@ -803,12 +803,17 @@ describe("app", function() {
                         inbound_push_trigger: true
                     })
                     .check.interaction({
-                        state:'states:push:endlinesurvey:prompt'
+                        state:'states:push:endlinesurvey:prompt',
+                        reply: [
+                            "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think! Answr a few qstns & stand chance 2 WIN artime!",
+                            "1. To begin",
+                            "2. No thanks"
+                        ].join('\n')
                     })
                     .run();
             });
 
-            it.skip("should save the push round details",function() {
+            it("should save the push round details",function() {
                 return tester
                     .setup.user.addr('m123')
                     .setup.user.state('states:menu')
@@ -823,11 +828,11 @@ describe("app", function() {
                     .run();
             });
 
-            describe.skip("when the user replies to the endline conversation with 'Yes'",function() {
+            describe("when the user replies to the endline conversation with 'Yes'",function() {
                 beforeEach(function() {
                     tester
                         .setup.user.addr('m123')
-                        .setup.user.state('states:push:endlinesurvey_prompt')
+                        .setup.user.state('states:push:endlinesurvey:prompt')
                         .input('1');
                 });
 
@@ -843,20 +848,20 @@ describe("app", function() {
                     return tester
                         .check(function(api) {
                             var contact = _.find(api.contacts.store,{mxit_id:'m123'});
-                            assert.equal(contact.extra.endlinesurvey_round_1_reply,'yes');
+                            assert.equal(contact.extra.endlinesurvey_round_1_reply,'begin');
                         })
                         .run();
                 });
             });
 
-            describe.skip("when the user replies to the endline survey conversation with 'No'",function() {
+            describe("when the user replies to the endline survey conversation with 'No'",function() {
                 it("take them to the push:thanks page",function() {
                     return tester
                         .setup.user.addr('m123')
-                        .setup.user.state('states:push:endlinesurvey_prompt')
+                        .setup.user.state('states:push:endlinesurvey:prompt')
                         .input('2')
                         .check.interaction({
-                            state: 'states:push:thanks'
+                            state: 'states:push:end'
                         })
                         .run();
                 });
@@ -1542,5 +1547,232 @@ describe("app", function() {
             });
         });
     });
+
+    describe("SMS Endline Conversation App",function() {
+        var app;
+        var tester;
+
+        beforeEach(function() {
+            app = new di.base.DiSmsApp();
+
+            tester = new AppTester(app,{
+                api: {http: {default_encoding: 'json'}}
+            })
+            .setup.char_limit(180);
+
+            tester
+                .setup.user.lang('en')
+                .setup(function(api) {
+                    //Add the resources
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
+                    //Add the configs
+                    api.config.store.ward_treatment = ward_treatment();
+                    api.config.store.push_message_group = push_message_group();
+                })
+                .setup.config.app({
+                    name: 'test_push_app',
+                    panel_messages: [0, 1, 4],
+                    thermometer_messages: [2, 3],
+                    panel_push_start: app.get_date_string(),
+                    push_end_date: '6 May, 2014',
+                    billing_code: 'incentive',
+                    can_push: true,
+                    delivery_class: 'sms',
+                    quiz: 'endlinesurveyquiz',
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014',
+                    endline_survey_push_day: '9 May 2014'
+                });
+        });
+
+        describe("when it is the day for the endline survey quiz",function() {
+            beforeEach(function(){
+                app.get_date = function() {
+                    var d = new Date('9 May, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                tester
+                    .setup(function(api){
+                        //Add a contact
+                        api.contacts.add( {
+                            msisdn: '+2772',
+                            extra : {
+                                is_registered: 'true',
+                                delivery_class: 'ussd',
+                                new_week_day: 'T',
+                                C0: 'yes'
+                            }
+                        });
+                    });
+            });
+            it("should prompt the user to dial in",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check.interaction({
+                        state:'states:push:endlinesurvey:prompt',
+                        reply:[
+                            "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
+                            "Answr a few qstns & stand chance 2 WIN artime! Dial *120*4729*3# for FREE."
+                        ].join('\n')
+                    })
+                    .run();
+            });
+
+            it("should save the push round details",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check(function(api) {
+                        var contact = _.find(api.contacts.store,{msisdn:'+2772'});
+                        assert.equal(contact.extra.it_endlinesurvey_round_1,app.get_date_string());
+                    })
+                    .run();
+            });
+        });
+    });
+
+    describe("USSD Endline Survey Quiz Push App",function() {
+        var app;
+        var tester;
+
+        beforeEach(function() {
+            app = new di.app.GoDiApp();
+
+            tester = new AppTester(app,{
+                api: {http: {default_encoding: 'json'}}
+            })
+                .setup.char_limit(180);
+
+            app.get_date = function() {
+                var d = new Date('15 April, 2014');
+                d.setHours(0,0,0,0);
+                return d;
+            };
+
+            tester
+                .setup.user.lang('en')
+                .setup(function(api) {
+                    //Add the resources
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
+                    //Add the configs
+                    api.config.store.ward_treatment = ward_treatment();
+                    api.config.store.push_message_group = push_message_group();
+
+                    //Add a contact
+                    api.contacts.add( {
+                        msisdn: '+2772',
+                        extra : {
+                            is_registered: 'true',
+                            register_sms_sent: 'true',
+                            delivery_class: 'ussd',
+                            new_week_day: 'T',
+                            C0: 'yes'
+                        }
+                    });
+                })
+                .setup.config.app({
+                    name: 'test_push_app',
+                    panel_messages: [0, 1, 4],
+                    thermometer_messages: [2, 3],
+                    panel_push_start: app.get_date_string(),
+                    push_end_date: '6 May, 2014',
+                    billing_code: 'incentive',
+                    can_push: true,
+                    delivery_class: 'ussd',
+                    quiz: 'endlinesurvey',
+                    channel: "*120*4792*3#",
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014'
+                });
+        });
+
+        describe("when the user accesses the ussd channel",function() {
+            it("should take the user to the quiz",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .start()
+                    .check.user(function(user) {
+                        assert.equal(_.contains(user.state.name,'states:quiz:endlinesurvey'), true);
+                    })
+                    .run();
+            });
+        });
+
+        var quiz_states = [
+            'states:quiz:endlinesurvey:satisfied_democracy',
+            'states:quiz:endlinesurvey:fair_outcome',
+            'states:quiz:endlinesurvey:happy_with_results',
+            'states:quiz:endlinesurvey:life_quality'
+        ];
+
+        var get_answered_quiz_states = function(n) {
+            var states = quiz_states.slice(0,n);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
+        describe.only("when the user times out but has not completed the quiz",function() {
+            it("should send them a reminder prompt message",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user({
+                        state: 'states:quiz:endlinesurvey:begin',
+                        answers: get_answered_quiz_states(2)
+                    })
+                    .input.session_event('close')
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        var sms = smses[0];
+                        assert.equal(smses.length,1);
+                        assert.equal(sms.to_addr,'+2772');
+                        assert.equal(sms.content, [
+                            "Hi VIP! Make sure ur voice is heard.",
+                            "Please dial back in to *120*4729*3# to complete ur election experience questions!",
+                            "It's FREE. VIP: Voice!"
+                        ].join(' '));
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user times out but has completed the quiz and is on the thank you screen",function() {
+            it("should not send them a reminder prompt message",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user({
+                        state: 'states:quiz:votingexperience:begin',
+                        answers: get_answered_quiz_states(8)
+                    })
+                    .input.session_event('close')
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        assert.equal(smses.length,0);
+                    })
+                    .run();
+            });
+        });
+    });
+
 
 });
