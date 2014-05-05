@@ -159,7 +159,11 @@ di.base = function() {
                     }
                 },
                 next: function(choice) {
-                    return self.save_contact_fields(choice,field,quiz,'did_you_vote');
+                    return self
+                        .save_contact_fields(choice,field,quiz,'did_you_vote')
+                        .then(function() {
+                            return self.get_next_quiz_conversation_state(quiz,choice.value);
+                        });
                 }
             });
         };
@@ -175,21 +179,19 @@ di.base = function() {
                 })
                 .then(function() {
                     return self.im.metrics.fire.inc('total.push.replies');
-                })
-                .then(function() {
-                    return self.get_next_quiz_conversation_state(quiz,choice.value);
                 });
         };
 
         self.get_other_endline_conversation = function(name,field) {
+            console.log("here");
             return new ChoiceState(name,{
                 question: [
                     "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
                     "Answr a few qstns & stand chance 2 WIN artime!"
                 ].join(' '),
                 choices: [
-                    new Choice('yes',$('To begin')),
-                    new Choice('no',$('No thanks'))
+                    new Choice('begin',$('To begin')),
+                    new Choice('no_thanks',$('No thanks'))
                 ],
                 events: {
                     'im state:enter': function() {
@@ -197,7 +199,15 @@ di.base = function() {
                     }
                 },
                 next: function(choice) {
-                    return self.save_contact_fields(choice,field,self.quizzes.endlinesurvey,'begin_quiz');
+                    return self
+                        .save_contact_fields(choice,field,self.quizzes.endlinesurvey,'begin_quiz')
+                        .then(function() {
+                            if (choice.value === 'begin') {
+                                return self.quizzes.endlinesurvey.get_next_quiz_state();
+                            } else {
+                                return 'states:push:end';
+                            }
+                        });
                 }
             });
         };
@@ -215,14 +225,6 @@ di.base = function() {
                 },
                 next: 'states:push:end'
             });
-        };
-
-        self.get_endline_survey_conversation = function(name,field) {
-            if (self.im.config.delivery_class === 'sms') {
-                return self.get_sms_endline_conversation(name,field);
-            } else {
-                return self.get_other_endline_conversation(name,field);
-            }
         };
 
         self.get_next_quiz_conversation_state = function(quiz,choice) {
