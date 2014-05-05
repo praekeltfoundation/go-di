@@ -123,9 +123,9 @@ di.pushmessage = function() {
         };
 
         self.in_group_c = function() {
-            return app.contact.extra.C0 ==='yes'
-                || app.contact.extra.C1 ==='yes'
-                || app.contact.extra.C2 ==='yes' ;
+            return app.contact.extra.c0 ==='yes'
+                || app.contact.extra.c1 ==='yes'
+                || app.contact.extra.c2 ==='yes' ;
         };
 
         self.is_voting_experience_quiz_day = function() {

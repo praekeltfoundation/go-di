@@ -91,7 +91,7 @@ describe("app", function() {
                                 is_registered: 'true',
                                 delivery_class: 'mxit',
                                 new_week_day: 'T',
-                                C0: 'yes'
+                                c0: 'yes'
                             }
                         });
                     });
@@ -524,7 +524,7 @@ describe("app", function() {
                                 is_registered: 'true',
                                 delivery_class: 'mxit',
                                 new_week_day: 'T',
-                                C1: 'yes'
+                                c1: 'yes'
                             }
                         });
                     });
@@ -763,7 +763,7 @@ describe("app", function() {
                                 is_registered: 'true',
                                 delivery_class: 'ussd',
                                 new_week_day: 'T',
-                                C0: 'yes'
+                                c0: 'yes'
                             }
                         });
                     });
@@ -882,7 +882,7 @@ describe("app", function() {
                             register_sms_sent: 'true',
                             delivery_class: 'ussd',
                             new_week_day: 'T',
-                            C0: 'yes'
+                            c0: 'yes'
                         }
                     });
                 })
@@ -1054,7 +1054,7 @@ describe("app", function() {
                                 is_registered: 'true',
                                 delivery_class: 'ussd',
                                 new_week_day: 'T',
-                                C0: 'yes'
+                                c0: 'yes'
                             }
                         });
                     });
@@ -1172,7 +1172,7 @@ describe("app", function() {
                             is_registered: 'true',
                             delivery_class: 'ussd',
                             new_week_day: 'T',
-                            C0: 'yes'
+                            c0: 'yes'
                         }
                     });
                 })
