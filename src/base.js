@@ -159,30 +159,37 @@ di.base = function() {
                     }
                 },
                 next: function(choice) {
-                    self.contact.extra[field+'_reply'] = choice.value;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
-
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return quiz.answer('did_you_vote',choice.value);
-                        })
-                        .then(function() {
-                            return self.im.metrics.fire.inc('total.push.replies');
-                        })
-                        .then(function() {
-                            return self.get_next_quiz_conversation_state(quiz,choice.value);
-                        });
+                    return self.save_contact_fields(choice,field,quiz,'did_you_vote');
                 }
             });
         };
 
-        self.get_endline_survey_conversation = function(name,field) {
-            return new ChoiceState(name, {
-                question: self.get_endline_survey_msg(self.im.config.delivery_class),
+        self.save_contact_fields = function(choice, field, quiz,question_name) {
+            self.contact.extra[field+'_reply'] = choice.value;
+            self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+
+            return self
+                .im.contacts.save(self.contact)
+                .then(function() {
+                    return quiz.answer(question_name,choice.value);
+                })
+                .then(function() {
+                    return self.im.metrics.fire.inc('total.push.replies');
+                })
+                .then(function() {
+                    return self.get_next_quiz_conversation_state(quiz,choice.value);
+                });
+        };
+
+        self.get_other_endline_conversation = function(name,field) {
+            return new ChoiceState(name,{
+                question: [
+                    "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
+                    "Answr a few qstns & stand chance 2 WIN artime!"
+                ].join(' '),
                 choices: [
-                    new Choice('yes',$('Yes')),
-                    new Choice('no',$('No'))
+                    new Choice('yes',$('To begin')),
+                    new Choice('no',$('No thanks'))
                 ],
                 events: {
                     'im state:enter': function() {
@@ -190,22 +197,32 @@ di.base = function() {
                     }
                 },
                 next: function(choice) {
-                    self.contact.extra[field+'_reply'] = choice.value;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
-
-                    return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return self.quizzes.endlinesurvey.answer('reply_to_begin',choice.value);
-                        })
-                        .then(function() {
-                            return self.im.metrics.fire.inc('total.push.replies');
-                        })
-                        .then(function() {
-                            return self.get_next_quiz_conversation_state('endlinesurvey',choice.value);
-                        });
+                    return self.save_contact_fields(choice,field,self.quizzes.endlinesurvey,'begin_quiz');
                 }
             });
+        };
+
+        self.get_sms_endline_conversation = function(name,field) {
+            return new EndState(name, {
+                text: [
+                    "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
+                    "Answr a few qstns & stand chance 2 WIN artime! Dial *120*4792*3# for FREE."
+                ].join(' '),
+                events: {
+                    'im state:enter': function() {
+                        return self.save_push_trigger_fields(field);
+                    }
+                },
+                next: 'states:push:end'
+            });
+        };
+
+        self.get_endline_survey_conversation = function(name,field) {
+            if (self.im.config.delivery_class === 'sms') {
+                return self.get_sms_endline_conversation(name,field);
+            } else {
+                return self.get_other_endline_conversation(name,field);
+            }
         };
 
         self.get_next_quiz_conversation_state = function(quiz,choice) {
@@ -232,6 +249,15 @@ di.base = function() {
         self.states.add('states:push:group_c_turnout',function(name) {
             var field = self.push_api.get_push_field('group_c_turnout',1);
             return self.get_quiz_conversation(name,self.quizzes.groupc,field);
+        });
+
+        self.states.add('states:push:endlinesurvey:prompt',function(name) {
+            var field = self.push_api.get_push_field('endlinesurvey',1);
+            if (self.im.config.delivery_class === 'sms') {
+                return self.get_sms_endline_conversation(name,field);
+            } else {
+                return self.get_other_endline_conversation(name,field);
+            }
         });
 
         self.states.add('states:push:thanks',function(name) {
