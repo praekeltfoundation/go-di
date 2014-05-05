@@ -7,6 +7,7 @@ di.quiz.endlinesurvey = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var MenuState = vumigo.states.MenuState;
+    var EndState = vumigo.states.EndState;
 
     var EndlineSurveyQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
@@ -21,7 +22,7 @@ di.quiz.endlinesurvey = function() {
                 choices: [
                     new Choice('very_satisfied',$('Vry satisfied')),
                     new Choice('somewhat_satisfied',$('Smewht satisfied')),
-                    new Choice('dissatisfied',$(' Smewht Disatisfied')),
+                    new Choice('dissatisfied',$('Smewhat disatisfied')),
                     new Choice('very_dissatisfied',$('Vry disatisfied')),
                     new Choice('skip',$('Skip'))
                 ],
@@ -79,12 +80,15 @@ di.quiz.endlinesurvey = function() {
         });
 
         self.add_next('end',function(name) {
-
+            return new EndState(name, {
+                text: $('VIP: Voice thanks you for contributing to a free & fair election!'),
+                next:  'states:start'
+            });
         });
 
         self.add_continue('continue',function(name) {
             return new MenuState(name,{
-                question: $('Would you like to continue answering questions? There are 10 in total.'),
+                question: $('Would you like to continue answering questions? There are 5 in total.'),
                 choices: [
                     new Choice(self.get_next_quiz_state(true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
