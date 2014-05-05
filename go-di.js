@@ -946,7 +946,7 @@ di.quiz.votingexperience = function() {
 
         self.add_continue('continue',function(name) {
             return new MenuState(name,{
-                question: $('Would you like to continue answering questions? There are 12 in total.'),
+                question: $('Would you like to continue answering questions? There are 8 in total.'),
                 choices: [
                     new Choice(self.get_next_quiz_state(true),$('Continue')),
                     new Choice('states:menu',$('Main Menu'))
