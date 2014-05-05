@@ -747,8 +747,24 @@ describe("app", function() {
                 });
         });
 
+        var quiz_states = [
+            'states:quiz:endlinesurvey:satisfied_democracy',
+            'states:quiz:endlinesurvey:fair_outcome',
+            'states:quiz:endlinesurvey:happy_with_results',
+            'states:quiz:endlinesurvey:life_quality'
+        ];
+
+        var get_answered_quiz_states = function(n) {
+            var states = quiz_states.slice(0,n);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
         function setup_question_test(state_name) {
-            app.quizzes.groupc.random_quiz_name = function(n) {
+            app.quizzes.endlinesurvey.random_quiz_name = function(n) {
                 return state_name;
             };
             tester
@@ -756,7 +772,7 @@ describe("app", function() {
                 .setup.user.addr("m123");
         }
 
-        describe("when it is the day for the endline survey quiz ",function() {
+        describe("when it is the day for the endline survey quiz",function() {
             beforeEach(function(){
                 app.get_date = function() {
                     var d = new Date('9 May, 2014');
@@ -778,7 +794,7 @@ describe("app", function() {
                     });
             });
 
-            it("should start the endline turnout conversation",function() {
+            it.skip("should start the endline conversation",function() {
                 return tester
                     .setup.user.addr('m123')
                     .setup.user.state('states:menu')
@@ -787,17 +803,12 @@ describe("app", function() {
                         inbound_push_trigger: true
                     })
                     .check.interaction({
-                        state:'states:push:group_c_turnout',
-                        reply:[
-                            'VIP wants to know if you voted?',
-                            '1. Yes',
-                            '2. No'
-                        ].join('\n')
+                        state:'states:push:endlinesurvey:prompt'
                     })
                     .run();
             });
 
-            it("should save the push round details",function() {
+            it.skip("should save the push round details",function() {
                 return tester
                     .setup.user.addr('m123')
                     .setup.user.state('states:menu')
@@ -807,20 +818,20 @@ describe("app", function() {
                     })
                     .check(function(api) {
                         var contact = _.find(api.contacts.store,{mxit_id:'m123'});
-                        assert.equal(contact.extra.it_endlinesurvey_turnout_round_1,app.get_date_string());
+                        assert.equal(contact.extra.it_endlinesurvey_round_1,app.get_date_string());
                     })
                     .run();
             });
 
-            describe("when the user replies to the group c conversation with 'Yes'",function() {
+            describe.skip("when the user replies to the endline conversation with 'Yes'",function() {
                 beforeEach(function() {
                     tester
                         .setup.user.addr('m123')
-                        .setup.user.state('states:push:endlinesurvey_turnout')
+                        .setup.user.state('states:push:endlinesurvey_prompt')
                         .input('1');
                 });
 
-                it("should start the group c quiz",function() {
+                it("should start the endline survey quiz",function() {
                     return tester
                         .check.user(function(user) {
                             assert.equal(user.state.name.indexOf('states:quiz:endlinesurvey')>= 0, true);
@@ -832,17 +843,17 @@ describe("app", function() {
                     return tester
                         .check(function(api) {
                             var contact = _.find(api.contacts.store,{mxit_id:'m123'});
-                            assert.equal(contact.extra.endlinesurvey_turnout_round_1_reply,'yes');
+                            assert.equal(contact.extra.endlinesurvey_round_1_reply,'yes');
                         })
                         .run();
                 });
             });
 
-            describe("when the user replies to the endline survey conversation with 'No'",function() {
+            describe.skip("when the user replies to the endline survey conversation with 'No'",function() {
                 it("take them to the push:thanks page",function() {
                     return tester
                         .setup.user.addr('m123')
-                        .setup.user.state('states:push:endlinesurvey_turnout')
+                        .setup.user.state('states:push:endlinesurvey_prompt')
                         .input('2')
                         .check.interaction({
                             state: 'states:push:thanks'
@@ -851,45 +862,140 @@ describe("app", function() {
                 });
             });
 
-            describe("when 'colours' question is randomly chosen to be next question",function() {
+            describe("when 'satisfied_democracy' question is randomly chosen to be next question",function() {
                 beforeEach(function() {
-                    setup_question_test('states:quiz:endlinesurvey:colours');
+                    setup_question_test('states:quiz:endlinesurvey:satisfied_democracy');
                 });
 
                 it("should show them the correct question",function() {
                     return tester
                         .start()
                         .check.interaction({
-                            state: 'states:quiz:endlinesurvey:colours',
+                            state: 'states:quiz:endlinesurvey:satisfied_democracy',
                             reply: [
-                                "What colours were the ballots at your voting station?",
-                                "1. white&pink" ,
-                                "2. green&yellow" ,
-                                "3. pink&blue" ,
-                                "4. blue&yellow" ,
-                                "5. none of above" ,
-                                "6. skip"
+                                "How do you feel about democracy in SA?",
+                                "1. Vry satisfied" ,
+                                "2. Smewht satisfied" ,
+                                "3. Smewhat disatisfied" ,
+                                "4. Vry disatisfied" ,
+                                "5. Skip"
                             ].join("\n")
                         }).run();
                 });
 
-                it("should save the correct fields",function() {
+                it("should save the correct fields when answered",function() {
                     return tester
                         .input('1')
                         .check(function(api){
                             var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.endlinesurvey_question_colours,"white_pink");
-                            assert.equal(contact.extra.it_endlinesurvey_question_colours,app.get_date_string());
+                            assert.equal(contact.extra.endlinesurvey_question_satisfied_democracy,"very_satisfied");
+                            assert.equal(contact.extra.it_endlinesurvey_question_satisfied_democracy,app.get_date_string());
                         }).run();
                 });
             });
 
-            describe("when the user answers the colours question",function() {
+            describe("when 'fair_outcome' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:fair_outcome');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:fair_outcome',
+                            reply: [
+                                "Do u think the outcome of the election was free and fair?",
+                                "1. Strongly agree" ,
+                                "2. Somewht agree" ,
+                                "3. Somewht disagree" ,
+                                "4. Strongly disagree" ,
+                                "5. Skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields when answered",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_fair_outcome,"strongly_agree");
+                            assert.equal(contact.extra.it_endlinesurvey_question_fair_outcome,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when 'happy_with_results' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:happy_with_results');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:happy_with_results',
+                            reply: [
+                                "Are u happy with the election results?",
+                                "1. Strongly agree" ,
+                                "2. Somewht agree" ,
+                                "3. Somewht disagree" ,
+                                "4. Strongly disagree" ,
+                                "5. Skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields when answered",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_happy_with_results,"strongly_agree");
+                            assert.equal(contact.extra.it_endlinesurvey_question_happy_with_results,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when 'life_quality' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:life_quality');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:life_quality',
+                            reply: [
+                                "In the next 5 years, do u think life for people like u will be better, worse, or stay the same?",
+                                "1. Better" ,
+                                "2. Worse" ,
+                                "3. Stay same" ,
+                                "4. Skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields when answered",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_life_quality,"better");
+                            assert.equal(contact.extra.it_endlinesurvey_question_life_quality,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when the user answers the last question",function() {
                 beforeEach(function() {
                     tester
                         .setup.user.addr('m123')
                         .setup.user({
-                            state: 'states:quiz:endlinesurvey:begin'
+                            state: 'states:quiz:endlinesurvey:begin',
+                            answers: get_answered_quiz_states(3)
                         })
                         .input('1');
                 });
@@ -898,55 +1004,10 @@ describe("app", function() {
                     return tester
                         .check.interaction({
                             state: 'states:quiz:endlinesurvey:end',
-                            reply: 'If your phone has a camera, pls mms us a photo of your inked finger to show your vote! U will be sent airtime for ur MMS.Send to vipvoice2014@gmail.com'
+                            reply: 'VIP: Voice thanks you for contributing to a free & fair election!'
                         })
                         .run();
                 });
-
-                it("should save the answer to the quiz",function() {
-                    return tester
-                        .check(function(api){
-                            var contact = _.find(api.contacts.store,{mxit_id:'m123'});
-                            assert.equal(contact.extra.endlinesurvey_question_colours,'white_pink');
-                        })
-                        .run();
-                });
-            });
-
-        });
-        describe("when the it is the day for the group c quiz but the user does not belong to group c",function() {
-            beforeEach(function(){
-                app.get_date = function() {
-                    var d = new Date('8 May, 2014');
-                    d.setHours(0,0,0,0);
-                    return d;
-                };
-                tester
-                    .setup(function(api){
-                        //Add a contact
-                        api.contacts.add( {
-                            mxit_id: 'm321',
-                            extra : {
-                                is_registered: 'true',
-                                delivery_class: 'mxit',
-                                new_week_day: 'T',
-                                B: 'yes'
-                            }
-                        });
-                    });
-            });
-
-            it("should not send them to the group c push conversation",function() {
-                return tester
-                    .setup.user.state('states:menu')
-                    .setup.user.addr('m321')
-                    .input({
-                        content: null,
-                        inbound_push_trigger: true
-                    })
-                    .check.user.state('states:menu')
-                    .check.no_reply()
-                    .run();
             });
         });
     });
