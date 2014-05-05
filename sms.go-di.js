@@ -975,7 +975,7 @@ di.quiz.votingexperience = function() {
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
             name:'votingexperience',
-            continue_interval: 5
+            continue_interval: 4
         });
         var $ = app.$;
 
@@ -1372,8 +1372,12 @@ di.pushmessage = function() {
                 //Phase 3
                 return self.is_voting_experience_quiz_day()
                 || self.should_receive_group_c_quiz()
-                || self.is_endline_survey_quiz_day();
+                || self.should_receive_endline_survey_quiz();
             }
+        };
+
+        self.should_receive_endline_survey_quiz = function() {
+            return self.is_endline_survey_quiz_day() && app.im.config.delivery_class !== 'sms';
         };
 
         self.should_receive_group_c_quiz = function() {
@@ -1385,7 +1389,7 @@ di.pushmessage = function() {
                 return 'states:push:voting_turnout';
             } else if (self.should_receive_group_c_quiz()) {
                 return 'states:push:group_c_turnout';
-            } else if (self.is_endline_survey_quiz_day()) {
+            } else if (self.should_receive_endline_survey_quiz()) {
                 return 'states:push:endlinesurvey:prompt';
             } else {
                 return 'states:push:start';
@@ -1699,51 +1703,6 @@ di.base = function() {
                 });
         };
 
-        self.get_other_endline_conversation = function(name,field) {
-            console.log("here");
-            return new ChoiceState(name,{
-                question: [
-                    "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
-                    "Answr a few qstns & stand chance 2 WIN artime!"
-                ].join(' '),
-                choices: [
-                    new Choice('begin',$('To begin')),
-                    new Choice('no_thanks',$('No thanks'))
-                ],
-                events: {
-                    'im state:enter': function() {
-                        return self.save_push_trigger_fields(field);
-                    }
-                },
-                next: function(choice) {
-                    return self
-                        .save_contact_fields(choice,field,self.quizzes.endlinesurvey,'begin_quiz')
-                        .then(function() {
-                            if (choice.value === 'begin') {
-                                return self.quizzes.endlinesurvey.get_next_quiz_state();
-                            } else {
-                                return 'states:push:end';
-                            }
-                        });
-                }
-            });
-        };
-
-        self.get_sms_endline_conversation = function(name,field) {
-            return new EndState(name, {
-                text: [
-                    "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
-                    "Answr a few qstns & stand chance 2 WIN artime! Dial *120*4729*3# for FREE."
-                ].join(' '),
-                events: {
-                    'im state:enter': function() {
-                        return self.save_push_trigger_fields(field);
-                    }
-                },
-                next: 'states:push:end'
-            });
-        };
-
         self.get_next_quiz_conversation_state = function(quiz,choice) {
             if (choice === 'yes') {
                 if (self.im.config.delivery_class === 'sms') {
@@ -1772,11 +1731,32 @@ di.base = function() {
 
         self.states.add('states:push:endlinesurvey:prompt',function(name) {
             var field = self.push_api.get_push_field('endlinesurvey',1);
-            if (self.im.config.delivery_class === 'sms') {
-                return self.get_sms_endline_conversation(name,field);
-            } else {
-                return self.get_other_endline_conversation(name,field);
-            }
+            return new ChoiceState(name,{
+                question: $([
+                    "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
+                    "Answr a few qstns & stand chance 2 WIN artime!"
+                ].join(' ')),
+                choices: [
+                    new Choice('begin',$('To begin')),
+                    new Choice('no_thanks',$('No thanks'))
+                ],
+                events: {
+                    'im state:enter': function() {
+                        return self.save_push_trigger_fields(field);
+                    }
+                },
+                next: function(choice) {
+                    return self
+                        .save_contact_fields(choice,field,self.quizzes.endlinesurvey,'begin_quiz')
+                        .then(function() {
+                            if (choice.value === 'begin') {
+                                return self.quizzes.endlinesurvey.get_next_quiz_state();
+                            } else {
+                                return 'states:push:end';
+                            }
+                        });
+                }
+            });
         });
 
         self.states.add('states:push:thanks',function(name) {
