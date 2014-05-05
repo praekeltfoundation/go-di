@@ -1210,7 +1210,7 @@ describe("app", function() {
                     can_push: true,
                     delivery_class: 'ussd',
                     quiz: 'votingexperience',
-                    channel: "*120*4792*1#",
+                    channel: "*120*4729*1#",
                     voting_turnout_push_day: '7 May, 2014',
                     group_c_push_day: '8 May, 2014'
                 });
@@ -1500,7 +1500,7 @@ describe("app", function() {
                     can_push: true,
                     delivery_class: 'ussd',
                     quiz: 'groupc',
-                    channel: "*120*4792*2#",
+                    channel: "*120*4729*2#",
                     voting_turnout_push_day: '7 May, 2014',
                     group_c_push_day: '8 May, 2014'
                 });
@@ -1694,7 +1694,7 @@ describe("app", function() {
                     can_push: true,
                     delivery_class: 'ussd',
                     quiz: 'endlinesurvey',
-                    channel: "*120*4792*3#",
+                    channel: "*120*4729*3#",
                     voting_turnout_push_day: '7 May, 2014',
                     group_c_push_day: '8 May, 2014'
                 });
@@ -1728,7 +1728,7 @@ describe("app", function() {
             return answers;
         };
 
-        describe.only("when the user times out but has not completed the quiz",function() {
+        describe("when the user times out but has not completed the quiz",function() {
             it("should send them a reminder prompt message",function() {
                 return tester
                     .setup.user.addr('+2772')
@@ -1759,8 +1759,8 @@ describe("app", function() {
                 return tester
                     .setup.user.addr('+2772')
                     .setup.user({
-                        state: 'states:quiz:votingexperience:begin',
-                        answers: get_answered_quiz_states(8)
+                        state: 'states:quiz:endlinesurvey:begin',
+                        answers: get_answered_quiz_states(4)
                     })
                     .input.session_event('close')
                     .check(function(api) {
