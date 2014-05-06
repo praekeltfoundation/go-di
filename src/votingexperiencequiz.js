@@ -3,13 +3,11 @@ di.quiz.votingexperience = function() {
     var vumigo = require('vumigo_v02');
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    var MenuState = vumigo.states.MenuState;
     var EndState = vumigo.states.EndState;
 
     var VotingExperienceQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
-            name:'votingexperience',
-            continue_interval: 4
+            name:'votingexperience'
         });
         var $ = app.$;
 
@@ -81,16 +79,6 @@ di.quiz.votingexperience = function() {
                 next: function(content) {
                     return self.next_quiz('party_campaigning_observation',content);
                 }
-            });
-        });
-
-        self.add_continue('continue',function(name) {
-            return new MenuState(name,{
-                question: $('Would you like to continue answering questions? There are 8 in total.'),
-                choices: [
-                    new Choice(self.get_next_quiz_state(true),$('Continue')),
-                    new Choice('states:menu',$('Main Menu'))
-                ]
             });
         });
 

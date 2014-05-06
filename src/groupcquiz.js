@@ -7,8 +7,7 @@ di.quiz.groupc = function() {
 
     var GroupCQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
-            name:'groupc',
-            continue_interval: 6
+            name:'groupc'
         });
         var $ = app.$;
 
