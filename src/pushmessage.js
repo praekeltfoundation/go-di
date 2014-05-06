@@ -124,7 +124,7 @@ di.pushmessage = function() {
             } else if (self.should_receive_group_c_quiz()) {
                 return 'states:push:group_c_turnout';
             } else if (self.should_receive_endline_survey_quiz()) {
-                return 'states:push:endlinesurvey:prompt';
+                return 'states:push:endlinesurvey';
             } else {
                 return 'states:push:start';
             }

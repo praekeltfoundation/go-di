@@ -168,7 +168,7 @@ di.base = function() {
             });
         };
 
-        self.save_contact_fields = function(choice, field, quiz,question_name) {
+        self.save_contact_fields = function(choice, field) {
             self.contact.extra[field+'_reply'] = choice.value;
             self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
 
