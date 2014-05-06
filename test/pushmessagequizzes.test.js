@@ -878,11 +878,11 @@ describe("app", function() {
                         .check.interaction({
                             state: 'states:quiz:endlinesurvey:satisfied_democracy',
                             reply: [
-                                "How do you feel about democracy in SA?",
-                                "1. Vry satisfied" ,
+                                "How do u feel about democracy in SA?",
+                                "1. Very satisfied" ,
                                 "2. Smewht satisfied" ,
                                 "3. Smewhat disatisfied" ,
-                                "4. Vry disatisfied" ,
+                                "4. Very disatisfied" ,
                                 "5. Skip"
                             ].join("\n")
                         }).run();

@@ -16,12 +16,12 @@ di.quiz.endlinesurvey = function() {
 
         self.add_question('satisfied_democracy',function(name) {
             return new ChoiceState(name, {
-                question: $("How do you feel about democracy in SA?"),
+                question: $("How do u feel about democracy in SA?"),
                 choices: [
-                    new Choice('very_satisfied',$('Vry satisfied')),
+                    new Choice('very_satisfied',$('Very satisfied')),
                     new Choice('somewhat_satisfied',$('Smewht satisfied')),
                     new Choice('dissatisfied',$('Smewhat disatisfied')),
-                    new Choice('very_dissatisfied',$('Vry disatisfied')),
+                    new Choice('very_dissatisfied',$('Very disatisfied')),
                     new Choice('skip',$('Skip'))
                 ],
                 next: function(content) {
