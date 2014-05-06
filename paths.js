@@ -6,6 +6,7 @@ src.app = [
     'src/vipquiz.js',
     'src/answerwinquiz.js',
     'src/whatsupquiz.js',
+    'src/endlinesurveyquiz.js',
     'src/votingexperiencequiz.js',
     'src/groupcquiz.js',
     'src/pushmessage.copy.js',

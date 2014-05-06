@@ -159,17 +159,8 @@ di.base = function() {
                     }
                 },
                 next: function(choice) {
-                    self.contact.extra[field+'_reply'] = choice.value;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
-
                     return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return quiz.answer('did_you_vote',choice.value);
-                        })
-                        .then(function() {
-                            return self.im.metrics.fire.inc('total.push.replies');
-                        })
+                        .save_contact_fields(choice,field)
                         .then(function() {
                             return self.get_next_quiz_conversation_state(quiz,choice.value);
                         });
@@ -177,6 +168,16 @@ di.base = function() {
             });
         };
 
+        self.save_contact_fields = function(choice, field) {
+            self.contact.extra[field+'_reply'] = choice.value;
+            self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+
+            return self
+                .im.contacts.save(self.contact)
+                .then(function() {
+                    return self.im.metrics.fire.inc('total.push.replies');
+                });
+        };
 
         self.get_next_quiz_conversation_state = function(quiz,choice) {
             if (choice === 'yes') {
@@ -202,6 +203,36 @@ di.base = function() {
         self.states.add('states:push:group_c_turnout',function(name) {
             var field = self.push_api.get_push_field('group_c_turnout',1);
             return self.get_quiz_conversation(name,self.quizzes.groupc,field);
+        });
+
+        self.states.add('states:push:endlinesurvey',function(name) {
+            var field = self.push_api.get_push_field('endlinesurvey',1);
+            return new ChoiceState(name,{
+                question: $([
+                    "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
+                    "Answr a few qstns & stand chance 2 WIN artime!"
+                ].join(' ')),
+                choices: [
+                    new Choice('begin',$('To begin')),
+                    new Choice('no_thanks',$('No thanks'))
+                ],
+                events: {
+                    'im state:enter': function() {
+                        return self.save_push_trigger_fields(field);
+                    }
+                },
+                next: function(choice) {
+                    return self
+                        .save_contact_fields(choice,field)
+                        .then(function() {
+                            if (choice.value === 'begin') {
+                                return self.quizzes.endlinesurvey.get_next_quiz_state();
+                            } else {
+                                return 'states:push:end';
+                            }
+                        });
+                }
+            });
         });
 
         self.states.add('states:push:thanks',function(name) {

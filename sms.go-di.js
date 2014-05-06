@@ -199,6 +199,7 @@ di.quiz = function() {
             var count = self.count_answered();
             return (
                 count > 0
+                    && !_.isUndefined(self.continue_interval)
                     && count < self.questions.length
                     && (count % self.continue_interval) === 0
                     && !opts.from_continue
@@ -858,6 +859,100 @@ di.quiz.whatsup = function() {
     };
 }();
 
+/**
+ * Created by Jade on 2014/03/27.
+ */
+di.quiz.endlinesurvey = function() {
+    var QuizStates = di.quiz.QuizStates;
+    var vumigo = require('vumigo_v02');
+    var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
+    var EndState = vumigo.states.EndState;
+
+    var EndlineSurveyQuiz = QuizStates.extend(function(self,app) {
+        QuizStates.call(self,app,{
+            name:'endlinesurvey'
+        });
+        var $ = app.$;
+
+        self.add_question('satisfied_democracy',function(name) {
+            return new ChoiceState(name, {
+                question: $("How do you feel about democracy in SA?"),
+                choices: [
+                    new Choice('very_satisfied',$('Vry satisfied')),
+                    new Choice('somewhat_satisfied',$('Smewht satisfied')),
+                    new Choice('dissatisfied',$('Smewhat disatisfied')),
+                    new Choice('very_dissatisfied',$('Vry disatisfied')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('satisfied_democracy',content);
+                }
+            });
+        });
+
+        self.add_question('fair_outcome',function(name) {
+            return new ChoiceState(name, {
+                question: $("Do u think the outcome of the election was free and fair?"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewht agree')),
+                    new Choice('somewhat_disagree',$('Somewht disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('fair_outcome',content);
+                }
+            });
+        });
+
+        self.add_question('happy_with_results',function(name) {
+            return new ChoiceState(name, {
+                question: $("Are u happy with the election results?"),
+                choices: [
+                    new Choice('strongly_agree',$('Strongly agree')),
+                    new Choice('somewhat_agree',$('Somewht agree')),
+                    new Choice('somewhat_disagree',$('Somewht disagree')),
+                    new Choice('strongly_disagree',$('Strongly disagree')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('happy_with_results',content);
+                }
+            });
+        });
+
+        self.add_question('life_quality',function(name) {
+            return new ChoiceState(name, {
+                question: $("In the next 5 years, do u think life for people like u will be better, worse, or stay the same?"),
+                choices: [
+                    new Choice('better',$('Better')),
+                    new Choice('worse',$('Worse')),
+                    new Choice('stay_same',$('Stay same')),
+                    new Choice('skip',$('Skip'))
+                ],
+                next: function(content) {
+                    return self.next_quiz('life_quality',content);
+                }
+            });
+        });
+
+        self.add_next('end',function(name) {
+            return new EndState(name, {
+                text: $('VIP: Voice thanks you for contributing to a free & fair election!'),
+                next:  'states:start'
+            });
+        });
+
+        self.add_begin('begin');
+    });
+
+    return {
+        EndlineSurveyQuiz: EndlineSurveyQuiz
+    };
+}();
+
 di.quiz.votingexperience = function() {
     var QuizStates = di.quiz.QuizStates;
     var vumigo = require('vumigo_v02');
@@ -1077,7 +1172,7 @@ di.quiz.groupc = function() {
             return new EndState(name, {
                 text: $('If your phone has a camera, pls mms us a photo of your inked finger to show your vote! ' +
                     'U will be sent airtime for ur MMS.Send to vipvoice2014@gmail.com'),
-                next:  'states:push:end'
+                next: 'states:start'
             });
         });
 
@@ -1265,8 +1360,14 @@ di.pushmessage = function() {
             } else {
                 //Phase 3
                 return self.is_voting_experience_quiz_day()
-                || self.should_receive_group_c_quiz();
+                || self.should_receive_group_c_quiz()
+                || self.should_receive_endline_survey_quiz();
             }
+        };
+
+        self.should_receive_endline_survey_quiz = function() {
+            return self.is_endline_survey_quiz_day()
+                && app.contact.extra.delivery_class !== 'ussd';
         };
 
         self.should_receive_group_c_quiz = function() {
@@ -1278,6 +1379,8 @@ di.pushmessage = function() {
                 return 'states:push:voting_turnout';
             } else if (self.should_receive_group_c_quiz()) {
                 return 'states:push:group_c_turnout';
+            } else if (self.should_receive_endline_survey_quiz()) {
+                return 'states:push:endlinesurvey';
             } else {
                 return 'states:push:start';
             }
@@ -1295,6 +1398,10 @@ di.pushmessage = function() {
 
         self.is_group_c_quiz_day = function() {
             return self.is_push_day('group_c', new Date(app.im.config.group_c_push_day));
+        };
+
+        self.is_endline_survey_quiz_day = function() {
+            return self.is_push_day('endlinesurvey', new Date(app.im.config.endline_survey_push_day));
         };
 
         self.get_push_msg = function() {
@@ -1563,17 +1670,8 @@ di.base = function() {
                     }
                 },
                 next: function(choice) {
-                    self.contact.extra[field+'_reply'] = choice.value;
-                    self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
-
                     return self
-                        .im.contacts.save(self.contact)
-                        .then(function() {
-                            return quiz.answer('did_you_vote',choice.value);
-                        })
-                        .then(function() {
-                            return self.im.metrics.fire.inc('total.push.replies');
-                        })
+                        .save_contact_fields(choice,field)
                         .then(function() {
                             return self.get_next_quiz_conversation_state(quiz,choice.value);
                         });
@@ -1581,6 +1679,16 @@ di.base = function() {
             });
         };
 
+        self.save_contact_fields = function(choice, field) {
+            self.contact.extra[field+'_reply'] = choice.value;
+            self.contact.extra['it_'+field+'_reply'] = self.get_date_string();
+
+            return self
+                .im.contacts.save(self.contact)
+                .then(function() {
+                    return self.im.metrics.fire.inc('total.push.replies');
+                });
+        };
 
         self.get_next_quiz_conversation_state = function(quiz,choice) {
             if (choice === 'yes') {
@@ -1606,6 +1714,36 @@ di.base = function() {
         self.states.add('states:push:group_c_turnout',function(name) {
             var field = self.push_api.get_push_field('group_c_turnout',1);
             return self.get_quiz_conversation(name,self.quizzes.groupc,field);
+        });
+
+        self.states.add('states:push:endlinesurvey',function(name) {
+            var field = self.push_api.get_push_field('endlinesurvey',1);
+            return new ChoiceState(name,{
+                question: $([
+                    "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think!",
+                    "Answr a few qstns & stand chance 2 WIN artime!"
+                ].join(' ')),
+                choices: [
+                    new Choice('begin',$('To begin')),
+                    new Choice('no_thanks',$('No thanks'))
+                ],
+                events: {
+                    'im state:enter': function() {
+                        return self.save_push_trigger_fields(field);
+                    }
+                },
+                next: function(choice) {
+                    return self
+                        .save_contact_fields(choice,field)
+                        .then(function() {
+                            if (choice.value === 'begin') {
+                                return self.quizzes.endlinesurvey.get_next_quiz_state();
+                            } else {
+                                return 'states:push:end';
+                            }
+                        });
+                }
+            });
         });
 
         self.states.add('states:push:thanks',function(name) {
@@ -1647,6 +1785,7 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
+    var EndlineSurveyQuiz = di.quiz.endlinesurvey.EndlineSurveyQuiz;
     var BaseDiApp = di.base.BaseDiApp;
 
     var GoDiApp = BaseDiApp.extend(function(self) {
@@ -1657,6 +1796,7 @@ di.app = function() {
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);
+        self.quizzes.endlinesurvey = new EndlineSurveyQuiz(self);
 
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
@@ -1755,10 +1895,13 @@ di.app = function() {
             });
 
             self.im.on('session:close', function(e) {
+
                 if (self.should_send_dialback(e)) {
                     return self.send_dialback();
                 } else if(self.should_send_quiz_dialback(e,'votingexperience')) {
-                    return self.send_quiz_dialback();
+                    return self.send_quiz_dialback('votingexperience');
+                } else if(self.should_send_quiz_dialback(e,'endlinesurvey')) {
+                    return self.send_quiz_dialback('endlinesurvey');
                 }
             });
 
@@ -1787,7 +1930,8 @@ di.app = function() {
                 && self.is_delivery_class('ussd')
                 && self.is_registered()
                 && _.contains(self.im.user.state.name,quiz)
-                && !_.contains(self.im.user.state.name,'end');
+                && !_.contains(self.im.user.state.name,quiz+':end')
+                && !self.is(self.contact.extra[quiz+'_sms_sent']);
         };
 
         self.get_registration_sms = function() {
@@ -1813,18 +1957,21 @@ di.app = function() {
                 });
         };
 
-        self.send_quiz_dialback = function() {
+        self.send_quiz_dialback = function(quiz) {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
                     content: $([
                         "Hi VIP! Make sure ur voice is heard.",
-                        "Please dial back in to *120*4729*1# to complete ur election experience questions!",
+                        "Please dial back in to {{ USSD_number }} to complete ur election experience questions!",
                         "It's FREE. VIP: Voice!"
                     ].join(' '))
+                    .context({
+                        USSD_number: self.im.config.channel
+                    })
                 })
                 .then(function() {
-                    self.contact.extra.register_sms_sent = 'true';
+                    self.contact.extra[quiz +'_sms_sent'] = 'true';
                     return self.im.contacts.save(self.contact);
                 });
         };
@@ -1876,6 +2023,8 @@ di.app = function() {
                 } else {
                     return self.states.create('states:noop');
                 }
+            } else if (self.is_ussd_quiz_channel("endlinesurvey")) {
+                return self.states.create(self.quizzes.endlinesurvey.begin);
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');

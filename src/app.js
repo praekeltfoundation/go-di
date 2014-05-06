@@ -14,6 +14,7 @@ di.app = function() {
     var VipQuiz = di.quiz.vip.VipQuiz;
     var WhatsupQuiz = di.quiz.whatsup.WhatsupQuiz;
     var AnswerWinQuiz = di.quiz.answerwin.AnswerWinQuiz;
+    var EndlineSurveyQuiz = di.quiz.endlinesurvey.EndlineSurveyQuiz;
     var BaseDiApp = di.base.BaseDiApp;
 
     var GoDiApp = BaseDiApp.extend(function(self) {
@@ -24,6 +25,7 @@ di.app = function() {
         self.quizzes.vip = new VipQuiz(self);
         self.quizzes.whatsup = new WhatsupQuiz(self);
         self.quizzes.answerwin = new AnswerWinQuiz(self);
+        self.quizzes.endlinesurvey = new EndlineSurveyQuiz(self);
 
         self.random_standard = function() {
             if (self.random(0,1,true) < 0.2) {
@@ -122,10 +124,13 @@ di.app = function() {
             });
 
             self.im.on('session:close', function(e) {
+
                 if (self.should_send_dialback(e)) {
                     return self.send_dialback();
                 } else if(self.should_send_quiz_dialback(e,'votingexperience')) {
-                    return self.send_quiz_dialback();
+                    return self.send_quiz_dialback('votingexperience');
+                } else if(self.should_send_quiz_dialback(e,'endlinesurvey')) {
+                    return self.send_quiz_dialback('endlinesurvey');
                 }
             });
 
@@ -154,7 +159,8 @@ di.app = function() {
                 && self.is_delivery_class('ussd')
                 && self.is_registered()
                 && _.contains(self.im.user.state.name,quiz)
-                && !_.contains(self.im.user.state.name,'end');
+                && !_.contains(self.im.user.state.name,quiz+':end')
+                && !self.is(self.contact.extra[quiz+'_sms_sent']);
         };
 
         self.get_registration_sms = function() {
@@ -180,18 +186,21 @@ di.app = function() {
                 });
         };
 
-        self.send_quiz_dialback = function() {
+        self.send_quiz_dialback = function(quiz) {
             return self.im.outbound
                 .send_to_user({
                     endpoint: 'sms',
                     content: $([
                         "Hi VIP! Make sure ur voice is heard.",
-                        "Please dial back in to *120*4729*1# to complete ur election experience questions!",
+                        "Please dial back in to {{ USSD_number }} to complete ur election experience questions!",
                         "It's FREE. VIP: Voice!"
                     ].join(' '))
+                    .context({
+                        USSD_number: self.im.config.channel
+                    })
                 })
                 .then(function() {
-                    self.contact.extra.register_sms_sent = 'true';
+                    self.contact.extra[quiz +'_sms_sent'] = 'true';
                     return self.im.contacts.save(self.contact);
                 });
         };
@@ -243,6 +252,8 @@ di.app = function() {
                 } else {
                     return self.states.create('states:noop');
                 }
+            } else if (self.is_ussd_quiz_channel("endlinesurvey")) {
+                return self.states.create(self.quizzes.endlinesurvey.begin);
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');

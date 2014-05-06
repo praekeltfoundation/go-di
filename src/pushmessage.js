@@ -104,8 +104,14 @@ di.pushmessage = function() {
             } else {
                 //Phase 3
                 return self.is_voting_experience_quiz_day()
-                || self.should_receive_group_c_quiz();
+                || self.should_receive_group_c_quiz()
+                || self.should_receive_endline_survey_quiz();
             }
+        };
+
+        self.should_receive_endline_survey_quiz = function() {
+            return self.is_endline_survey_quiz_day()
+                && app.contact.extra.delivery_class !== 'ussd';
         };
 
         self.should_receive_group_c_quiz = function() {
@@ -117,6 +123,8 @@ di.pushmessage = function() {
                 return 'states:push:voting_turnout';
             } else if (self.should_receive_group_c_quiz()) {
                 return 'states:push:group_c_turnout';
+            } else if (self.should_receive_endline_survey_quiz()) {
+                return 'states:push:endlinesurvey';
             } else {
                 return 'states:push:start';
             }
@@ -134,6 +142,10 @@ di.pushmessage = function() {
 
         self.is_group_c_quiz_day = function() {
             return self.is_push_day('group_c', new Date(app.im.config.group_c_push_day));
+        };
+
+        self.is_endline_survey_quiz_day = function() {
+            return self.is_push_day('endlinesurvey', new Date(app.im.config.endline_survey_push_day));
         };
 
         self.get_push_msg = function() {

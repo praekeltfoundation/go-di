@@ -105,6 +105,7 @@ di.quiz = function() {
             var count = self.count_answered();
             return (
                 count > 0
+                    && !_.isUndefined(self.continue_interval)
                     && count < self.questions.length
                     && (count % self.continue_interval) === 0
                     && !opts.from_continue

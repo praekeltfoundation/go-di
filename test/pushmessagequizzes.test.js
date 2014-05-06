@@ -703,6 +703,320 @@ describe("app", function() {
         });
     });
 
+    describe("Mxit Endline Survey Quiz Push App", function() {
+        var app;
+        var tester;
+
+        beforeEach(function() {
+            app = new di.app.GoDiApp();
+
+            tester = new AppTester(app,{
+                api: {http: {default_encoding: 'json'}}
+            })
+                .setup.char_limit(180);
+
+            app.get_date = function() {
+                var d = new Date('15 April, 2014');
+                d.setHours(0,0,0,0);
+                return d;
+            };
+
+            tester
+                .setup.user.lang('en')
+                .setup(function(api) {
+                    //Add the resources
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
+                    //Add the configs
+                    api.config.store.ward_treatment = ward_treatment();
+                    api.config.store.push_message_group = push_message_group();
+                })
+                .setup.config.app({
+                    name: 'test_push_app',
+                    panel_messages: [0, 1, 4],
+                    thermometer_messages: [2, 3],
+                    panel_push_start: app.get_date_string(),
+                    push_end_date: '6 May, 2014',
+                    billing_code: 'incentive',
+                    can_push: true,
+                    delivery_class: 'mxit',
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014',
+                    endline_survey_push_day: '9 May, 2014'
+                });
+        });
+
+        var quiz_states = [
+            'states:quiz:endlinesurvey:satisfied_democracy',
+            'states:quiz:endlinesurvey:fair_outcome',
+            'states:quiz:endlinesurvey:happy_with_results',
+            'states:quiz:endlinesurvey:life_quality'
+        ];
+
+        var get_answered_quiz_states = function(n) {
+            var states = quiz_states.slice(0,n);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
+        function setup_question_test(state_name) {
+            app.quizzes.endlinesurvey.random_quiz_name = function(n) {
+                return state_name;
+            };
+            tester
+                .setup.user.state('states:quiz:endlinesurvey:begin')
+                .setup.user.addr("m123");
+        }
+
+        describe("when it is the day for the endline survey quiz",function() {
+            beforeEach(function(){
+                app.get_date = function() {
+                    var d = new Date('9 May, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                tester
+                    .setup(function(api){
+                        //Add a contact
+                        api.contacts.add( {
+                            mxit_id: 'm123',
+                            extra : {
+                                is_registered: 'true',
+                                delivery_class: 'mxit',
+                                new_week_day: 'T',
+                                C1: 'yes'
+                            }
+                        });
+                    });
+            });
+
+            it("should start the endline conversation",function() {
+                return tester
+                    .setup.user.addr('m123')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check.interaction({
+                        state:'states:push:endlinesurvey',
+                        reply: [
+                            "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think! Answr a few qstns & stand chance 2 WIN artime!",
+                            "1. To begin",
+                            "2. No thanks"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+
+            it("should save the push round details",function() {
+                return tester
+                    .setup.user.addr('m123')
+                    .setup.user.state('states:menu')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check(function(api) {
+                        var contact = _.find(api.contacts.store,{mxit_id:'m123'});
+                        assert.equal(contact.extra.it_endlinesurvey_round_1,app.get_date_string());
+                    })
+                    .run();
+            });
+
+            describe("when the user replies to the endline conversation with 'Yes'",function() {
+                beforeEach(function() {
+                    tester
+                        .setup.user.addr('m123')
+                        .setup.user.state('states:push:endlinesurvey')
+                        .input('1');
+                });
+
+                it("should start the endline survey quiz",function() {
+                    return tester
+                        .check.user(function(user) {
+                            assert.equal(user.state.name.indexOf('states:quiz:endlinesurvey')>= 0, true);
+                        })
+                        .run();
+                });
+
+                it("should save the reply to the push round",function() {
+                    return tester
+                        .check(function(api) {
+                            var contact = _.find(api.contacts.store,{mxit_id:'m123'});
+                            assert.equal(contact.extra.endlinesurvey_round_1_reply,'begin');
+                        })
+                        .run();
+                });
+            });
+
+            describe("when the user replies to the endline survey conversation with 'No'",function() {
+                it("take them to the push:thanks page",function() {
+                    return tester
+                        .setup.user.addr('m123')
+                        .setup.user.state('states:push:endlinesurvey')
+                        .input('2')
+                        .check.interaction({
+                            state: 'states:push:end'
+                        })
+                        .run();
+                });
+            });
+
+            describe("when 'satisfied_democracy' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:satisfied_democracy');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:satisfied_democracy',
+                            reply: [
+                                "How do you feel about democracy in SA?",
+                                "1. Vry satisfied" ,
+                                "2. Smewht satisfied" ,
+                                "3. Smewhat disatisfied" ,
+                                "4. Vry disatisfied" ,
+                                "5. Skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields when answered",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_satisfied_democracy,"very_satisfied");
+                            assert.equal(contact.extra.it_endlinesurvey_question_satisfied_democracy,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when 'fair_outcome' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:fair_outcome');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:fair_outcome',
+                            reply: [
+                                "Do u think the outcome of the election was free and fair?",
+                                "1. Strongly agree" ,
+                                "2. Somewht agree" ,
+                                "3. Somewht disagree" ,
+                                "4. Strongly disagree" ,
+                                "5. Skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields when answered",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_fair_outcome,"strongly_agree");
+                            assert.equal(contact.extra.it_endlinesurvey_question_fair_outcome,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when 'happy_with_results' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:happy_with_results');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:happy_with_results',
+                            reply: [
+                                "Are u happy with the election results?",
+                                "1. Strongly agree" ,
+                                "2. Somewht agree" ,
+                                "3. Somewht disagree" ,
+                                "4. Strongly disagree" ,
+                                "5. Skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields when answered",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_happy_with_results,"strongly_agree");
+                            assert.equal(contact.extra.it_endlinesurvey_question_happy_with_results,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when 'life_quality' question is randomly chosen to be next question",function() {
+                beforeEach(function() {
+                    setup_question_test('states:quiz:endlinesurvey:life_quality');
+                });
+
+                it("should show them the correct question",function() {
+                    return tester
+                        .start()
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:life_quality',
+                            reply: [
+                                "In the next 5 years, do u think life for people like u will be better, worse, or stay the same?",
+                                "1. Better" ,
+                                "2. Worse" ,
+                                "3. Stay same" ,
+                                "4. Skip"
+                            ].join("\n")
+                        }).run();
+                });
+
+                it("should save the correct fields when answered",function() {
+                    return tester
+                        .input('1')
+                        .check(function(api){
+                            var contact = api.contacts.store[0];
+                            assert.equal(contact.extra.endlinesurvey_question_life_quality,"better");
+                            assert.equal(contact.extra.it_endlinesurvey_question_life_quality,app.get_date_string());
+                        }).run();
+                });
+            });
+
+            describe("when the user answers the last question",function() {
+                beforeEach(function() {
+                    tester
+                        .setup.user.addr('m123')
+                        .setup.user({
+                            state: 'states:quiz:endlinesurvey:begin',
+                            answers: get_answered_quiz_states(3)
+                        })
+                        .input('1');
+                });
+
+                it("should take the user to the end of the quiz",function() {
+                    return tester
+                        .check.interaction({
+                            state: 'states:quiz:endlinesurvey:end',
+                            reply: 'VIP: Voice thanks you for contributing to a free & fair election!'
+                        })
+                        .run();
+                });
+            });
+        });
+    });
+
     describe("SMS Voting Experience Conversation App",function() {
         var app;
         var tester;
@@ -713,7 +1027,7 @@ describe("app", function() {
             tester = new AppTester(app,{
                 api: {http: {default_encoding: 'json'}}
             })
-                .setup.char_limit(180);
+            .setup.char_limit(180);
 
             app.get_date = function() {
                 var d = new Date('15 April, 2014');
@@ -896,7 +1210,7 @@ describe("app", function() {
                     can_push: true,
                     delivery_class: 'ussd',
                     quiz: 'votingexperience',
-                    channel: "*120*4792*1#",
+                    channel: "*120*4729*1#",
                     voting_turnout_push_day: '7 May, 2014',
                     group_c_push_day: '8 May, 2014'
                 });
@@ -1186,7 +1500,7 @@ describe("app", function() {
                     can_push: true,
                     delivery_class: 'ussd',
                     quiz: 'groupc',
-                    channel: "*120*4792*2#",
+                    channel: "*120*4729*2#",
                     voting_turnout_push_day: '7 May, 2014',
                     group_c_push_day: '8 May, 2014'
                 });
@@ -1233,5 +1547,211 @@ describe("app", function() {
             });
         });
     });
+
+    describe("SMS Endline Conversation App",function() {
+        var app;
+        var tester;
+
+        beforeEach(function() {
+            app = new di.base.DiSmsApp();
+
+            tester = new AppTester(app,{
+                api: {http: {default_encoding: 'json'}}
+            })
+            .setup.char_limit(180);
+
+            tester
+                .setup.user.lang('en')
+                .setup(function(api) {
+                    //Add the resources
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
+                    //Add the configs
+                    api.config.store.ward_treatment = ward_treatment();
+                    api.config.store.push_message_group = push_message_group();
+                })
+                .setup.config.app({
+                    name: 'test_push_app',
+                    panel_messages: [0, 1, 4],
+                    thermometer_messages: [2, 3],
+                    panel_push_start: app.get_date_string(),
+                    push_end_date: '6 May, 2014',
+                    billing_code: 'incentive',
+                    can_push: true,
+                    delivery_class: 'sms',
+                    quiz: 'endlinesurveyquiz',
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014',
+                    endline_survey_push_day: '9 May 2014'
+                });
+        });
+
+        describe("when it is the day for the endline survey quiz",function() {
+            beforeEach(function(){
+                app.get_date = function() {
+                    var d = new Date('9 May, 2014');
+                    d.setHours(0,0,0,0);
+                    return d;
+                };
+                tester
+                    .setup(function(api){
+                        //Add a contact
+                        api.contacts.add( {
+                            msisdn: '+2772',
+                            extra : {
+                                is_registered: 'true',
+                                delivery_class: 'ussd',
+                                new_week_day: 'T',
+                                C0: 'yes'
+                            }
+                        });
+                    });
+            });
+            it("should do nothing ",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user.state('states:noop')
+                    .input({
+                        content: null,
+                        inbound_push_trigger: true
+                    })
+                    .check.no_reply()
+                    .run();
+            });
+        });
+    });
+
+    describe("USSD Endline Survey Quiz Push App",function() {
+        var app;
+        var tester;
+
+        beforeEach(function() {
+            app = new di.app.GoDiApp();
+
+            tester = new AppTester(app,{
+                api: {http: {default_encoding: 'json'}}
+            })
+                .setup.char_limit(180);
+
+            app.get_date = function() {
+                var d = new Date('15 April, 2014');
+                d.setHours(0,0,0,0);
+                return d;
+            };
+
+            tester
+                .setup.user.lang('en')
+                .setup(function(api) {
+                    //Add the resources
+                    api.resources.add(new DummyMessageStoreResource());
+                    api.resources.attach(api);
+
+                    //Add the configs
+                    api.config.store.ward_treatment = ward_treatment();
+                    api.config.store.push_message_group = push_message_group();
+
+                    //Add a contact
+                    api.contacts.add( {
+                        msisdn: '+2772',
+                        extra : {
+                            is_registered: 'true',
+                            register_sms_sent: 'true',
+                            delivery_class: 'ussd',
+                            new_week_day: 'T',
+                            C0: 'yes'
+                        }
+                    });
+                })
+                .setup.config.app({
+                    name: 'test_push_app',
+                    panel_messages: [0, 1, 4],
+                    thermometer_messages: [2, 3],
+                    panel_push_start: app.get_date_string(),
+                    push_end_date: '6 May, 2014',
+                    billing_code: 'incentive',
+                    can_push: true,
+                    delivery_class: 'ussd',
+                    quiz: 'endlinesurvey',
+                    channel: "*120*4729*3#",
+                    voting_turnout_push_day: '7 May, 2014',
+                    group_c_push_day: '8 May, 2014'
+                });
+        });
+
+        describe("when the user accesses the ussd channel",function() {
+            it("should take the user to the quiz",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .start()
+                    .check.user(function(user) {
+                        assert.equal(_.contains(user.state.name,'states:quiz:endlinesurvey'), true);
+                    })
+                    .run();
+            });
+        });
+
+        var quiz_states = [
+            'states:quiz:endlinesurvey:satisfied_democracy',
+            'states:quiz:endlinesurvey:fair_outcome',
+            'states:quiz:endlinesurvey:happy_with_results',
+            'states:quiz:endlinesurvey:life_quality'
+        ];
+
+        var get_answered_quiz_states = function(n) {
+            var states = quiz_states.slice(0,n);
+            var answers = {};
+            _.forEach(states,function(value) {
+                answers[value] = '1';
+            });
+            return answers;
+        };
+
+        describe("when the user times out but has not completed the quiz",function() {
+            it("should send them a reminder prompt message",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user({
+                        state: 'states:quiz:endlinesurvey:begin',
+                        answers: get_answered_quiz_states(2)
+                    })
+                    .input.session_event('close')
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        var sms = smses[0];
+                        assert.equal(smses.length,1);
+                        assert.equal(sms.to_addr,'+2772');
+                        assert.equal(sms.content, [
+                            "Hi VIP! Make sure ur voice is heard.",
+                            "Please dial back in to *120*4729*3# to complete ur election experience questions!",
+                            "It's FREE. VIP: Voice!"
+                        ].join(' '));
+                    })
+                    .run();
+            });
+        });
+
+        describe("when the user times out but has completed the quiz and is on the thank you screen",function() {
+            it("should not send them a reminder prompt message",function() {
+                return tester
+                    .setup.user.addr('+2772')
+                    .setup.user({
+                        state: 'states:quiz:endlinesurvey:begin',
+                        answers: get_answered_quiz_states(4)
+                    })
+                    .input.session_event('close')
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        assert.equal(smses.length,0);
+                    })
+                    .run();
+            });
+        });
+    });
+
 
 });
