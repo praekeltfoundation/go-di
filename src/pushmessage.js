@@ -110,7 +110,8 @@ di.pushmessage = function() {
         };
 
         self.should_receive_endline_survey_quiz = function() {
-            return self.is_endline_survey_quiz_day() && app.im.config.delivery_class !== 'sms';
+            return self.is_endline_survey_quiz_day()
+                && app.contact.extra.delivery_class !== 'ussd';
         };
 
         self.should_receive_group_c_quiz = function() {
