@@ -1671,7 +1671,7 @@ di.base = function() {
                 },
                 next: function(choice) {
                     return self
-                        .save_contact_fields(choice,field,quiz,'did_you_vote')
+                        .save_contact_fields(choice,field)
                         .then(function() {
                             return self.get_next_quiz_conversation_state(quiz,choice.value);
                         });
@@ -1734,7 +1734,7 @@ di.base = function() {
                 },
                 next: function(choice) {
                     return self
-                        .save_contact_fields(choice,field,self.quizzes.endlinesurvey,'begin_quiz')
+                        .save_contact_fields(choice,field)
                         .then(function() {
                             if (choice.value === 'begin') {
                                 return self.quizzes.endlinesurvey.get_next_quiz_state();
