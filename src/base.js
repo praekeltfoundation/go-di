@@ -175,9 +175,6 @@ di.base = function() {
             return self
                 .im.contacts.save(self.contact)
                 .then(function() {
-                    return quiz.answer(question_name,choice.value);
-                })
-                .then(function() {
                     return self.im.metrics.fire.inc('total.push.replies');
                 });
         };
