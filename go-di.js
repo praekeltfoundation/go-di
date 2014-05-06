@@ -1380,7 +1380,7 @@ di.pushmessage = function() {
             } else if (self.should_receive_group_c_quiz()) {
                 return 'states:push:group_c_turnout';
             } else if (self.should_receive_endline_survey_quiz()) {
-                return 'states:push:endlinesurvey:prompt';
+                return 'states:push:endlinesurvey';
             } else {
                 return 'states:push:start';
             }
@@ -1716,7 +1716,7 @@ di.base = function() {
             return self.get_quiz_conversation(name,self.quizzes.groupc,field);
         });
 
-        self.states.add('states:push:endlinesurvey:prompt',function(name) {
+        self.states.add('states:push:endlinesurvey',function(name) {
             var field = self.push_api.get_push_field('endlinesurvey',1);
             return new ChoiceState(name,{
                 question: $([

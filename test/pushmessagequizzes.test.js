@@ -803,7 +803,7 @@ describe("app", function() {
                         inbound_push_trigger: true
                     })
                     .check.interaction({
-                        state:'states:push:endlinesurvey:prompt',
+                        state:'states:push:endlinesurvey',
                         reply: [
                             "Thx 4 joining VIP:Voice & reprtng on the Election! Let us kno wht u think! Answr a few qstns & stand chance 2 WIN artime!",
                             "1. To begin",
@@ -832,7 +832,7 @@ describe("app", function() {
                 beforeEach(function() {
                     tester
                         .setup.user.addr('m123')
-                        .setup.user.state('states:push:endlinesurvey:prompt')
+                        .setup.user.state('states:push:endlinesurvey')
                         .input('1');
                 });
 
@@ -858,7 +858,7 @@ describe("app", function() {
                 it("take them to the push:thanks page",function() {
                     return tester
                         .setup.user.addr('m123')
-                        .setup.user.state('states:push:endlinesurvey:prompt')
+                        .setup.user.state('states:push:endlinesurvey')
                         .input('2')
                         .check.interaction({
                             state: 'states:push:end'
