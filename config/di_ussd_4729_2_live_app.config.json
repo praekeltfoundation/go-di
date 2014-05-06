@@ -1,5 +1,5 @@
 {
-    "name": "di_ussd_4729_live_app",
+    "name": "di_ussd_4729_2_live_app",
     "endpoints": {
         "sms": {"delivery_class": "sms"}
     },
