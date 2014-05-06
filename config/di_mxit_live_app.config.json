@@ -13,7 +13,9 @@
     "push_end_date": "12 May, 2014",
     "voting_turnout_push_day": "7 May, 2014",
     "group_c_push_day": "8 May, 2014",
-    "billing_code": "incentive",
+    "endline_survey_push_day" : "9 May, 2014",
+    "billing_code": "end_user",
     "can_push": true,
     "delivery_class": "mxit"
 }
+
