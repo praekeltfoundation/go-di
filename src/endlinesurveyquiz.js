@@ -6,13 +6,11 @@ di.quiz.endlinesurvey = function() {
     var vumigo = require('vumigo_v02');
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    var MenuState = vumigo.states.MenuState;
     var EndState = vumigo.states.EndState;
 
     var EndlineSurveyQuiz = QuizStates.extend(function(self,app) {
         QuizStates.call(self,app,{
-            name:'endlinesurvey',
-            continue_interval: 6
+            name:'endlinesurvey'
         });
         var $ = app.$;
 
@@ -83,16 +81,6 @@ di.quiz.endlinesurvey = function() {
             return new EndState(name, {
                 text: $('VIP: Voice thanks you for contributing to a free & fair election!'),
                 next:  'states:start'
-            });
-        });
-
-        self.add_continue('continue',function(name) {
-            return new MenuState(name,{
-                question: $('Would you like to continue answering questions? There are 5 in total.'),
-                choices: [
-                    new Choice(self.get_next_quiz_state(true),$('Continue')),
-                    new Choice('states:menu',$('Main Menu'))
-                ]
             });
         });
 
