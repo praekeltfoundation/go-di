@@ -238,22 +238,18 @@ di.app = function() {
         };
 
         self.states.add('states:start',function(name) {
-            if (!self.is_registered()) {
+            if (self.is_ussd_quiz_channel("votingexperience")) {
+                return self.states.create(self.quizzes.votingexperience.begin);
+            } else if (self.is_ussd_quiz_channel("groupc")){
+                return self.states.create(self.quizzes.groupc.begin);
+            } else if (self.is_ussd_quiz_channel("endlinesurvey")) {
+                return self.states.create(self.quizzes.endlinesurvey.begin);
+            } if (!self.is_registered()) {
                 if (self.is_delivery_class('twitter')) {
                     return self.set_twitter_begin_state();
                 } else {
                     return self.states.create('states:register');
                 }
-            } else if (self.is_ussd_quiz_channel("votingexperience")) {
-                return self.states.create(self.quizzes.votingexperience.begin);
-            } else if (self.is_ussd_quiz_channel("groupc")){
-                if (self.push_api.in_group_c()) {
-                     return self.states.create(self.quizzes.groupc.begin);
-                } else {
-                    return self.states.create('states:noop');
-                }
-            } else if (self.is_ussd_quiz_channel("endlinesurvey")) {
-                return self.states.create(self.quizzes.endlinesurvey.begin);
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');
