@@ -96,6 +96,7 @@ describe("app", function() {
                         });
                     });
             });
+
             it("should start the voting turnout conversation",function() {
                 return tester
                     .setup.user.addr('m123')
@@ -1080,8 +1081,10 @@ describe("app", function() {
                                 c0: 'yes'
                             }
                         });
+
                     });
             });
+
             it("should start the voting turnout conversation",function() {
                 return tester
                     .setup.user.addr('+2772')
@@ -1199,6 +1202,16 @@ describe("app", function() {
                             c0: 'yes'
                         }
                     });
+
+
+                    api.contacts.add( {
+                        msisdn: '+2773',
+                        extra : {
+                            delivery_class: 'ussd',
+                            new_week_day: 'T',
+                            c0: 'yes'
+                        }
+                    });
                 })
                 .setup.config.app({
                     name: 'test_push_app',
@@ -1225,6 +1238,19 @@ describe("app", function() {
                         assert.equal(_.contains(user.state.name,'states:quiz:votingexperience'), true);
                     })
                     .run();
+            });
+
+
+            describe("when the user is not registered",function() {
+                it("should take the user to the quiz",function() {
+                    return tester
+                        .setup.user.addr('+2773')
+                        .start()
+                        .check.user(function(user) {
+                            assert.equal(_.contains(user.state.name,'states:quiz:votingexperience'), true);
+                        })
+                        .run();
+                });
             });
         });
 
