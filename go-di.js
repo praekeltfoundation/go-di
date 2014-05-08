@@ -2002,7 +2002,7 @@ di.app = function() {
                 return self.states.create(self.quizzes.groupc.begin);
             } else if (self.is_ussd_quiz_channel("endlinesurvey")) {
                 return self.states.create(self.quizzes.endlinesurvey.begin);
-            } if (!self.is_registered()) {
+            } else if (!self.is_registered()) {
                 if (self.is_delivery_class('twitter')) {
                     return self.set_twitter_begin_state();
                 } else {
@@ -2011,7 +2011,6 @@ di.app = function() {
             } else if (!self.is(self.im.config.bypass_address)
                 && !self.exists(self.contact.extra.ward)) {
                 return self.states.create('states:address');
-
             }  else {
                 return self.states.create('states:menu');
             }
